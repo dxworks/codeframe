@@ -13,6 +13,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.*;
+import org.dxworks.ignorerLibrary.Ignorer;
+import org.dxworks.ignorerLibrary.IgnorerBuilder;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -160,15 +162,18 @@ public class App {
 
     private static List<Path> collectSourceFiles(Path input) throws IOException {
         List<Path> files = new ArrayList<>();
+        // Load ignore matcher from .ignore using dx-ignore
+        Ignorer ignorer = new IgnorerBuilder(Paths.get(".ignore")).compile();
         
         if (Files.isDirectory(input)) {
             try (Stream<Path> stream = Files.walk(input)) {
                 stream.filter(Files::isRegularFile)
+                      .filter(p -> ignorer.accepts(p.toAbsolutePath().toString()))
                       .filter(p -> LanguageDetector.detectLanguage(p).isPresent())
                       .forEach(files::add);
             }
         } else if (Files.isRegularFile(input)) {
-            if (LanguageDetector.detectLanguage(input).isPresent()) {
+            if (ignorer.accepts(input.toAbsolutePath().toString()) && LanguageDetector.detectLanguage(input).isPresent()) {
                 files.add(input);
             }
         }

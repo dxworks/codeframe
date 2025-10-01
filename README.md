@@ -113,6 +113,29 @@ docker run --rm -it -p 5005:5005 \
 
 The analysis results are written to the path you pass as the second argument (e.g., `/workspace/.out/analysis.jsonl`) in **JSONL format** (JSON Lines - one JSON object per line). Parent directories for the output file are created automatically, and `.out/` is gitignored by default.
 
+### Ignore patterns (.ignore)
+
+- Location: project root `.ignore` (included in releases).
+- Default contents:
+  ```
+  **node_modules**
+  **.git**
+  **.Designer.cs**
+  **.Designer.vb**
+  ```
+- Syntax:
+  - Blank lines and lines starting with `#` are ignored.
+  - Globs supported: `*` (within a segment), `**` (across segments).
+  - Paths are matched against normalized project paths relative to the input root.
+- Examples:
+  - `**node_modules**` → ignore anything under any node_modules folder.
+  - `**.Designer.cs` → ignore files ending with `.Designer.cs` anywhere.
+  - `src/generated/**` → ignore everything under `src/generated/`.
+
+How it works:
+- CodeFrame loads `.ignore` at startup using `dx-ignore` and filters files before analysis.
+- If `.ignore` is missing, no files are excluded by ignore rules.
+
 #### Why JSONL?
 
 - **Memory efficient**: Constant memory usage regardless of codebase size
