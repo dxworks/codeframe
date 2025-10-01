@@ -283,7 +283,7 @@ public class PHPAnalyzer implements LanguageAnalyzer {
         // Get method body
         TSNode bodyNode = findFirstChild(methodDecl, "compound_statement");
         if (bodyNode != null) {
-            analyzeMethodBody(source, bodyNode, methodInfo, className);
+            analyzeMethodBody(source, bodyNode, methodInfo);
         }
         
         return methodInfo;
@@ -325,7 +325,7 @@ public class PHPAnalyzer implements LanguageAnalyzer {
         // Get function body
         TSNode bodyNode = findFirstChild(funcDef, "compound_statement");
         if (bodyNode != null) {
-            analyzeMethodBody(source, bodyNode, methodInfo, null);
+            analyzeMethodBody(source, bodyNode, methodInfo);
         }
         
         return methodInfo;
@@ -365,7 +365,7 @@ public class PHPAnalyzer implements LanguageAnalyzer {
         }
     }
     
-    private void analyzeMethodBody(String source, TSNode bodyNode, MethodInfo methodInfo, String className) {
+    private void analyzeMethodBody(String source, TSNode bodyNode, MethodInfo methodInfo) {
         // Build a map of variable names to their types
         Map<String, String> localTypes = new HashMap<>();
         
@@ -382,6 +382,24 @@ public class PHPAnalyzer implements LanguageAnalyzer {
                     // Validate variable name
                     if (varName.matches("[a-zA-Z_][a-zA-Z0-9_]*") && !methodInfo.localVariables.contains(varName)) {
                         methodInfo.localVariables.add(varName);
+                    }
+                    // Minimal type inference: $var = new ClassName(...);
+                    TSNode rightSide = assignment.getNamedChild(1);
+                    if (rightSide != null && !rightSide.isNull() && "object_creation_expression".equals(rightSide.getType())) {
+                        // object_creation_expression -> class_type_designator -> (qualified_name | name)
+                        TSNode classType = findFirstChild(rightSide, "class_type_designator");
+                        if (classType != null && !classType.isNull()) {
+                            TSNode typeName = findFirstChild(classType, "qualified_name");
+                            if (typeName == null || typeName.isNull()) {
+                                typeName = findFirstChild(classType, "name");
+                            }
+                            if (typeName != null && !typeName.isNull()) {
+                                String inferredType = getNodeText(source, typeName);
+                                if (inferredType != null && !inferredType.isBlank()) {
+                                    localTypes.put(varName, inferredType);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -612,22 +630,19 @@ public class PHPAnalyzer implements LanguageAnalyzer {
                 "final_modifier".equals(type) || "abstract_modifier".equals(type)) {
                 String modText = getNodeText(source, child);
                 
-                if (target instanceof TypeInfo) {
-                    TypeInfo typeInfo = (TypeInfo) target;
+                if (target instanceof TypeInfo typeInfo) {
                     typeInfo.modifiers.add(modText);
                     // Set visibility for types
                     if ("public".equals(modText) || "private".equals(modText) || "protected".equals(modText)) {
                         typeInfo.visibility = modText;
                     }
-                } else if (target instanceof MethodInfo) {
-                    MethodInfo methodInfo = (MethodInfo) target;
+                } else if (target instanceof MethodInfo methodInfo) {
                     methodInfo.modifiers.add(modText);
                     // Set visibility for methods
                     if ("public".equals(modText) || "private".equals(modText) || "protected".equals(modText)) {
                         methodInfo.visibility = modText;
                     }
-                } else if (target instanceof FieldInfo) {
-                    FieldInfo fieldInfo = (FieldInfo) target;
+                } else if (target instanceof FieldInfo fieldInfo) {
                     fieldInfo.modifiers.add(modText);
                     // Set visibility for fields
                     if ("public".equals(modText) || "private".equals(modText) || "protected".equals(modText)) {

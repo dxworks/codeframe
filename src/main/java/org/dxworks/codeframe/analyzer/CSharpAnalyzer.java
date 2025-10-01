@@ -398,6 +398,8 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
                             // Chained call like obj.Method1().Method2() or obj.Prop.Method()
                             // We cannot determine the runtime type without semantic analysis
                             // Leave objectType and objectName as null
+                            objectName = null;
+                            objectType = null;
                         }
                     }
                 } else if ("identifier".equals(functionNode.getType())) {

@@ -253,7 +253,6 @@ public class PythonAnalyzer implements LanguageAnalyzer {
                                 }
                             } catch (Exception e) {
                                 // Skip if field name cannot be retrieved
-                                continue;
                             }
                         }
                         
@@ -273,7 +272,6 @@ public class PythonAnalyzer implements LanguageAnalyzer {
                                     }
                                 } catch (Exception e) {
                                     // Skip if field name cannot be retrieved
-                                    continue;
                                 }
                             }
                         }
@@ -409,7 +407,6 @@ public class PythonAnalyzer implements LanguageAnalyzer {
                 }
             } catch (Exception e) {
                 // Skip if field name cannot be retrieved
-                continue;
             }
         }
         
