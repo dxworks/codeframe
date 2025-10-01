@@ -1,0 +1,77 @@
+name: Create Voyager Release
+
+on:
+  push:
+    tags:
+      - 'v*-voyager'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and Release (Voyager)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Parse tag to semver (voyager only)
+        id: tag
+        shell: bash
+        run: |
+          ref_name="${GITHUB_REF_NAME}"    # e.g., v1.2.3-voyager
+          semver=${ref_name#v}              # strip leading v
+          semver=${semver%-voyager}         # strip -voyager suffix
+          echo "semver=$semver" >> $GITHUB_OUTPUT
+          echo "suffix=voyager" >> $GITHUB_OUTPUT
+
+      - name: Make gradlew executable (Unix)
+        run: chmod +x gradlew
+
+      - name: Build (Gradle, shadowJar)
+        run: ./gradlew --no-daemon clean shadowJar
+
+      - name: Prepare assets
+        id: assets
+        run: |
+          set -euo pipefail
+          mkdir -p codeframe
+          # Use constant fat jar name produced by Shadow config
+          JAR_PATH="build/libs/codeframe.jar"
+          cp "$JAR_PATH" codeframe/codeframe.jar
+          cp instrument.yml codeframe/instrument.yml
+          # Voyager archive name
+          ARCHIVE_NAME="codeframe-${{ steps.tag.outputs.suffix }}"
+          echo "archive_name=$ARCHIVE_NAME" >> $GITHUB_OUTPUT
+          zip -r "$ARCHIVE_NAME.zip" codeframe
+
+      - name: Ensure Release Notes file exists
+        shell: bash
+        run: |
+          NOTES="${{ github.workspace }}/releaseNotes/${{ steps.tag.outputs.semver }}.md"
+          if [ ! -f "$NOTES" ]; then
+            echo "(auto-generated)" > "$NOTES"
+          fi
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: CodeFrame ${{ steps.tag.outputs.semver }} (Voyager)
+          body_path: ${{ github.workspace }}/releaseNotes/${{ steps.tag.outputs.semver }}.md
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: |
+            ${{ steps.assets.outputs.archive_name }}.zip
