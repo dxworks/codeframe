@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 java {
@@ -34,3 +35,15 @@ application {
 }
 
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+
+// Produce a single, self-contained JAR named exactly 'codeframe.jar'
+tasks.named('shadowJar') {
+    archiveBaseName.set('codeframe')
+    archiveVersion.set('')
+    archiveClassifier.set('')
+}
+
+// Ensure 'build' produces the shadow JAR
+tasks.named('build') {
+    dependsOn tasks.named('shadowJar')
+}
