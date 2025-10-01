@@ -3,3 +3,5 @@
 **.git**
 **.Designer.cs**
 **.Designer.vb**
+**.min.js**
+**.min.ts**

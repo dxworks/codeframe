@@ -57,6 +57,50 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
             analysis.methods.add(methodInfo);
         }
         
+        // Find arrow function assignments: const name = (...) => { ... }
+        // Only process top-level lexical declarations (direct children of program or export_statement)
+        List<TSNode> lexicalDecls = findAllDescendants(rootNode, "lexical_declaration");
+        
+        for (TSNode lexDecl : lexicalDecls) {
+            // Check if this is a top-level declaration
+            TSNode parent = lexDecl.getParent();
+            if (parent == null) {
+                continue; // Skip if no parent
+            }
+            
+            String parentType = parent.getType();
+            
+            if (!"program".equals(parentType) && !"export_statement".equals(parentType)) {
+                continue; // Skip nested declarations (not top-level)
+            }
+            
+            // Get all variable_declarator children
+            int childCount = lexDecl.getNamedChildCount();
+            for (int i = 0; i < childCount; i++) {
+                TSNode child = lexDecl.getNamedChild(i);
+                
+                if (child != null && "variable_declarator".equals(child.getType())) {
+                    TSNode nameNode = findFirstChild(child, "identifier");
+                    
+                    // Find the arrow function - it might be after identifier and/or type_annotation
+                    TSNode arrowFunc = null;
+                    int namedChildCount = child.getNamedChildCount();
+                    for (int j = 0; j < namedChildCount; j++) {
+                        TSNode namedChild = child.getNamedChild(j);
+                        if (namedChild != null && "arrow_function".equals(namedChild.getType())) {
+                            arrowFunc = namedChild;
+                            break;
+                        }
+                    }
+                    
+                    if (nameNode != null && arrowFunc != null) {
+                        MethodInfo methodInfo = analyzeArrowFunction(sourceCode, child, nameNode, arrowFunc);
+                        analysis.methods.add(methodInfo);
+                    }
+                }
+            }
+        }
+        
         return analysis;
     }
     
@@ -186,6 +230,94 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         }
         
         return methodInfo;
+    }
+    
+    private MethodInfo analyzeArrowFunction(String source, TSNode declarator, TSNode nameNode, TSNode arrowFunc) {
+        MethodInfo methodInfo = new MethodInfo();
+        
+        // Get function name from the variable declarator
+        methodInfo.name = getNodeText(source, nameNode);
+        
+        // Check for type annotation on the variable (e.g., const foo: React.FC<Props> = ...)
+        TSNode typeAnnotation = findFirstChild(declarator, "type_annotation");
+        if (typeAnnotation != null) {
+            methodInfo.returnType = getNodeText(source, typeAnnotation).replaceFirst("^:\\s*", "");
+        } else {
+            // Try to get return type from arrow function itself
+            TSNode returnType = findFirstChild(arrowFunc, "type_annotation");
+            if (returnType != null) {
+                methodInfo.returnType = getNodeText(source, returnType).replaceFirst("^:\\s*", "");
+            }
+        }
+        
+        // Get parameters - can be formal_parameters or a direct pattern (e.g., object_pattern for destructuring)
+        TSNode paramsNode = findFirstChild(arrowFunc, "formal_parameters");
+        if (paramsNode != null) {
+            // Check if formal_parameters contains a destructuring pattern
+            int paramCount = paramsNode.getNamedChildCount();
+            if (paramCount == 1) {
+                TSNode firstParam = paramsNode.getNamedChild(0);
+                if (firstParam != null) {
+                    String paramType = firstParam.getType();
+                    if ("object_pattern".equals(paramType) || "array_pattern".equals(paramType)) {
+                        // Destructuring with parentheses: ({ a, b }) => ...
+                        analyzeParameter(source, firstParam, methodInfo);
+                    } else {
+                        // Regular single parameter
+                        analyzeParameters(source, paramsNode, methodInfo);
+                    }
+                }
+            } else if (paramCount > 1) {
+                // Multiple parameters - use regular parameter analysis
+                analyzeParameters(source, paramsNode, methodInfo);
+            }
+            // If paramCount == 0, no parameters to process
+        } else {
+            // Check if first child is a pattern (object_pattern, array_pattern, identifier)
+            TSNode firstChild = arrowFunc.getNamedChild(0);
+            if (firstChild != null) {
+                String firstChildType = firstChild.getType();
+                if ("object_pattern".equals(firstChildType) || "array_pattern".equals(firstChildType) || "identifier".equals(firstChildType)) {
+                    // Single parameter without parentheses (e.g., x => x * 2)
+                    analyzeParameter(source, firstChild, methodInfo);
+                }
+            }
+        }
+        
+        // Get function body (can be statement_block or expression)
+        TSNode bodyNode = findFirstChild(arrowFunc, "statement_block");
+        if (bodyNode != null) {
+            analyzeMethodBody(source, bodyNode, methodInfo, null);
+        }
+        
+        return methodInfo;
+    }
+    
+    private void analyzeParameter(String source, TSNode paramNode, MethodInfo methodInfo) {
+        if (paramNode == null) return;
+        
+        String paramType = paramNode.getType();
+        
+        if ("identifier".equals(paramType)) {
+            // Simple parameter: x => ...
+            String name = getNodeText(source, paramNode);
+            methodInfo.parameters.add(new Parameter(name, null));
+        } else if ("object_pattern".equals(paramType)) {
+            // Destructured object parameter: ({ a, b }) => ...
+            // Look for all identifiers within the object pattern
+            List<TSNode> identifiers = findAllDescendants(paramNode, "identifier");
+            for (TSNode id : identifiers) {
+                String name = getNodeText(source, id);
+                methodInfo.parameters.add(new Parameter(name, null));
+            }
+        } else if ("array_pattern".equals(paramType)) {
+            // Destructured array parameter: ([a, b]) => ...
+            List<TSNode> identifiers = findAllDescendants(paramNode, "identifier");
+            for (TSNode id : identifiers) {
+                String name = getNodeText(source, id);
+                methodInfo.parameters.add(new Parameter(name, null));
+            }
+        }
     }
     
     private void analyzeParameters(String source, TSNode paramsNode, MethodInfo methodInfo) {
