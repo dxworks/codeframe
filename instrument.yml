@@ -1,0 +1,12 @@
+name: codeframe
+run: once
+
+results:
+  - dir: ${instrument}/results
+
+commands:
+  - name: Run CodeFrame
+    win: java -jar codeframe.jar "${repo}" "${instrument}/results/${repoName}.jsonl"
+    unix: java -jar codeframe.jar "${repo}" "${instrument}/results/${repoName}.jsonl"
+
+environment:

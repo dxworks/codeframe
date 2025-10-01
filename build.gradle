@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+java {
+    toolchain { languageVersion = JavaLanguageVersion.of(21) }
+}
+
+group = 'org.dxworks'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Core binding (bundles natives for Win/Linux/macOS)
+    implementation 'io.github.bonede:tree-sitter:0.25.3'
+  
+    // Language grammars
+    implementation 'io.github.bonede:tree-sitter-java:0.23.4'
+    implementation 'io.github.bonede:tree-sitter-c-sharp:0.23.1'
+    implementation 'io.github.bonede:tree-sitter-python:0.23.4'
+    implementation 'io.github.bonede:tree-sitter-typescript:0.23.2'
+    implementation 'io.github.bonede:tree-sitter-javascript:0.23.1'
+    implementation 'io.github.bonede:tree-sitter-php:0.23.11'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
+}
+
+application {
+    mainClass = 'org.dxworks.codeframe.App'
+}
+
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
