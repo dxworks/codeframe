@@ -1,0 +1,295 @@
+{
+  "filePath" : "src/test/resources/samples/php/UserService.php",
+  "language" : "php",
+  "packageName" : null,
+  "types" : [ {
+    "kind" : "class",
+    "name" : "UserService",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ {
+      "name" : "repository",
+      "type" : "UserRepository",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "apiKey",
+      "type" : "string",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "instanceCount",
+      "type" : "int",
+      "visibility" : "protected",
+      "modifiers" : [ "protected", "static" ],
+      "annotations" : [ ]
+    } ],
+    "methods" : [ {
+      "name" : "__construct",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "logger",
+        "type" : "LoggerInterface"
+      }, {
+        "name" : "cache",
+        "type" : "CacheInterface"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "env",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "findUser",
+      "returnType" : "?User",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "int"
+      } ],
+      "localVariables" : [ "cacheKey", "user" ],
+      "methodCalls" : [ {
+        "methodName" : "find",
+        "objectType" : null,
+        "objectName" : "repository",
+        "callCount" : 1
+      }, {
+        "methodName" : "get",
+        "objectType" : null,
+        "objectName" : "cache",
+        "callCount" : 1
+      }, {
+        "methodName" : "info",
+        "objectType" : null,
+        "objectName" : "logger",
+        "callCount" : 1
+      }, {
+        "methodName" : "set",
+        "objectType" : null,
+        "objectName" : "cache",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "validateUser",
+      "returnType" : "bool",
+      "visibility" : "protected",
+      "modifiers" : [ "protected" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "user",
+        "type" : "User"
+      } ],
+      "localVariables" : [ "isValid" ],
+      "methodCalls" : [ {
+        "methodName" : "hasValidEmail",
+        "objectType" : null,
+        "objectName" : "user",
+        "callCount" : 1
+      }, {
+        "methodName" : "isActive",
+        "objectType" : null,
+        "objectName" : "user",
+        "callCount" : 1
+      }, {
+        "methodName" : "warning",
+        "objectType" : "Log",
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "sendNotification",
+      "returnType" : "void",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "user",
+        "type" : "User"
+      }, {
+        "name" : "message",
+        "type" : "string"
+      } ],
+      "localVariables" : [ "notifier" ],
+      "methodCalls" : [ {
+        "methodName" : "debug",
+        "objectType" : null,
+        "objectName" : "logger",
+        "callCount" : 1
+      }, {
+        "methodName" : "send",
+        "objectType" : null,
+        "objectName" : "notifier",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "getInstanceCount",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "deleteUser",
+      "returnType" : "bool",
+      "visibility" : "public",
+      "modifiers" : [ "final", "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "int"
+      } ],
+      "localVariables" : [ "user", "result" ],
+      "methodCalls" : [ {
+        "methodName" : "delete",
+        "objectType" : null,
+        "objectName" : "cache",
+        "callCount" : 1
+      }, {
+        "methodName" : "delete",
+        "objectType" : null,
+        "objectName" : "repository",
+        "callCount" : 1
+      }, {
+        "methodName" : "findUser",
+        "objectType" : null,
+        "objectName" : "this",
+        "callCount" : 1
+      }, {
+        "methodName" : "validateUser",
+        "objectType" : null,
+        "objectName" : "this",
+        "callCount" : 1
+      } ]
+    } ]
+  }, {
+    "kind" : "class",
+    "name" : "BaseRepository",
+    "visibility" : "public",
+    "modifiers" : [ "abstract" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ {
+      "name" : "connection",
+      "type" : "PDO",
+      "visibility" : "protected",
+      "modifiers" : [ "protected" ],
+      "annotations" : [ ]
+    } ],
+    "methods" : [ {
+      "name" : "find",
+      "returnType" : "?object",
+      "visibility" : "public",
+      "modifiers" : [ "abstract", "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "int"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getTableName",
+      "returnType" : "string",
+      "visibility" : "protected",
+      "modifiers" : [ "abstract", "protected" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ]
+  }, {
+    "kind" : "interface",
+    "name" : "CacheInterface",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "methods" : [ {
+      "name" : "get",
+      "returnType" : "mixed",
+      "visibility" : "public",
+      "modifiers" : [ "abstract" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "string"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "set",
+      "returnType" : "bool",
+      "visibility" : "public",
+      "modifiers" : [ "abstract" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "string"
+      }, {
+        "name" : "value",
+        "type" : "mixed"
+      }, {
+        "name" : "ttl",
+        "type" : "int"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "delete",
+      "returnType" : "bool",
+      "visibility" : "public",
+      "modifiers" : [ "abstract" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "string"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ]
+  } ],
+  "methods" : [ {
+    "name" : "formatUserName",
+    "returnType" : "string",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "firstName",
+      "type" : "string"
+    }, {
+      "name" : "lastName",
+      "type" : "string"
+    } ],
+    "localVariables" : [ "fullName" ],
+    "methodCalls" : [ {
+      "methodName" : "trim",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1
+    }, {
+      "methodName" : "ucwords",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1
+    } ]
+  } ],
+  "imports" : [ "namespace App\\Services;", "use App\\Models\\User;", "use App\\Repositories\\UserRepository;", "use Illuminate\\Support\\Facades\\Log;" ]
+}

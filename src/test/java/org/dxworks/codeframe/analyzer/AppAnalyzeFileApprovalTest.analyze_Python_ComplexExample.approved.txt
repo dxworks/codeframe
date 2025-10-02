@@ -1,0 +1,580 @@
+{
+  "filePath" : "src/test/resources/samples/python/complex_example.py",
+  "language" : "python",
+  "packageName" : null,
+  "types" : [ {
+    "kind" : "class",
+    "name" : "Config",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ "@dataclass(frozen=True)" ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ {
+      "name" : "name",
+      "type" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    }, {
+      "name" : "version",
+      "type" : "\"1.0\"",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    }, {
+      "name" : "debug",
+      "type" : "False",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    }, {
+      "name" : "metadata",
+      "type" : "field(default_factory=dict)",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    } ],
+    "methods" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "Repository",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : "abc",
+    "implementsInterfaces" : [ "ABC" ],
+    "fields" : [ ],
+    "methods" : [ {
+      "name" : "__init__",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "config",
+        "type" : "Config"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "utcnow",
+        "objectType" : null,
+        "objectName" : "datetime",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "put",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "str"
+      }, {
+        "name" : "value",
+        "type" : "Any"
+      } ],
+      "localVariables" : [ "key_n" ],
+      "methodCalls" : [ {
+        "methodName" : "_normalize_key",
+        "objectType" : "Repository",
+        "objectName" : "self",
+        "callCount" : 1
+      }, {
+        "methodName" : "_put_impl",
+        "objectType" : "Repository",
+        "objectName" : "self",
+        "callCount" : 1
+      }, {
+        "methodName" : "_validate",
+        "objectType" : "Repository",
+        "objectName" : "self",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "get",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "str"
+      } ],
+      "localVariables" : [ "key_n" ],
+      "methodCalls" : [ {
+        "methodName" : "_get_impl",
+        "objectType" : "Repository",
+        "objectName" : "self",
+        "callCount" : 1
+      }, {
+        "methodName" : "_normalize_key",
+        "objectType" : "Repository",
+        "objectName" : "self",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "delete",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "str"
+      } ],
+      "localVariables" : [ "key_n" ],
+      "methodCalls" : [ {
+        "methodName" : "_delete_impl",
+        "objectType" : "Repository",
+        "objectName" : "self",
+        "callCount" : 1
+      }, {
+        "methodName" : "_normalize_key",
+        "objectType" : "Repository",
+        "objectName" : "self",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "keys",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "_keys_impl",
+        "objectType" : "Repository",
+        "objectName" : "self",
+        "callCount" : 1
+      }, {
+        "methodName" : "list",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "_normalize_key",
+      "returnType" : null,
+      "visibility" : "protected",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "str"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "lower",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "strip",
+        "objectType" : null,
+        "objectName" : "key",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "_validate",
+      "returnType" : null,
+      "visibility" : "protected",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "str"
+      }, {
+        "name" : "value",
+        "type" : "Any"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "ValueError",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 2
+      } ]
+    }, {
+      "name" : "_put_impl",
+      "returnType" : null,
+      "visibility" : "protected",
+      "modifiers" : [ ],
+      "annotations" : [ "@abc.abstractmethod" ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "str"
+      }, {
+        "name" : "value",
+        "type" : "Any"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "_get_impl",
+      "returnType" : null,
+      "visibility" : "protected",
+      "modifiers" : [ ],
+      "annotations" : [ "@abc.abstractmethod" ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "str"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "_delete_impl",
+      "returnType" : null,
+      "visibility" : "protected",
+      "modifiers" : [ ],
+      "annotations" : [ "@abc.abstractmethod" ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "str"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "_keys_impl",
+      "returnType" : null,
+      "visibility" : "protected",
+      "modifiers" : [ ],
+      "annotations" : [ "@abc.abstractmethod" ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ]
+  }, {
+    "kind" : "class",
+    "name" : "InMemoryRepository",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : "Repository",
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "methods" : [ {
+      "name" : "__init__",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "config",
+        "type" : "Config"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "__init__",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "super",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "upsert",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "str"
+      }, {
+        "name" : "value",
+        "type" : "Any"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "put",
+        "objectType" : "InMemoryRepository",
+        "objectName" : "self",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "_put_impl",
+      "returnType" : null,
+      "visibility" : "protected",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "str"
+      }, {
+        "name" : "value",
+        "type" : "Any"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "print",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "_get_impl",
+      "returnType" : null,
+      "visibility" : "protected",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "str"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "get",
+        "objectType" : null,
+        "objectName" : "self.__store",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "_delete_impl",
+      "returnType" : null,
+      "visibility" : "protected",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "str"
+      } ],
+      "localVariables" : [ "existed" ],
+      "methodCalls" : [ {
+        "methodName" : "pop",
+        "objectType" : null,
+        "objectName" : "self.__store",
+        "callCount" : 1
+      }, {
+        "methodName" : "print",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "_keys_impl",
+      "returnType" : null,
+      "visibility" : "protected",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "keys",
+        "objectType" : null,
+        "objectName" : "self.__store",
+        "callCount" : 1
+      } ]
+    } ]
+  }, {
+    "kind" : "class",
+    "name" : "ResourceManager",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "methods" : [ {
+      "name" : "__init__",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "label",
+        "type" : "str"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "__enter__",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "print",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "__exit__",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "exc_type",
+        "type" : null
+      }, {
+        "name" : "exc",
+        "type" : null
+      }, {
+        "name" : "tb",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "print",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "is_active",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "_tag",
+      "returnType" : null,
+      "visibility" : "protected",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ]
+  } ],
+  "methods" : [ {
+    "name" : "batched",
+    "returnType" : null,
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "iterable",
+      "type" : "Iterable[Any]"
+    }, {
+      "name" : "size",
+      "type" : "int"
+    } ],
+    "localVariables" : [ "batch" ],
+    "methodCalls" : [ {
+      "methodName" : "ValueError",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1
+    }, {
+      "methodName" : "append",
+      "objectType" : null,
+      "objectName" : "batch",
+      "callCount" : 1
+    }, {
+      "methodName" : "len",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1
+    } ]
+  }, {
+    "name" : "slugify",
+    "returnType" : null,
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "text",
+      "type" : "str"
+    } ],
+    "localVariables" : [ "text" ],
+    "methodCalls" : [ {
+      "methodName" : "lower",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1
+    }, {
+      "methodName" : "strip",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1
+    }, {
+      "methodName" : "strip",
+      "objectType" : "text.strip().lower",
+      "objectName" : "text",
+      "callCount" : 1
+    }, {
+      "methodName" : "sub",
+      "objectType" : null,
+      "objectName" : "re",
+      "callCount" : 3
+    } ]
+  }, {
+    "name" : "safe_divide",
+    "returnType" : null,
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "a",
+      "type" : "float"
+    }, {
+      "name" : "b",
+      "type" : "float"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "fetch_data_async",
+    "returnType" : null,
+    "visibility" : "public",
+    "modifiers" : [ "async" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "n",
+      "type" : "int"
+    }, {
+      "name" : "delay",
+      "type" : "float"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ {
+      "methodName" : "list",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1
+    }, {
+      "methodName" : "range",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1
+    }, {
+      "methodName" : "sleep",
+      "objectType" : null,
+      "objectName" : "asyncio",
+      "callCount" : 1
+    } ]
+  }, {
+    "name" : "_demo",
+    "returnType" : null,
+    "visibility" : "protected",
+    "modifiers" : [ "async" ],
+    "annotations" : [ ],
+    "parameters" : [ ],
+    "localVariables" : [ ],
+    "methodCalls" : [ {
+      "methodName" : "fetch_data_async",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1
+    }, {
+      "methodName" : "print",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1
+    } ]
+  } ],
+  "imports" : [ "import abc", "import asyncio", "import contextlib", "import math", "import re", "from dataclasses import dataclass, field", "from datetime import datetime", "from typing import Any, Dict, Generator, Iterable, List, Optional, Tuple" ]
+}

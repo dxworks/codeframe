@@ -1,0 +1,243 @@
+{
+  "filePath" : "src/test/resources/samples/java/Sample.java",
+  "language" : "java",
+  "packageName" : "com.example.demo",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "UserRepository",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ {
+      "name" : "db",
+      "type" : null,
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "logger",
+      "type" : null,
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    } ],
+    "methods" : [ {
+      "name" : "findById",
+      "returnType" : "User",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "String"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "info",
+        "objectType" : null,
+        "objectName" : "logger",
+        "callCount" : 1
+      }, {
+        "methodName" : "query",
+        "objectType" : null,
+        "objectName" : "db",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "findAll",
+      "returnType" : "List<User>",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "queryList",
+        "objectType" : null,
+        "objectName" : "db",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "save",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "user",
+        "type" : "User"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "getId",
+        "objectType" : "User",
+        "objectName" : "user",
+        "callCount" : 1
+      }, {
+        "methodName" : "insert",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "update",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "insert",
+      "returnType" : "void",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "user",
+        "type" : "User"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "execute",
+        "objectType" : null,
+        "objectName" : "db",
+        "callCount" : 1
+      }, {
+        "methodName" : "getEmail",
+        "objectType" : "User",
+        "objectName" : "user",
+        "callCount" : 1
+      }, {
+        "methodName" : "getName",
+        "objectType" : "User",
+        "objectName" : "user",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "update",
+      "returnType" : "void",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "user",
+        "type" : "User"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "execute",
+        "objectType" : null,
+        "objectName" : "db",
+        "callCount" : 1
+      }, {
+        "methodName" : "getEmail",
+        "objectType" : "User",
+        "objectName" : "user",
+        "callCount" : 1
+      }, {
+        "methodName" : "getId",
+        "objectType" : "User",
+        "objectName" : "user",
+        "callCount" : 1
+      }, {
+        "methodName" : "getName",
+        "objectType" : "User",
+        "objectName" : "user",
+        "callCount" : 1
+      } ]
+    } ]
+  }, {
+    "kind" : "class",
+    "name" : "User",
+    "visibility" : "package-private",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ {
+      "name" : "id",
+      "type" : null,
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "name",
+      "type" : null,
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "email",
+      "type" : null,
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    } ],
+    "methods" : [ {
+      "name" : "getId",
+      "returnType" : "String",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "setId",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "String"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getName",
+      "returnType" : "String",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "setName",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getEmail",
+      "returnType" : "String",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "setEmail",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "email",
+        "type" : "String"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ "import java.util.List;", "import java.util.stream.Collectors;" ]
+}

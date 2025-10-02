@@ -1,0 +1,96 @@
+{
+  "filePath" : "src/test/resources/samples/javascript/sample.js",
+  "language" : "javascript",
+  "packageName" : null,
+  "types" : [ {
+    "kind" : "class",
+    "name" : "DataManager",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "methods" : [ {
+      "name" : "constructor",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "apiUrl",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getData",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : null
+      } ],
+      "localVariables" : [ "data" ],
+      "methodCalls" : [ {
+        "methodName" : "fetchData",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "get",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "has",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "set",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "fetchData",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : null
+      } ],
+      "localVariables" : [ "response" ],
+      "methodCalls" : [ {
+        "methodName" : "get",
+        "objectType" : null,
+        "objectName" : "axios",
+        "callCount" : 1
+      } ]
+    } ]
+  } ],
+  "methods" : [ {
+    "name" : "processData",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "data",
+      "type" : null
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ {
+      "methodName" : "map",
+      "objectType" : null,
+      "objectName" : "data",
+      "callCount" : 1
+    } ]
+  } ],
+  "imports" : [ "import axios from 'axios';", "import { formatDate } from './utils';" ]
+}

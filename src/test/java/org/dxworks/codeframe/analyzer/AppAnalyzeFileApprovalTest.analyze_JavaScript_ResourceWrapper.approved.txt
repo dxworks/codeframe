@@ -1,0 +1,256 @@
+{
+  "filePath" : "src/test/resources/samples/javascript/resourceLocationWrapper.js",
+  "language" : "javascript",
+  "packageName" : null,
+  "types" : [ {
+    "kind" : "class",
+    "name" : "ResourceLocationWrapper",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ {
+      "name" : "resourceLocationFunctions",
+      "type" : "Object",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    }, {
+      "name" : "style",
+      "type" : "Object",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    } ],
+    "methods" : [ {
+      "name" : "constructor",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "props",
+        "type" : null
+      }, {
+        "name" : "context",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "bind",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 4
+      }, {
+        "methodName" : "fetchAllResourceLocations",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "fetchAllVisitLocations",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "fetchItemTypes",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "fetchAllResourceLocations",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "self",
+        "type" : null
+      } ],
+      "localVariables" : [ "resourceLocationUuidList", "resourceLocations", "error" ],
+      "methodCalls" : [ {
+        "methodName" : "apiBaseUrl",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "catch",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "get",
+        "objectType" : null,
+        "objectName" : "axios",
+        "callCount" : 1
+      }, {
+        "methodName" : "includes",
+        "objectType" : null,
+        "objectName" : "_",
+        "callCount" : 2
+      }, {
+        "methodName" : "map",
+        "objectType" : null,
+        "objectName" : "_",
+        "callCount" : 1
+      }, {
+        "methodName" : "notify",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "reduce",
+        "objectType" : null,
+        "objectName" : "_",
+        "callCount" : 1
+      }, {
+        "methodName" : "replace",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "setState",
+        "objectType" : null,
+        "objectName" : "self",
+        "callCount" : 1
+      }, {
+        "methodName" : "then",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "fetchAllVisitLocations",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "self",
+        "type" : null
+      } ],
+      "localVariables" : [ "visitLocationUuidList", "visitLocations", "error" ],
+      "methodCalls" : [ {
+        "methodName" : "apiBaseUrl",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "catch",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "get",
+        "objectType" : null,
+        "objectName" : "axios",
+        "callCount" : 1
+      }, {
+        "methodName" : "includes",
+        "objectType" : null,
+        "objectName" : "_",
+        "callCount" : 1
+      }, {
+        "methodName" : "map",
+        "objectType" : null,
+        "objectName" : "_",
+        "callCount" : 1
+      }, {
+        "methodName" : "notify",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "reduce",
+        "objectType" : null,
+        "objectName" : "_",
+        "callCount" : 1
+      }, {
+        "methodName" : "replace",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "setState",
+        "objectType" : null,
+        "objectName" : "self",
+        "callCount" : 1
+      }, {
+        "methodName" : "then",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "fetchItemTypes",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ "self", "error" ],
+      "methodCalls" : [ {
+        "methodName" : "apiBaseUrl",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "catch",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "get",
+        "objectType" : null,
+        "objectName" : "axios",
+        "callCount" : 1
+      }, {
+        "methodName" : "notify",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "replace",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "setState",
+        "objectType" : null,
+        "objectName" : "self",
+        "callCount" : 1
+      }, {
+        "methodName" : "then",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "getBody",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "render",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "getBody",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    } ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ "import React from 'react';", "import PropTypes from 'prop-types';", "import axios from 'axios';", "import _ from 'lodash';", "import Header from 'components/header';", "import ItemHierarchy from 'components/resourceLocation/leftPanel/itemHierarchy';", "import ResourceLocationList from 'components/resourceLocation/rightPanel/resourceLocationList';", "import AddEditResourceLocation\r\n    from 'components/resourceLocation/rightPanel/resourceLocationForm/addEditResourceLocation';", "import SetItemLayout from 'components/resourceLocation/rightPanel/resourceLocationForm/setItemLayout';", "import AddEditItem from 'components/resourceLocation/rightPanel/resourceLocationForm/addEditItem';", "import ResourceLocationHelper from 'utilities/resourceLocationHelper';", "import UrlHelper from 'utilities/urlHelper';", "import ReactNotify from 'react-notify';" ]
+}

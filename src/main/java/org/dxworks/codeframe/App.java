@@ -181,7 +181,7 @@ public class App {
         return files;
     }
     
-    private static FileAnalysis analyzeFile(Path filePath, Language language) throws IOException {
+    public static FileAnalysis analyzeFile(Path filePath, Language language) throws IOException {
         String sourceCode = Files.readString(filePath, StandardCharsets.UTF_8);
         
         // Remove BOM if present (common in C# files)

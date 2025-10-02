@@ -1,0 +1,154 @@
+{
+  "filePath" : "src/test/resources/samples/typescript/confirm-discard-prompt.tsx",
+  "language" : "typescript",
+  "packageName" : null,
+  "types" : [ {
+    "kind" : "interface",
+    "name" : "ConfirmDiscardPromptProps",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "methods" : [ ]
+  } ],
+  "methods" : [ {
+    "name" : "showModal",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "_id",
+      "type" : "string"
+    }, {
+      "name" : "_props",
+      "type" : "any"
+    }, {
+      "name" : "onClosed",
+      "type" : "() => void"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ {
+      "methodName" : "onClosed",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1
+    } ]
+  }, {
+    "name" : "navigate",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "_opts",
+      "type" : "{ to: string }"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "stripAppBaseFromUrl",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "url",
+      "type" : "string"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ {
+      "methodName" : "split",
+      "objectType" : null,
+      "objectName" : "url",
+      "callCount" : 1
+    } ]
+  }, {
+    "name" : "ConfirmDiscardPrompt",
+    "returnType" : "React.FC<ConfirmDiscardPromptProps>",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ ],
+    "localVariables" : [ "ref", "target", "cancelUnload", "message", "cancelNavigation", "dispose" ],
+    "methodCalls" : [ {
+      "methodName" : "addEventListener",
+      "objectType" : null,
+      "objectName" : "window",
+      "callCount" : 2
+    }, {
+      "methodName" : "cancelNavigation",
+      "objectType" : null,
+      "objectName" : "evt",
+      "callCount" : 1
+    }, {
+      "methodName" : "dispose",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1
+    }, {
+      "methodName" : "navigate",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1
+    }, {
+      "methodName" : "preventDefault",
+      "objectType" : null,
+      "objectName" : "e",
+      "callCount" : 1
+    }, {
+      "methodName" : "removeEventListener",
+      "objectType" : null,
+      "objectName" : "window",
+      "callCount" : 2
+    }, {
+      "methodName" : "setTarget",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1
+    }, {
+      "methodName" : "showModal",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1
+    }, {
+      "methodName" : "stripAppBaseFromUrl",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1
+    }, {
+      "methodName" : "t",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1
+    }, {
+      "methodName" : "useCallback",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 2
+    }, {
+      "methodName" : "useEffect",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 2
+    }, {
+      "methodName" : "useRef",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1
+    }, {
+      "methodName" : "useState",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1
+    }, {
+      "methodName" : "useTranslation",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1
+    } ]
+  } ],
+  "imports" : [ "import type React from 'react';", "import { useCallback, useEffect, useRef, useState } from 'react';", "import { useTranslation } from 'react-i18next';" ]
+}

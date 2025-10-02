@@ -1,0 +1,257 @@
+{
+  "filePath" : "src/test/resources/samples/csharp/DataClassNS.cs",
+  "language" : "csharp",
+  "packageName" : "CodeAnalysis.DetectionStrategies",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "DataContainer",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ "IDetectTypeCodeIssue" ],
+    "fields" : [ {
+      "name" : "Few",
+      "type" : "int",
+      "visibility" : "private",
+      "modifiers" : [ "private", "const" ],
+      "annotations" : [ ]
+    } ],
+    "methods" : [ {
+      "name" : "Detect",
+      "returnType" : "Maybe<CodeIssue>",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "t",
+        "type" : "ClassModel"
+      } ],
+      "localVariables" : [ "metrics", "woc", "wmc", "publicAttributes", "nopa", "accessors", "noam" ],
+      "methodCalls" : [ {
+        "methodName" : "Accessors",
+        "objectType" : "ClassModel",
+        "objectName" : "t",
+        "callCount" : 2
+      }, {
+        "methodName" : "CalculateSeverity",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "Count",
+        "objectType" : "IList<FieldModel>",
+        "objectName" : "publicAttributes",
+        "callCount" : 1
+      }, {
+        "methodName" : "Count",
+        "objectType" : "IList<PropertyModel>",
+        "objectName" : "accessors",
+        "callCount" : 1
+      }, {
+        "methodName" : "FilePath",
+        "objectType" : "ClassModel",
+        "objectName" : "t",
+        "callCount" : 1
+      }, {
+        "methodName" : "For",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 2
+      }, {
+        "methodName" : "From",
+        "objectType" : "Maybe<CodeIssue>",
+        "objectName" : "Maybe<CodeIssue>",
+        "callCount" : 2
+      }, {
+        "methodName" : "Metrics",
+        "objectType" : null,
+        "objectName" : "Metrics",
+        "callCount" : 1
+      }, {
+        "methodName" : "None",
+        "objectType" : "Maybe<CodeIssue>",
+        "objectName" : "Maybe<CodeIssue>",
+        "callCount" : 1
+      }, {
+        "methodName" : "OneThird",
+        "objectType" : null,
+        "objectName" : "CommonFractionThreshold",
+        "callCount" : 1
+      }, {
+        "methodName" : "PublicAttributes",
+        "objectType" : "ClassModel",
+        "objectName" : "t",
+        "callCount" : 2
+      }, {
+        "methodName" : "ToList",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 4
+      }, {
+        "methodName" : "WeightOfAClass",
+        "objectType" : "var",
+        "objectName" : "metrics",
+        "callCount" : 1
+      }, {
+        "methodName" : "WeightedMethodCount",
+        "objectType" : "var",
+        "objectName" : "metrics",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "CalculateSeverity",
+      "returnType" : "double",
+      "visibility" : "private",
+      "modifiers" : [ "private", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "publicAttributes",
+        "type" : "IList<FieldModel>"
+      }, {
+        "name" : "accessors",
+        "type" : "IList<PropertyModel>"
+      }, {
+        "name" : "type",
+        "type" : "ClassModel"
+      } ],
+      "localVariables" : [ "severityExploit", "severityExposure" ],
+      "methodCalls" : [ {
+        "methodName" : "SeverityExploit",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "SeverityExposure",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "SeverityExposure",
+      "returnType" : "double",
+      "visibility" : "private",
+      "modifiers" : [ "private", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "publicAttributes",
+        "type" : "IList<FieldModel>"
+      }, {
+        "name" : "accessors",
+        "type" : "IList<PropertyModel>"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "Count",
+        "objectType" : "IList<FieldModel>",
+        "objectName" : "publicAttributes",
+        "callCount" : 1
+      }, {
+        "methodName" : "Count",
+        "objectType" : "IList<PropertyModel>",
+        "objectName" : "accessors",
+        "callCount" : 1
+      }, {
+        "methodName" : "ValueFor",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 2
+      }, {
+        "methodName" : "WithMeasurementRange",
+        "objectType" : null,
+        "objectName" : "LinearNormalization",
+        "callCount" : 2
+      } ]
+    }, {
+      "name" : "SeverityExploit",
+      "returnType" : "double",
+      "visibility" : "private",
+      "modifiers" : [ "private", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "publicAttributes",
+        "type" : "IList<FieldModel>"
+      }, {
+        "name" : "accessors",
+        "type" : "IList<PropertyModel>"
+      }, {
+        "name" : "type",
+        "type" : "ClassModel"
+      } ],
+      "localVariables" : [ "attributeAccesses", "fieldAccesses", "methodsUsingData", "classesUsingPublicData" ],
+      "methodCalls" : [ {
+        "methodName" : "Accesses",
+        "objectType" : null,
+        "objectName" : "a",
+        "callCount" : 1
+      }, {
+        "methodName" : "Accesses",
+        "objectType" : null,
+        "objectName" : "pa",
+        "callCount" : 1
+      }, {
+        "methodName" : "Caller",
+        "objectType" : null,
+        "objectName" : "fa",
+        "callCount" : 1
+      }, {
+        "methodName" : "Concat",
+        "objectType" : "var",
+        "objectName" : "attributeAccesses",
+        "callCount" : 2
+      }, {
+        "methodName" : "Count",
+        "objectType" : "var",
+        "objectName" : "classesUsingPublicData",
+        "callCount" : 1
+      }, {
+        "methodName" : "Entity",
+        "objectType" : null,
+        "objectName" : "m",
+        "callCount" : 1
+      }, {
+        "methodName" : "Remove",
+        "objectType" : "var",
+        "objectName" : "classesUsingPublicData",
+        "callCount" : 2
+      }, {
+        "methodName" : "Select",
+        "objectType" : "var",
+        "objectName" : "fieldAccesses",
+        "callCount" : 2
+      }, {
+        "methodName" : "Select",
+        "objectType" : "var",
+        "objectName" : "methodsUsingData",
+        "callCount" : 2
+      }, {
+        "methodName" : "SelectMany",
+        "objectType" : "IList<FieldModel>",
+        "objectName" : "publicAttributes",
+        "callCount" : 2
+      }, {
+        "methodName" : "SelectMany",
+        "objectType" : "IList<PropertyModel>",
+        "objectName" : "accessors",
+        "callCount" : 2
+      }, {
+        "methodName" : "ToHashSet",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 6
+      }, {
+        "methodName" : "ValueFor",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 2
+      }, {
+        "methodName" : "WithMeasurementRange",
+        "objectType" : null,
+        "objectName" : "LinearNormalization",
+        "callCount" : 2
+      } ]
+    } ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ "using CSharpFunctionalExtensions;", "using CodeAnalysis.Metrics;", "using Analysis.Plugins.Models;" ]
+}

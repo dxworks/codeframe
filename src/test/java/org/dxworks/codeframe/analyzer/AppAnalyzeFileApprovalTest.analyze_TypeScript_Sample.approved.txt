@@ -1,0 +1,121 @@
+{
+  "filePath" : "src/test/resources/samples/typescript/sample.ts",
+  "language" : "typescript",
+  "packageName" : null,
+  "types" : [ {
+    "kind" : "class",
+    "name" : "UserService",
+    "visibility" : "public",
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ {
+      "name" : "logger",
+      "type" : "Logger",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "config",
+      "type" : "Config",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    } ],
+    "methods" : [ {
+      "name" : "constructor",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "logger",
+        "type" : "Logger"
+      }, {
+        "name" : "config",
+        "type" : "Config"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getUser",
+      "returnType" : "Promise<User>",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "string"
+      } ],
+      "localVariables" : [ "user" ],
+      "methodCalls" : [ {
+        "methodName" : "fetchFromDb",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "info",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "fetchFromDb",
+      "returnType" : "Promise<User>",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "string"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ]
+  }, {
+    "kind" : "interface",
+    "name" : "User",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "methods" : [ ]
+  } ],
+  "methods" : [ {
+    "name" : "calculateTotal",
+    "returnType" : "number",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "items",
+      "type" : "number[]"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ {
+      "methodName" : "reduce",
+      "objectType" : null,
+      "objectName" : "items",
+      "callCount" : 1
+    } ]
+  }, {
+    "name" : "formatMessage",
+    "returnType" : "string",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "string"
+    }, {
+      "name" : "age",
+      "type" : "number"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  } ],
+  "imports" : [ "import { Logger } from './logger';", "import type { Config } from './config';" ]
+}

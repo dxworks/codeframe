@@ -31,6 +31,10 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
     // DXWorks ignore library (loads .ignore patterns)
     implementation 'org.dxworks:dx-ignore:1.1.0-SNAPSHOT'
+    
+    // Testing
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
+    testImplementation 'com.approvaltests:approvaltests:22.3.3'
 }
 
 application {
@@ -49,4 +53,9 @@ tasks.named('shadowJar') {
 // Ensure 'build' produces the shadow JAR
 tasks.named('build') {
     dependsOn tasks.named('shadowJar')
+}
+
+// Configure test task to use JUnit Platform
+tasks.named('test') {
+    useJUnitPlatform()
 }
