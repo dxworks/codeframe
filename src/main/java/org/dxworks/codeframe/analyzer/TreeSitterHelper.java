@@ -26,7 +26,10 @@ public class TreeSitterHelper {
         // Extract the byte range and convert back to String
         byte[] textBytes = new byte[endByte - startByte];
         System.arraycopy(sourceBytes, startByte, textBytes, 0, endByte - startByte);
-        return new String(textBytes, java.nio.charset.StandardCharsets.UTF_8);
+        String text = new String(textBytes, java.nio.charset.StandardCharsets.UTF_8);
+        
+        // Normalize line endings to LF for cross-platform consistency
+        return text.replace("\r\n", "\n").replace("\r", "\n");
     }
     
     public static TSNode findFirstChild(TSNode parent, String nodeType) {
