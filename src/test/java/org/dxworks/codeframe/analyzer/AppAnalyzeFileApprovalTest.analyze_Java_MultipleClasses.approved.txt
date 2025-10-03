@@ -1,0 +1,108 @@
+{
+  "filePath" : "src/test/resources/samples/java/MultipleClasses.java",
+  "language" : "java",
+  "packageName" : "org.example.demo",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "MultipleClasses",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "methods" : [ {
+      "name" : "greet",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "println",
+        "objectType" : null,
+        "objectName" : "System.out",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "greet",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      }, {
+        "name" : "times",
+        "type" : "int"
+      } ],
+      "localVariables" : [ "i", "x" ],
+      "methodCalls" : [ {
+        "methodName" : "doWork",
+        "objectType" : "ExtraClass",
+        "objectName" : "x",
+        "callCount" : 1
+      }, {
+        "methodName" : "println",
+        "objectType" : null,
+        "objectName" : "System.out",
+        "callCount" : 1
+      } ]
+    } ]
+  }, {
+    "kind" : "class",
+    "name" : "InnerHelper",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "methods" : [ {
+      "name" : "assist",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "println",
+        "objectType" : null,
+        "objectName" : "System.out",
+        "callCount" : 1
+      } ]
+    } ]
+  }, {
+    "kind" : "class",
+    "name" : "ExtraClass",
+    "visibility" : "package-private",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "methods" : [ {
+      "name" : "doWork",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "println",
+        "objectType" : null,
+        "objectName" : "System.out",
+        "callCount" : 1
+      } ]
+    } ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ ]
+}

@@ -5,8 +5,10 @@ import org.treesitter.TSNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
 
@@ -39,22 +41,14 @@ public class JavaAnalyzer implements LanguageAnalyzer {
             analysis.imports.add(text);
         }
         
-        // Find all class declarations
-        List<TSNode> classDecls = findAllDescendants(rootNode, "class_declaration");
-        for (TSNode classDecl : classDecls) {
-            TypeInfo typeInfo = analyzeClass(sourceCode, classDecl);
-            analysis.types.add(typeInfo);
-
-            // Collect field info and types for this class
-            Map<String, String> fieldTypes = new HashMap<>();
-            List<FieldInfo> fields = collectFields(sourceCode, classDecl, fieldTypes);
-            typeInfo.fields.addAll(fields);  // Add to type, not to file-level fields
-
-            // Analyze methods within this class with context
-            List<TSNode> methods = findAllDescendants(classDecl, "method_declaration");
-            for (TSNode method : methods) {
-                MethodInfo methodInfo = analyzeMethod(sourceCode, method, typeInfo.name, fieldTypes);
-                typeInfo.methods.add(methodInfo);  // Add to type, not to file-level methods
+        // Find all class declarations and identify nested ones
+        List<TSNode> allClasses = findAllDescendants(rootNode, "class_declaration");
+        Set<Integer> nestedClassIds = identifyNestedClasses(allClasses);
+        
+        // Process only top-level classes recursively (they will add nested classes themselves)
+        for (TSNode classDecl : allClasses) {
+            if (!nestedClassIds.contains(classDecl.getStartByte())) {
+                analyzeClassRecursively(sourceCode, classDecl, analysis);
             }
         }
         
@@ -66,6 +60,48 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         }
         
         return analysis;
+    }
+    
+    private Set<Integer> identifyNestedClasses(List<TSNode> allClasses) {
+        Set<Integer> nestedClassIds = new HashSet<>();
+        for (TSNode classDecl : allClasses) {
+            TSNode classBody = findFirstChild(classDecl, "class_body");
+            if (classBody != null) {
+                List<TSNode> nested = findAllDescendants(classBody, "class_declaration");
+                for (TSNode n : nested) {
+                    nestedClassIds.add(n.getStartByte());
+                }
+            }
+        }
+        return nestedClassIds;
+    }
+    
+    private void analyzeClassRecursively(String source, TSNode classDecl, FileAnalysis analysis) {
+        TypeInfo typeInfo = analyzeClass(source, classDecl);
+        analysis.types.add(typeInfo);
+        
+        TSNode classBody = findFirstChild(classDecl, "class_body");
+        if (classBody == null) {
+            return;
+        }
+        
+        // Collect field info and types for this class only (not from nested classes)
+        Map<String, String> fieldTypes = new HashMap<>();
+        List<FieldInfo> fields = collectFieldsFromBody(source, classBody, fieldTypes);
+        typeInfo.fields.addAll(fields);
+        
+        // Analyze methods within this class only (not from nested classes)
+        List<TSNode> methods = findAllChildren(classBody, "method_declaration");
+        for (TSNode method : methods) {
+            MethodInfo methodInfo = analyzeMethod(source, method, typeInfo.name, fieldTypes);
+            typeInfo.methods.add(methodInfo);
+        }
+        
+        // Recursively process nested classes
+        List<TSNode> nestedClasses = findAllChildren(classBody, "class_declaration");
+        for (TSNode nested : nestedClasses) {
+            analyzeClassRecursively(source, nested, analysis);
+        }
     }
     
     private TypeInfo analyzeClass(String source, TSNode classDecl) {
@@ -323,9 +359,12 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         });
     }
 
-    private List<FieldInfo> collectFields(String source, TSNode classDecl, Map<String, String> fieldTypes) {
+    private List<FieldInfo> collectFieldsFromBody(String source, TSNode classBody, Map<String, String> fieldTypes) {
         List<FieldInfo> fields = new ArrayList<>();
-        List<TSNode> fieldDecls = findAllDescendants(classDecl, "field_declaration");
+        if (classBody == null) return fields;
+        
+        // Only direct field_declaration children of this class body
+        List<TSNode> fieldDecls = findAllChildren(classBody, "field_declaration");
         for (TSNode field : fieldDecls) {
             String declaredType = null;
             TSNode typeNode = findFirstChild(field, "type");

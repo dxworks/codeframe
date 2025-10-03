@@ -24,6 +24,11 @@ public class AppAnalyzeFileApprovalTest {
         verify(Paths.get("src/test/resources/samples/java/Sample.java"), Language.JAVA);
     }
 
+    @Test
+    void analyze_Java_MultipleClasses() throws IOException {
+        verify(Paths.get("src/test/resources/samples/java/MultipleClasses.java"), Language.JAVA);
+    }
+
     // ---- JavaScript ----
     @Test
     void analyze_JavaScript_Sample() throws IOException {
