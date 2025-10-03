@@ -11,7 +11,8 @@
     "extendsType" : null,
     "implementsInterfaces" : [ ],
     "fields" : [ ],
-    "methods" : [ ]
+    "methods" : [ ],
+    "types" : [ ]
   } ],
   "methods" : [ {
     "name" : "showModal",

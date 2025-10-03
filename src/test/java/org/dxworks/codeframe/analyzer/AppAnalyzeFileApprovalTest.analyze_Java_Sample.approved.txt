@@ -145,7 +145,8 @@
         "objectName" : "user",
         "callCount" : 1
       } ]
-    } ]
+    } ],
+    "types" : [ ]
   }, {
     "kind" : "class",
     "name" : "User",
@@ -236,7 +237,8 @@
       } ],
       "localVariables" : [ ],
       "methodCalls" : [ ]
-    } ]
+    } ],
+    "types" : [ ]
   } ],
   "methods" : [ ],
   "imports" : [ "import java.util.List;", "import java.util.stream.Collectors;" ]

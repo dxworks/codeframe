@@ -91,8 +91,12 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
     }
     
     private void analyzeClassRecursively(String source, TSNode classDecl, FileAnalysis analysis) {
+        analyzeClassRecursivelyInto(source, classDecl, analysis.types);
+    }
+    
+    private void analyzeClassRecursivelyInto(String source, TSNode classDecl, List<TypeInfo> targetList) {
         TypeInfo typeInfo = analyzeClass(source, classDecl);
-        analysis.types.add(typeInfo);
+        targetList.add(typeInfo);
         
         TSNode classBody = findFirstChild(classDecl, "declaration_list");
         if (classBody == null) {
@@ -103,10 +107,10 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
         typeInfo.fields.addAll(collectFieldsFromBody(source, classBody));
         typeInfo.methods.addAll(collectMethodsFromBody(source, classBody, typeInfo.name));
         
-        // Recursively process nested classes
+        // Recursively process nested classes - add them to THIS type's types list
         List<TSNode> nestedClasses = findAllChildren(classBody, "class_declaration");
         for (TSNode nested : nestedClasses) {
-            analyzeClassRecursively(source, nested, analysis);
+            analyzeClassRecursivelyInto(source, nested, typeInfo.types);
         }
     }
     

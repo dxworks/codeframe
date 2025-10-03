@@ -77,8 +77,12 @@ public class JavaAnalyzer implements LanguageAnalyzer {
     }
     
     private void analyzeClassRecursively(String source, TSNode classDecl, FileAnalysis analysis) {
+        analyzeClassRecursivelyInto(source, classDecl, analysis.types);
+    }
+    
+    private void analyzeClassRecursivelyInto(String source, TSNode classDecl, List<TypeInfo> targetList) {
         TypeInfo typeInfo = analyzeClass(source, classDecl);
-        analysis.types.add(typeInfo);
+        targetList.add(typeInfo);
         
         TSNode classBody = findFirstChild(classDecl, "class_body");
         if (classBody == null) {
@@ -97,10 +101,10 @@ public class JavaAnalyzer implements LanguageAnalyzer {
             typeInfo.methods.add(methodInfo);
         }
         
-        // Recursively process nested classes
+        // Recursively process nested classes - add them to THIS type's types list
         List<TSNode> nestedClasses = findAllChildren(classBody, "class_declaration");
         for (TSNode nested : nestedClasses) {
-            analyzeClassRecursively(source, nested, analysis);
+            analyzeClassRecursivelyInto(source, nested, typeInfo.types);
         }
     }
     

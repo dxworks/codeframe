@@ -10,19 +10,7 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
-    "fields" : [ {
-      "name" : "logger",
-      "type" : "Logger",
-      "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
-    }, {
-      "name" : "config",
-      "type" : "Config",
-      "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
-    } ],
+    "fields" : [ ],
     "methods" : [ {
       "name" : "constructor",
       "returnType" : null,
@@ -72,7 +60,8 @@
       } ],
       "localVariables" : [ ],
       "methodCalls" : [ ]
-    } ]
+    } ],
+    "types" : [ ]
   }, {
     "kind" : "interface",
     "name" : "User",
@@ -82,7 +71,8 @@
     "extendsType" : null,
     "implementsInterfaces" : [ ],
     "fields" : [ ],
-    "methods" : [ ]
+    "methods" : [ ],
+    "types" : [ ]
   } ],
   "methods" : [ {
     "name" : "calculateTotal",

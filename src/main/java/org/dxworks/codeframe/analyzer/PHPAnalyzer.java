@@ -5,8 +5,10 @@ import org.treesitter.TSNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
 
@@ -27,34 +29,16 @@ public class PHPAnalyzer implements LanguageAnalyzer {
             // Collect namespace and use statements (imports)
             extractImports(sourceCode, rootNode, analysis);
             
-            // Find all class declarations
-            List<TSNode> classDecls = findAllDescendants(rootNode, "class_declaration");
-            for (TSNode classDecl : classDecls) {
+            // Find all class declarations and identify nested ones
+            List<TSNode> allClasses = findAllDescendants(rootNode, "class_declaration");
+            Set<Integer> nestedClassIds = identifyNestedClasses(allClasses);
+            
+            // Process only top-level classes recursively
+            for (TSNode classDecl : allClasses) {
                 try {
                     if (classDecl == null || classDecl.isNull()) continue;
-                    
-                    TypeInfo typeInfo = analyzeClass(sourceCode, classDecl);
-                    if (typeInfo.name == null || typeInfo.name.isEmpty()) continue;
-                    
-                    analysis.types.add(typeInfo);
-                    
-                    // Collect fields for this class
-                    List<FieldInfo> fields = collectFields(sourceCode, classDecl);
-                    typeInfo.fields.addAll(fields);  // Add to type, not to file-level fields
-                    
-                    // Analyze methods within this class
-                    List<TSNode> methods = findAllDescendants(classDecl, "method_declaration");
-                    for (TSNode method : methods) {
-                        try {
-                            if (method == null || method.isNull()) continue;
-                            
-                            MethodInfo methodInfo = analyzeMethod(sourceCode, method, typeInfo.name);
-                            if (methodInfo.name != null && !methodInfo.name.isEmpty()) {
-                                typeInfo.methods.add(methodInfo);  // Add to type, not to file-level methods
-                            }
-                        } catch (Exception e) {
-                            System.err.println("Warning: Failed to analyze method in " + filePath + ": " + e.getMessage());
-                        }
+                    if (!nestedClassIds.contains(classDecl.getStartByte())) {
+                        analyzeClassRecursively(sourceCode, classDecl, analysis);
                     }
                 } catch (Exception e) {
                     System.err.println("Warning: Failed to analyze class in " + filePath + ": " + e.getMessage());
@@ -143,6 +127,74 @@ public class PHPAnalyzer implements LanguageAnalyzer {
             return false;
         }
         return false;
+    }
+    
+    private Set<Integer> identifyNestedClasses(List<TSNode> allClasses) {
+        Set<Integer> nestedClassIds = new HashSet<>();
+        for (TSNode classDecl : allClasses) {
+            try {
+                if (classDecl == null || classDecl.isNull()) continue;
+                TSNode classBody = findFirstChild(classDecl, "declaration_list");
+                if (classBody != null) {
+                    List<TSNode> nested = findAllDescendants(classBody, "class_declaration");
+                    for (TSNode n : nested) {
+                        if (n != null && !n.isNull()) {
+                            nestedClassIds.add(n.getStartByte());
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                // Skip on error
+            }
+        }
+        return nestedClassIds;
+    }
+    
+    private void analyzeClassRecursively(String source, TSNode classDecl, FileAnalysis analysis) {
+        analyzeClassRecursivelyInto(source, classDecl, analysis.types);
+    }
+    
+    private void analyzeClassRecursivelyInto(String source, TSNode classDecl, List<TypeInfo> targetList) {
+        TypeInfo typeInfo = analyzeClass(source, classDecl);
+        if (typeInfo.name == null || typeInfo.name.isEmpty()) {
+            return;
+        }
+        targetList.add(typeInfo);
+        
+        TSNode classBody = findFirstChild(classDecl, "declaration_list");
+        if (classBody == null) {
+            return;
+        }
+        
+        // Collect fields for this class only
+        List<FieldInfo> fields = collectFieldsFromBody(source, classBody);
+        typeInfo.fields.addAll(fields);
+        
+        // Analyze methods within this class only
+        List<TSNode> methods = findAllChildren(classBody, "method_declaration");
+        for (TSNode method : methods) {
+            try {
+                if (method == null || method.isNull()) continue;
+                MethodInfo methodInfo = analyzeMethod(source, method, typeInfo.name);
+                if (methodInfo.name != null && !methodInfo.name.isEmpty()) {
+                    typeInfo.methods.add(methodInfo);
+                }
+            } catch (Exception e) {
+                System.err.println("Warning: Failed to analyze method: " + e.getMessage());
+            }
+        }
+        
+        // Recursively process nested classes
+        List<TSNode> nestedClasses = findAllChildren(classBody, "class_declaration");
+        for (TSNode nested : nestedClasses) {
+            try {
+                if (nested != null && !nested.isNull()) {
+                    analyzeClassRecursivelyInto(source, nested, typeInfo.types);
+                }
+            } catch (Exception e) {
+                System.err.println("Warning: Failed to analyze nested class: " + e.getMessage());
+            }
+        }
     }
     
     private TypeInfo analyzeClass(String source, TSNode classDecl) {
@@ -552,15 +604,15 @@ public class PHPAnalyzer implements LanguageAnalyzer {
         });
     }
     
-    private List<FieldInfo> collectFields(String source, TSNode classDecl) {
+    private List<FieldInfo> collectFieldsFromBody(String source, TSNode classBody) {
         List<FieldInfo> fields = new ArrayList<>();
-        // PHP uses property_declaration which contains property_element children
-        List<TSNode> propertyDecls = findAllDescendants(classDecl, "property_declaration");
+        if (classBody == null) return fields;
         
+        // Only direct property_declaration children of this class body
+        List<TSNode> propertyDecls = findAllChildren(classBody, "property_declaration");
         for (TSNode propDecl : propertyDecls) {
             if (propDecl == null || propDecl.isNull()) continue;
             
-            // Extract modifiers and visibility from property_declaration
             // Get visibility modifier
             TSNode visibilityNode = findFirstChild(propDecl, "visibility_modifier");
             String visibility = null;

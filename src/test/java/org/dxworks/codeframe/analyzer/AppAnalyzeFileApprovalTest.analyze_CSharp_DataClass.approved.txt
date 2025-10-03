@@ -280,7 +280,8 @@
         "objectName" : "LinearNormalization",
         "callCount" : 2
       } ]
-    } ]
+    } ],
+    "types" : [ ]
   }, {
     "kind" : "class",
     "name" : "ScatteredDependencies",
@@ -414,7 +415,8 @@
         "objectName" : "LinearNormalization",
         "callCount" : 4
       } ]
-    } ]
+    } ],
+    "types" : [ ]
   } ],
   "methods" : [ ],
   "imports" : [ "using CSharpFunctionalExtensions;", "using CodeAnalysis.Metrics;", "using Analysis.Plugins.Models;" ]

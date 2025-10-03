@@ -72,7 +72,8 @@
         "objectName" : "axios",
         "callCount" : 1
       } ]
-    } ]
+    } ],
+    "types" : [ ]
   } ],
   "methods" : [ {
     "name" : "processData",

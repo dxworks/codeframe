@@ -5,8 +5,10 @@ import org.treesitter.TSNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
 
@@ -22,53 +24,15 @@ public class PythonAnalyzer implements LanguageAnalyzer {
             // Extract imports
             extractImports(sourceCode, rootNode, analysis);
         
-        // Find all class definitions (may be wrapped in decorated_definition)
-        List<TSNode> classDecls = findAllDescendants(rootNode, "class_definition");
-        for (TSNode classDecl : classDecls) {
-            if (classDecl == null || classDecl.isNull()) {
-                continue;
-            }
-            
-            // Check if this class is wrapped in a decorated_definition
-            TSNode classNodeToAnalyze = classDecl;
-            TSNode parent = classDecl.getParent();
-            if (parent != null && !parent.isNull() && "decorated_definition".equals(parent.getType())) {
-                classNodeToAnalyze = parent;
-            }
-            
-            TypeInfo typeInfo = analyzeClass(sourceCode, classDecl, classNodeToAnalyze);
-            // Only add classes with valid names
-            if (typeInfo.name != null && !typeInfo.name.isEmpty()) {
-                analysis.types.add(typeInfo);
-            } else {
-                System.err.println("Warning: Skipping class with null or empty name in " + filePath);
-            }
-            
-            // Collect fields/attributes from the class
-            List<FieldInfo> fields = collectClassAttributes(sourceCode, classDecl);
-            typeInfo.fields.addAll(fields);  // Add to type, not to file-level fields
-            
-            // Analyze methods within this class
-            List<TSNode> methods = findAllDescendants(classDecl, "function_definition");
-            for (TSNode method : methods) {
-                if (method == null || method.isNull()) {
-                    continue;
-                }
-                
-                // Check if method is wrapped in decorated_definition
-                TSNode methodParent = method.getParent();
-                TSNode methodNodeToAnalyze = method;
-                if (methodParent != null && !methodParent.isNull() && "decorated_definition".equals(methodParent.getType())) {
-                    methodNodeToAnalyze = methodParent;
-                }
-                
-                MethodInfo methodInfo = analyzeMethod(sourceCode, method, methodNodeToAnalyze, typeInfo.name);
-                // Only add methods with valid names
-                if (methodInfo.name != null && !methodInfo.name.isEmpty()) {
-                    typeInfo.methods.add(methodInfo);  // Add to type, not to file-level methods
-                } else {
-                    System.err.println("Warning: Skipping method with null or empty name in class " + typeInfo.name);
-                }
+        // Find all class definitions and identify nested ones
+        List<TSNode> allClasses = findAllDescendants(rootNode, "class_definition");
+        Set<Integer> nestedClassIds = identifyNestedClasses(allClasses);
+        
+        // Process only top-level classes recursively
+        for (TSNode classDecl : allClasses) {
+            if (classDecl == null || classDecl.isNull()) continue;
+            if (!nestedClassIds.contains(classDecl.getStartByte())) {
+                analyzeClassRecursively(sourceCode, classDecl, analysis);
             }
         }
         
@@ -137,17 +101,91 @@ public class PythonAnalyzer implements LanguageAnalyzer {
             if ("module".equals(parentType)) {
                 return false;
             }
-            
             parent = parent.getParent();
         }
         return false;
     }
     
-    private TypeInfo analyzeClass(String source, TSNode classDecl, TSNode decoratedNode) {
+    private Set<Integer> identifyNestedClasses(List<TSNode> allClasses) {
+        Set<Integer> nestedClassIds = new HashSet<>();
+        for (TSNode classDecl : allClasses) {
+            try {
+                if (classDecl == null || classDecl.isNull()) continue;
+                TSNode classBody = findFirstChild(classDecl, "block");
+                if (classBody != null) {
+                    List<TSNode> nested = findAllDescendants(classBody, "class_definition");
+                    for (TSNode n : nested) {
+                        if (n != null && !n.isNull()) {
+                            nestedClassIds.add(n.getStartByte());
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                // Skip on error
+            }
+        }
+        return nestedClassIds;
+    }
+    
+    private void analyzeClassRecursively(String source, TSNode classDecl, FileAnalysis analysis) {
+        analyzeClassRecursivelyInto(source, classDecl, analysis.types);
+    }
+    
+    private void analyzeClassRecursivelyInto(String source, TSNode classDecl, List<TypeInfo> targetList) {
+        // Check if this class is wrapped in a decorated_definition
+        TSNode classNodeToAnalyze = classDecl;
+        TSNode parent = classDecl.getParent();
+        if (parent != null && !parent.isNull() && "decorated_definition".equals(parent.getType())) {
+            classNodeToAnalyze = parent;
+        }
+        
+        TypeInfo typeInfo = analyzeClass(source, classDecl, classNodeToAnalyze);
+        if (typeInfo.name == null || typeInfo.name.isEmpty()) {
+            return;
+        }
+        targetList.add(typeInfo);
+        
+        TSNode classBody = findFirstChild(classDecl, "block");
+        if (classBody == null) {
+            return;
+        }
+        
+        // Collect fields/attributes from this class only
+        List<FieldInfo> fields = collectClassAttributesFromBody(source, classBody);
+        typeInfo.fields.addAll(fields);
+        
+        // Analyze methods within this class only
+        List<TSNode> methods = findAllChildren(classBody, "function_definition");
+        for (TSNode method : methods) {
+            if (method == null || method.isNull()) continue;
+            
+            // Check if method is wrapped in decorated_definition
+            TSNode methodParent = method.getParent();
+            TSNode methodNodeToAnalyze = method;
+            if (methodParent != null && !methodParent.isNull() && "decorated_definition".equals(methodParent.getType())) {
+                methodNodeToAnalyze = methodParent;
+            }
+            
+            MethodInfo methodInfo = analyzeMethod(source, method, methodNodeToAnalyze, typeInfo.name);
+            if (methodInfo.name != null && !methodInfo.name.isEmpty()) {
+                typeInfo.methods.add(methodInfo);
+            }
+        }
+        
+        // Recursively process nested classes
+        List<TSNode> nestedClasses = findAllChildren(classBody, "class_definition");
+        for (TSNode nested : nestedClasses) {
+            if (nested != null && !nested.isNull()) {
+                analyzeClassRecursivelyInto(source, nested, typeInfo.types);
+            }
+        }
+    }
+    
+    private TypeInfo analyzeClass(String source, TSNode classDefNode, TSNode decoratedNode) {
         TypeInfo typeInfo = new TypeInfo();
         typeInfo.kind = "class";
         
-        if (classDecl == null || classDecl.isNull()) {
+        if (classDefNode == null || classDefNode.isNull()) {
             return typeInfo;
         }
         
@@ -155,15 +193,19 @@ public class PythonAnalyzer implements LanguageAnalyzer {
         extractDecorators(source, decoratedNode, typeInfo.annotations);
         
         // Get class name - should be an identifier child
-        TSNode nameNode = findFirstChild(classDecl, "identifier");
+        TSNode nameNode = findFirstChild(classDefNode, "identifier");
         if (nameNode != null && !nameNode.isNull()) {
             typeInfo.name = getNodeText(source, nameNode);
         }
         
-        // Python doesn't have explicit visibility modifiers, but uses naming conventions
-        // Public by default, unless name starts with _
+        // Determine visibility based on naming convention
+        // Python uses naming conventions for visibility (not explicit keywords)
         if (typeInfo.name != null) {
-            if (typeInfo.name.startsWith("__") && !typeInfo.name.endsWith("__")) {
+            // Special methods (dunder methods like __init__, __str__) are public by convention
+            if (typeInfo.name.startsWith("__") && typeInfo.name.endsWith("__")) {
+                typeInfo.visibility = "public";
+            } else if (typeInfo.name.startsWith("__")) {
+                // Name mangled private methods
                 typeInfo.visibility = "private";
             } else if (typeInfo.name.startsWith("_")) {
                 typeInfo.visibility = "protected";
@@ -173,7 +215,7 @@ public class PythonAnalyzer implements LanguageAnalyzer {
         }
         
         // Get base classes (Python supports multiple inheritance)
-        TSNode argumentList = findFirstChild(classDecl, "argument_list");
+        TSNode argumentList = findFirstChild(classDefNode, "argument_list");
         if (argumentList != null && !argumentList.isNull()) {
             List<TSNode> identifiers = findAllDescendants(argumentList, "identifier");
             for (int i = 0; i < identifiers.size(); i++) {
@@ -189,41 +231,14 @@ public class PythonAnalyzer implements LanguageAnalyzer {
         return typeInfo;
     }
     
-    private void extractDecorators(String source, TSNode node, List<String> annotations) {
-        if (node == null || node.isNull()) {
-            return;
-        }
-        
-        // If the node itself is a decorated_definition, extract decorators from it
-        if ("decorated_definition".equals(node.getType())) {
-            List<TSNode> decorators = findAllChildren(node, "decorator");
-            for (TSNode decorator : decorators) {
-                if (decorator != null && !decorator.isNull()) {
-                    String decoratorText = getNodeText(source, decorator);
-                    if (decoratorText != null && !decoratorText.isEmpty()) {
-                        annotations.add(decoratorText.trim());
-                    }
-                }
-            }
-        }
-    }
-    
-    private List<FieldInfo> collectClassAttributes(String source, TSNode classDecl) {
+    private List<FieldInfo> collectClassAttributesFromBody(String source, TSNode classBody) {
         List<FieldInfo> fields = new ArrayList<>();
+        if (classBody == null) return fields;
         
-        if (classDecl == null || classDecl.isNull()) {
-            return fields;
-        }
-        
-        // Find the class body
-        TSNode bodyNode = findFirstChild(classDecl, "block");
-        if (bodyNode == null || bodyNode.isNull()) {
-            return fields;
-        }
-        
+        // In Python, class attributes are assignment statements at the class level
         // Look for assignment statements at class level (not inside methods)
-        for (int i = 0; i < bodyNode.getNamedChildCount(); i++) {
-            TSNode child = bodyNode.getNamedChild(i);
+        for (int i = 0; i < classBody.getNamedChildCount(); i++) {
+            TSNode child = classBody.getNamedChild(i);
             if (child == null || child.isNull()) {
                 continue;
             }
@@ -592,5 +607,21 @@ public class PythonAnalyzer implements LanguageAnalyzer {
             }
             return 0;
         });
+    }
+    
+    private void extractDecorators(String source, TSNode decoratedNode, List<String> annotations) {
+        if (decoratedNode == null || decoratedNode.isNull()) {
+            return;
+        }
+        
+        // If this is a decorated_definition, extract decorators
+        if ("decorated_definition".equals(decoratedNode.getType())) {
+            List<TSNode> decorators = findAllChildren(decoratedNode, "decorator");
+            for (TSNode decorator : decorators) {
+                if (decorator != null && !decorator.isNull()) {
+                    annotations.add(getNodeText(source, decorator));
+                }
+            }
+        }
     }
 }

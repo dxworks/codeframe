@@ -249,7 +249,8 @@
         "objectName" : null,
         "callCount" : 1
       } ]
-    } ]
+    } ],
+    "types" : [ ]
   } ],
   "methods" : [ ],
   "imports" : [ "import React from 'react';", "import PropTypes from 'prop-types';", "import axios from 'axios';", "import _ from 'lodash';", "import Header from 'components/header';", "import ItemHierarchy from 'components/resourceLocation/leftPanel/itemHierarchy';", "import ResourceLocationList from 'components/resourceLocation/rightPanel/resourceLocationList';", "import AddEditResourceLocation\r\n    from 'components/resourceLocation/rightPanel/resourceLocationForm/addEditResourceLocation';", "import SetItemLayout from 'components/resourceLocation/rightPanel/resourceLocationForm/setItemLayout';", "import AddEditItem from 'components/resourceLocation/rightPanel/resourceLocationForm/addEditItem';", "import ResourceLocationHelper from 'utilities/resourceLocationHelper';", "import UrlHelper from 'utilities/urlHelper';", "import ReactNotify from 'react-notify';" ]

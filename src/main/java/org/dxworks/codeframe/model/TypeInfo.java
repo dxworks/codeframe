@@ -13,4 +13,5 @@ public class TypeInfo {
     public List<String> implementsInterfaces = new ArrayList<>();
     public List<FieldInfo> fields = new ArrayList<>();  // Fields belonging to this type
     public List<MethodInfo> methods = new ArrayList<>();  // Methods belonging to this type
+    public List<TypeInfo> types = new ArrayList<>();  // Nested types belonging to this type
 }
