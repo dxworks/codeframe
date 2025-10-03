@@ -20,95 +20,103 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
         analysis.filePath = filePath;
         analysis.language = "csharp";
         
-        // Extract namespace (supports both block and file-scoped namespaces)
+        analysis.packageName = extractNamespace(rootNode, sourceCode);
+        analysis.imports.addAll(extractImports(rootNode, sourceCode));
+        
+        analyzeTypes(rootNode, sourceCode, analysis);
+        
+        return analysis;
+    }
+    
+    private String extractNamespace(TSNode rootNode, String sourceCode) {
         // Try file-scoped namespace first (C# 10+): namespace X;
         TSNode fileScopedNs = findFirstDescendant(rootNode, "file_scoped_namespace_declaration");
         if (fileScopedNs != null) {
-            // First child is typically the qualified_name or identifier
-            TSNode nameNode = fileScopedNs.getNamedChild(0);
-            if (nameNode != null) {
-                analysis.packageName = getNodeText(sourceCode, nameNode);
-            }
-        } else {
-            // Try block namespace: namespace X { }
-            TSNode namespaceDecl = findFirstDescendant(rootNode, "namespace_declaration");
-            if (namespaceDecl != null) {
-                // First child is typically the qualified_name or identifier
-                TSNode nameNode = namespaceDecl.getNamedChild(0);
-                if (nameNode != null) {
-                    analysis.packageName = getNodeText(sourceCode, nameNode);
-                }
-            }
+            return extractNamespaceNameFrom(fileScopedNs, sourceCode);
         }
         
-        // Collect using directives
+        // Try block namespace: namespace X { }
+        TSNode namespaceDecl = findFirstDescendant(rootNode, "namespace_declaration");
+        if (namespaceDecl != null) {
+            return extractNamespaceNameFrom(namespaceDecl, sourceCode);
+        }
+        
+        return null;
+    }
+    
+    private String extractNamespaceNameFrom(TSNode namespaceNode, String sourceCode) {
+        TSNode nameNode = namespaceNode.getNamedChild(0);
+        return nameNode != null ? getNodeText(sourceCode, nameNode) : null;
+    }
+    
+    private List<String> extractImports(TSNode rootNode, String sourceCode) {
+        List<String> imports = new ArrayList<>();
         List<TSNode> usingDirectives = findAllDescendants(rootNode, "using_directive");
         for (TSNode usingDir : usingDirectives) {
-            String text = getNodeText(sourceCode, usingDir).trim();
-            analysis.imports.add(text);
+            imports.add(getNodeText(sourceCode, usingDir).trim());
+        }
+        return imports;
+    }
+    
+    private void analyzeTypes(TSNode rootNode, String sourceCode, FileAnalysis analysis) {
+        List<TSNode> allClasses = findAllDescendants(rootNode, "class_declaration");
+        Set<Integer> nestedClassIds = identifyNestedClasses(allClasses);
+        
+        // Process only top-level classes recursively (they will add nested classes themselves)
+        for (TSNode classDecl : allClasses) {
+            if (!nestedClassIds.contains(classDecl.getStartByte())) {
+                analyzeClassRecursively(sourceCode, classDecl, analysis);
+            }
         }
         
-        // Find only top-level class declarations (not nested)
-        // We need to identify classes that are NOT nested inside other classes
-        List<TSNode> allClassDecls = findAllDescendants(rootNode, "class_declaration");
-        
-        // Use node IDs (start byte position) to track nested classes since TSNode may not have proper equals/hashCode
+        // Process interfaces
+        List<TSNode> interfaces = findAllDescendants(rootNode, "interface_declaration");
+        for (TSNode interfaceDecl : interfaces) {
+            analysis.types.add(analyzeInterface(sourceCode, interfaceDecl));
+        }
+    }
+    
+    private Set<Integer> identifyNestedClasses(List<TSNode> allClasses) {
         Set<Integer> nestedClassIds = new HashSet<>();
-        
-        // Mark all classes that are nested (at any level) by recursively checking declaration_list nodes
-        for (TSNode classDecl : allClassDecls) {
+        for (TSNode classDecl : allClasses) {
             TSNode classBody = findFirstChild(classDecl, "declaration_list");
             if (classBody != null) {
-                // Use findAllDescendants to find ALL nested classes (including deeply nested)
                 List<TSNode> nested = findAllDescendants(classBody, "class_declaration");
                 for (TSNode n : nested) {
                     nestedClassIds.add(n.getStartByte());
                 }
             }
         }
-        
-        // Process only top-level classes (those not marked as nested)
-        for (TSNode classDecl : allClassDecls) {
-            if (!nestedClassIds.contains(classDecl.getStartByte())) {
-                analyzeClassRecursively(sourceCode, classDecl, analysis);
-            }
-        }
-        
-        // Find all interface declarations
-        List<TSNode> interfaceDecls = findAllDescendants(rootNode, "interface_declaration");
-        for (TSNode interfaceDecl : interfaceDecls) {
-            TypeInfo typeInfo = analyzeInterface(sourceCode, interfaceDecl);
-            analysis.types.add(typeInfo);
-        }
-        
-        return analysis;
+        return nestedClassIds;
     }
     
     private void analyzeClassRecursively(String source, TSNode classDecl, FileAnalysis analysis) {
         TypeInfo typeInfo = analyzeClass(source, classDecl);
         analysis.types.add(typeInfo);
         
-        // In C# Tree-sitter, the class body is called "declaration_list", not "class_body"
         TSNode classBody = findFirstChild(classDecl, "declaration_list");
-        
-        // Collect fields from this class only
-        List<FieldInfo> fields = collectFieldsFromBody(source, classBody);
-        typeInfo.fields.addAll(fields);
-        
-        // Analyze methods within this class only (not from nested classes)
-        if (classBody != null) {
-            List<TSNode> methods = findAllChildren(classBody, "method_declaration");
-            for (TSNode method : methods) {
-                MethodInfo methodInfo = analyzeMethod(source, method, typeInfo.name);
-                typeInfo.methods.add(methodInfo);
-            }
-            
-            // Recursively handle nested classes
-            List<TSNode> nestedClasses = findAllChildren(classBody, "class_declaration");
-            for (TSNode nested : nestedClasses) {
-                analyzeClassRecursively(source, nested, analysis);
-            }
+        if (classBody == null) {
+            return;
         }
+        
+        // Collect members from this class only (not from nested classes)
+        typeInfo.fields.addAll(collectFieldsFromBody(source, classBody));
+        typeInfo.methods.addAll(collectMethodsFromBody(source, classBody, typeInfo.name));
+        
+        // Recursively process nested classes
+        List<TSNode> nestedClasses = findAllChildren(classBody, "class_declaration");
+        for (TSNode nested : nestedClasses) {
+            analyzeClassRecursively(source, nested, analysis);
+        }
+    }
+    
+    private List<MethodInfo> collectMethodsFromBody(String source, TSNode classBody, String className) {
+        List<MethodInfo> methods = new ArrayList<>();
+        List<TSNode> methodNodes = findAllChildren(classBody, "method_declaration");
+        for (TSNode method : methodNodes) {
+            methods.add(analyzeMethod(source, method, className));
+        }
+        return methods;
     }
     
     private TypeInfo analyzeClass(String source, TSNode classDecl) {
@@ -197,95 +205,96 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
     private MethodInfo analyzeMethod(String source, TSNode methodDecl, String className) {
         MethodInfo methodInfo = new MethodInfo();
         
-        // Extract modifiers and visibility
         extractModifiersAndVisibility(source, methodDecl, methodInfo.modifiers, methodInfo);
-        
-        // Extract attributes
         extractAttributes(source, methodDecl, methodInfo.annotations);
         
-        // Get child count first
-        int childCount = methodDecl.getNamedChildCount();
+        methodInfo.name = extractMethodName(source, methodDecl);
+        methodInfo.returnType = extractReturnType(source, methodDecl);
         
-        // Get method name - find identifier that comes after modifiers/attributes/return type
-        TSNode nameNode = null;
-        for (int i = 0; i < childCount; i++) {
-            TSNode child = methodDecl.getNamedChild(i);
-            if ("identifier".equals(child.getType())) {
-                // This should be the method name (comes after return type)
-                nameNode = child;
-                break;
-            }
-        }
-        if (nameNode != null) {
-            methodInfo.name = getNodeText(source, nameNode);
-        }
+        Map<String, String> paramTypes = extractParameters(source, methodDecl, methodInfo);
         
-        // Get return type - in C# Tree-sitter, it's a field named "returns"
-        TSNode returnTypeNode = null;
-        for (int i = 0; i < childCount; i++) {
-            String fieldName = methodDecl.getFieldNameForChild(i);
-            if ("returns".equals(fieldName)) {
-                returnTypeNode = methodDecl.getNamedChild(i);
-                break;
-            }
-        }
-        
-        if (returnTypeNode != null) {
-            String typeText = getNodeText(source, returnTypeNode);
-            if (typeText != null) {
-                methodInfo.returnType = typeText;
-            }
-        }
-        
-        // Get parameters with types
-        Map<String, String> paramTypes = new HashMap<>();
-        TSNode paramsNode = findFirstChild(methodDecl, "parameter_list");
-        if (paramsNode != null) {
-            List<TSNode> params = findAllChildren(paramsNode, "parameter");
-            for (TSNode param : params) {
-                // In C#, Tree-sitter labels nodes with field names like "type:" and "name:"
-                // We need to look for children by their field names
-                String paramName = null;
-                String paramType = null;
-                
-                int paramChildCount = param.getNamedChildCount();
-                
-                // Iterate through children to find type and name
-                for (int i = 0; i < paramChildCount; i++) {
-                    TSNode child = param.getNamedChild(i);
-                    String fieldName = param.getFieldNameForChild(i);
-                    
-                    if ("name".equals(fieldName)) {
-                        // This is the parameter name
-                        paramName = getNodeText(source, child);
-                    } else if ("type".equals(fieldName)) {
-                        // This is the parameter type
-                        paramType = getNodeText(source, child);
-                    }
-                }
-                
-                if (paramName != null) {
-                    methodInfo.parameters.add(new Parameter(paramName, paramType));
-                    if (paramType != null) {
-                        paramTypes.put(paramName, paramType);
-                    }
-                }
-            }
-        }
-        
-        // Get method body - can be either a block (traditional) or arrow_expression_clause (expression-bodied)
-        TSNode bodyNode = findFirstChild(methodDecl, "block");
+        TSNode bodyNode = findMethodBody(methodDecl);
         if (bodyNode != null) {
             analyzeMethodBody(source, bodyNode, methodInfo, className, paramTypes);
-        } else {
-            // Check for expression-bodied method (using =>)
-            TSNode arrowBody = findFirstChild(methodDecl, "arrow_expression_clause");
-            if (arrowBody != null) {
-                analyzeMethodBody(source, arrowBody, methodInfo, className, paramTypes);
-            }
         }
         
         return methodInfo;
+    }
+    
+    private String extractMethodName(String source, TSNode methodDecl) {
+        for (int i = 0; i < methodDecl.getNamedChildCount(); i++) {
+            TSNode child = methodDecl.getNamedChild(i);
+            if ("identifier".equals(child.getType())) {
+                return getNodeText(source, child);
+            }
+        }
+        return null;
+    }
+    
+    private String extractReturnType(String source, TSNode methodDecl) {
+        for (int i = 0; i < methodDecl.getNamedChildCount(); i++) {
+            if ("returns".equals(methodDecl.getFieldNameForChild(i))) {
+                TSNode returnTypeNode = methodDecl.getNamedChild(i);
+                return getNodeText(source, returnTypeNode);
+            }
+        }
+        return null;
+    }
+    
+    private Map<String, String> extractParameters(String source, TSNode methodDecl, MethodInfo methodInfo) {
+        Map<String, String> paramTypes = new HashMap<>();
+        TSNode paramsNode = findFirstChild(methodDecl, "parameter_list");
+        if (paramsNode == null) {
+            return paramTypes;
+        }
+        
+        List<TSNode> params = findAllChildren(paramsNode, "parameter");
+        for (TSNode param : params) {
+            ParameterInfo paramInfo = extractParameter(source, param);
+            if (paramInfo.name != null) {
+                methodInfo.parameters.add(new Parameter(paramInfo.name, paramInfo.type));
+                if (paramInfo.type != null) {
+                    paramTypes.put(paramInfo.name, paramInfo.type);
+                }
+            }
+        }
+        return paramTypes;
+    }
+    
+    private ParameterInfo extractParameter(String source, TSNode param) {
+        String paramName = null;
+        String paramType = null;
+        
+        for (int i = 0; i < param.getNamedChildCount(); i++) {
+            TSNode child = param.getNamedChild(i);
+            String fieldName = param.getFieldNameForChild(i);
+            
+            if ("name".equals(fieldName)) {
+                paramName = getNodeText(source, child);
+            } else if ("type".equals(fieldName)) {
+                paramType = getNodeText(source, child);
+            }
+        }
+        return new ParameterInfo(paramName, paramType);
+    }
+    
+    private TSNode findMethodBody(TSNode methodDecl) {
+        TSNode bodyNode = findFirstChild(methodDecl, "block");
+        if (bodyNode != null) {
+            return bodyNode;
+        }
+        // Expression-bodied method (using =>)
+        return findFirstChild(methodDecl, "arrow_expression_clause");
+    }
+    
+    private static class ParameterInfo {
+        final String name;
+        final String type;
+        
+        ParameterInfo(String name, String type) {
+            this.name = name;
+            this.type = type;
+        }
     }
     
     private void analyzeMethodBody(String source, TSNode bodyNode, MethodInfo methodInfo, 
@@ -415,18 +424,7 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
                 }
                 
                 if (methodName != null) {
-                    // Aggregate method calls
-                    boolean found = false;
-                    for (MethodCall existingCall : methodInfo.methodCalls) {
-                        if (existingCall.matches(methodName, objectType, objectName)) {
-                            existingCall.callCount++;
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found) {
-                        methodInfo.methodCalls.add(new MethodCall(methodName, objectType, objectName));
-                    }
+                    addOrIncrementMethodCall(methodInfo, methodName, objectType, objectName);
                 }
             }
         }
@@ -478,22 +476,24 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
             }
             
             if (propertyName != null) {
-                // Add as a method call (properties are accessed like methods in the analysis)
-                boolean found = false;
-                for (MethodCall existingCall : methodInfo.methodCalls) {
-                    if (existingCall.matches(propertyName, objectType, objectName)) {
-                        existingCall.callCount++;
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    methodInfo.methodCalls.add(new MethodCall(propertyName, objectType, objectName));
-                }
+                addOrIncrementMethodCall(methodInfo, propertyName, objectType, objectName);
             }
         }
         
-        // Sort method calls alphabetically
+        sortMethodCalls(methodInfo);
+    }
+    
+    private void addOrIncrementMethodCall(MethodInfo methodInfo, String methodName, String objectType, String objectName) {
+        for (MethodCall existingCall : methodInfo.methodCalls) {
+            if (existingCall.matches(methodName, objectType, objectName)) {
+                existingCall.callCount++;
+                return;
+            }
+        }
+        methodInfo.methodCalls.add(new MethodCall(methodName, objectType, objectName));
+    }
+    
+    private void sortMethodCalls(MethodInfo methodInfo) {
         methodInfo.methodCalls.sort((a, b) -> {
             int nameCompare = a.methodName.compareTo(b.methodName);
             if (nameCompare != 0) return nameCompare;
