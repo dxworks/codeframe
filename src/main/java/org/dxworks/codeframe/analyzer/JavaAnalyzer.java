@@ -490,7 +490,12 @@ public class JavaAnalyzer implements LanguageAnalyzer {
                 TSNode child = modifiersNode.getNamedChild(i);
                 String type = child.getType();
                 if ("marker_annotation".equals(type) || "annotation".equals(type)) {
-                    annotations.add(getNodeText(source, child));
+                    // Normalize annotation text to a single line for cross-platform JSON stability
+                    String raw = getNodeText(source, child);
+                    if (raw != null) {
+                        String normalized = normalizeInline(raw);
+                        annotations.add(normalized);
+                    }
                 }
             }
         }

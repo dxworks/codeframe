@@ -642,7 +642,11 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
         for (int i = 0; i < childCount; i++) {
             TSNode child = node.getNamedChild(i);
             if ("attribute_list".equals(child.getType())) {
-                annotations.add(getNodeText(source, child));
+                String raw = getNodeText(source, child);
+                if (raw != null) {
+                    String normalized = normalizeInline(raw);
+                    annotations.add(normalized);
+                }
             }
         }
     }

@@ -32,6 +32,15 @@ public class TreeSitterHelper {
         return text.replace("\r\n", "\n").replace("\r", "\n");
     }
     
+    /**
+     * Collapse all whitespace (including newlines and tabs) to single spaces and trim.
+     * Useful for normalizing annotations/attributes and other inline metadata.
+     */
+    public static String normalizeInline(String s) {
+        if (s == null) return null;
+        return s.replaceAll("\\s+", " ").trim();
+    }
+    
     public static TSNode findFirstChild(TSNode parent, String nodeType) {
         if (parent == null || parent.isNull()) return null;
         int count = parent.getNamedChildCount();

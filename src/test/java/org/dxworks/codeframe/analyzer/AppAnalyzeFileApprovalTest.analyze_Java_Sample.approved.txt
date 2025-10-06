@@ -4,10 +4,10 @@
   "packageName" : "com.example.demo",
   "types" : [ {
     "kind" : "class",
-    "name" : "UserRepository",
+    "name" : "Sample",
     "visibility" : "public",
     "modifiers" : [ "public" ],
-    "annotations" : [ ],
+    "annotations" : [ "@Resource(name = RestConstants.VERSION_1 + \"/user\", supportedClass = Sample.class, supportedVersions = { \"1.0.* - 2.0.*\" })" ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
     "fields" : [ {
