@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jdk-jammy
+FROM eclipse-temurin:11-jdk-jammy
 WORKDIR /workspace
 # Optional: install tools you like
 RUN apt-get update && apt-get install -y bash git && rm -rf /var/lib/apt/lists/*

@@ -5,8 +5,11 @@ plugins {
 }
 
 java {
-    toolchain { languageVersion = JavaLanguageVersion.of(21) }
+    toolchain { languageVersion = JavaLanguageVersion.of(11) }
 }
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
 
 group = 'org.dxworks'
 version = '1.0-SNAPSHOT'

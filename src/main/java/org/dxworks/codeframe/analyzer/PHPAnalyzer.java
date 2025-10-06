@@ -682,19 +682,22 @@ public class PHPAnalyzer implements LanguageAnalyzer {
                 "final_modifier".equals(type) || "abstract_modifier".equals(type)) {
                 String modText = getNodeText(source, child);
                 
-                if (target instanceof TypeInfo typeInfo) {
+                if (target instanceof TypeInfo) {
+                    TypeInfo typeInfo = (TypeInfo) target;
                     typeInfo.modifiers.add(modText);
                     // Set visibility for types
                     if ("public".equals(modText) || "private".equals(modText) || "protected".equals(modText)) {
                         typeInfo.visibility = modText;
                     }
-                } else if (target instanceof MethodInfo methodInfo) {
+                } else if (target instanceof MethodInfo) {
+                    MethodInfo methodInfo = (MethodInfo) target;
                     methodInfo.modifiers.add(modText);
                     // Set visibility for methods
                     if ("public".equals(modText) || "private".equals(modText) || "protected".equals(modText)) {
                         methodInfo.visibility = modText;
                     }
-                } else if (target instanceof FieldInfo fieldInfo) {
+                } else if (target instanceof FieldInfo) {
+                    FieldInfo fieldInfo = (FieldInfo) target;
                     fieldInfo.modifiers.add(modText);
                     // Set visibility for fields
                     if ("public".equals(modText) || "private".equals(modText) || "protected".equals(modText)) {
