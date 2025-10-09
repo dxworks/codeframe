@@ -29,6 +29,11 @@ public class AppAnalyzeFileApprovalTest {
         verify(Paths.get("src/test/resources/samples/java/MultipleClasses.java"), Language.JAVA);
     }
 
+    @Test
+    void analyze_Java_InterfaceSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/java/Repository.java"), Language.JAVA);
+    }
+
     // ---- JavaScript ----
     @Test
     void analyze_JavaScript_Sample() throws IOException {
@@ -56,6 +61,11 @@ public class AppAnalyzeFileApprovalTest {
         verify(Paths.get("src/test/resources/samples/typescript/order-params.ts"), Language.TYPESCRIPT);
     }
 
+    @Test
+    void analyze_TypeScript_InterfaceSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/typescript/interface-sample.ts"), Language.TYPESCRIPT);
+    }
+
     // ---- C# ----
     @Test
     void analyze_CSharp_DataClass() throws IOException {
@@ -65,6 +75,11 @@ public class AppAnalyzeFileApprovalTest {
     @Test
     void analyze_CSharp_DataClassNS() throws IOException {
         verify(Paths.get("src/test/resources/samples/csharp/DataClassNS.cs"), Language.CSHARP);
+    }
+
+    @Test
+    void analyze_CSharp_InterfaceSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/csharp/InterfaceSample.cs"), Language.CSHARP);
     }
     
     // ---- Python ----
@@ -82,6 +97,11 @@ public class AppAnalyzeFileApprovalTest {
     @Test
     void analyze_Php_OrderParams() throws IOException {
         verify(Paths.get("src/test/resources/samples/php/OrderParams.php"), Language.PHP);
+    }
+
+    @Test
+    void analyze_Php_InterfaceSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/php/InterfaceSample.php"), Language.PHP);
     }
 
     private static void verify(Path file, Language language) throws IOException {

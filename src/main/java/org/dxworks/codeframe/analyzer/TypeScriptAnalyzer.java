@@ -188,7 +188,10 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
     private TypeInfo analyzeInterface(String source, TSNode interfaceDecl) {
         TypeInfo typeInfo = new TypeInfo();
         typeInfo.kind = "interface";
-        
+        // Extract modifiers/visibility and decorators
+        extractModifiersAndVisibility(source, interfaceDecl, typeInfo.modifiers, typeInfo);
+        extractDecorators(source, interfaceDecl, typeInfo.annotations);
+
         TSNode nameNode = findFirstChild(interfaceDecl, "type_identifier");
         if (nameNode != null) {
             typeInfo.name = getNodeText(source, nameNode);
@@ -200,6 +203,54 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
             List<TSNode> typeIds = findAllDescendants(extendsNode, "type_identifier");
             for (TSNode typeId : typeIds) {
                 typeInfo.implementsInterfaces.add(getNodeText(source, typeId));
+            }
+        }
+        // Collect interface method signatures
+        TSNode objectType = findFirstChild(interfaceDecl, "object_type");
+        List<TSNode> methodSigs = new ArrayList<>();
+        if (objectType != null) {
+            methodSigs.addAll(findAllDescendants(objectType, "method_signature"));
+        }
+        // Fallback: some grammars may not expose an object_type wrapper
+        if (methodSigs.isEmpty()) {
+            methodSigs.addAll(findAllDescendants(interfaceDecl, "method_signature"));
+        }
+        if (!methodSigs.isEmpty()) {
+            for (TSNode ms : methodSigs) {
+                MethodInfo mi = new MethodInfo();
+                // Name
+                TSNode pid = findFirstChild(ms, "property_identifier");
+                if (pid == null) {
+                    pid = findFirstChild(ms, "identifier");
+                }
+                if (pid != null) mi.name = getNodeText(source, pid);
+                // Parameters and return type live under call_signature
+                TSNode callSig = findFirstChild(ms, "call_signature");
+                if (callSig != null) {
+                    // Parameters
+                    TSNode paramsNode = findFirstChild(callSig, "formal_parameters");
+                    if (paramsNode != null) {
+                        analyzeParameters(source, paramsNode, mi);
+                    }
+                    // Return type
+                    TSNode typeAnnotation = findFirstChild(callSig, "type_annotation");
+                    if (typeAnnotation != null) {
+                        mi.returnType = getNodeText(source, typeAnnotation).replaceFirst("^:\\s*", "");
+                    }
+                } else {
+                    // Some grammars expose parameters/type_annotation directly on method_signature
+                    TSNode paramsNode = findFirstChild(ms, "formal_parameters");
+                    if (paramsNode != null) {
+                        analyzeParameters(source, paramsNode, mi);
+                    }
+                    TSNode typeAnnotation = findFirstChild(ms, "type_annotation");
+                    if (typeAnnotation != null) {
+                        mi.returnType = getNodeText(source, typeAnnotation).replaceFirst("^:\\s*", "");
+                    }
+                }
+                if (mi.name != null) {
+                    typeInfo.methods.add(mi);
+                }
             }
         }
         
@@ -636,7 +687,7 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
                 String modText = getNodeText(source, child);
                 modifiers.add(modText);
                 
-                // Set visibility
+                // Set visibility only when explicitly specified
                 if ("public".equals(modText) || "private".equals(modText) || "protected".equals(modText)) {
                     if (target instanceof TypeInfo) {
                         ((TypeInfo) target).visibility = modText;
@@ -653,15 +704,6 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         TSNode parent = node.getParent();
         if (parent != null && "export_statement".equals(parent.getType())) {
             modifiers.add("export");
-        }
-        
-        // Default visibility is public if not specified
-        if (target instanceof TypeInfo && ((TypeInfo) target).visibility == null) {
-            ((TypeInfo) target).visibility = "public";
-        } else if (target instanceof MethodInfo && ((MethodInfo) target).visibility == null) {
-            ((MethodInfo) target).visibility = "public";
-        } else if (target instanceof FieldInfo && ((FieldInfo) target).visibility == null) {
-            ((FieldInfo) target).visibility = "public";
         }
     }
     

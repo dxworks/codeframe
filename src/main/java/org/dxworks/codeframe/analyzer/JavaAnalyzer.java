@@ -149,6 +149,11 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         TypeInfo typeInfo = new TypeInfo();
         typeInfo.kind = "interface";
         
+        // Extract modifiers and visibility
+        extractModifiersAndVisibility(source, interfaceDecl, typeInfo.modifiers, typeInfo);
+        // Extract annotations
+        extractAnnotations(source, interfaceDecl, typeInfo.annotations);
+
         TSNode nameNode = findFirstChild(interfaceDecl, "identifier");
         if (nameNode != null) {
             typeInfo.name = getNodeText(source, nameNode);
@@ -160,6 +165,17 @@ public class JavaAnalyzer implements LanguageAnalyzer {
             List<TSNode> typeIdentifiers = findAllDescendants(extendsNode, "type_identifier");
             for (TSNode typeId : typeIdentifiers) {
                 typeInfo.implementsInterfaces.add(getNodeText(source, typeId));
+            }
+        }
+
+        // Collect interface methods from interface_body
+        TSNode interfaceBody = findFirstChild(interfaceDecl, "interface_body");
+        if (interfaceBody != null) {
+            List<TSNode> methods = findAllChildren(interfaceBody, "method_declaration");
+            for (TSNode method : methods) {
+                // For interfaces, there are no fields map to resolve types; pass empty map
+                MethodInfo methodInfo = analyzeMethod(source, method, typeInfo.name, new HashMap<>());
+                typeInfo.methods.add(methodInfo);
             }
         }
         
@@ -181,7 +197,7 @@ public class JavaAnalyzer implements LanguageAnalyzer {
             methodInfo.name = getNodeText(source, nameNode);
         }
         
-        // Get return type
+        // Get return type (generic-aware)
         // In method_declaration, children are typically: modifiers, type/void_type, identifier, formal_parameters, block
         // Look through children to find the return type
         int childCount = methodDecl.getNamedChildCount();
@@ -191,11 +207,11 @@ public class JavaAnalyzer implements LanguageAnalyzer {
             if ("void_type".equals(childType)) {
                 methodInfo.returnType = "void";
                 break;
-            } else if (!"modifiers".equals(childType) && !"identifier".equals(childType) 
-                       && !"formal_parameters".equals(childType) && !"block".equals(childType)
-                       && !"throws".equals(childType)) {
+            } else if (!"modifiers".equals(childType) && !"identifier".equals(childType)
+                    && !"formal_parameters".equals(childType) && !"block".equals(childType)
+                    && !"throws".equals(childType)) {
                 // This is likely the return type node
-                methodInfo.returnType = getNodeText(source, child);
+                methodInfo.returnType = extractTypeWithGenerics(source, child, child);
                 break;
             }
         }
@@ -211,8 +227,8 @@ public class JavaAnalyzer implements LanguageAnalyzer {
                 String typeName = null;
                 TSNode typeNode = param.getNamedChild(0);
                 if (typeNode != null && !"identifier".equals(typeNode.getType())) {
-                    // This is the type node
-                    typeName = getNodeText(source, typeNode);
+                    // This is the type node (generic-aware)
+                    typeName = extractTypeWithGenerics(source, typeNode, param);
                 }
                 
                 // Get parameter name (should be the identifier)
@@ -248,7 +264,7 @@ public class JavaAnalyzer implements LanguageAnalyzer {
             TSNode typeNode = findFirstChild(varDecl, "type");
             if (typeNode == null) typeNode = findFirstDescendant(varDecl, "type_identifier");
             if (typeNode != null) {
-                declaredType = getNodeText(source, typeNode);
+                declaredType = extractTypeWithGenerics(source, typeNode, varDecl);
             }
             List<TSNode> declarators = findAllDescendants(varDecl, "variable_declarator");
             for (TSNode declarator : declarators) {
@@ -372,8 +388,13 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         for (TSNode field : fieldDecls) {
             String declaredType = null;
             TSNode typeNode = findFirstChild(field, "type");
+            if (typeNode == null) typeNode = findFirstDescendant(field, "type_identifier");
+            if (typeNode == null) typeNode = findFirstDescendant(field, "scoped_identifier");
+            if (typeNode == null) typeNode = findFirstDescendant(field, "scoped_type_identifier");
+            if (typeNode == null) typeNode = findFirstDescendant(field, "integral_type");
             if (typeNode != null) {
-                declaredType = getNodeText(source, typeNode);
+                // Use generic-aware extraction for fields
+                declaredType = extractTypeWithGenerics(source, typeNode, field);
             }
             
             List<TSNode> declarators = findAllDescendants(field, "variable_declarator");
@@ -400,6 +421,23 @@ public class JavaAnalyzer implements LanguageAnalyzer {
             }
         }
         return fields;
+    }
+
+    // Generic-aware type extraction helper: returns the text of the base type extended to include any trailing
+    // type_arguments found within the provided search scope. Falls back to the base node text if no generics found.
+    private String extractTypeWithGenerics(String source, TSNode baseTypeNode, TSNode searchScope) {
+        if (baseTypeNode == null) return null;
+        try {
+            TSNode typeArgs = findFirstDescendant(searchScope, "type_arguments");
+            if (typeArgs != null) {
+                int start = baseTypeNode.getStartByte();
+                int end = typeArgs.getEndByte();
+                if (start >= 0 && end > start && end <= source.length()) {
+                    return source.substring(start, end);
+                }
+            }
+        } catch (Exception ignored) { }
+        return getNodeText(source, baseTypeNode);
     }
     
     private void extractModifiersAndVisibility(String source, TSNode node, List<String> modifiers, Object target) {
@@ -471,14 +509,7 @@ public class JavaAnalyzer implements LanguageAnalyzer {
             }
         }
         
-        // Default visibility is package-private if not specified
-        if (target instanceof TypeInfo && ((TypeInfo) target).visibility == null) {
-            ((TypeInfo) target).visibility = "package-private";
-        } else if (target instanceof MethodInfo && ((MethodInfo) target).visibility == null) {
-            ((MethodInfo) target).visibility = "package-private";
-        } else if (target instanceof FieldInfo && ((FieldInfo) target).visibility == null) {
-            ((FieldInfo) target).visibility = "package-private";
-        }
+        // Do not default visibility; leave null when not explicitly specified
     }
     
     private void extractAnnotations(String source, TSNode node, List<String> annotations) {

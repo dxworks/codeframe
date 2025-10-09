@@ -1,0 +1,63 @@
+{
+  "filePath" : "src/test/resources/samples/typescript/interface-sample.ts",
+  "language" : "typescript",
+  "packageName" : null,
+  "types" : [ {
+    "kind" : "interface",
+    "name" : "IRepository",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "methods" : [ {
+      "name" : "findById",
+      "returnType" : "T",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "ID"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "save",
+      "returnType" : "void",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "entity",
+        "type" : "T"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "interface",
+    "name" : "INamed",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "methods" : [ {
+      "name" : "getName",
+      "returnType" : "string",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ ]
+}

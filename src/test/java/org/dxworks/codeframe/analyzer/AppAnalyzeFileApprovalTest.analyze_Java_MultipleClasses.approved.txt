@@ -83,7 +83,7 @@
   }, {
     "kind" : "class",
     "name" : "ExtraClass",
-    "visibility" : "package-private",
+    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "extendsType" : null,

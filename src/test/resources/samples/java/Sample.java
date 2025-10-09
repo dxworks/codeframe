@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 public class Sample {
     private final DatabaseConnection db;
     private final Logger logger;
+    private List<User> users;
     
     public Sample(DatabaseConnection db, Logger logger) {
         this.db = db;

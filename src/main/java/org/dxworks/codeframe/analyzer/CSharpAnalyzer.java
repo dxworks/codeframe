@@ -174,6 +174,11 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
         TypeInfo typeInfo = new TypeInfo();
         typeInfo.kind = "interface";
         
+        // Extract modifiers and visibility
+        extractModifiersAndVisibility(source, interfaceDecl, typeInfo.modifiers, typeInfo);
+        // Extract attributes
+        extractAttributes(source, interfaceDecl, typeInfo.annotations);
+
         TSNode nameNode = findFirstChild(interfaceDecl, "identifier");
         if (nameNode != null) {
             typeInfo.name = getNodeText(source, nameNode);
@@ -188,6 +193,17 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
                 if (typeName != null && !typeName.isEmpty()) {
                     typeInfo.implementsInterfaces.add(typeName);
                 }
+            }
+        }
+        
+        // Collect interface methods from body
+        TSNode body = findFirstChild(interfaceDecl, "declaration_list");
+        if (body != null) {
+            List<TSNode> methodNodes = findAllChildren(body, "method_declaration");
+            for (TSNode method : methodNodes) {
+                MethodInfo mi = analyzeMethod(source, method, typeInfo.name);
+                // Do not default visibility for interface members; leave null unless specified
+                typeInfo.methods.add(mi);
             }
         }
         
@@ -226,6 +242,14 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
     }
     
     private String extractMethodName(String source, TSNode methodDecl) {
+        // Prefer the child with field name 'name' (Tree-sitter assigns fields)
+        for (int i = 0; i < methodDecl.getNamedChildCount(); i++) {
+            if ("name".equals(methodDecl.getFieldNameForChild(i))) {
+                TSNode nameNode = methodDecl.getNamedChild(i);
+                return getNodeText(source, nameNode);
+            }
+        }
+        // Fallback: first identifier child
         for (int i = 0; i < methodDecl.getNamedChildCount(); i++) {
             TSNode child = methodDecl.getNamedChild(i);
             if ("identifier".equals(child.getType())) {
@@ -239,7 +263,7 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
         for (int i = 0; i < methodDecl.getNamedChildCount(); i++) {
             if ("returns".equals(methodDecl.getFieldNameForChild(i))) {
                 TSNode returnTypeNode = methodDecl.getNamedChild(i);
-                return getNodeText(source, returnTypeNode);
+                return extractTypeWithGenerics(source, returnTypeNode, methodDecl);
             }
         }
         return null;
@@ -276,7 +300,7 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
             if ("name".equals(fieldName)) {
                 paramName = getNodeText(source, child);
             } else if ("type".equals(fieldName)) {
-                paramType = getNodeText(source, child);
+                paramType = extractTypeWithGenerics(source, child, param);
             }
         }
         return new ParameterInfo(paramName, paramType);
@@ -316,7 +340,7 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
             if (variableDeclaration != null && variableDeclaration.getNamedChildCount() > 0) {
                 TSNode typeNode = variableDeclaration.getNamedChild(0);
                 if (typeNode != null) {
-                    declaredType = getNodeText(source, typeNode);
+                    declaredType = extractTypeWithGenerics(source, typeNode, variableDeclaration);
                 }
             }
             
@@ -405,7 +429,7 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
                         } else if ("generic_name".equals(exprType) || "qualified_name".equals(exprType)) {
                             // Static method call like Maybe<T>.From(), Metrics.Metrics.For()
                             // These are type names, not variable references
-                            objectName = exprText;
+                            objectName = null; // do not treat type as an object instance
                             objectType = exprText;
                         } else if ("member_access_expression".equals(exprType) || "invocation_expression".equals(exprType)) {
                             // Chained call like obj.Method1().Method2() or obj.Prop.Method()
@@ -473,7 +497,7 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
                         objectType = className;
                     } else if ("generic_name".equals(exprType) || "qualified_name".equals(exprType)) {
                         // Static property access
-                        objectName = exprText;
+                        objectName = null; // keep only the type
                         objectType = exprText;
                     }
                 }
@@ -534,7 +558,7 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
             if (variableDeclaration != null && variableDeclaration.getNamedChildCount() > 0) {
                 TSNode typeNode = variableDeclaration.getNamedChild(0);
                 if (typeNode != null) {
-                    declaredType = getNodeText(source, typeNode);
+                    declaredType = extractTypeWithGenerics(source, typeNode, variableDeclaration);
                 }
             }
             
@@ -602,18 +626,15 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
     private void extractModifiersAndVisibility(String source, TSNode node, List<String> modifiers, Object target) {
         // In C#, Tree-sitter uses a generic "modifier" node type for all modifiers
         int childCount = node.getNamedChildCount();
-        
         for (int i = 0; i < childCount; i++) {
             TSNode child = node.getNamedChild(i);
             String type = child.getType();
-            
             // Check if this is a modifier node
             if ("modifier".equals(type)) {
                 String modText = getNodeText(source, child);
                 modifiers.add(modText);
-                
-                // Set visibility based on the modifier text
-                if ("public".equals(modText) || "private".equals(modText) || 
+                // Set visibility only when explicitly specified
+                if ("public".equals(modText) || "private".equals(modText) ||
                     "protected".equals(modText) || "internal".equals(modText)) {
                     if (target instanceof TypeInfo) {
                         ((TypeInfo) target).visibility = modText;
@@ -624,15 +645,6 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
                     }
                 }
             }
-        }
-        
-        // Default visibility is internal for types, private for members
-        if (target instanceof TypeInfo && ((TypeInfo) target).visibility == null) {
-            ((TypeInfo) target).visibility = "internal";
-        } else if (target instanceof MethodInfo && ((MethodInfo) target).visibility == null) {
-            ((MethodInfo) target).visibility = "private";
-        } else if (target instanceof FieldInfo && ((FieldInfo) target).visibility == null) {
-            ((FieldInfo) target).visibility = "private";
         }
     }
     
@@ -649,5 +661,41 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
                 }
             }
         }
+    }
+
+    // Generic-aware extraction for C# that stays local to the base type node:
+    // - If the base node is a generic_name or contains its own type_argument_list, return its full text
+    // - Else, if the immediate next named sibling is a type_argument_list, append it
+    // - Do NOT scan the whole method signature to avoid pulling parameter generics into return type
+    private String extractTypeWithGenerics(String source, TSNode baseTypeNode, TSNode searchScope) {
+        if (baseTypeNode == null) return null;
+        try {
+            // Case 1: base node itself is a generic_name or has type arguments within
+            if ("generic_name".equals(baseTypeNode.getType()) || findFirstDescendant(baseTypeNode, "type_argument_list") != null) {
+                return getNodeText(source, baseTypeNode);
+            }
+
+            // Case 2: immediate next named sibling is the type_argument_list
+            TSNode parent = baseTypeNode.getParent();
+            if (parent != null) {
+                // Find index of baseTypeNode among parent's named children
+                int idx = -1;
+                int n = parent.getNamedChildCount();
+                for (int i = 0; i < n; i++) {
+                    if (parent.getNamedChild(i) == baseTypeNode) { idx = i; break; }
+                }
+                if (idx != -1 && idx + 1 < n) {
+                    TSNode next = parent.getNamedChild(idx + 1);
+                    if (next != null && "type_argument_list".equals(next.getType())) {
+                        int start = baseTypeNode.getStartByte();
+                        int end = next.getEndByte();
+                        if (start >= 0 && end > start && end <= source.length()) {
+                            return source.substring(start, end);
+                        }
+                    }
+                }
+            }
+        } catch (Exception ignored) { }
+        return getNodeText(source, baseTypeNode);
     }
 }

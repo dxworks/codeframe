@@ -5,7 +5,7 @@
   "types" : [ {
     "kind" : "class",
     "name" : "C",
-    "visibility" : "public",
+    "visibility" : null,
     "modifiers" : [ "export" ],
     "annotations" : [ ],
     "extendsType" : null,
@@ -14,7 +14,7 @@
     "methods" : [ {
       "name" : "m",
       "returnType" : "void",
-      "visibility" : "public",
+      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ {

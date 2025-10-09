@@ -5,7 +5,7 @@
   "types" : [ {
     "kind" : "class",
     "name" : "UserService",
-    "visibility" : "public",
+    "visibility" : null,
     "modifiers" : [ "export" ],
     "annotations" : [ ],
     "extendsType" : null,
@@ -14,7 +14,7 @@
     "methods" : [ {
       "name" : "constructor",
       "returnType" : null,
-      "visibility" : "public",
+      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ {
@@ -29,7 +29,7 @@
     }, {
       "name" : "getUser",
       "returnType" : "Promise<User>",
-      "visibility" : "public",
+      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ {
@@ -66,7 +66,7 @@
     "kind" : "interface",
     "name" : "User",
     "visibility" : null,
-    "modifiers" : [ ],
+    "modifiers" : [ "export" ],
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],

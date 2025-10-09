@@ -1,0 +1,63 @@
+{
+  "filePath" : "src/test/resources/samples/csharp/InterfaceSample.cs",
+  "language" : "csharp",
+  "packageName" : "Samples.Interfaces",
+  "types" : [ {
+    "kind" : "interface",
+    "name" : "IRepository",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ "[Obsolete]" ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "methods" : [ {
+      "name" : "FindById",
+      "returnType" : "T",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "ID"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "Save",
+      "returnType" : "void",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "entity",
+        "type" : "T"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "interface",
+    "name" : "INamed",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ "[Obsolete]" ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "methods" : [ {
+      "name" : "GetName",
+      "returnType" : "string",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ ]
+}

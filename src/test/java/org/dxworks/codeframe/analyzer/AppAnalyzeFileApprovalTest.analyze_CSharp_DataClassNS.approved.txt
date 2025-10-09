@@ -61,7 +61,7 @@
       }, {
         "methodName" : "From",
         "objectType" : "Maybe<CodeIssue>",
-        "objectName" : "Maybe<CodeIssue>",
+        "objectName" : null,
         "callCount" : 2
       }, {
         "methodName" : "Metrics",
@@ -71,7 +71,7 @@
       }, {
         "methodName" : "None",
         "objectType" : "Maybe<CodeIssue>",
-        "objectName" : "Maybe<CodeIssue>",
+        "objectName" : null,
         "callCount" : 1
       }, {
         "methodName" : "OneThird",

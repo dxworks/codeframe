@@ -1,0 +1,63 @@
+{
+  "filePath" : "src/test/resources/samples/php/InterfaceSample.php",
+  "language" : "php",
+  "packageName" : null,
+  "types" : [ {
+    "kind" : "interface",
+    "name" : "IRepository",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "methods" : [ {
+      "name" : "findById",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "abstract" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "save",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "abstract" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "entity",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "interface",
+    "name" : "INamed",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "methods" : [ {
+      "name" : "getName",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "abstract" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ ]
+}

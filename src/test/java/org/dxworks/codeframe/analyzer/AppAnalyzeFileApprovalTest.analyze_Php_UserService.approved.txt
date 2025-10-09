@@ -217,7 +217,7 @@
   }, {
     "kind" : "interface",
     "name" : "CacheInterface",
-    "visibility" : null,
+    "visibility" : "public",
     "modifiers" : [ ],
     "annotations" : [ ],
     "extendsType" : null,

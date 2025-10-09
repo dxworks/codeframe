@@ -237,6 +237,9 @@ public class PHPAnalyzer implements LanguageAnalyzer {
         TypeInfo typeInfo = new TypeInfo();
         typeInfo.kind = "interface";
         
+        // Extract modifiers and visibility (defaults to public if not specified)
+        extractModifiersAndVisibility(source, interfaceDecl, typeInfo);
+
         TSNode nameNode = findFirstChild(interfaceDecl, "name");
         if (nameNode != null && !nameNode.isNull()) {
             typeInfo.name = getNodeText(source, nameNode);

@@ -12,13 +12,19 @@
     "implementsInterfaces" : [ ],
     "fields" : [ {
       "name" : "db",
-      "type" : null,
+      "type" : "DatabaseConnection",
       "visibility" : "private",
       "modifiers" : [ "private" ],
       "annotations" : [ ]
     }, {
       "name" : "logger",
-      "type" : null,
+      "type" : "Logger",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "users",
+      "type" : "List<User>",
       "visibility" : "private",
       "modifiers" : [ "private" ],
       "annotations" : [ ]
@@ -36,12 +42,12 @@
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "info",
-        "objectType" : null,
+        "objectType" : "Logger",
         "objectName" : "logger",
         "callCount" : 1
       }, {
         "methodName" : "query",
-        "objectType" : null,
+        "objectType" : "DatabaseConnection",
         "objectName" : "db",
         "callCount" : 1
       } ]
@@ -55,7 +61,7 @@
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "queryList",
-        "objectType" : null,
+        "objectType" : "DatabaseConnection",
         "objectName" : "db",
         "callCount" : 1
       } ]
@@ -99,7 +105,7 @@
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "execute",
-        "objectType" : null,
+        "objectType" : "DatabaseConnection",
         "objectName" : "db",
         "callCount" : 1
       }, {
@@ -126,7 +132,7 @@
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "execute",
-        "objectType" : null,
+        "objectType" : "DatabaseConnection",
         "objectName" : "db",
         "callCount" : 1
       }, {
@@ -150,26 +156,26 @@
   }, {
     "kind" : "class",
     "name" : "User",
-    "visibility" : "package-private",
+    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
     "fields" : [ {
       "name" : "id",
-      "type" : null,
+      "type" : "String",
       "visibility" : "private",
       "modifiers" : [ "private" ],
       "annotations" : [ ]
     }, {
       "name" : "name",
-      "type" : null,
+      "type" : "String",
       "visibility" : "private",
       "modifiers" : [ "private" ],
       "annotations" : [ ]
     }, {
       "name" : "email",
-      "type" : null,
+      "type" : "String",
       "visibility" : "private",
       "modifiers" : [ "private" ],
       "annotations" : [ ]
