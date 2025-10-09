@@ -361,38 +361,108 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
     }
     
     private void analyzeParameters(String source, TSNode paramsNode, MethodInfo methodInfo) {
-        List<TSNode> params = findAllChildren(paramsNode, "required_parameter");
-        for (TSNode param : params) {
-            TSNode paramName = findFirstChild(param, "identifier");
-            String name = paramName != null ? getNodeText(source, paramName) : null;
-            
-            // Get type annotation
-            TSNode typeAnnotation = findFirstChild(param, "type_annotation");
-            String type = null;
-            if (typeAnnotation != null) {
-                type = getNodeText(source, typeAnnotation).replaceFirst("^:\\s*", "");
-            }
-            
-            if (name != null) {
-                methodInfo.parameters.add(new Parameter(name, type));
+        // Iterate children by index to preserve source order
+        int count = paramsNode.getNamedChildCount();
+        for (int i = 0; i < count; i++) {
+            TSNode param = paramsNode.getNamedChild(i);
+            if (param == null) continue;
+            String type = param.getType();
+
+            // Handle required and optional parameters uniformly
+            if ("required_parameter".equals(type) || "optional_parameter".equals(type)) {
+                TSNode paramName = findFirstChild(param, "identifier");
+                String name = paramName != null ? getNodeText(source, paramName) : null;
+
+                // Get type annotation if present
+                TSNode typeAnnotation = findFirstChild(param, "type_annotation");
+                String annType = null;
+                if (typeAnnotation != null) {
+                    annType = getNodeText(source, typeAnnotation).replaceFirst("^:\\s*", "");
+                }
+
+                if (name != null) {
+                    methodInfo.parameters.add(new Parameter(name, annType));
+                }
+            } else if ("rest_parameter".equals(type) || "rest_pattern".equals(type)) {
+                // ...rest: capture name and type; identifier may be nested
+                TSNode nameNode = findFirstChild(param, "identifier");
+                if (nameNode == null) {
+                    nameNode = findFirstDescendant(param, "identifier");
+                }
+                String name = nameNode != null ? ("..." + getNodeText(source, nameNode)) : null;
+                TSNode typeAnnotation = findFirstChild(param, "type_annotation");
+                if (typeAnnotation == null) {
+                    // Type annotation may not be a direct child; search descendants
+                    typeAnnotation = findFirstDescendant(param, "type_annotation");
+                }
+                String annType = null;
+                if (typeAnnotation != null) {
+                    annType = getNodeText(source, typeAnnotation).replaceFirst("^:\\s*", "");
+                } else {
+                    // Fallbacks: look for common type node kinds
+                    TSNode typeNode = findFirstDescendant(param, "array_type");
+                    if (typeNode == null) typeNode = findFirstDescendant(param, "union_type");
+                    if (typeNode == null) typeNode = findFirstDescendant(param, "type_identifier");
+                    if (typeNode == null) typeNode = findFirstDescendant(param, "predefined_type");
+                    if (typeNode != null) {
+                        annType = getNodeText(source, typeNode).replaceFirst("^:\\s*", "");
+                    } else {
+                        // Last resort: parse from raw text after ':'
+                        String raw = getNodeText(source, param);
+                        if (raw != null) {
+                            java.util.regex.Matcher m = java.util.regex.Pattern.compile(":\\s*(.+)$").matcher(raw.trim());
+                            if (m.find()) {
+                                annType = m.group(1).trim();
+                            }
+                        }
+                    }
+                }
+                if (name != null) {
+                    methodInfo.parameters.add(new Parameter(name, annType));
+                }
             }
         }
         
-        // Also check for optional parameters
-        List<TSNode> optionalParams = findAllChildren(paramsNode, "optional_parameter");
-        for (TSNode param : optionalParams) {
-            TSNode paramName = findFirstChild(param, "identifier");
-            String name = paramName != null ? getNodeText(source, paramName) : null;
-            
-            // Get type annotation
-            TSNode typeAnnotation = findFirstChild(param, "type_annotation");
-            String type = null;
-            if (typeAnnotation != null) {
-                type = getNodeText(source, typeAnnotation).replaceFirst("^:\\s*", "");
+        // Fallback: Some TypeScript grammars may not expose rest as named children.
+        // If we didn't capture any rest parameter above, scan descendants once.
+        boolean hasRestAlready = methodInfo.parameters.stream().anyMatch(p -> p.name != null && p.name.startsWith("..."));
+        if (!hasRestAlready) {
+            List<TSNode> restParams = findAllDescendants(paramsNode, "rest_parameter");
+            if (restParams.isEmpty()) {
+                restParams = findAllDescendants(paramsNode, "rest_pattern");
             }
-            
-            if (name != null) {
-                methodInfo.parameters.add(new Parameter(name, type));
+            if (!restParams.isEmpty()) {
+                TSNode lastRest = restParams.get(restParams.size() - 1);
+                TSNode nameNode = findFirstChild(lastRest, "identifier");
+                if (nameNode == null) nameNode = findFirstDescendant(lastRest, "identifier");
+                String name = nameNode != null ? ("..." + getNodeText(source, nameNode)) : null;
+                String annType = null;
+                TSNode typeAnnotation = findFirstChild(lastRest, "type_annotation");
+                if (typeAnnotation == null) {
+                    typeAnnotation = findFirstDescendant(lastRest, "type_annotation");
+                }
+                if (typeAnnotation != null) {
+                    annType = getNodeText(source, typeAnnotation).replaceFirst("^:\\s*", "");
+                } else {
+                    TSNode typeNode = findFirstDescendant(lastRest, "array_type");
+                    if (typeNode == null) typeNode = findFirstDescendant(lastRest, "union_type");
+                    if (typeNode == null) typeNode = findFirstDescendant(lastRest, "type_identifier");
+                    if (typeNode == null) typeNode = findFirstDescendant(lastRest, "predefined_type");
+                    if (typeNode != null) {
+                        annType = getNodeText(source, typeNode).replaceFirst("^:\\s*", "");
+                    } else {
+                        String raw = getNodeText(source, lastRest);
+                        if (raw != null) {
+                            java.util.regex.Matcher m = java.util.regex.Pattern.compile(":\\s*(.+)$").matcher(raw.trim());
+                            if (m.find()) {
+                                annType = m.group(1).trim();
+                            }
+                        }
+                    }
+                }
+                if (name != null) {
+                    methodInfo.parameters.add(new Parameter(name, annType));
+                }
             }
         }
     }

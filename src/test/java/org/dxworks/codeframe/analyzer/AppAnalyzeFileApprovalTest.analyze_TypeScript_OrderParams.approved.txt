@@ -1,0 +1,55 @@
+{
+  "filePath" : "src/test/resources/samples/typescript/order-params.ts",
+  "language" : "typescript",
+  "packageName" : null,
+  "types" : [ {
+    "kind" : "class",
+    "name" : "C",
+    "visibility" : "public",
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "methods" : [ {
+      "name" : "m",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "x",
+        "type" : "string"
+      }, {
+        "name" : "y",
+        "type" : "number"
+      }, {
+        "name" : "...z",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ {
+    "name" : "f",
+    "returnType" : "void",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "a",
+      "type" : "number"
+    }, {
+      "name" : "b",
+      "type" : "string"
+    }, {
+      "name" : "...rest",
+      "type" : null
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  } ],
+  "imports" : [ ]
+}

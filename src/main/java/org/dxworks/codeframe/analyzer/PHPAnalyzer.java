@@ -384,34 +384,36 @@ public class PHPAnalyzer implements LanguageAnalyzer {
     }
     
     private void analyzeParameters(String source, TSNode paramsNode, MethodInfo methodInfo) {
-        List<TSNode> params = findAllChildren(paramsNode, "simple_parameter");
-        params.addAll(findAllChildren(paramsNode, "property_promotion_parameter"));
-        
-        for (TSNode param : params) {
-            TSNode varName = findFirstChild(param, "variable_name");
-            String paramType = null;
-            
-            // Get type hint if present (can be named_type, primitive_type, etc.)
-            TSNode typeNode = findFirstChild(param, "named_type");
-            if (typeNode == null || typeNode.isNull()) {
-                typeNode = findFirstChild(param, "primitive_type");
-            }
-            if (typeNode == null || typeNode.isNull()) {
-                typeNode = findFirstChild(param, "optional_type");
-            }
-            if (typeNode != null && !typeNode.isNull()) {
-                paramType = getNodeText(source, typeNode);
-            }
-            
-            if (varName != null && !varName.isNull()) {
-                String name = getNodeText(source, varName);
-                // Remove $ prefix from PHP variables
-                if (name != null && name.startsWith("$")) {
-                    name = name.substring(1);
+        // Iterate children by index to preserve source order across kinds
+        int count = paramsNode.getNamedChildCount();
+        for (int i = 0; i < count; i++) {
+            TSNode child = paramsNode.getNamedChild(i);
+            if (child == null || child.isNull()) continue;
+            String kind = child.getType();
+
+            if ("simple_parameter".equals(kind) || "property_promotion_parameter".equals(kind)) {
+                TSNode varName = findFirstChild(child, "variable_name");
+                String paramType = null;
+
+                // Get type hint if present (can be named_type, primitive_type, optional_type, union_type)
+                TSNode typeNode = findFirstChild(child, "named_type");
+                if (typeNode == null || typeNode.isNull()) typeNode = findFirstChild(child, "primitive_type");
+                if (typeNode == null || typeNode.isNull()) typeNode = findFirstChild(child, "optional_type");
+                if (typeNode == null || typeNode.isNull()) typeNode = findFirstChild(child, "union_type");
+                if (typeNode != null && !typeNode.isNull()) {
+                    paramType = getNodeText(source, typeNode);
                 }
-                // Validate parameter name
-                if (name != null && name.matches("[a-zA-Z_][a-zA-Z0-9_]*")) {
-                    methodInfo.parameters.add(new Parameter(name, paramType));
+
+                if (varName != null && !varName.isNull()) {
+                    String name = getNodeText(source, varName);
+                    // Remove $ prefix from PHP variables
+                    if (name != null && name.startsWith("$")) {
+                        name = name.substring(1);
+                    }
+                    // Validate parameter name
+                    if (name != null && name.matches("[a-zA-Z_][a-zA-Z0-9_]*")) {
+                        methodInfo.parameters.add(new Parameter(name, paramType));
+                    }
                 }
             }
         }

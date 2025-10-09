@@ -51,6 +51,11 @@ public class AppAnalyzeFileApprovalTest {
         verify(Paths.get("src/test/resources/samples/typescript/confirm-discard-prompt.tsx"), Language.TYPESCRIPT);
     }
 
+    @Test
+    void analyze_TypeScript_OrderParams() throws IOException {
+        verify(Paths.get("src/test/resources/samples/typescript/order-params.ts"), Language.TYPESCRIPT);
+    }
+
     // ---- C# ----
     @Test
     void analyze_CSharp_DataClass() throws IOException {
@@ -72,6 +77,11 @@ public class AppAnalyzeFileApprovalTest {
     @Test
     void analyze_Php_UserService() throws IOException {
         verify(Paths.get("src/test/resources/samples/php/UserService.php"), Language.PHP);
+    }
+
+    @Test
+    void analyze_Php_OrderParams() throws IOException {
+        verify(Paths.get("src/test/resources/samples/php/OrderParams.php"), Language.PHP);
     }
 
     private static void verify(Path file, Language language) throws IOException {
