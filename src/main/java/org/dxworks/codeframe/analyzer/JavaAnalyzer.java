@@ -187,63 +187,15 @@ public class JavaAnalyzer implements LanguageAnalyzer {
 
         // Extract modifiers and visibility
         extractModifiersAndVisibility(source, methodDecl, methodInfo.modifiers, methodInfo);
-        
         // Extract annotations
         extractAnnotations(source, methodDecl, methodInfo.annotations);
 
-        // Get method name
-        TSNode nameNode = findFirstChild(methodDecl, "identifier");
-        if (nameNode != null) {
-            methodInfo.name = getNodeText(source, nameNode);
-        }
-        
-        // Get return type (generic-aware)
-        // In method_declaration, children are typically: modifiers, type/void_type, identifier, formal_parameters, block
-        // Look through children to find the return type
-        int childCount = methodDecl.getNamedChildCount();
-        for (int i = 0; i < childCount; i++) {
-            TSNode child = methodDecl.getNamedChild(i);
-            String childType = child.getType();
-            if ("void_type".equals(childType)) {
-                methodInfo.returnType = "void";
-                break;
-            } else if (!"modifiers".equals(childType) && !"identifier".equals(childType)
-                    && !"formal_parameters".equals(childType) && !"block".equals(childType)
-                    && !"throws".equals(childType)) {
-                // This is likely the return type node
-                methodInfo.returnType = extractTypeWithGenerics(source, child, child);
-                break;
-            }
-        }
+        // Name, return type, parameters
+        methodInfo.name = readMethodName(source, methodDecl);
+        methodInfo.returnType = readReturnType(source, methodDecl);
+        Map<String, String> paramTypes = readParameters(source, methodDecl, methodInfo);
 
-        // Build parameter type map and fill parameters list
-        Map<String, String> paramTypes = new HashMap<>();
-        TSNode paramsNode = findFirstChild(methodDecl, "formal_parameters");
-        if (paramsNode != null) {
-            List<TSNode> params = findAllChildren(paramsNode, "formal_parameter");
-            for (TSNode param : params) {
-                // In formal_parameter, the structure is typically: type + identifier
-                // Get the first child which should be the type
-                String typeName = null;
-                TSNode typeNode = param.getNamedChild(0);
-                if (typeNode != null && !"identifier".equals(typeNode.getType())) {
-                    // This is the type node (generic-aware)
-                    typeName = extractTypeWithGenerics(source, typeNode, param);
-                }
-                
-                // Get parameter name (should be the identifier)
-                TSNode paramName = findFirstChild(param, "identifier");
-                if (paramName != null) {
-                    String pName = getNodeText(source, paramName);
-                    if (typeName != null) {
-                        paramTypes.put(pName, typeName);
-                    }
-                    methodInfo.parameters.add(new Parameter(pName, typeName));
-                }
-            }
-        }
-
-        // Get method body
+        // Body
         TSNode bodyNode = findFirstChild(methodDecl, "block");
         if (bodyNode != null) {
             analyzeMethodBody(source, bodyNode, methodInfo, className, fieldTypes, paramTypes);
@@ -252,14 +204,87 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         return methodInfo;
     }
 
+    // --- helpers extracted for readability (no behavior change) ---
+    private String readMethodName(String source, TSNode methodDecl) {
+        TSNode nameNode = findFirstChild(methodDecl, "identifier");
+        return nameNode != null ? getNodeText(source, nameNode) : null;
+    }
+
+    private String readReturnType(String source, TSNode methodDecl) {
+        int childCount = methodDecl.getNamedChildCount();
+        for (int i = 0; i < childCount; i++) {
+            TSNode child = methodDecl.getNamedChild(i);
+            String childType = child.getType();
+            if ("void_type".equals(childType)) {
+                return "void";
+            } else if (!"modifiers".equals(childType) && !"identifier".equals(childType)
+                    && !"formal_parameters".equals(childType) && !"block".equals(childType)
+                    && !"throws".equals(childType)) {
+                return extractTypeWithGenerics(source, child, child);
+            }
+        }
+        return null;
+    }
+
+    private Map<String, String> readParameters(String source, TSNode methodDecl, MethodInfo methodInfo) {
+        Map<String, String> paramTypes = new HashMap<>();
+        TSNode paramsNode = findFirstChild(methodDecl, "formal_parameters");
+        if (paramsNode == null) return paramTypes;
+        List<TSNode> params = findAllChildren(paramsNode, "formal_parameter");
+        for (TSNode param : params) {
+            String typeName = null;
+            TSNode typeNode = param.getNamedChild(0);
+            if (typeNode != null && !"identifier".equals(typeNode.getType())) {
+                typeName = extractTypeWithGenerics(source, typeNode, param);
+            }
+            TSNode paramName = findFirstChild(param, "identifier");
+            if (paramName != null) {
+                String pName = getNodeText(source, paramName);
+                if (typeName != null) {
+                    paramTypes.put(pName, typeName);
+                }
+                methodInfo.parameters.add(new Parameter(pName, typeName));
+            }
+        }
+        return paramTypes;
+    }
+
     private void analyzeMethodBody(String source, TSNode bodyNode, MethodInfo methodInfo,
                                    String className, Map<String, String> fieldTypes, Map<String, String> paramTypes) {
         // Local types map (built from declarations in the body)
         Map<String, String> localTypes = new HashMap<>();
-        // Find local variable declarations
+        // 1) Locals
+        collectLocalVariables(source, bodyNode, methodInfo, localTypes);
+        // 2) Method invocations (returns the set of member accesses used as invocations)
+        Set<TSNode> memberAccessInInvocations = collectMethodInvocations(source, bodyNode, methodInfo, className, fieldTypes, paramTypes, localTypes);
+        // 3) Property accesses (skip those used in invocations)
+        collectPropertyAccesses(source, bodyNode, methodInfo, className, localTypes, memberAccessInInvocations);
+        // 4) Sort
+        methodInfo.methodCalls.sort((a, b) -> {
+            int nameCompare = a.methodName.compareTo(b.methodName);
+            if (nameCompare != 0) return nameCompare;
+            if (a.objectType != null && b.objectType != null) {
+                int typeCompare = a.objectType.compareTo(b.objectType);
+                if (typeCompare != 0) return typeCompare;
+            } else if (a.objectType != null) {
+                return 1;
+            } else if (b.objectType != null) {
+                return -1;
+            }
+            if (a.objectName != null && b.objectName != null) {
+                return a.objectName.compareTo(b.objectName);
+            } else if (a.objectName != null) {
+                return 1;
+            } else if (b.objectName != null) {
+                return -1;
+            }
+            return 0;
+        });
+    }
+
+    private void collectLocalVariables(String source, TSNode bodyNode, MethodInfo methodInfo, Map<String, String> localTypes) {
         List<TSNode> localVarDecls = findAllDescendants(bodyNode, "local_variable_declaration");
         for (TSNode varDecl : localVarDecls) {
-            // Try to extract the declared type once per declaration statement
             String declaredType = null;
             TSNode typeNode = findFirstChild(varDecl, "type");
             if (typeNode == null) typeNode = findFirstDescendant(varDecl, "type_identifier");
@@ -278,38 +303,30 @@ public class JavaAnalyzer implements LanguageAnalyzer {
                 }
             }
         }
-        
-        // Find method invocations
+    }
+
+    private Set<TSNode> collectMethodInvocations(String source, TSNode bodyNode, MethodInfo methodInfo,
+                                                 String className, Map<String, String> fieldTypes,
+                                                 Map<String, String> paramTypes, Map<String, String> localTypes) {
+        Set<TSNode> memberAccessInInvocations = new HashSet<>();
         List<TSNode> methodInvocations = findAllDescendants(bodyNode, "method_invocation");
         for (TSNode invocation : methodInvocations) {
-            // In Java Tree-sitter: method_invocation can have:
-            // 1. object (identifier/field_access/etc) + identifier (method name) + argument_list
-            // 2. Just identifier (method name) + argument_list (for this.method() or direct calls)
-            
             int childCount = invocation.getNamedChildCount();
             String methodName = null;
             String objectName = null;
             String objectType = null;
-            
+
             if (childCount >= 2) {
-                // obj.method() pattern - first child is object, second is method name
                 TSNode firstChild = invocation.getNamedChild(0);
                 TSNode secondChild = invocation.getNamedChild(1);
-                
-                // Check if second child is identifier (method name) and first is not argument_list
                 if ("identifier".equals(secondChild.getType()) && !"argument_list".equals(firstChild.getType())) {
                     methodName = getNodeText(source, secondChild);
-                    
-                    // Extract object name from first child
                     if ("identifier".equals(firstChild.getType())) {
                         objectName = getNodeText(source, firstChild);
-                        // Resolve object type from scopes
                         objectType = localTypes.getOrDefault(objectName,
                                 paramTypes.getOrDefault(objectName, fieldTypes.get(objectName)));
                     } else if ("field_access".equals(firstChild.getType())) {
-                        // For chained calls like a.b.method(), get the full chain
                         objectName = getNodeText(source, firstChild);
-                        // Best-effort: try base identifier (before first dot)
                         TSNode baseId = findFirstChild(firstChild, "identifier");
                         if (baseId != null) {
                             String baseName = getNodeText(source, baseId);
@@ -317,7 +334,6 @@ public class JavaAnalyzer implements LanguageAnalyzer {
                                     paramTypes.getOrDefault(baseName, fieldTypes.get(baseName)));
                         }
                     } else if ("type_identifier".equals(firstChild.getType()) || "scoped_identifier".equals(firstChild.getType())) {
-                        // Static call: ClassName.method()
                         objectType = getNodeText(source, firstChild);
                         objectName = null;
                     } else if ("this".equals(firstChild.getType())) {
@@ -325,19 +341,16 @@ public class JavaAnalyzer implements LanguageAnalyzer {
                         objectType = className;
                     }
                 } else if ("identifier".equals(firstChild.getType()) && "argument_list".equals(secondChild.getType())) {
-                    // Direct method call: method()
                     methodName = getNodeText(source, firstChild);
                 }
             } else if (childCount == 1) {
-                // Just method name + arguments
                 TSNode firstChild = invocation.getNamedChild(0);
                 if ("identifier".equals(firstChild.getType())) {
                     methodName = getNodeText(source, firstChild);
                 }
             }
-            
+
             if (methodName != null) {
-                // Check if we already have this call, if so increment count
                 boolean found = false;
                 for (MethodCall existingCall : methodInfo.methodCalls) {
                     if (existingCall.matches(methodName, objectType, objectName)) {
@@ -351,32 +364,13 @@ public class JavaAnalyzer implements LanguageAnalyzer {
                 }
             }
         }
-        
-        // Sort method calls alphabetically by method name
-        methodInfo.methodCalls.sort((a, b) -> {
-            int nameCompare = a.methodName.compareTo(b.methodName);
-            if (nameCompare != 0) return nameCompare;
-            
-            // If same method name, sort by object type
-            if (a.objectType != null && b.objectType != null) {
-                int typeCompare = a.objectType.compareTo(b.objectType);
-                if (typeCompare != 0) return typeCompare;
-            } else if (a.objectType != null) {
-                return 1;
-            } else if (b.objectType != null) {
-                return -1;
-            }
-            
-            // Finally sort by object name
-            if (a.objectName != null && b.objectName != null) {
-                return a.objectName.compareTo(b.objectName);
-            } else if (a.objectName != null) {
-                return 1;
-            } else if (b.objectName != null) {
-                return -1;
-            }
-            return 0;
-        });
+        return memberAccessInInvocations; // remains empty for Java (kept for symmetry and future use)
+    }
+
+    private void collectPropertyAccesses(String source, TSNode bodyNode, MethodInfo methodInfo,
+                                         String className, Map<String, String> localTypes, Set<TSNode> memberAccessInInvocations) {
+        // Java: count property-like accesses via method_invocation already; no separate member_access node used
+        // This method is a placeholder for parity with other analyzers and future expansion.
     }
 
     private List<FieldInfo> collectFieldsFromBody(String source, TSNode classBody, Map<String, String> fieldTypes) {
@@ -399,28 +393,32 @@ public class JavaAnalyzer implements LanguageAnalyzer {
             
             List<TSNode> declarators = findAllDescendants(field, "variable_declarator");
             for (TSNode declarator : declarators) {
-                TSNode varName = findFirstChild(declarator, "identifier");
-                if (varName != null) {
-                    String name = getNodeText(source, varName);
-                    if (declaredType != null) {
-                        fieldTypes.put(name, declaredType);
-                    }
-                    
-                    FieldInfo fieldInfo = new FieldInfo();
-                    fieldInfo.name = name;
-                    fieldInfo.type = declaredType;
-                    
-                    // Extract modifiers and visibility for this field
-                    extractModifiersAndVisibility(source, field, fieldInfo.modifiers, fieldInfo);
-                    
-                    // Extract annotations for this field
-                    extractAnnotations(source, field, fieldInfo.annotations);
-                    
-                    fields.add(fieldInfo);
-                }
+                FieldInfo fi = buildFieldInfo(source, field, declarator, declaredType, fieldTypes);
+                if (fi != null) fields.add(fi);
             }
         }
         return fields;
+    }
+
+    // Builds FieldInfo for a single variable_declarator inside a field_declaration, updating fieldTypes map.
+    private FieldInfo buildFieldInfo(String source, TSNode fieldDecl, TSNode declarator,
+                                     String declaredType, Map<String, String> fieldTypes) {
+        TSNode varName = findFirstChild(declarator, "identifier");
+        if (varName == null) return null;
+        String name = getNodeText(source, varName);
+        if (declaredType != null) {
+            fieldTypes.put(name, declaredType);
+        }
+
+        FieldInfo fieldInfo = new FieldInfo();
+        fieldInfo.name = name;
+        fieldInfo.type = declaredType;
+
+        // Extract modifiers and visibility for this field
+        extractModifiersAndVisibility(source, fieldDecl, fieldInfo.modifiers, fieldInfo);
+        // Extract annotations for this field
+        extractAnnotations(source, fieldDecl, fieldInfo.annotations);
+        return fieldInfo;
     }
 
     // Generic-aware type extraction helper: returns the text of the base type extended to include any trailing
