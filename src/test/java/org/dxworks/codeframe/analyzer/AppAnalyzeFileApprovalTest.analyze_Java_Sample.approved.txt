@@ -14,13 +14,13 @@
       "name" : "db",
       "type" : "DatabaseConnection",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
+      "modifiers" : [ "private", "final" ],
       "annotations" : [ ]
     }, {
       "name" : "logger",
       "type" : "Logger",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
+      "modifiers" : [ "private", "final" ],
       "annotations" : [ ]
     }, {
       "name" : "users",
@@ -29,6 +29,7 @@
       "modifiers" : [ "private" ],
       "annotations" : [ ]
     } ],
+    "properties" : [ ],
     "methods" : [ {
       "name" : "findById",
       "returnType" : "User",
@@ -151,6 +152,21 @@
         "objectName" : "user",
         "callCount" : 1
       } ]
+    }, {
+      "name" : "Sample",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "db",
+        "type" : "DatabaseConnection"
+      }, {
+        "name" : "logger",
+        "type" : "Logger"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
     } ],
     "types" : [ ]
   }, {
@@ -180,6 +196,7 @@
       "modifiers" : [ "private" ],
       "annotations" : [ ]
     } ],
+    "properties" : [ ],
     "methods" : [ {
       "name" : "getId",
       "returnType" : "String",
