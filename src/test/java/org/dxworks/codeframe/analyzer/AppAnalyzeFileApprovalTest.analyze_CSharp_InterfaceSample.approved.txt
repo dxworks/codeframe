@@ -4,7 +4,7 @@
   "packageName" : "Samples.Interfaces",
   "types" : [ {
     "kind" : "interface",
-    "name" : "IRepository",
+    "name" : "IRepository<T, ID>",
     "visibility" : "public",
     "modifiers" : [ "public" ],
     "annotations" : [ "[Obsolete]" ],

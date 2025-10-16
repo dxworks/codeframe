@@ -28,7 +28,7 @@
     "types" : [ ]
   }, {
     "kind" : "class",
-    "name" : "SimpleMap",
+    "name" : "SimpleMap<K, V>",
     "visibility" : "public",
     "modifiers" : [ "public" ],
     "annotations" : [ ],

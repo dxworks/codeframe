@@ -74,6 +74,12 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
         for (TSNode interfaceDecl : interfaces) {
             analysis.types.add(analyzeInterface(sourceCode, interfaceDecl));
         }
+
+        // Process records (C# 9+)
+        List<TSNode> records = findAllDescendants(rootNode, "record_declaration");
+        for (TSNode recordDecl : records) {
+            analysis.types.add(analyzeRecord(sourceCode, recordDecl));
+        }
     }
     
     private Set<Integer> identifyNestedClasses(List<TSNode> allClasses) {
@@ -148,7 +154,13 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
         // Get class name
         TSNode nameNode = findFirstChild(classDecl, "identifier");
         if (nameNode != null) {
-            typeInfo.name = getNodeText(source, nameNode);
+            String baseName = getNodeText(source, nameNode);
+            TSNode typeParams = findFirstChild(classDecl, "type_parameter_list");
+            if (typeParams != null) {
+                typeInfo.name = baseName + getNodeText(source, typeParams);
+            } else {
+                typeInfo.name = baseName;
+            }
         }
         
         // Get base list (extends and implements)
@@ -181,6 +193,86 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
         
         return typeInfo;
     }
+
+    private TypeInfo analyzeRecord(String source, TSNode recordDecl) {
+        TypeInfo typeInfo = new TypeInfo();
+        typeInfo.kind = "record";
+
+        // Modifiers and attributes
+        extractModifiersAndVisibility(source, recordDecl, typeInfo.modifiers, typeInfo);
+        extractAttributes(source, recordDecl, typeInfo.annotations);
+
+        // Name (include generic parameters if present)
+        TSNode nameNode = findFirstChild(recordDecl, "identifier");
+        if (nameNode != null) {
+            String baseName = getNodeText(source, nameNode);
+            TSNode typeParams = findFirstChild(recordDecl, "type_parameter_list");
+            if (typeParams != null) {
+                typeInfo.name = baseName + getNodeText(source, typeParams);
+            } else {
+                typeInfo.name = baseName;
+            }
+        }
+
+        // Base list (extends/implements)
+        TSNode baseListNode = findFirstChild(recordDecl, "base_list");
+        if (baseListNode != null) {
+            List<String> baseTypeNames = new ArrayList<>();
+            for (int i = 0; i < baseListNode.getNamedChildCount(); i++) {
+                TSNode baseTypeNode = baseListNode.getNamedChild(i);
+                String typeName = getNodeText(source, baseTypeNode);
+                if (typeName != null && !typeName.isEmpty()) {
+                    baseTypeNames.add(typeName);
+                }
+            }
+            for (int i = 0; i < baseTypeNames.size(); i++) {
+                String typeName = baseTypeNames.get(i);
+                if (i == 0 && !looksLikeInterface(typeName)) {
+                    typeInfo.extendsType = typeName;
+                } else {
+                    typeInfo.implementsInterfaces.add(typeName);
+                }
+            }
+        }
+
+        // Primary constructor parameters -> fields (to mirror Java records components behavior)
+        TSNode paramList = findFirstChild(recordDecl, "parameter_list");
+        if (paramList != null) {
+            List<TSNode> parameters = findAllChildren(paramList, "parameter");
+            for (TSNode param : parameters) {
+                // Reuse parameter extraction logic
+                String pName = null;
+                String pType = null;
+                for (int i = 0; i < param.getNamedChildCount(); i++) {
+                    TSNode child = param.getNamedChild(i);
+                    String fieldName = param.getFieldNameForChild(i);
+                    if ("name".equals(fieldName)) {
+                        pName = getNodeText(source, child);
+                    } else if ("type".equals(fieldName)) {
+                        pType = extractTypeWithGenerics(source, child, param);
+                    }
+                }
+                if (pName != null) {
+                    FieldInfo fi = new FieldInfo();
+                    fi.name = pName;
+                    fi.type = pType;
+                    // Record primary params are effectively properties; we record as fields here
+                    typeInfo.fields.add(fi);
+                }
+            }
+        }
+
+        // Body members
+        TSNode body = findFirstChild(recordDecl, "declaration_list");
+        if (body != null) {
+            typeInfo.fields.addAll(collectFieldsFromBody(source, body));
+            typeInfo.properties.addAll(collectPropertiesFromBody(source, body));
+            typeInfo.methods.addAll(collectMethodsFromBody(source, body, typeInfo.name));
+            typeInfo.methods.addAll(collectConstructorsFromBody(source, body, typeInfo.name));
+        }
+
+        return typeInfo;
+    }
     
     private TypeInfo analyzeInterface(String source, TSNode interfaceDecl) {
         TypeInfo typeInfo = new TypeInfo();
@@ -193,7 +285,13 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
 
         TSNode nameNode = findFirstChild(interfaceDecl, "identifier");
         if (nameNode != null) {
-            typeInfo.name = getNodeText(source, nameNode);
+            String baseName = getNodeText(source, nameNode);
+            TSNode typeParams = findFirstChild(interfaceDecl, "type_parameter_list");
+            if (typeParams != null) {
+                typeInfo.name = baseName + getNodeText(source, typeParams);
+            } else {
+                typeInfo.name = baseName;
+            }
         }
         
         // Interfaces can extend other interfaces
