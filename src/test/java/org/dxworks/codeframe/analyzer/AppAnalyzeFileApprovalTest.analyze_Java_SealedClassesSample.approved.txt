@@ -1,0 +1,212 @@
+{
+  "filePath" : "src/test/resources/samples/java/SealedClassesSample.java",
+  "language" : "java",
+  "packageName" : "samples.java",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "Circle",
+    "visibility" : null,
+    "modifiers" : [ "final" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ "Shape" ],
+    "fields" : [ {
+      "name" : "radius",
+      "type" : null,
+      "visibility" : "private",
+      "modifiers" : [ "private", "final" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "area",
+      "returnType" : "double",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ "@Override" ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getRadius",
+      "returnType" : "double",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "Circle",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "radius",
+        "type" : "double"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "Rectangle",
+    "visibility" : null,
+    "modifiers" : [ "final" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ "Shape" ],
+    "fields" : [ {
+      "name" : "width",
+      "type" : null,
+      "visibility" : "private",
+      "modifiers" : [ "private", "final" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "height",
+      "type" : null,
+      "visibility" : "private",
+      "modifiers" : [ "private", "final" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "area",
+      "returnType" : "double",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ "@Override" ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "Rectangle",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "width",
+        "type" : "double"
+      }, {
+        "name" : "height",
+        "type" : "double"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "Triangle",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ "Shape" ],
+    "fields" : [ {
+      "name" : "base",
+      "type" : null,
+      "visibility" : "private",
+      "modifiers" : [ "private", "final" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "height",
+      "type" : null,
+      "visibility" : "private",
+      "modifiers" : [ "private", "final" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "area",
+      "returnType" : "double",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ "@Override" ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "Triangle",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "base",
+        "type" : "double"
+      }, {
+        "name" : "height",
+        "type" : "double"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "ShapeProcessor",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "describe",
+      "returnType" : "String",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "shape",
+        "type" : "Shape"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "area",
+        "objectType" : null,
+        "objectName" : "r",
+        "callCount" : 1
+      }, {
+        "methodName" : "area",
+        "objectType" : null,
+        "objectName" : "t",
+        "callCount" : 1
+      }, {
+        "methodName" : "getRadius",
+        "objectType" : null,
+        "objectName" : "c",
+        "callCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "interface",
+    "name" : "Shape",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "area",
+      "returnType" : "double",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ ]
+}

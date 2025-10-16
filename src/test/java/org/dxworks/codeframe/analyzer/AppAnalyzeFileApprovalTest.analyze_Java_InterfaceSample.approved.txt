@@ -4,7 +4,7 @@
   "packageName" : "samples.java",
   "types" : [ {
     "kind" : "interface",
-    "name" : "Repository",
+    "name" : "Repository<T, ID>",
     "visibility" : "public",
     "modifiers" : [ "public" ],
     "annotations" : [ "@Deprecated" ],

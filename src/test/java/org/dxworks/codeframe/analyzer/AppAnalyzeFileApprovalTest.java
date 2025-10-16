@@ -43,6 +43,36 @@ public class AppAnalyzeFileApprovalTest {
     void analyze_Java_LambdaSample() throws IOException {
         verify(Paths.get("src/test/resources/samples/java/LambdaSample.java"), Language.JAVA);
     }
+
+    @Test
+    void analyze_Java_ExceptionHandlingSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/java/ExceptionHandlingSample.java"), Language.JAVA);
+    }
+
+    @Test
+    void analyze_Java_EnumSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/java/EnumSample.java"), Language.JAVA);
+    }
+
+    @Test
+    void analyze_Java_AnonymousInnerClassesSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/java/AnonymousInnerClassesSample.java"), Language.JAVA);
+    }
+
+    @Test
+    void analyze_Java_GenericsSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/java/GenericsSample.java"), Language.JAVA);
+    }
+
+    @Test
+    void analyze_Java_RecordsSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/java/RecordsSample.java"), Language.JAVA);
+    }
+
+    @Test
+    void analyze_Java_SealedClassesSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/java/SealedClassesSample.java"), Language.JAVA);
+    }
     
     // ---- JavaScript ----
     @Test

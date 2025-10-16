@@ -1,0 +1,159 @@
+{
+  "filePath" : "src/test/resources/samples/java/ExceptionHandlingSample.java",
+  "language" : "java",
+  "packageName" : "samples.java",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "ExceptionHandlingSample",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ {
+      "name" : "logger",
+      "type" : "Logger",
+      "visibility" : "private",
+      "modifiers" : [ "private", "final" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "processFile",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "path",
+        "type" : "String"
+      } ],
+      "localVariables" : [ "data" ],
+      "methodCalls" : [ {
+        "methodName" : "cleanup",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "error",
+        "objectType" : "Logger",
+        "objectName" : "logger",
+        "callCount" : 1
+      }, {
+        "methodName" : "getMessage",
+        "objectType" : null,
+        "objectName" : "e",
+        "callCount" : 1
+      }, {
+        "methodName" : "info",
+        "objectType" : "Logger",
+        "objectName" : "logger",
+        "callCount" : 1
+      }, {
+        "methodName" : "read",
+        "objectType" : null,
+        "objectName" : "reader",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "validateInput",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "input",
+        "type" : "String"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "info",
+        "objectType" : "Logger",
+        "objectName" : "logger",
+        "callCount" : 1
+      }, {
+        "methodName" : "isEmpty",
+        "objectType" : "String",
+        "objectName" : "input",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "cleanup",
+      "returnType" : "void",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "info",
+        "objectType" : "Logger",
+        "objectName" : "logger",
+        "callCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "ValidationException",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : "Exception",
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "ValidationException",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "message",
+        "type" : "String"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "Logger",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "info",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "s",
+        "type" : "String"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "error",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "s",
+        "type" : "String"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ "import java.io.FileReader;", "import java.io.IOException;" ]
+}

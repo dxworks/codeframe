@@ -1,0 +1,127 @@
+{
+  "filePath" : "src/test/resources/samples/java/EnumSample.java",
+  "language" : "java",
+  "packageName" : "samples.java",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "EnumSample",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "getStatusMessage",
+      "returnType" : "String",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "status",
+        "type" : "Status"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "getCode",
+        "objectType" : "Status",
+        "objectName" : "status",
+        "callCount" : 3
+      } ]
+    }, {
+      "name" : "processAllStatuses",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "getCode",
+        "objectType" : null,
+        "objectName" : "s",
+        "callCount" : 1
+      }, {
+        "methodName" : "println",
+        "objectType" : null,
+        "objectName" : "System.out",
+        "callCount" : 1
+      }, {
+        "methodName" : "values",
+        "objectType" : null,
+        "objectName" : "Status",
+        "callCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "enum",
+    "name" : "Status",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ {
+      "name" : "code",
+      "type" : "String",
+      "visibility" : "private",
+      "modifiers" : [ "private", "final" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "priority",
+      "type" : "int",
+      "visibility" : "private",
+      "modifiers" : [ "private", "final" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "getCode",
+      "returnType" : "String",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getPriority",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "isActive",
+      "returnType" : "boolean",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "Status",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "code",
+        "type" : "String"
+      }, {
+        "name" : "priority",
+        "type" : "int"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ ]
+}

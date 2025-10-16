@@ -1,0 +1,184 @@
+{
+  "filePath" : "src/test/resources/samples/java/AnonymousInnerClassesSample.java",
+  "language" : "java",
+  "packageName" : "samples.java",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "AnonymousInnerClassesSample",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ {
+      "name" : "logger",
+      "type" : "Logger",
+      "visibility" : "private",
+      "modifiers" : [ "private", "final" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "createTask",
+      "returnType" : "Runnable",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "info",
+        "objectType" : "Logger",
+        "objectName" : "logger",
+        "callCount" : 2
+      }, {
+        "methodName" : "process",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "executeWithCallback",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "callback",
+        "type" : "Callback"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "onComplete",
+        "objectType" : "Callback",
+        "objectName" : "callback",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "demonstrateLocalClass",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ "processor" ],
+      "methodCalls" : [ {
+        "methodName" : "info",
+        "objectType" : "Logger",
+        "objectName" : "logger",
+        "callCount" : 1
+      }, {
+        "methodName" : "process",
+        "objectType" : "LocalProcessor",
+        "objectName" : "processor",
+        "callCount" : 1
+      } ]
+    } ],
+    "types" : [ {
+      "kind" : "class",
+      "name" : "InnerHelper",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "extendsType" : null,
+      "implementsInterfaces" : [ ],
+      "fields" : [ ],
+      "properties" : [ ],
+      "methods" : [ {
+        "name" : "assist",
+        "returnType" : "void",
+        "visibility" : "public",
+        "modifiers" : [ "public" ],
+        "annotations" : [ ],
+        "parameters" : [ ],
+        "localVariables" : [ ],
+        "methodCalls" : [ {
+          "methodName" : "info",
+          "objectType" : null,
+          "objectName" : "logger",
+          "callCount" : 1
+        } ]
+      } ],
+      "types" : [ ]
+    }, {
+      "kind" : "class",
+      "name" : "StaticHelper",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "extendsType" : null,
+      "implementsInterfaces" : [ ],
+      "fields" : [ ],
+      "properties" : [ ],
+      "methods" : [ {
+        "name" : "help",
+        "returnType" : "void",
+        "visibility" : "public",
+        "modifiers" : [ "public" ],
+        "annotations" : [ ],
+        "parameters" : [ ],
+        "localVariables" : [ ],
+        "methodCalls" : [ {
+          "methodName" : "println",
+          "objectType" : null,
+          "objectName" : "System.out",
+          "callCount" : 1
+        } ]
+      } ],
+      "types" : [ ]
+    } ]
+  }, {
+    "kind" : "class",
+    "name" : "Logger",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "info",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "s",
+        "type" : "String"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "interface",
+    "name" : "Callback",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "onComplete",
+      "returnType" : "void",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "result",
+        "type" : "String"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ ]
+}

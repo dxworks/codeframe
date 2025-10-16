@@ -1,0 +1,180 @@
+{
+  "filePath" : "src/test/resources/samples/java/GenericsSample.java",
+  "language" : "java",
+  "packageName" : "samples.java",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "GenericsSample",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "findMax",
+      "returnType" : "T",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "items",
+        "type" : "List<T>"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "max",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "orElse",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "stream",
+        "objectType" : "List<T>",
+        "objectName" : "items",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "findFirst",
+      "returnType" : "Optional<T>",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "items",
+        "type" : "List<T>"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "empty",
+        "objectType" : null,
+        "objectName" : "Optional",
+        "callCount" : 1
+      }, {
+        "methodName" : "get",
+        "objectType" : "List<T>",
+        "objectName" : "items",
+        "callCount" : 1
+      }, {
+        "methodName" : "isEmpty",
+        "objectType" : "List<T>",
+        "objectName" : "items",
+        "callCount" : 1
+      }, {
+        "methodName" : "of",
+        "objectType" : null,
+        "objectName" : "Optional",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "processWildcard",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "numbers",
+        "type" : "List<? extends Number>"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "doubleValue",
+        "objectType" : null,
+        "objectName" : "n",
+        "callCount" : 1
+      }, {
+        "methodName" : "println",
+        "objectType" : null,
+        "objectName" : "System.out",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "addToMap",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "container",
+        "type" : "GenericContainer<K, V>"
+      }, {
+        "name" : "key",
+        "type" : "K"
+      }, {
+        "name" : "value",
+        "type" : "V"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "put",
+        "objectType" : "GenericContainer<K, V>",
+        "objectName" : "container",
+        "callCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "GenericContainer<K, V>",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ {
+      "name" : "key",
+      "type" : "K",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "value",
+      "type" : "V",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "put",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "K"
+      }, {
+        "name" : "value",
+        "type" : "V"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "get",
+      "returnType" : "V",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "K"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "equals",
+        "objectType" : "K",
+        "objectName" : "this.key",
+        "callCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ "import java.util.List;", "import java.util.Optional;" ]
+}
