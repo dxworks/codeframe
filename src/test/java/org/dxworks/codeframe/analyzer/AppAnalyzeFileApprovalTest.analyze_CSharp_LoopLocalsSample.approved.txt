@@ -1,0 +1,44 @@
+{
+  "filePath" : "src/test/resources/samples/csharp/LoopLocalsSample.cs",
+  "language" : "csharp",
+  "packageName" : "Samples.LoopLocals",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "LoopLocals",
+    "visibility" : "public",
+    "modifiers" : [ "public", "static" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "SumUpTo",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "n",
+        "type" : "int"
+      } ],
+      "localVariables" : [ "sum" ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "SumList",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "xs",
+        "type" : "List<int>"
+      } ],
+      "localVariables" : [ "sum" ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ "using System;", "using System.Collections.Generic;" ]
+}

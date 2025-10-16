@@ -1,0 +1,78 @@
+{
+  "filePath" : "src/test/resources/samples/csharp/IteratorsAndIndexersSample.cs",
+  "language" : "csharp",
+  "packageName" : "Samples.Iterators",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "Seq",
+    "visibility" : "public",
+    "modifiers" : [ "public", "static" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "UpTo",
+      "returnType" : "IEnumerable<int>",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "n",
+        "type" : "int"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "SimpleMap",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ "IEnumerable<KeyValuePair<K, V>>" ],
+    "fields" : [ {
+      "name" : "_inner",
+      "type" : "Dictionary<K, V>",
+      "visibility" : "private",
+      "modifiers" : [ "private", "readonly" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "GetEnumerator",
+      "returnType" : "IEnumerator<KeyValuePair<K, V>>",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "GetEnumerator",
+        "objectType" : null,
+        "objectName" : "_inner",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "GetEnumerator",
+      "returnType" : "IEnumerator",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "GetEnumerator",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ "using System.Collections;", "using System.Collections.Generic;" ]
+}

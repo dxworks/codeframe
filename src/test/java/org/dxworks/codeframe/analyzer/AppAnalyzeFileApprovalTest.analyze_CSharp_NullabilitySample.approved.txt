@@ -1,0 +1,61 @@
+{
+  "filePath" : "src/test/resources/samples/csharp/NullabilitySample.cs",
+  "language" : "csharp",
+  "packageName" : "Samples.Nullability",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "N",
+    "visibility" : "public",
+    "modifiers" : [ "public", "static" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "LengthOrDefault",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "s",
+        "type" : "string?"
+      } ],
+      "localVariables" : [ "len" ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "NotNull",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "s",
+        "type" : "string?"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "nameof",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "Suppress",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "s",
+        "type" : "string?"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ "using System;" ]
+}

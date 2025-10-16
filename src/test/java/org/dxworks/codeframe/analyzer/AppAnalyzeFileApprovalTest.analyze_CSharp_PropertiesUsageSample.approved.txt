@@ -1,0 +1,207 @@
+{
+  "filePath" : "src/test/resources/samples/csharp/PropertiesUsageSample.cs",
+  "language" : "csharp",
+  "packageName" : "Samples.Properties",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "Person",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ {
+      "name" : "_age",
+      "type" : "int",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ {
+      "name" : "FirstName",
+      "type" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "accessors" : [ {
+        "kind" : "get",
+        "visibility" : null,
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "localVariables" : [ ],
+        "methodCalls" : [ ]
+      } ]
+    }, {
+      "name" : "LastName",
+      "type" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "accessors" : [ {
+        "kind" : "get",
+        "visibility" : null,
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "localVariables" : [ ],
+        "methodCalls" : [ ]
+      } ]
+    }, {
+      "name" : "DisplayName",
+      "type" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "accessors" : [ {
+        "kind" : "get",
+        "visibility" : null,
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "localVariables" : [ "label", "space", "name" ],
+        "methodCalls" : [ {
+          "methodName" : "Concat",
+          "objectType" : "string",
+          "objectName" : null,
+          "callCount" : 1
+        }, {
+          "methodName" : "ToUpperInvariant",
+          "objectType" : "var",
+          "objectName" : "name",
+          "callCount" : 1
+        } ]
+      } ]
+    }, {
+      "name" : "Age",
+      "type" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "accessors" : [ {
+        "kind" : "get",
+        "visibility" : null,
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "localVariables" : [ ],
+        "methodCalls" : [ ]
+      }, {
+        "kind" : "set",
+        "visibility" : null,
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "localVariables" : [ "label", "v" ],
+        "methodCalls" : [ ]
+      } ]
+    }, {
+      "name" : "NameLength",
+      "type" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "accessors" : [ {
+        "kind" : "get",
+        "visibility" : "public",
+        "modifiers" : [ "public" ],
+        "annotations" : [ ],
+        "localVariables" : [ ],
+        "methodCalls" : [ {
+          "methodName" : "get_Length",
+          "objectType" : null,
+          "objectName" : "DisplayName",
+          "callCount" : 1
+        } ]
+      } ]
+    } ],
+    "methods" : [ {
+      "name" : "Person",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "firstName",
+        "type" : "string"
+      }, {
+        "name" : "lastName",
+        "type" : "string"
+      }, {
+        "name" : "age",
+        "type" : "int"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "PersonService",
+    "visibility" : "public",
+    "modifiers" : [ "public", "static" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "Promote",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "p",
+        "type" : "Person"
+      } ],
+      "localVariables" : [ "label" ],
+      "methodCalls" : [ {
+        "methodName" : "get_Age",
+        "objectType" : "Person",
+        "objectName" : "p",
+        "callCount" : 2
+      }, {
+        "methodName" : "get_DisplayName",
+        "objectType" : "Person",
+        "objectName" : "p",
+        "callCount" : 1
+      }, {
+        "methodName" : "get_NameLength",
+        "objectType" : "Person",
+        "objectName" : "p",
+        "callCount" : 2
+      }, {
+        "methodName" : "set_Age",
+        "objectType" : "Person",
+        "objectName" : "p",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "Describe",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "p",
+        "type" : "Person"
+      } ],
+      "localVariables" : [ "label" ],
+      "methodCalls" : [ {
+        "methodName" : "get_Age",
+        "objectType" : "Person",
+        "objectName" : "p",
+        "callCount" : 1
+      }, {
+        "methodName" : "get_DisplayName",
+        "objectType" : "Person",
+        "objectName" : "p",
+        "callCount" : 1
+      }, {
+        "methodName" : "get_NameLength",
+        "objectType" : "Person",
+        "objectName" : "p",
+        "callCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ "using System;" ]
+}

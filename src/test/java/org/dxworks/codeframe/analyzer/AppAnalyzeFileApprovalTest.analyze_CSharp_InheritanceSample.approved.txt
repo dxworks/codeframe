@@ -1,0 +1,112 @@
+{
+  "filePath" : "src/test/resources/samples/csharp/InheritanceSample.cs",
+  "language" : "csharp",
+  "packageName" : "Samples.Inheritance",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "Animal",
+    "visibility" : "public",
+    "modifiers" : [ "public", "abstract" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ {
+      "name" : "Name",
+      "type" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "accessors" : [ {
+        "kind" : "get",
+        "visibility" : null,
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "localVariables" : [ ],
+        "methodCalls" : [ ]
+      } ]
+    } ],
+    "methods" : [ {
+      "name" : "Speak",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public", "virtual" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "Animal",
+      "returnType" : null,
+      "visibility" : "protected",
+      "modifiers" : [ "protected" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "string"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "Dog",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ ],
+    "extendsType" : "Animal",
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "Speak",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public", "sealed", "override" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "Dog",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "string"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "LoudDog",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ ],
+    "extendsType" : "Dog",
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "LoudDog",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "string"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ "using System;" ]
+}

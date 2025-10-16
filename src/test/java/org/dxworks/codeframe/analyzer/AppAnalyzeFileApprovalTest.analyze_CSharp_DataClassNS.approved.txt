@@ -17,6 +17,7 @@
       "modifiers" : [ "private", "const" ],
       "annotations" : [ ]
     } ],
+    "properties" : [ ],
     "methods" : [ {
       "name" : "Detect",
       "returnType" : "Maybe<CodeIssue>",
@@ -32,69 +33,64 @@
         "methodName" : "Accessors",
         "objectType" : "ClassModel",
         "objectName" : "t",
-        "callCount" : 2
+        "callCount" : 1
       }, {
         "methodName" : "CalculateSeverity",
         "objectType" : null,
         "objectName" : null,
         "callCount" : 1
       }, {
-        "methodName" : "Count",
-        "objectType" : "IList<FieldModel>",
-        "objectName" : "publicAttributes",
-        "callCount" : 1
-      }, {
-        "methodName" : "Count",
-        "objectType" : "IList<PropertyModel>",
-        "objectName" : "accessors",
-        "callCount" : 1
-      }, {
-        "methodName" : "FilePath",
-        "objectType" : "ClassModel",
-        "objectName" : "t",
-        "callCount" : 1
-      }, {
         "methodName" : "For",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 2
+        "callCount" : 1
       }, {
         "methodName" : "From",
         "objectType" : "Maybe<CodeIssue>",
         "objectName" : null,
-        "callCount" : 2
-      }, {
-        "methodName" : "Metrics",
-        "objectType" : null,
-        "objectName" : "Metrics",
-        "callCount" : 1
-      }, {
-        "methodName" : "None",
-        "objectType" : "Maybe<CodeIssue>",
-        "objectName" : null,
-        "callCount" : 1
-      }, {
-        "methodName" : "OneThird",
-        "objectType" : null,
-        "objectName" : "CommonFractionThreshold",
         "callCount" : 1
       }, {
         "methodName" : "PublicAttributes",
         "objectType" : "ClassModel",
         "objectName" : "t",
-        "callCount" : 2
+        "callCount" : 1
       }, {
         "methodName" : "ToList",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 4
+        "callCount" : 2
       }, {
-        "methodName" : "WeightOfAClass",
+        "methodName" : "get_Count",
+        "objectType" : "IList<FieldModel>",
+        "objectName" : "publicAttributes",
+        "callCount" : 1
+      }, {
+        "methodName" : "get_Count",
+        "objectType" : "IList<PropertyModel>",
+        "objectName" : "accessors",
+        "callCount" : 1
+      }, {
+        "methodName" : "get_FilePath",
+        "objectType" : "ClassModel",
+        "objectName" : "t",
+        "callCount" : 1
+      }, {
+        "methodName" : "get_None",
+        "objectType" : "Maybe<CodeIssue>",
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "get_OneThird",
+        "objectType" : null,
+        "objectName" : "CommonFractionThreshold",
+        "callCount" : 1
+      }, {
+        "methodName" : "get_WeightOfAClass",
         "objectType" : "var",
         "objectName" : "metrics",
         "callCount" : 1
       }, {
-        "methodName" : "WeightedMethodCount",
+        "methodName" : "get_WeightedMethodCount",
         "objectType" : "var",
         "objectName" : "metrics",
         "callCount" : 1
@@ -142,25 +138,25 @@
       } ],
       "localVariables" : [ ],
       "methodCalls" : [ {
-        "methodName" : "Count",
-        "objectType" : "IList<FieldModel>",
-        "objectName" : "publicAttributes",
-        "callCount" : 1
-      }, {
-        "methodName" : "Count",
-        "objectType" : "IList<PropertyModel>",
-        "objectName" : "accessors",
-        "callCount" : 1
-      }, {
         "methodName" : "ValueFor",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 2
+        "callCount" : 1
       }, {
         "methodName" : "WithMeasurementRange",
         "objectType" : null,
         "objectName" : "LinearNormalization",
-        "callCount" : 2
+        "callCount" : 1
+      }, {
+        "methodName" : "get_Count",
+        "objectType" : "IList<FieldModel>",
+        "objectName" : "publicAttributes",
+        "callCount" : 1
+      }, {
+        "methodName" : "get_Count",
+        "objectType" : "IList<PropertyModel>",
+        "objectName" : "accessors",
+        "callCount" : 1
       } ]
     }, {
       "name" : "SeverityExploit",
@@ -180,75 +176,60 @@
       } ],
       "localVariables" : [ "attributeAccesses", "fieldAccesses", "methodsUsingData", "classesUsingPublicData" ],
       "methodCalls" : [ {
-        "methodName" : "Accesses",
-        "objectType" : null,
-        "objectName" : "a",
-        "callCount" : 1
-      }, {
-        "methodName" : "Accesses",
-        "objectType" : null,
-        "objectName" : "pa",
-        "callCount" : 1
-      }, {
-        "methodName" : "Caller",
-        "objectType" : null,
-        "objectName" : "fa",
-        "callCount" : 1
-      }, {
         "methodName" : "Concat",
         "objectType" : "var",
         "objectName" : "attributeAccesses",
-        "callCount" : 2
-      }, {
-        "methodName" : "Count",
-        "objectType" : "var",
-        "objectName" : "classesUsingPublicData",
-        "callCount" : 1
-      }, {
-        "methodName" : "Entity",
-        "objectType" : null,
-        "objectName" : "m",
         "callCount" : 1
       }, {
         "methodName" : "Remove",
         "objectType" : "var",
         "objectName" : "classesUsingPublicData",
-        "callCount" : 2
+        "callCount" : 1
       }, {
         "methodName" : "Select",
         "objectType" : "var",
         "objectName" : "fieldAccesses",
-        "callCount" : 2
+        "callCount" : 1
       }, {
         "methodName" : "Select",
         "objectType" : "var",
         "objectName" : "methodsUsingData",
-        "callCount" : 2
+        "callCount" : 1
       }, {
         "methodName" : "SelectMany",
         "objectType" : "IList<FieldModel>",
         "objectName" : "publicAttributes",
-        "callCount" : 2
+        "callCount" : 1
       }, {
         "methodName" : "SelectMany",
         "objectType" : "IList<PropertyModel>",
         "objectName" : "accessors",
-        "callCount" : 2
+        "callCount" : 1
       }, {
         "methodName" : "ToHashSet",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 6
+        "callCount" : 3
       }, {
         "methodName" : "ValueFor",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 2
+        "callCount" : 1
       }, {
         "methodName" : "WithMeasurementRange",
         "objectType" : null,
         "objectName" : "LinearNormalization",
-        "callCount" : 2
+        "callCount" : 1
+      }, {
+        "methodName" : "get_Accesses",
+        "objectType" : null,
+        "objectName" : "pa",
+        "callCount" : 1
+      }, {
+        "methodName" : "get_Count",
+        "objectType" : "var",
+        "objectName" : "classesUsingPublicData",
+        "callCount" : 1
       } ]
     } ],
     "types" : [ ]

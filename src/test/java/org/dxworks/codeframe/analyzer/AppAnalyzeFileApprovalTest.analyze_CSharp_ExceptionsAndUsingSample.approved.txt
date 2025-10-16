@@ -1,0 +1,88 @@
+{
+  "filePath" : "src/test/resources/samples/csharp/ExceptionsAndUsingSample.cs",
+  "language" : "csharp",
+  "packageName" : "Samples.Exceptions",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "InvalidInputException",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ ],
+    "extendsType" : "Exception",
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "InvalidInputException",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "message",
+        "type" : "string"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "Runner",
+    "visibility" : "public",
+    "modifiers" : [ "public", "static" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "ParsePositive",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "s",
+        "type" : "string"
+      } ],
+      "localVariables" : [ "value" ],
+      "methodCalls" : [ {
+        "methodName" : "Parse",
+        "objectType" : "int",
+        "objectName" : null,
+        "callCount" : 1
+      }, {
+        "methodName" : "get_Message",
+        "objectType" : null,
+        "objectName" : "ex",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "ReadFirstByteLength",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "path",
+        "type" : "string"
+      } ],
+      "localVariables" : [ "stream" ],
+      "methodCalls" : [ {
+        "methodName" : "OpenRead",
+        "objectType" : null,
+        "objectName" : "File",
+        "callCount" : 1
+      }, {
+        "methodName" : "ReadByte",
+        "objectType" : "var",
+        "objectName" : "stream",
+        "callCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ "using System;", "using System.IO;" ]
+}

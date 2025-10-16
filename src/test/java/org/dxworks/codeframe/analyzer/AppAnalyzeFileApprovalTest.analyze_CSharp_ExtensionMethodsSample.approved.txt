@@ -1,0 +1,83 @@
+{
+  "filePath" : "src/test/resources/samples/csharp/ExtensionMethodsSample.cs",
+  "language" : "csharp",
+  "packageName" : "Samples.Extensions",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "StringExtensions",
+    "visibility" : "public",
+    "modifiers" : [ "public", "static" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "IsBlank",
+      "returnType" : "bool",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "s",
+        "type" : "string?"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "IsNullOrWhiteSpace",
+        "objectType" : "string",
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "IsBlank2",
+      "returnType" : "bool",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "s",
+        "type" : "string?"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "IsBlank",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "Demo",
+    "visibility" : "public",
+    "modifiers" : [ "public", "static" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "Check",
+      "returnType" : "bool",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "value",
+        "type" : "string?"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "IsBlank",
+        "objectType" : "string?",
+        "objectName" : "value",
+        "callCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ "using System;" ]
+}

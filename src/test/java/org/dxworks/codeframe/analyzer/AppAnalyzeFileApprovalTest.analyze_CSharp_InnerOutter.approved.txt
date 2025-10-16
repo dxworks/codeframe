@@ -1,0 +1,192 @@
+{
+  "filePath" : "src/test/resources/samples/csharp/InnerOutter.cs",
+  "language" : "csharp",
+  "packageName" : "SampleApp",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "OuterClass",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ {
+      "name" : "Name",
+      "type" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "accessors" : [ {
+        "kind" : "get",
+        "visibility" : null,
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "localVariables" : [ ],
+        "methodCalls" : [ ]
+      }, {
+        "kind" : "set",
+        "visibility" : null,
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "localVariables" : [ ],
+        "methodCalls" : [ ]
+      } ]
+    } ],
+    "methods" : [ {
+      "name" : "Print",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "WriteLine",
+        "objectType" : null,
+        "objectName" : "Console",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "RunHelper",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ "helper" ],
+      "methodCalls" : [ {
+        "methodName" : "DoWork",
+        "objectType" : "var",
+        "objectName" : "helper",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "OuterClass",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "string"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ {
+      "kind" : "class",
+      "name" : "InnerClassA",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "extendsType" : null,
+      "implementsInterfaces" : [ ],
+      "fields" : [ ],
+      "properties" : [ {
+        "name" : "Value",
+        "type" : "int",
+        "visibility" : "public",
+        "modifiers" : [ "public" ],
+        "annotations" : [ ],
+        "accessors" : [ {
+          "kind" : "get",
+          "visibility" : null,
+          "modifiers" : [ ],
+          "annotations" : [ ],
+          "localVariables" : [ ],
+          "methodCalls" : [ ]
+        }, {
+          "kind" : "set",
+          "visibility" : null,
+          "modifiers" : [ ],
+          "annotations" : [ ],
+          "localVariables" : [ ],
+          "methodCalls" : [ ]
+        } ]
+      } ],
+      "methods" : [ {
+        "name" : "ShowValue",
+        "returnType" : "void",
+        "visibility" : "public",
+        "modifiers" : [ "public" ],
+        "annotations" : [ ],
+        "parameters" : [ ],
+        "localVariables" : [ ],
+        "methodCalls" : [ {
+          "methodName" : "WriteLine",
+          "objectType" : null,
+          "objectName" : "Console",
+          "callCount" : 1
+        } ]
+      }, {
+        "name" : "InnerClassA",
+        "returnType" : null,
+        "visibility" : "public",
+        "modifiers" : [ "public" ],
+        "annotations" : [ ],
+        "parameters" : [ {
+          "name" : "value",
+          "type" : "int"
+        } ],
+        "localVariables" : [ ],
+        "methodCalls" : [ ]
+      } ],
+      "types" : [ {
+        "kind" : "class",
+        "name" : "InnerClassB",
+        "visibility" : "public",
+        "modifiers" : [ "public" ],
+        "annotations" : [ ],
+        "extendsType" : null,
+        "implementsInterfaces" : [ ],
+        "fields" : [ ],
+        "properties" : [ ],
+        "methods" : [ {
+          "name" : "Display",
+          "returnType" : "void",
+          "visibility" : "public",
+          "modifiers" : [ "public" ],
+          "annotations" : [ ],
+          "parameters" : [ ],
+          "localVariables" : [ ],
+          "methodCalls" : [ {
+            "methodName" : "WriteLine",
+            "objectType" : null,
+            "objectName" : "Console",
+            "callCount" : 1
+          } ]
+        } ],
+        "types" : [ ]
+      } ]
+    }, {
+      "kind" : "class",
+      "name" : "InnerHelper",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ],
+      "extendsType" : null,
+      "implementsInterfaces" : [ ],
+      "fields" : [ ],
+      "properties" : [ ],
+      "methods" : [ {
+        "name" : "DoWork",
+        "returnType" : "void",
+        "visibility" : "public",
+        "modifiers" : [ "public" ],
+        "annotations" : [ ],
+        "parameters" : [ ],
+        "localVariables" : [ ],
+        "methodCalls" : [ {
+          "methodName" : "WriteLine",
+          "objectType" : null,
+          "objectName" : "Console",
+          "callCount" : 1
+        } ]
+      } ],
+      "types" : [ ]
+    } ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ ]
+}

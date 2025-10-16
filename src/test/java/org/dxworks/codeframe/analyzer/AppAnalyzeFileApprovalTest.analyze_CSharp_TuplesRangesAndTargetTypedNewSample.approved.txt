@@ -1,0 +1,63 @@
+{
+  "filePath" : "src/test/resources/samples/csharp/TuplesRangesAndTargetTypedNewSample.cs",
+  "language" : "csharp",
+  "packageName" : "Samples.TuplesRanges",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "Utils",
+    "visibility" : "public",
+    "modifiers" : [ "public", "static" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "SumAndCount",
+      "returnType" : "(int sum, int count)",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "data",
+        "type" : "ReadOnlySpan<int>"
+      } ],
+      "localVariables" : [ "sum" ],
+      "methodCalls" : [ {
+        "methodName" : "get_Length",
+        "objectType" : "ReadOnlySpan<int>",
+        "objectName" : "data",
+        "callCount" : 2
+      } ]
+    }, {
+      "name" : "Tail",
+      "returnType" : "int[]",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "xs",
+        "type" : "int[]"
+      } ],
+      "localVariables" : [ "tail" ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "Demo",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ "dict", "list", "arr", "last" ],
+      "methodCalls" : [ {
+        "methodName" : "SumAndCount",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ "using System;", "using System.Collections.Generic;" ]
+}

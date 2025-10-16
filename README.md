@@ -284,3 +284,21 @@ ANALYZERS.put(Language.GO, new GoAnalyzer());
 ## License
 
 This project uses Tree-sitter and its language grammars, which are licensed under MIT.
+
+## Limitations
+
+### C#
+
+- **Called constructors and fields are not captured**
+  - Current call extraction focuses on method invocations and property accessors. Constructor calls (e.g., `new Type(...)` and `base(...)`/`this(...)`) and direct field reads/writes are not emitted in `methodCalls`.
+
+- **Loop local variables are not captured**
+  - Variables declared in loop headers (e.g., `for (var i = 0; ...)`, `foreach (var x in ...)`) are not added to `localVariables`.
+  - See `src/test/resources/samples/csharp/LoopLocalsSample.cs` for examples.
+
+- **Events and records are not handled**
+  - Event declarations/subscriptions/raises are not modeled.
+  - C# record-specific constructs are only partially parsed; record members/patterns may be incomplete.
+  - See samples:
+    - Events/delegates/lambdas: `src/test/resources/samples/csharp/DelegatesEventsLambdasSample.cs`
+    - Records/patterns: `src/test/resources/samples/csharp/RecordsAndPatternsSample.cs`
