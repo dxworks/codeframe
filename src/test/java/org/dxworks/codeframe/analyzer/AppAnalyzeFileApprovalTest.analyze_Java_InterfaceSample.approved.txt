@@ -11,6 +11,7 @@
     "extendsType" : null,
     "implementsInterfaces" : [ ],
     "fields" : [ ],
+    "properties" : [ ],
     "methods" : [ {
       "name" : "findById",
       "returnType" : "T",
@@ -39,7 +40,7 @@
       "name" : "countAll",
       "returnType" : "int",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
+      "modifiers" : [ "public", "default" ],
       "annotations" : [ ],
       "parameters" : [ ],
       "localVariables" : [ ],

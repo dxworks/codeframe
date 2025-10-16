@@ -11,6 +11,7 @@
     "extendsType" : null,
     "implementsInterfaces" : [ ],
     "fields" : [ ],
+    "properties" : [ ],
     "methods" : [ {
       "name" : "greet",
       "returnType" : "void",
@@ -63,6 +64,7 @@
       "extendsType" : null,
       "implementsInterfaces" : [ ],
       "fields" : [ ],
+      "properties" : [ ],
       "methods" : [ {
         "name" : "assist",
         "returnType" : "void",
@@ -89,6 +91,7 @@
     "extendsType" : null,
     "implementsInterfaces" : [ ],
     "fields" : [ ],
+    "properties" : [ ],
     "methods" : [ {
       "name" : "doWork",
       "returnType" : "void",

@@ -34,6 +34,16 @@ public class AppAnalyzeFileApprovalTest {
         verify(Paths.get("src/test/resources/samples/java/Repository.java"), Language.JAVA);
     }
 
+    @Test
+    void analyze_Java_ConstructorSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/java/ConstructorSample.java"), Language.JAVA);
+    }
+
+    @Test
+    void analyze_Java_LambdaSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/java/LambdaSample.java"), Language.JAVA);
+    }
+    
     // ---- JavaScript ----
     @Test
     void analyze_JavaScript_Sample() throws IOException {

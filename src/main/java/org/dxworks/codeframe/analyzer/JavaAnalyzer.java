@@ -101,6 +101,13 @@ public class JavaAnalyzer implements LanguageAnalyzer {
             typeInfo.methods.add(methodInfo);
         }
         
+        // Analyze constructors within this class only
+        List<TSNode> constructors = findAllChildren(classBody, "constructor_declaration");
+        for (TSNode constructor : constructors) {
+            MethodInfo constructorInfo = analyzeConstructor(source, constructor, typeInfo.name, fieldTypes);
+            typeInfo.methods.add(constructorInfo);
+        }
+        
         // Recursively process nested classes - add them to THIS type's types list
         List<TSNode> nestedClasses = findAllChildren(classBody, "class_declaration");
         for (TSNode nested : nestedClasses) {
@@ -197,6 +204,28 @@ public class JavaAnalyzer implements LanguageAnalyzer {
 
         // Body
         TSNode bodyNode = findFirstChild(methodDecl, "block");
+        if (bodyNode != null) {
+            analyzeMethodBody(source, bodyNode, methodInfo, className, fieldTypes, paramTypes);
+        }
+
+        return methodInfo;
+    }
+    
+    private MethodInfo analyzeConstructor(String source, TSNode constructorDecl, String className, Map<String, String> fieldTypes) {
+        MethodInfo methodInfo = new MethodInfo();
+
+        // Extract modifiers and visibility
+        extractModifiersAndVisibility(source, constructorDecl, methodInfo.modifiers, methodInfo);
+        // Extract annotations
+        extractAnnotations(source, constructorDecl, methodInfo.annotations);
+
+        // Constructor name is the class name, no return type
+        methodInfo.name = className;
+        methodInfo.returnType = null;
+        Map<String, String> paramTypes = readParameters(source, constructorDecl, methodInfo);
+
+        // Body
+        TSNode bodyNode = findFirstChild(constructorDecl, "constructor_body");
         if (bodyNode != null) {
             analyzeMethodBody(source, bodyNode, methodInfo, className, fieldTypes, paramTypes);
         }
@@ -503,6 +532,17 @@ public class JavaAnalyzer implements LanguageAnalyzer {
                 } else if (fullModifiersText.contains("private")) {
                     ((FieldInfo) target).visibility = "private";
                     if (!modifiers.contains("private")) modifiers.add("private");
+                }
+            }
+
+            // Add non-visibility modifiers that may not be exposed as named children
+            String[] knownNonVisibility = new String[] {
+                "final", "static", "abstract", "synchronized", "native", "transient", "volatile", "strictfp", "default"
+            };
+            String full = fullModifiersText == null ? "" : fullModifiersText;
+            for (String kw : knownNonVisibility) {
+                if (full.contains(kw) && !modifiers.contains(kw)) {
+                    modifiers.add(kw);
                 }
             }
         }
