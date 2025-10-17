@@ -167,36 +167,6 @@ Each line is a separate JSON object with a `kind` field:
 {"kind":"done","ended_at":"2025-09-30T11:00:05Z","files_analyzed":998,"files_with_errors":2,"duration_seconds":5}
 ```
 
-#### Processing JSONL Output
-
-**Python example:**
-```python
-import json
-
-with open('codeframe-out/analysis.jsonl', 'r') as f:
-    for line in f:
-        obj = json.loads(line)
-        if obj.get('kind') == 'run':
-            print(f"Starting analysis of {obj['total_files']} files")
-        elif 'filePath' in obj:  # File analysis
-            print(f"Analyzed: {obj['filePath']}")
-        elif obj.get('kind') == 'done':
-            print(f"Complete: {obj['files_analyzed']} files")
-```
-
-**Shell example:**
-```bash
-# Count successful analyses
-grep -v '"kind"' analysis.jsonl | grep '"filePath"' | wc -l
-
-# Extract all Java files
-grep '"language":"java"' analysis.jsonl > java-files.jsonl
-
-# Get summary
-head -1 analysis.jsonl  # Run info
-tail -1 analysis.jsonl  # Done info
-```
-
 ## Architecture
 
 ### Core Components
@@ -278,8 +248,9 @@ ANALYZERS.put(Language.GO, new GoAnalyzer());
 
 ## Requirements
 
-- Java 21+
+- Java 11+
 - Gradle 8.x
+- No native toolchain required (Tree-sitter natives are bundled via Maven artifacts)
 
 ## License
 
@@ -315,3 +286,16 @@ This project uses Tree-sitter and its language grammars, which are licensed unde
   - Bodies are analyzed within the enclosing method or type, and their method calls are recorded.
   - The classes themselves do not appear as distinct `types` entries.
   - See `src/test/resources/samples/java/AnonymousInnerClassesSample.java`.
+
+## Testing
+
+- **ApprovalTests-based strategy**
+  - We use ApprovalTests-Java to snapshot analysis results. Each test verifies the pretty-printed JSON using an approved artifact.
+  - When output changes, a `.received.txt` is generated next to the test class; review and promote it to `.approved.txt` if correct.
+
+- **Running tests**
+  - All tests: `./gradlew test`
+  - Single test method, e.g. Java generics: `./gradlew test --tests "*JavaAnalyzeApprovalTest.analyze_Java_GenericsSample"`
+
+- **Workflow**
+  - Make a change → run tests → inspect `.received.txt` → approve if expected → commit both code and updated `.approved.txt`.
