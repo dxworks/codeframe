@@ -1,37 +1,38 @@
 {
-  "filePath" : "src/test/resources/samples/php/InterfaceSample.php",
-  "language" : "php",
+  "filePath" : "src/test/resources/samples/typescript/interface-sample.ts",
+  "language" : "typescript",
   "packageName" : null,
   "types" : [ {
     "kind" : "interface",
     "name" : "IRepository",
-    "visibility" : "public",
-    "modifiers" : [ ],
+    "visibility" : null,
+    "modifiers" : [ "export" ],
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
     "fields" : [ ],
+    "properties" : [ ],
     "methods" : [ {
       "name" : "findById",
-      "returnType" : null,
-      "visibility" : "public",
-      "modifiers" : [ "abstract" ],
+      "returnType" : "T",
+      "visibility" : null,
+      "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
-        "type" : null
+        "type" : "ID"
       } ],
       "localVariables" : [ ],
       "methodCalls" : [ ]
     }, {
       "name" : "save",
       "returnType" : "void",
-      "visibility" : "public",
-      "modifiers" : [ "abstract" ],
+      "visibility" : null,
+      "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ {
         "name" : "entity",
-        "type" : null
+        "type" : "T"
       } ],
       "localVariables" : [ ],
       "methodCalls" : [ ]
@@ -40,17 +41,18 @@
   }, {
     "kind" : "interface",
     "name" : "INamed",
-    "visibility" : "public",
-    "modifiers" : [ ],
+    "visibility" : null,
+    "modifiers" : [ "export" ],
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
     "fields" : [ ],
+    "properties" : [ ],
     "methods" : [ {
       "name" : "getName",
       "returnType" : "string",
-      "visibility" : "public",
-      "modifiers" : [ "abstract" ],
+      "visibility" : null,
+      "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ ],
       "localVariables" : [ ],

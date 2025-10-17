@@ -23,6 +23,7 @@
       "modifiers" : [ ],
       "annotations" : [ ]
     } ],
+    "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
       "returnType" : null,

@@ -29,6 +29,7 @@
       "modifiers" : [ "protected", "static" ],
       "annotations" : [ ]
     } ],
+    "properties" : [ ],
     "methods" : [ {
       "name" : "__construct",
       "returnType" : null,
@@ -191,6 +192,7 @@
       "modifiers" : [ "protected" ],
       "annotations" : [ ]
     } ],
+    "properties" : [ ],
     "methods" : [ {
       "name" : "find",
       "returnType" : "?object",
@@ -223,6 +225,7 @@
     "extendsType" : null,
     "implementsInterfaces" : [ ],
     "fields" : [ ],
+    "properties" : [ ],
     "methods" : [ {
       "name" : "get",
       "returnType" : "mixed",

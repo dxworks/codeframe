@@ -35,6 +35,7 @@
       "modifiers" : [ ],
       "annotations" : [ ]
     } ],
+    "properties" : [ ],
     "methods" : [ ],
     "types" : [ ]
   }, {
@@ -46,6 +47,7 @@
     "extendsType" : "abc",
     "implementsInterfaces" : [ "ABC" ],
     "fields" : [ ],
+    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : null,
@@ -209,6 +211,7 @@
     "extendsType" : "Repository",
     "implementsInterfaces" : [ ],
     "fields" : [ ],
+    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : null,
@@ -335,6 +338,7 @@
     "extendsType" : null,
     "implementsInterfaces" : [ ],
     "fields" : [ ],
+    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : null,

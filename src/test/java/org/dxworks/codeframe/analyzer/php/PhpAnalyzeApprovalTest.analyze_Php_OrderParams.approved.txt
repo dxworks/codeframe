@@ -11,6 +11,7 @@
     "extendsType" : null,
     "implementsInterfaces" : [ ],
     "fields" : [ ],
+    "properties" : [ ],
     "methods" : [ {
       "name" : "__construct",
       "returnType" : null,
