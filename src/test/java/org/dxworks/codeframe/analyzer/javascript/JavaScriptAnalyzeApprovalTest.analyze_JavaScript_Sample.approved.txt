@@ -6,7 +6,7 @@
     "kind" : "class",
     "name" : "DataManager",
     "visibility" : null,
-    "modifiers" : [ ],
+    "modifiers" : [ "export" ],
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
@@ -28,7 +28,7 @@
       "name" : "getData",
       "returnType" : null,
       "visibility" : null,
-      "modifiers" : [ ],
+      "modifiers" : [ "async" ],
       "annotations" : [ ],
       "parameters" : [ {
         "name" : "key",
@@ -37,30 +37,30 @@
       "localVariables" : [ "data" ],
       "methodCalls" : [ {
         "methodName" : "fetchData",
-        "objectType" : null,
-        "objectName" : null,
+        "objectType" : "DataManager",
+        "objectName" : "this",
         "callCount" : 1
       }, {
         "methodName" : "get",
         "objectType" : null,
-        "objectName" : null,
+        "objectName" : "this.cache",
         "callCount" : 1
       }, {
         "methodName" : "has",
         "objectType" : null,
-        "objectName" : null,
+        "objectName" : "this.cache",
         "callCount" : 1
       }, {
         "methodName" : "set",
         "objectType" : null,
-        "objectName" : null,
+        "objectName" : "this.cache",
         "callCount" : 1
       } ]
     }, {
       "name" : "fetchData",
       "returnType" : null,
       "visibility" : null,
-      "modifiers" : [ ],
+      "modifiers" : [ "async" ],
       "annotations" : [ ],
       "parameters" : [ {
         "name" : "key",
@@ -80,7 +80,7 @@
     "name" : "processData",
     "returnType" : null,
     "visibility" : null,
-    "modifiers" : [ ],
+    "modifiers" : [ "export" ],
     "annotations" : [ ],
     "parameters" : [ {
       "name" : "data",
@@ -91,6 +91,23 @@
       "methodName" : "map",
       "objectType" : null,
       "objectName" : "data",
+      "callCount" : 1
+    } ]
+  }, {
+    "name" : "fetchUser",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "async", "const", "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "userId",
+      "type" : null
+    } ],
+    "localVariables" : [ "response" ],
+    "methodCalls" : [ {
+      "methodName" : "get",
+      "objectType" : null,
+      "objectName" : "axios",
       "callCount" : 1
     } ]
   } ],

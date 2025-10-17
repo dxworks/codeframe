@@ -28,6 +28,31 @@ public class JavaScriptAnalyzeApprovalTest {
         verify(Paths.get("src/test/resources/samples/javascript/resourceLocationWrapper.js"), Language.JAVASCRIPT);
     }
 
+    @Test
+    void analyze_JavaScript_ModernClassFeatures() throws IOException {
+        verify(Paths.get("src/test/resources/samples/javascript/ModernClassFeatures.js"), Language.JAVASCRIPT);
+    }
+
+    @Test
+    void analyze_JavaScript_EnumsAndConstants() throws IOException {
+        verify(Paths.get("src/test/resources/samples/javascript/EnumsAndConstants.js"), Language.JAVASCRIPT);
+    }
+
+    @Test
+    void analyze_JavaScript_DestructuringAndSpread() throws IOException {
+        verify(Paths.get("src/test/resources/samples/javascript/DestructuringAndSpread.js"), Language.JAVASCRIPT);
+    }
+
+    @Test
+    void analyze_JavaScript_GeneratorsAndIterators() throws IOException {
+        verify(Paths.get("src/test/resources/samples/javascript/GeneratorsAndIterators.js"), Language.JAVASCRIPT);
+    }
+
+    @Test
+    void analyze_JavaScript_DynamicImportsAndModules() throws IOException {
+        verify(Paths.get("src/test/resources/samples/javascript/DynamicImportsAndModules.js"), Language.JAVASCRIPT);
+    }
+
     private static void verify(Path file, Language language) throws IOException {
         FileAnalysis analysis = App.analyzeFile(file, language);
         Approvals.verify(MAPPER.writeValueAsString(analysis));
