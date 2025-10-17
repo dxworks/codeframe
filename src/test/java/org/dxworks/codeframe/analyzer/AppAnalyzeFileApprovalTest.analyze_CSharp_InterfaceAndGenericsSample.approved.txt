@@ -1,0 +1,130 @@
+{
+  "filePath" : "src/test/resources/samples/csharp/InterfaceAndGenericsSample.cs",
+  "language" : "csharp",
+  "packageName" : "Samples.Interfaces",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "Demo<T>",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "greet<T>",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "T"
+      }, {
+        "name" : "times",
+        "type" : "int"
+      } ],
+      "localVariables" : [ "x" ],
+      "methodCalls" : [ {
+        "methodName" : "DoWork",
+        "objectType" : "var",
+        "objectName" : "x",
+        "callCount" : 1
+      }, {
+        "methodName" : "WriteLine",
+        "objectType" : null,
+        "objectName" : "Console",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "greet<T, U>",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "T"
+      }, {
+        "name" : "surname",
+        "type" : "U"
+      }, {
+        "name" : "times",
+        "type" : "int"
+      } ],
+      "localVariables" : [ "x" ],
+      "methodCalls" : [ {
+        "methodName" : "DoWork",
+        "objectType" : "var",
+        "objectName" : "x",
+        "callCount" : 1
+      }, {
+        "methodName" : "WriteLine",
+        "objectType" : null,
+        "objectName" : "Console",
+        "callCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "interface",
+    "name" : "IRepository<T, ID>",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ "[Obsolete]" ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "FindById",
+      "returnType" : "T",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "ID"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "Save",
+      "returnType" : "void",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "entity",
+        "type" : "T"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "interface",
+    "name" : "INamed",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ "[Obsolete]" ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "GetName",
+      "returnType" : "string",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ ]
+}

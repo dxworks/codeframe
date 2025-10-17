@@ -43,6 +43,30 @@
       } ]
     } ],
     "types" : [ ]
+  }, {
+    "kind" : "record",
+    "name" : "Person",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ {
+      "name" : "Name",
+      "type" : "string",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Age",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ ],
+    "types" : [ ]
   } ],
   "methods" : [ ],
   "imports" : [ "using System;" ]

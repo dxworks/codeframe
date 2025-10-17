@@ -118,8 +118,8 @@ public class AppAnalyzeFileApprovalTest {
     }
 
     @Test
-    void analyze_CSharp_InterfaceSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/csharp/InterfaceSample.cs"), Language.CSHARP);
+    void analyze_CSharp_InterfaceAndGenericsSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/csharp/InterfaceAndGenericsSample.cs"), Language.CSHARP);
     }
 
     @Test
@@ -175,6 +175,11 @@ public class AppAnalyzeFileApprovalTest {
     @Test
     void analyze_CSharp_LoopLocalsSample() throws IOException {
         verify(Paths.get("src/test/resources/samples/csharp/LoopLocalsSample.cs"), Language.CSHARP);
+    }
+
+    @Test
+    void analyze_CSharp_EnumUsageSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/csharp/EnumUsageSample.cs"), Language.CSHARP);
     }
     
     // ---- Python ----

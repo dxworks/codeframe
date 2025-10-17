@@ -296,9 +296,22 @@ This project uses Tree-sitter and its language grammars, which are licensed unde
   - Variables declared in loop headers (e.g., `for (var i = 0; ...)`, `foreach (var x in ...)`) are not added to `localVariables`.
   - See `src/test/resources/samples/csharp/LoopLocalsSample.cs` for examples.
 
-- **Events and records are not handled**
+- **Events are not handled**
   - Event declarations/subscriptions/raises are not modeled.
-  - C# record-specific constructs are only partially parsed; record members/patterns may be incomplete.
-  - See samples:
-    - Events/delegates/lambdas: `src/test/resources/samples/csharp/DelegatesEventsLambdasSample.cs`
-    - Records/patterns: `src/test/resources/samples/csharp/RecordsAndPatternsSample.cs`
+  - See `src/test/resources/samples/csharp/DelegatesEventsLambdasSample.cs`
+    
+
+### Java
+
+- **Constructor calls are not captured**
+  - Constructor invocations (e.g., `new ClassName(...)`) are not emitted in `methodCalls`.
+  - See `src/test/resources/samples/java/MultipleClasses.java` for an example (`new ExtraClass()`).
+
+- **Loop header locals are not captured**
+  - Variables declared in loop headers (e.g., `for (int i = 0; ...)`) are not added to `localVariables`.
+  - See `src/test/resources/samples/java/MultipleClasses.java` for an example (`for (int i = 0; i < times; i++)`).
+
+- **Local and anonymous classes are not extracted as separate types**
+  - Bodies are analyzed within the enclosing method or type, and their method calls are recorded.
+  - The classes themselves do not appear as distinct `types` entries.
+  - See `src/test/resources/samples/java/AnonymousInnerClassesSample.java`.

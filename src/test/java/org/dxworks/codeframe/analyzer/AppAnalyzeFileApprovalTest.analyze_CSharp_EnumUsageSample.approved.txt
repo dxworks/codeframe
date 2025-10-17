@@ -1,0 +1,101 @@
+{
+  "filePath" : "src/test/resources/samples/csharp/EnumUsageSample.cs",
+  "language" : "csharp",
+  "packageName" : "Samples.Enums",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "EnumUsageSample",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "GetStatusMessage",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "status",
+        "type" : "Status"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "get_Active",
+        "objectType" : null,
+        "objectName" : "Status",
+        "callCount" : 1
+      }, {
+        "methodName" : "get_Closed",
+        "objectType" : null,
+        "objectName" : "Status",
+        "callCount" : 1
+      }, {
+        "methodName" : "get_Pending",
+        "objectType" : null,
+        "objectName" : "Status",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "PrintAll",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "GetValues",
+        "objectType" : null,
+        "objectName" : "Enum",
+        "callCount" : 1
+      }, {
+        "methodName" : "ToString",
+        "objectType" : null,
+        "objectName" : "s",
+        "callCount" : 1
+      }, {
+        "methodName" : "WriteLine",
+        "objectType" : null,
+        "objectName" : "Console",
+        "callCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "enum",
+    "name" : "Status",
+    "visibility" : "public",
+    "modifiers" : [ "public" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ {
+      "name" : "Pending",
+      "type" : "Status",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Active",
+      "type" : "Status",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Closed",
+      "type" : "Status",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ "using System;" ]
+}

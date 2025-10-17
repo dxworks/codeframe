@@ -75,6 +75,12 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
             analysis.types.add(analyzeInterface(sourceCode, interfaceDecl));
         }
 
+        // Process enums
+        List<TSNode> enums = findAllDescendants(rootNode, "enum_declaration");
+        for (TSNode enumDecl : enums) {
+            analysis.types.add(analyzeEnum(sourceCode, enumDecl));
+        }
+
         // Process records (C# 9+)
         List<TSNode> records = findAllDescendants(rootNode, "record_declaration");
         for (TSNode recordDecl : records) {
@@ -194,6 +200,39 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
         return typeInfo;
     }
 
+    private TypeInfo analyzeEnum(String source, TSNode enumDecl) {
+        TypeInfo typeInfo = new TypeInfo();
+        typeInfo.kind = "enum";
+
+        // Modifiers and attributes
+        extractModifiersAndVisibility(source, enumDecl, typeInfo.modifiers, typeInfo);
+        extractAttributes(source, enumDecl, typeInfo.annotations);
+
+        // Name
+        TSNode nameNode = findFirstChild(enumDecl, "identifier");
+        if (nameNode != null) {
+            typeInfo.name = getNodeText(source, nameNode);
+        }
+
+        // Enum members as fields with type equal to enum name
+        TSNode body = findFirstChild(enumDecl, "enum_member_declaration_list");
+        if (body == null) {
+            // Some grammars put members directly under enum_declaration
+            body = enumDecl;
+        }
+        List<TSNode> members = findAllDescendants(body, "enum_member_declaration");
+        for (TSNode member : members) {
+            TSNode id = findFirstChild(member, "identifier");
+            if (id != null) {
+                FieldInfo fi = new FieldInfo();
+                fi.name = getNodeText(source, id);
+                fi.type = typeInfo.name;
+                typeInfo.fields.add(fi);
+            }
+        }
+
+        return typeInfo;
+    }
     private TypeInfo analyzeRecord(String source, TSNode recordDecl) {
         TypeInfo typeInfo = new TypeInfo();
         typeInfo.kind = "record";
@@ -367,21 +406,32 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
     }
     
     private String extractMethodName(String source, TSNode methodDecl) {
+        String baseName = null;
         // Prefer the child with field name 'name' (Tree-sitter assigns fields)
         for (int i = 0; i < methodDecl.getNamedChildCount(); i++) {
             if ("name".equals(methodDecl.getFieldNameForChild(i))) {
                 TSNode nameNode = methodDecl.getNamedChild(i);
-                return getNodeText(source, nameNode);
+                baseName = getNodeText(source, nameNode);
+                break;
             }
         }
         // Fallback: first identifier child
-        for (int i = 0; i < methodDecl.getNamedChildCount(); i++) {
-            TSNode child = methodDecl.getNamedChild(i);
-            if ("identifier".equals(child.getType())) {
-                return getNodeText(source, child);
+        if (baseName == null) {
+            for (int i = 0; i < methodDecl.getNamedChildCount(); i++) {
+                TSNode child = methodDecl.getNamedChild(i);
+                if ("identifier".equals(child.getType())) {
+                    baseName = getNodeText(source, child);
+                    break;
+                }
             }
         }
-        return null;
+        if (baseName == null) return null;
+        // Append generic type parameters if present on the declaration
+        TSNode typeParams = findFirstChild(methodDecl, "type_parameter_list");
+        if (typeParams != null) {
+            return baseName + getNodeText(source, typeParams);
+        }
+        return baseName;
     }
     
     private String extractReturnType(String source, TSNode methodDecl) {
