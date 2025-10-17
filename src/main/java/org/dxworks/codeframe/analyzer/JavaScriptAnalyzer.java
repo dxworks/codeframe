@@ -14,7 +14,6 @@ import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
 
 public class JavaScriptAnalyzer implements LanguageAnalyzer {
     // Node type constants
-    private static final String NT_FORMAL_PARAMETERS = "formal_parameters";
     private static final String NT_FORMAL_PARAMETER = "formal_parameter";
     private static final String NT_REQUIRED_PARAMETER = "required_parameter";
     private static final String NT_OPTIONAL_PARAMETER = "optional_parameter";
@@ -30,6 +29,27 @@ public class JavaScriptAnalyzer implements LanguageAnalyzer {
     private static final String NT_ARRAY = "array";
     private static final String NT_STRING = "string";
     private static final String NT_NUMBER = "number";
+    
+    private static final java.util.Comparator<MethodCall> METHOD_CALL_COMPARATOR = (a, b) -> {
+        int nameCompare = a.methodName.compareTo(b.methodName);
+        if (nameCompare != 0) return nameCompare;
+        if (a.objectType != null && b.objectType != null) {
+            int typeCompare = a.objectType.compareTo(b.objectType);
+            if (typeCompare != 0) return typeCompare;
+        } else if (a.objectType != null) {
+            return 1;
+        } else if (b.objectType != null) {
+            return -1;
+        }
+        if (a.objectName != null && b.objectName != null) {
+            return a.objectName.compareTo(b.objectName);
+        } else if (a.objectName != null) {
+            return 1;
+        } else if (b.objectName != null) {
+            return -1;
+        }
+        return 0;
+    };
     
     @Override
     public FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
@@ -553,26 +573,7 @@ public class JavaScriptAnalyzer implements LanguageAnalyzer {
         }
 
         // Sort method calls for stable output
-        methodInfo.methodCalls.sort((a, b) -> {
-            int nameCompare = a.methodName.compareTo(b.methodName);
-            if (nameCompare != 0) return nameCompare;
-            if (a.objectType != null && b.objectType != null) {
-                int typeCompare = a.objectType.compareTo(b.objectType);
-                if (typeCompare != 0) return typeCompare;
-            } else if (a.objectType != null) {
-                return 1;
-            } else if (b.objectType != null) {
-                return -1;
-            }
-            if (a.objectName != null && b.objectName != null) {
-                return a.objectName.compareTo(b.objectName);
-            } else if (a.objectName != null) {
-                return 1;
-            } else if (b.objectName != null) {
-                return -1;
-            }
-            return 0;
-        });
+        methodInfo.methodCalls.sort(METHOD_CALL_COMPARATOR);
     }
 
     // Helpers introduced by refactor (no behavior change)

@@ -13,6 +13,33 @@ import java.util.Set;
 import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
 
 public class JavaAnalyzer implements LanguageAnalyzer {
+    // Node type constants
+    private static final String NT_TYPE = "type";
+    private static final String NT_TYPE_IDENTIFIER = "type_identifier";
+    private static final String NT_SCOPED_IDENTIFIER = "scoped_identifier";
+    private static final String NT_SCOPED_TYPE_IDENTIFIER = "scoped_type_identifier";
+    private static final String NT_INTEGRAL_TYPE = "integral_type";
+    
+    private static final java.util.Comparator<MethodCall> METHOD_CALL_COMPARATOR = (a, b) -> {
+        int nameCompare = a.methodName.compareTo(b.methodName);
+        if (nameCompare != 0) return nameCompare;
+        if (a.objectType != null && b.objectType != null) {
+            int typeCompare = a.objectType.compareTo(b.objectType);
+            if (typeCompare != 0) return typeCompare;
+        } else if (a.objectType != null) {
+            return 1;
+        } else if (b.objectType != null) {
+            return -1;
+        }
+        if (a.objectName != null && b.objectName != null) {
+            return a.objectName.compareTo(b.objectName);
+        } else if (a.objectName != null) {
+            return 1;
+        } else if (b.objectName != null) {
+            return -1;
+        }
+        return 0;
+    };
     
     @Override
     public FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
@@ -140,16 +167,7 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         extractAnnotations(source, classDecl, typeInfo.annotations);
         
         // Get class name (include generic type parameters if present)
-        TSNode nameNode = findFirstChild(classDecl, "identifier");
-        if (nameNode != null) {
-            String baseName = getNodeText(source, nameNode);
-            TSNode typeParams = findFirstChild(classDecl, "type_parameters");
-            if (typeParams != null) {
-                typeInfo.name = baseName + getNodeText(source, typeParams);
-            } else {
-                typeInfo.name = baseName;
-            }
-        }
+        typeInfo.name = extractNameWithTypeParams(source, classDecl);
         
         // Get superclass
         TSNode superclassNode = findFirstChild(classDecl, "superclass");
@@ -161,13 +179,7 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         }
         
         // Get implemented interfaces
-        TSNode interfacesNode = findFirstChild(classDecl, "super_interfaces");
-        if (interfacesNode != null) {
-            List<TSNode> typeIdentifiers = findAllDescendants(interfacesNode, "type_identifier");
-            for (TSNode typeId : typeIdentifiers) {
-                typeInfo.implementsInterfaces.add(getNodeText(source, typeId));
-            }
-        }
+        extractInterfaces(source, classDecl, "super_interfaces", typeInfo.implementsInterfaces);
         
         return typeInfo;
     }
@@ -182,25 +194,10 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         extractAnnotations(source, recordDecl, typeInfo.annotations);
 
         // Record name (include generic type parameters if present)
-        TSNode nameNode = findFirstChild(recordDecl, "identifier");
-        if (nameNode != null) {
-            String baseName = getNodeText(source, nameNode);
-            TSNode typeParams = findFirstChild(recordDecl, "type_parameters");
-            if (typeParams != null) {
-                typeInfo.name = baseName + getNodeText(source, typeParams);
-            } else {
-                typeInfo.name = baseName;
-            }
-        }
+        typeInfo.name = extractNameWithTypeParams(source, recordDecl);
 
         // Records can implement interfaces
-        TSNode interfacesNode = findFirstChild(recordDecl, "super_interfaces");
-        if (interfacesNode != null) {
-            List<TSNode> typeIdentifiers = findAllDescendants(interfacesNode, "type_identifier");
-            for (TSNode typeId : typeIdentifiers) {
-                typeInfo.implementsInterfaces.add(getNodeText(source, typeId));
-            }
-        }
+        extractInterfaces(source, recordDecl, "super_interfaces", typeInfo.implementsInterfaces);
 
         // Record components as fields
         List<TSNode> components = findAllDescendants(recordDecl, "record_component");
@@ -230,37 +227,10 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         }
         if (recordBody != null) {
             // Regular fields
-            List<TSNode> fieldDecls = findAllDescendants(recordBody, "field_declaration");
-            for (TSNode field : fieldDecls) {
-                String declaredType = null;
-                TSNode typeNode = findFirstChild(field, "type");
-                if (typeNode == null) typeNode = findFirstDescendant(field, "type_identifier");
-                if (typeNode == null) typeNode = findFirstDescendant(field, "scoped_identifier");
-                if (typeNode == null) typeNode = findFirstDescendant(field, "scoped_type_identifier");
-                if (typeNode == null) typeNode = findFirstDescendant(field, "integral_type");
-                if (typeNode != null) {
-                    declaredType = extractTypeWithGenerics(source, typeNode, field);
-                }
-                List<TSNode> declarators = findAllDescendants(field, "variable_declarator");
-                for (TSNode declarator : declarators) {
-                    FieldInfo fi = buildFieldInfo(source, field, declarator, declaredType, fieldTypes);
-                    if (fi != null) typeInfo.fields.add(fi);
-                }
-            }
+            collectFieldsFromBodyInto(source, recordBody, typeInfo.fields, fieldTypes);
 
-            // Methods declared in record body
-            List<TSNode> methods = findAllDescendants(recordBody, "method_declaration");
-            for (TSNode method : methods) {
-                MethodInfo methodInfo = analyzeMethod(source, method, typeInfo.name, fieldTypes);
-                typeInfo.methods.add(methodInfo);
-            }
-
-            // Canonical/normal constructors
-            List<TSNode> constructors = findAllDescendants(recordBody, "constructor_declaration");
-            for (TSNode constructor : constructors) {
-                MethodInfo ctorInfo = analyzeConstructor(source, constructor, typeInfo.name, fieldTypes);
-                typeInfo.methods.add(ctorInfo);
-            }
+            // Methods and constructors
+            collectMethodsAndConstructors(source, recordBody, typeInfo, fieldTypes);
 
             // Compact constructor (no parameter list)
             List<TSNode> compactCtors = findAllDescendants(recordBody, "compact_constructor_declaration");
@@ -297,13 +267,7 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         }
 
         // Enums can implement interfaces
-        TSNode interfacesNode = findFirstChild(enumDecl, "super_interfaces");
-        if (interfacesNode != null) {
-            List<TSNode> typeIdentifiers = findAllDescendants(interfacesNode, "type_identifier");
-            for (TSNode typeId : typeIdentifiers) {
-                typeInfo.implementsInterfaces.add(getNodeText(source, typeId));
-            }
-        }
+        extractInterfaces(source, enumDecl, "super_interfaces", typeInfo.implementsInterfaces);
 
         // Analyze enum body for fields, methods, and constructors
         TSNode enumBody = findFirstChild(enumDecl, "enum_body");
@@ -311,37 +275,10 @@ public class JavaAnalyzer implements LanguageAnalyzer {
             Map<String, String> fieldTypes = new HashMap<>();
 
             // Fields declared in enum body
-            List<TSNode> fieldDecls = findAllDescendants(enumBody, "field_declaration");
-            for (TSNode field : fieldDecls) {
-                String declaredType = null;
-                TSNode typeNode = findFirstChild(field, "type");
-                if (typeNode == null) typeNode = findFirstDescendant(field, "type_identifier");
-                if (typeNode == null) typeNode = findFirstDescendant(field, "scoped_identifier");
-                if (typeNode == null) typeNode = findFirstDescendant(field, "scoped_type_identifier");
-                if (typeNode == null) typeNode = findFirstDescendant(field, "integral_type");
-                if (typeNode != null) {
-                    declaredType = extractTypeWithGenerics(source, typeNode, field);
-                }
-                List<TSNode> declarators = findAllDescendants(field, "variable_declarator");
-                for (TSNode declarator : declarators) {
-                    FieldInfo fi = buildFieldInfo(source, field, declarator, declaredType, fieldTypes);
-                    if (fi != null) typeInfo.fields.add(fi);
-                }
-            }
+            collectFieldsFromBodyInto(source, enumBody, typeInfo.fields, fieldTypes);
 
-            // Methods declared in enum body
-            List<TSNode> methods = findAllDescendants(enumBody, "method_declaration");
-            for (TSNode method : methods) {
-                MethodInfo methodInfo = analyzeMethod(source, method, typeInfo.name, fieldTypes);
-                typeInfo.methods.add(methodInfo);
-            }
-
-            // Constructors declared in enum body
-            List<TSNode> constructors = findAllDescendants(enumBody, "constructor_declaration");
-            for (TSNode constructor : constructors) {
-                MethodInfo ctorInfo = analyzeConstructor(source, constructor, typeInfo.name, fieldTypes);
-                typeInfo.methods.add(ctorInfo);
-            }
+            // Methods and constructors
+            collectMethodsAndConstructors(source, enumBody, typeInfo, fieldTypes);
         }
 
         return typeInfo;
@@ -356,25 +293,10 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         // Extract annotations
         extractAnnotations(source, interfaceDecl, typeInfo.annotations);
 
-        TSNode nameNode = findFirstChild(interfaceDecl, "identifier");
-        if (nameNode != null) {
-            String baseName = getNodeText(source, nameNode);
-            TSNode typeParams = findFirstChild(interfaceDecl, "type_parameters");
-            if (typeParams != null) {
-                typeInfo.name = baseName + getNodeText(source, typeParams);
-            } else {
-                typeInfo.name = baseName;
-            }
-        }
+        typeInfo.name = extractNameWithTypeParams(source, interfaceDecl);
         
         // Interfaces can extend other interfaces
-        TSNode extendsNode = findFirstChild(interfaceDecl, "extends_interfaces");
-        if (extendsNode != null) {
-            List<TSNode> typeIdentifiers = findAllDescendants(extendsNode, "type_identifier");
-            for (TSNode typeId : typeIdentifiers) {
-                typeInfo.implementsInterfaces.add(getNodeText(source, typeId));
-            }
-        }
+        extractInterfaces(source, interfaceDecl, "extends_interfaces", typeInfo.implementsInterfaces);
 
         // Collect interface methods from interface_body
         TSNode interfaceBody = findFirstChild(interfaceDecl, "interface_body");
@@ -485,31 +407,10 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         Map<String, String> localTypes = new HashMap<>();
         // 1) Locals
         collectLocalVariables(source, bodyNode, methodInfo, localTypes);
-        // 2) Method invocations (returns the set of member accesses used as invocations)
-        Set<TSNode> memberAccessInInvocations = collectMethodInvocations(source, bodyNode, methodInfo, className, fieldTypes, paramTypes, localTypes);
-        // 3) Property accesses (skip those used in invocations)
-        collectPropertyAccesses(source, bodyNode, methodInfo, className, localTypes, memberAccessInInvocations);
-        // 4) Sort
-        methodInfo.methodCalls.sort((a, b) -> {
-            int nameCompare = a.methodName.compareTo(b.methodName);
-            if (nameCompare != 0) return nameCompare;
-            if (a.objectType != null && b.objectType != null) {
-                int typeCompare = a.objectType.compareTo(b.objectType);
-                if (typeCompare != 0) return typeCompare;
-            } else if (a.objectType != null) {
-                return 1;
-            } else if (b.objectType != null) {
-                return -1;
-            }
-            if (a.objectName != null && b.objectName != null) {
-                return a.objectName.compareTo(b.objectName);
-            } else if (a.objectName != null) {
-                return 1;
-            } else if (b.objectName != null) {
-                return -1;
-            }
-            return 0;
-        });
+        // 2) Method invocations
+        collectMethodInvocations(source, bodyNode, methodInfo, className, fieldTypes, paramTypes, localTypes);
+        // 3) Sort
+        methodInfo.methodCalls.sort(METHOD_CALL_COMPARATOR);
     }
 
     private void collectLocalVariables(String source, TSNode bodyNode, MethodInfo methodInfo, Map<String, String> localTypes) {
@@ -535,10 +436,9 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         }
     }
 
-    private Set<TSNode> collectMethodInvocations(String source, TSNode bodyNode, MethodInfo methodInfo,
-                                                 String className, Map<String, String> fieldTypes,
-                                                 Map<String, String> paramTypes, Map<String, String> localTypes) {
-        Set<TSNode> memberAccessInInvocations = new HashSet<>();
+    private void collectMethodInvocations(String source, TSNode bodyNode, MethodInfo methodInfo,
+                                          String className, Map<String, String> fieldTypes,
+                                          Map<String, String> paramTypes, Map<String, String> localTypes) {
         List<TSNode> methodInvocations = findAllDescendants(bodyNode, "method_invocation");
         for (TSNode invocation : methodInvocations) {
             int childCount = invocation.getNamedChildCount();
@@ -594,40 +494,38 @@ public class JavaAnalyzer implements LanguageAnalyzer {
                 }
             }
         }
-        return memberAccessInInvocations; // remains empty for Java (kept for symmetry and future use)
-    }
-
-    private void collectPropertyAccesses(String source, TSNode bodyNode, MethodInfo methodInfo,
-                                         String className, Map<String, String> localTypes, Set<TSNode> memberAccessInInvocations) {
-        // Java: count property-like accesses via method_invocation already; no separate member_access node used
-        // This method is a placeholder for parity with other analyzers and future expansion.
     }
 
     private List<FieldInfo> collectFieldsFromBody(String source, TSNode classBody, Map<String, String> fieldTypes) {
         List<FieldInfo> fields = new ArrayList<>();
-        if (classBody == null) return fields;
+        collectFieldsFromBodyInto(source, classBody, fields, fieldTypes, false);
+        return fields;
+    }
+    
+    private void collectFieldsFromBodyInto(String source, TSNode classBody, List<FieldInfo> targetList, Map<String, String> fieldTypes) {
+        collectFieldsFromBodyInto(source, classBody, targetList, fieldTypes, true);
+    }
+    
+    private void collectFieldsFromBodyInto(String source, TSNode classBody, List<FieldInfo> targetList, Map<String, String> fieldTypes, boolean includeNested) {
+        if (classBody == null) return;
         
-        // Only direct field_declaration children of this class body
-        List<TSNode> fieldDecls = findAllChildren(classBody, "field_declaration");
+        // For regular classes use findAllChildren to avoid nested class fields; for enum/record use findAllDescendants
+        List<TSNode> fieldDecls = includeNested 
+            ? findAllDescendants(classBody, "field_declaration")
+            : findAllChildren(classBody, "field_declaration");
         for (TSNode field : fieldDecls) {
             String declaredType = null;
-            TSNode typeNode = findFirstChild(field, "type");
-            if (typeNode == null) typeNode = findFirstDescendant(field, "type_identifier");
-            if (typeNode == null) typeNode = findFirstDescendant(field, "scoped_identifier");
-            if (typeNode == null) typeNode = findFirstDescendant(field, "scoped_type_identifier");
-            if (typeNode == null) typeNode = findFirstDescendant(field, "integral_type");
+            TSNode typeNode = findTypeNode(field);
             if (typeNode != null) {
-                // Use generic-aware extraction for fields
                 declaredType = extractTypeWithGenerics(source, typeNode, field);
             }
             
             List<TSNode> declarators = findAllDescendants(field, "variable_declarator");
             for (TSNode declarator : declarators) {
                 FieldInfo fi = buildFieldInfo(source, field, declarator, declaredType, fieldTypes);
-                if (fi != null) fields.add(fi);
+                if (fi != null) targetList.add(fi);
             }
         }
-        return fields;
     }
 
     // Builds FieldInfo for a single variable_declarator inside a field_declaration, updating fieldTypes map.
@@ -700,41 +598,7 @@ public class JavaAnalyzer implements LanguageAnalyzer {
             }
             
             // Fallback: Check if visibility keywords appear in the full modifiers text
-            // This handles cases where Tree-sitter doesn't properly separate them as child nodes
-            if (target instanceof TypeInfo && ((TypeInfo) target).visibility == null) {
-                if (fullModifiersText.contains("public")) {
-                    ((TypeInfo) target).visibility = "public";
-                    if (!modifiers.contains("public")) modifiers.add("public");
-                } else if (fullModifiersText.contains("protected")) {
-                    ((TypeInfo) target).visibility = "protected";
-                    if (!modifiers.contains("protected")) modifiers.add("protected");
-                } else if (fullModifiersText.contains("private")) {
-                    ((TypeInfo) target).visibility = "private";
-                    if (!modifiers.contains("private")) modifiers.add("private");
-                }
-            } else if (target instanceof MethodInfo && ((MethodInfo) target).visibility == null) {
-                if (fullModifiersText.contains("public")) {
-                    ((MethodInfo) target).visibility = "public";
-                    if (!modifiers.contains("public")) modifiers.add("public");
-                } else if (fullModifiersText.contains("protected")) {
-                    ((MethodInfo) target).visibility = "protected";
-                    if (!modifiers.contains("protected")) modifiers.add("protected");
-                } else if (fullModifiersText.contains("private")) {
-                    ((MethodInfo) target).visibility = "private";
-                    if (!modifiers.contains("private")) modifiers.add("private");
-                }
-            } else if (target instanceof FieldInfo && ((FieldInfo) target).visibility == null) {
-                if (fullModifiersText.contains("public")) {
-                    ((FieldInfo) target).visibility = "public";
-                    if (!modifiers.contains("public")) modifiers.add("public");
-                } else if (fullModifiersText.contains("protected")) {
-                    ((FieldInfo) target).visibility = "protected";
-                    if (!modifiers.contains("protected")) modifiers.add("protected");
-                } else if (fullModifiersText.contains("private")) {
-                    ((FieldInfo) target).visibility = "private";
-                    if (!modifiers.contains("private")) modifiers.add("private");
-                }
-            }
+            applyVisibilityFallback(target, fullModifiersText, modifiers);
 
             // Add non-visibility modifiers that may not be exposed as named children
             String[] knownNonVisibility = new String[] {
@@ -767,6 +631,80 @@ public class JavaAnalyzer implements LanguageAnalyzer {
                         annotations.add(normalized);
                     }
                 }
+            }
+        }
+    }
+    
+    // Helper: Extract name with optional type parameters
+    private String extractNameWithTypeParams(String source, TSNode node) {
+        TSNode nameNode = findFirstChild(node, "identifier");
+        if (nameNode == null) return null;
+        String baseName = getNodeText(source, nameNode);
+        TSNode typeParams = findFirstChild(node, "type_parameters");
+        if (typeParams != null) {
+            return baseName + getNodeText(source, typeParams);
+        }
+        return baseName;
+    }
+    
+    // Helper: Extract interfaces/extends into target list
+    private void extractInterfaces(String source, TSNode node, String childNodeType, List<String> targetList) {
+        TSNode interfacesNode = findFirstChild(node, childNodeType);
+        if (interfacesNode != null) {
+            List<TSNode> typeIdentifiers = findAllDescendants(interfacesNode, "type_identifier");
+            for (TSNode typeId : typeIdentifiers) {
+                targetList.add(getNodeText(source, typeId));
+            }
+        }
+    }
+    
+    // Helper: Collect methods and constructors from a body node
+    private void collectMethodsAndConstructors(String source, TSNode bodyNode, TypeInfo typeInfo, Map<String, String> fieldTypes) {
+        List<TSNode> methods = findAllDescendants(bodyNode, "method_declaration");
+        for (TSNode method : methods) {
+            MethodInfo methodInfo = analyzeMethod(source, method, typeInfo.name, fieldTypes);
+            typeInfo.methods.add(methodInfo);
+        }
+        
+        List<TSNode> constructors = findAllDescendants(bodyNode, "constructor_declaration");
+        for (TSNode constructor : constructors) {
+            MethodInfo ctorInfo = analyzeConstructor(source, constructor, typeInfo.name, fieldTypes);
+            typeInfo.methods.add(ctorInfo);
+        }
+    }
+    
+    // Helper: Find type node in common locations
+    private TSNode findTypeNode(TSNode searchScope) {
+        TSNode typeNode = findFirstChild(searchScope, NT_TYPE);
+        if (typeNode == null) typeNode = findFirstDescendant(searchScope, NT_TYPE_IDENTIFIER);
+        if (typeNode == null) typeNode = findFirstDescendant(searchScope, NT_SCOPED_IDENTIFIER);
+        if (typeNode == null) typeNode = findFirstDescendant(searchScope, NT_SCOPED_TYPE_IDENTIFIER);
+        if (typeNode == null) typeNode = findFirstDescendant(searchScope, NT_INTEGRAL_TYPE);
+        return typeNode;
+    }
+    
+    // Helper: Apply visibility fallback for all target types
+    private void applyVisibilityFallback(Object target, String fullModifiersText, List<String> modifiers) {
+        if (fullModifiersText == null) return;
+        String visibility = null;
+        if (fullModifiersText.contains("public")) {
+            visibility = "public";
+        } else if (fullModifiersText.contains("protected")) {
+            visibility = "protected";
+        } else if (fullModifiersText.contains("private")) {
+            visibility = "private";
+        }
+        
+        if (visibility != null) {
+            if (target instanceof TypeInfo && ((TypeInfo) target).visibility == null) {
+                ((TypeInfo) target).visibility = visibility;
+            } else if (target instanceof MethodInfo && ((MethodInfo) target).visibility == null) {
+                ((MethodInfo) target).visibility = visibility;
+            } else if (target instanceof FieldInfo && ((FieldInfo) target).visibility == null) {
+                ((FieldInfo) target).visibility = visibility;
+            }
+            if (!modifiers.contains(visibility)) {
+                modifiers.add(visibility);
             }
         }
     }
