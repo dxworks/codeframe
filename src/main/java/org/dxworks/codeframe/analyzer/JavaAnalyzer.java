@@ -20,27 +20,6 @@ public class JavaAnalyzer implements LanguageAnalyzer {
     private static final String NT_SCOPED_TYPE_IDENTIFIER = "scoped_type_identifier";
     private static final String NT_INTEGRAL_TYPE = "integral_type";
     
-    private static final java.util.Comparator<MethodCall> METHOD_CALL_COMPARATOR = (a, b) -> {
-        int nameCompare = a.methodName.compareTo(b.methodName);
-        if (nameCompare != 0) return nameCompare;
-        if (a.objectType != null && b.objectType != null) {
-            int typeCompare = a.objectType.compareTo(b.objectType);
-            if (typeCompare != 0) return typeCompare;
-        } else if (a.objectType != null) {
-            return 1;
-        } else if (b.objectType != null) {
-            return -1;
-        }
-        if (a.objectName != null && b.objectName != null) {
-            return a.objectName.compareTo(b.objectName);
-        } else if (a.objectName != null) {
-            return 1;
-        } else if (b.objectName != null) {
-            return -1;
-        }
-        return 0;
-    };
-    
     @Override
     public FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
         FileAnalysis analysis = new FileAnalysis();
@@ -260,11 +239,8 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         // Extract annotations
         extractAnnotations(source, enumDecl, typeInfo.annotations);
 
-        // Enum name
-        TSNode nameNode = findFirstChild(enumDecl, "identifier");
-        if (nameNode != null) {
-            typeInfo.name = getNodeText(source, nameNode);
-        }
+        // Enum name (include generic type parameters if present)
+        typeInfo.name = extractNameWithTypeParams(source, enumDecl);
 
         // Enums can implement interfaces
         extractInterfaces(source, enumDecl, "super_interfaces", typeInfo.implementsInterfaces);
@@ -410,7 +386,7 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         // 2) Method invocations
         collectMethodInvocations(source, bodyNode, methodInfo, className, fieldTypes, paramTypes, localTypes);
         // 3) Sort
-        methodInfo.methodCalls.sort(METHOD_CALL_COMPARATOR);
+        methodInfo.methodCalls.sort(TreeSitterHelper.METHOD_CALL_COMPARATOR);
     }
 
     private void collectLocalVariables(String source, TSNode bodyNode, MethodInfo methodInfo, Map<String, String> localTypes) {
@@ -502,6 +478,7 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         return fields;
     }
     
+    // Overload for enum/record bodies that need to search nested declarations
     private void collectFieldsFromBodyInto(String source, TSNode classBody, List<FieldInfo> targetList, Map<String, String> fieldTypes) {
         collectFieldsFromBodyInto(source, classBody, targetList, fieldTypes, true);
     }
@@ -509,7 +486,8 @@ public class JavaAnalyzer implements LanguageAnalyzer {
     private void collectFieldsFromBodyInto(String source, TSNode classBody, List<FieldInfo> targetList, Map<String, String> fieldTypes, boolean includeNested) {
         if (classBody == null) return;
         
-        // For regular classes use findAllChildren to avoid nested class fields; for enum/record use findAllDescendants
+        // includeNested=false: use findAllChildren (direct children only, avoids nested class fields)
+        // includeNested=true: use findAllDescendants (all descendants, needed for enum/record bodies)
         List<TSNode> fieldDecls = includeNested 
             ? findAllDescendants(classBody, "field_declaration")
             : findAllChildren(classBody, "field_declaration");

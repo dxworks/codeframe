@@ -260,11 +260,7 @@ This project uses Tree-sitter and its language grammars, which are licensed unde
 
 ### All languages
 
-- Top-level fields/constants are not emitted as entries in the analysis output. The analyzer focuses on types (classes/interfaces/enums/records where applicable) and functions/methods.
-- Languages that support true top-level fields/constants:
-  - JavaScript, TypeScript, Python, PHP
-- Languages that do not have true top-level fields/constants (must be inside a type):
-  - Java, C# (C# 9 top-level statements exist, but variables/constants live in a generated type and are not modeled as top-level members)
+- Top-level fields/constants (for langauges that support them, e.g., JavaScript, TypeScript, Python, PHP) are not emitted as entries in the analysis output. The analyzer focuses on types (classes/interfaces/enums/records where applicable) and functions/methods.
 
 ### JavaScript
 
@@ -273,7 +269,6 @@ This project uses Tree-sitter and its language grammars, which are licensed unde
   - Top-level functions: `"function*"` (e.g., `export function* name()`)
   - Class methods: `"*"` (e.g., `*methodName()`)
 - Dynamic import expressions `import("path")` are not modeled as method calls and are currently ignored in `methodCalls`.
-- Top-level constants/variables (e.g., `const/let/var`, including enum-like objects) are not emitted as entries in the analysis output.
 
 ### C#
 

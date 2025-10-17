@@ -151,51 +151,14 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
         TypeInfo typeInfo = new TypeInfo();
         typeInfo.kind = "class";
         
-        // Extract modifiers and visibility
-        extractModifiersAndVisibility(source, classDecl, typeInfo.modifiers, typeInfo);
+        // Extract modifiers, visibility, and attributes
+        extractModifiersAndAttributes(source, classDecl, typeInfo);
         
-        // Extract attributes (C#'s annotations)
-        extractAttributes(source, classDecl, typeInfo.annotations);
-        
-        // Get class name
-        TSNode nameNode = findFirstChild(classDecl, "identifier");
-        if (nameNode != null) {
-            String baseName = getNodeText(source, nameNode);
-            TSNode typeParams = findFirstChild(classDecl, "type_parameter_list");
-            if (typeParams != null) {
-                typeInfo.name = baseName + getNodeText(source, typeParams);
-            } else {
-                typeInfo.name = baseName;
-            }
-        }
+        // Get class name (include generic type parameters if present)
+        typeInfo.name = extractNameWithTypeParams(source, classDecl);
         
         // Get base list (extends and implements)
-        TSNode baseListNode = findFirstChild(classDecl, "base_list");
-        if (baseListNode != null) {
-            // In C#, base_list contains simple_base_type nodes
-            // We need to extract the actual type names from these nodes
-            List<String> baseTypeNames = new ArrayList<>();
-            for (int i = 0; i < baseListNode.getNamedChildCount(); i++) {
-                TSNode baseTypeNode = baseListNode.getNamedChild(i);
-                String typeName = getNodeText(source, baseTypeNode);
-                if (typeName != null && !typeName.isEmpty()) {
-                    baseTypeNames.add(typeName);
-                }
-            }
-            
-            // In C#, the first base type is the base class if it doesn't start with 'I'
-            // Convention: interfaces typically start with 'I' (e.g., IDisposable, IEnumerable)
-            // However, this is just a convention. Without semantic analysis, we use this heuristic.
-            for (int i = 0; i < baseTypeNames.size(); i++) {
-                String typeName = baseTypeNames.get(i);
-                // If it's the first type and doesn't look like an interface name, treat as base class
-                if (i == 0 && !looksLikeInterface(typeName)) {
-                    typeInfo.extendsType = typeName;
-                } else {
-                    typeInfo.implementsInterfaces.add(typeName);
-                }
-            }
-        }
+        extractBaseList(source, classDecl, typeInfo);
         
         return typeInfo;
     }
@@ -205,8 +168,7 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
         typeInfo.kind = "enum";
 
         // Modifiers and attributes
-        extractModifiersAndVisibility(source, enumDecl, typeInfo.modifiers, typeInfo);
-        extractAttributes(source, enumDecl, typeInfo.annotations);
+        extractModifiersAndAttributes(source, enumDecl, typeInfo);
 
         // Name
         TSNode nameNode = findFirstChild(enumDecl, "identifier");
@@ -238,41 +200,13 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
         typeInfo.kind = "record";
 
         // Modifiers and attributes
-        extractModifiersAndVisibility(source, recordDecl, typeInfo.modifiers, typeInfo);
-        extractAttributes(source, recordDecl, typeInfo.annotations);
+        extractModifiersAndAttributes(source, recordDecl, typeInfo);
 
         // Name (include generic parameters if present)
-        TSNode nameNode = findFirstChild(recordDecl, "identifier");
-        if (nameNode != null) {
-            String baseName = getNodeText(source, nameNode);
-            TSNode typeParams = findFirstChild(recordDecl, "type_parameter_list");
-            if (typeParams != null) {
-                typeInfo.name = baseName + getNodeText(source, typeParams);
-            } else {
-                typeInfo.name = baseName;
-            }
-        }
+        typeInfo.name = extractNameWithTypeParams(source, recordDecl);
 
         // Base list (extends/implements)
-        TSNode baseListNode = findFirstChild(recordDecl, "base_list");
-        if (baseListNode != null) {
-            List<String> baseTypeNames = new ArrayList<>();
-            for (int i = 0; i < baseListNode.getNamedChildCount(); i++) {
-                TSNode baseTypeNode = baseListNode.getNamedChild(i);
-                String typeName = getNodeText(source, baseTypeNode);
-                if (typeName != null && !typeName.isEmpty()) {
-                    baseTypeNames.add(typeName);
-                }
-            }
-            for (int i = 0; i < baseTypeNames.size(); i++) {
-                String typeName = baseTypeNames.get(i);
-                if (i == 0 && !looksLikeInterface(typeName)) {
-                    typeInfo.extendsType = typeName;
-                } else {
-                    typeInfo.implementsInterfaces.add(typeName);
-                }
-            }
-        }
+        extractBaseList(source, recordDecl, typeInfo);
 
         // Primary constructor parameters -> fields (to mirror Java records components behavior)
         TSNode paramList = findFirstChild(recordDecl, "parameter_list");
@@ -317,33 +251,13 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
         TypeInfo typeInfo = new TypeInfo();
         typeInfo.kind = "interface";
         
-        // Extract modifiers and visibility
-        extractModifiersAndVisibility(source, interfaceDecl, typeInfo.modifiers, typeInfo);
-        // Extract attributes
-        extractAttributes(source, interfaceDecl, typeInfo.annotations);
+        // Extract modifiers, visibility, and attributes
+        extractModifiersAndAttributes(source, interfaceDecl, typeInfo);
 
-        TSNode nameNode = findFirstChild(interfaceDecl, "identifier");
-        if (nameNode != null) {
-            String baseName = getNodeText(source, nameNode);
-            TSNode typeParams = findFirstChild(interfaceDecl, "type_parameter_list");
-            if (typeParams != null) {
-                typeInfo.name = baseName + getNodeText(source, typeParams);
-            } else {
-                typeInfo.name = baseName;
-            }
-        }
+        typeInfo.name = extractNameWithTypeParams(source, interfaceDecl);
         
-        // Interfaces can extend other interfaces
-        TSNode baseListNode = findFirstChild(interfaceDecl, "base_list");
-        if (baseListNode != null) {
-            for (int i = 0; i < baseListNode.getNamedChildCount(); i++) {
-                TSNode baseTypeNode = baseListNode.getNamedChild(i);
-                String typeName = getNodeText(source, baseTypeNode);
-                if (typeName != null && !typeName.isEmpty()) {
-                    typeInfo.implementsInterfaces.add(typeName);
-                }
-            }
-        }
+        // Interfaces can extend other interfaces (all go to implementsInterfaces)
+        extractBaseList(source, interfaceDecl, typeInfo, true);
         
         // Collect interface methods from body
         TSNode body = findFirstChild(interfaceDecl, "declaration_list");
@@ -374,8 +288,7 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
     private MethodInfo analyzeMethod(String source, TSNode methodDecl, String className) {
         MethodInfo methodInfo = new MethodInfo();
         
-        extractModifiersAndVisibility(source, methodDecl, methodInfo.modifiers, methodInfo);
-        extractAttributes(source, methodDecl, methodInfo.annotations);
+        extractModifiersAndAttributes(source, methodDecl, methodInfo);
         
         methodInfo.name = extractMethodName(source, methodDecl);
         methodInfo.returnType = extractReturnType(source, methodDecl);
@@ -392,8 +305,7 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
 
     private MethodInfo analyzeConstructor(String source, TSNode ctorDecl, String className) {
         MethodInfo methodInfo = new MethodInfo();
-        extractModifiersAndVisibility(source, ctorDecl, methodInfo.modifiers, methodInfo);
-        extractAttributes(source, ctorDecl, methodInfo.annotations);
+        extractModifiersAndAttributes(source, ctorDecl, methodInfo);
         // Constructors are represented under methods as the class name, no return type
         methodInfo.name = className;
         methodInfo.returnType = null;
@@ -595,49 +507,19 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
                         nameNode = functionNode.getNamedChild(childCount - 1);
                     }
                     
-                    if (nameNode != null && ("identifier".equals(nameNode.getType()) || "identifier_name".equals(nameNode.getType()))) {
-                        methodName = getNodeText(source, nameNode);
+                    if (nameNode != null) {
+                        methodName = extractIdentifierText(source, nameNode);
                         calleeNameNodeForDedupe = nameNode;
-                    } else if (nameNode != null && "generic_name".equals(nameNode.getType())) {
-                        // For generic methods like Method<T>()
-                        TSNode idNode = findFirstChild(nameNode, "identifier");
-                        if (idNode != null) {
-                            methodName = getNodeText(source, idNode);
-                            calleeNameNodeForDedupe = idNode;
+                        if ("generic_name".equals(nameNode.getType())) {
+                            TSNode idNode = findFirstChild(nameNode, "identifier");
+                            if (idNode != null) calleeNameNodeForDedupe = idNode;
                         }
                     }
                     
                     if (expressionNode != null) {
-                        String exprType = expressionNode.getType();
-                        String exprText = getNodeText(source, expressionNode);
-                        
-                        if ("identifier".equals(exprType)) {
-                            objectName = exprText;
-                            objectType = localTypes.get(objectName);
-                            
-                            // Check for 'this'
-                            if ("this".equals(objectName) && className != null) {
-                                objectType = className;
-                            }
-                        } else if ("this_expression".equals(exprType)) {
-                            objectName = "this";
-                            objectType = className;
-                        } else if ("generic_name".equals(exprType) || "qualified_name".equals(exprType)) {
-                            // Static method call like Maybe<T>.From(), Metrics.Metrics.For()
-                            // These are type names, not variable references
-                            objectName = null; // do not treat type as an object instance
-                            objectType = exprText;
-                        } else if ("predefined_type".equals(exprType)) {
-                            // Static method call on a predefined type like int.Parse, string.Join
-                            objectName = null;
-                            objectType = exprText;
-                        } else if ("member_access_expression".equals(exprType) || "invocation_expression".equals(exprType)) {
-                            // Chained call like obj.Method1().Method2() or obj.Prop.Method()
-                            // We cannot determine the runtime type without semantic analysis
-                            // Leave objectType and objectName as null
-                            objectName = null;
-                            objectType = null;
-                        }
+                        ObjectTypeInfo info = extractObjectAndType(source, expressionNode, localTypes, className);
+                        objectName = info.objectName;
+                        objectType = info.objectType;
                     }
                 } else if ("identifier".equals(functionNode.getType())) {
                     // Direct method call
@@ -645,12 +527,9 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
                     calleeNameNodeForDedupe = functionNode;
                 } else if ("generic_name".equals(functionNode.getType())) {
                     // Generic method call like Method<T>()
-                    // Extract just the method name (before the type arguments)
+                    methodName = extractIdentifierText(source, functionNode);
                     TSNode idNode = findFirstChild(functionNode, "identifier");
-                    if (idNode != null) {
-                        methodName = getNodeText(source, idNode);
-                        calleeNameNodeForDedupe = idNode;
-                    }
+                    if (idNode != null) calleeNameNodeForDedupe = idNode;
                 }
                 
                 if (methodName != null) {
@@ -749,43 +628,13 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
                 // Last child is expected to be the identifier (property name)
                 TSNode nameNode = memberAccess.getNamedChild(childCount - 1);
                 if (nameNode != null) {
-                    String nt = nameNode.getType();
-                    if ("identifier".equals(nt) || "identifier_name".equals(nt)) {
-                        propertyName = getNodeText(source, nameNode);
-                    } else if ("generic_name".equals(nt)) {
-                        TSNode idNode = findFirstChild(nameNode, "identifier");
-                        if (idNode != null) propertyName = getNodeText(source, idNode);
-                    } else {
-                        // Fallback: try to find an identifier descendant, else use raw text
-                        TSNode anyId = findFirstChild(nameNode, "identifier");
-                        if (anyId == null) anyId = findFirstChild(nameNode, "identifier_name");
-                        propertyName = anyId != null ? getNodeText(source, anyId) : getNodeText(source, nameNode);
-                    }
+                    propertyName = extractIdentifierText(source, nameNode);
                 }
                 
                 if (expressionNode != null) {
-                    String exprType = expressionNode.getType();
-                    String exprText = getNodeText(source, expressionNode);
-                    
-                    if ("identifier".equals(exprType)) {
-                        objectName = exprText;
-                        objectType = localTypes.get(objectName);
-                        
-                        if ("this".equals(objectName) && className != null) {
-                            objectType = className;
-                        }
-                    } else if ("this_expression".equals(exprType)) {
-                        objectName = "this";
-                        objectType = className;
-                    } else if ("generic_name".equals(exprType) || "qualified_name".equals(exprType)) {
-                        // Static property access
-                        objectName = null; // keep only the type
-                        objectType = exprText;
-                    } else if ("predefined_type".equals(exprType)) {
-                        // Static property access on predefined type (rare, but for consistency)
-                        objectName = null;
-                        objectType = exprText;
-                    }
+                    ObjectTypeInfo info = extractObjectAndType(source, expressionNode, localTypes, className);
+                    objectName = info.objectName;
+                    objectType = info.objectType;
                 }
             }
             
@@ -824,37 +673,12 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
                     nameNode = lhs.getNamedChild(childCount - 1);
                 }
                 if (nameNode != null) {
-                    String nt = nameNode.getType();
-                    if ("identifier".equals(nt) || "identifier_name".equals(nt)) {
-                        propertyName = getNodeText(source, nameNode);
-                    } else if ("generic_name".equals(nt)) {
-                        TSNode idNode = findFirstChild(nameNode, "identifier");
-                        if (idNode != null) propertyName = getNodeText(source, idNode);
-                    } else {
-                        TSNode anyId = findFirstChild(nameNode, "identifier");
-                        if (anyId == null) anyId = findFirstChild(nameNode, "identifier_name");
-                        propertyName = anyId != null ? getNodeText(source, anyId) : getNodeText(source, nameNode);
-                    }
+                    propertyName = extractIdentifierText(source, nameNode);
                 }
                 if (exprNode != null) {
-                    String exprType = exprNode.getType();
-                    String exprText = getNodeText(source, exprNode);
-                    if ("identifier".equals(exprType)) {
-                        objectName = exprText;
-                        objectType = localTypes.get(objectName);
-                        if ("this".equals(objectName) && className != null) {
-                            objectType = className;
-                        }
-                    } else if ("this_expression".equals(exprType)) {
-                        objectName = "this";
-                        objectType = className;
-                    } else if ("generic_name".equals(exprType) || "qualified_name".equals(exprType)) {
-                        objectName = null;
-                        objectType = exprText;
-                    } else if ("predefined_type".equals(exprType)) {
-                        objectName = null;
-                        objectType = exprText;
-                    }
+                    ObjectTypeInfo info = extractObjectAndType(source, exprNode, localTypes, className);
+                    objectName = info.objectName;
+                    objectType = info.objectType;
                 }
                 if (propertyName != null) {
                     addOrIncrementMethodCall(methodInfo, "set_" + propertyName, objectType, objectName);
@@ -876,71 +700,9 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
     }
     
     private void sortMethodCalls(MethodInfo methodInfo) {
-        methodInfo.methodCalls.sort((a, b) -> {
-            int nameCompare = a.methodName.compareTo(b.methodName);
-            if (nameCompare != 0) return nameCompare;
-            
-            if (a.objectType != null && b.objectType != null) {
-                int typeCompare = a.objectType.compareTo(b.objectType);
-                if (typeCompare != 0) return typeCompare;
-            } else if (a.objectType != null) {
-                return 1;
-            } else if (b.objectType != null) {
-                return -1;
-            }
-            
-            if (a.objectName != null && b.objectName != null) {
-                return a.objectName.compareTo(b.objectName);
-            } else if (a.objectName != null) {
-                return 1;
-            } else if (b.objectName != null) {
-                return -1;
-            }
-            return 0;
-        });
+        methodInfo.methodCalls.sort(TreeSitterHelper.METHOD_CALL_COMPARATOR);
     }
     
-    @SuppressWarnings("unused")
-    private List<FieldInfo> collectFields(String source, TSNode classDecl) {
-        List<FieldInfo> fields = new ArrayList<>();
-        List<TSNode> fieldDecls = findAllDescendants(classDecl, "field_declaration");
-        
-        for (TSNode field : fieldDecls) {
-            // Get field type from variable_declaration -> type
-            String declaredType = null;
-            TSNode variableDeclaration = findFirstChild(field, "variable_declaration");
-            if (variableDeclaration != null && variableDeclaration.getNamedChildCount() > 0) {
-                TSNode typeNode = variableDeclaration.getNamedChild(0);
-                if (typeNode != null) {
-                    declaredType = extractTypeWithGenerics(source, typeNode, variableDeclaration);
-                }
-            }
-            
-            // Variable names are under variable_declaration -> variable_declarator
-            List<TSNode> declarators = variableDeclaration != null
-                ? findAllDescendants(variableDeclaration, "variable_declarator")
-                : findAllDescendants(field, "variable_declarator");
-            for (TSNode declarator : declarators) {
-                TSNode varName = findFirstChild(declarator, "identifier");
-                if (varName != null) {
-                    FieldInfo fieldInfo = new FieldInfo();
-                    fieldInfo.name = getNodeText(source, varName);
-                    fieldInfo.type = declaredType;
-                    
-                    // Extract modifiers and visibility
-                    extractModifiersAndVisibility(source, field, fieldInfo.modifiers, fieldInfo);
-                    
-                    // Extract attributes
-                    extractAttributes(source, field, fieldInfo.annotations);
-                    
-                    fields.add(fieldInfo);
-                }
-            }
-        }
-        
-        return fields;
-    }
-
     private List<FieldInfo> collectFieldsFromBody(String source, TSNode classBody) {
         List<FieldInfo> fields = new ArrayList<>();
         if (classBody == null) return fields;
@@ -966,10 +728,7 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
                     FieldInfo fieldInfo = new FieldInfo();
                     fieldInfo.name = getNodeText(source, varName);
                     fieldInfo.type = declaredType;
-                    // Extract modifiers and visibility
-                    extractModifiersAndVisibility(source, field, fieldInfo.modifiers, fieldInfo);
-                    // Extract attributes
-                    extractAttributes(source, field, fieldInfo.annotations);
+                    extractModifiersAndAttributes(source, field, fieldInfo);
                     fields.add(fieldInfo);
                 }
             }
@@ -1011,8 +770,7 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
                 PropertyInfo pi = new PropertyInfo();
                 pi.name = propName;
                 pi.type = propType;
-                extractModifiersAndVisibility(source, prop, pi.modifiers, pi);
-                extractAttributes(source, prop, pi.annotations);
+                extractModifiersAndAttributes(source, prop, pi);
                 // Analyze bodies of accessors and expression-bodied properties and merge locals/calls
                 analyzePropertyBodies(source, prop, pi);
                 properties.add(pi);
@@ -1028,8 +786,7 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
             AccessorInfo getter = new AccessorInfo();
             getter.kind = "get";
             // Accessor inherits property's modifiers unless overridden (no separate accessor node here)
-            extractModifiersAndVisibility(source, propDecl, getter.modifiers, getter);
-            extractAttributes(source, propDecl, getter.annotations);
+            extractModifiersAndAttributes(source, propDecl, getter);
             MethodInfo tmp = new MethodInfo();
             analyzeMethodBody(source, arrow, tmp, /*className*/ null, /*paramTypes*/ new HashMap<>());
             getter.localVariables.addAll(tmp.localVariables);
@@ -1052,8 +809,7 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
                     if (accText.startsWith("get")) ai.kind = "get";
                     else if (accText.startsWith("set")) ai.kind = "set";
                 }
-                extractModifiersAndVisibility(source, acc, ai.modifiers, ai);
-                extractAttributes(source, acc, ai.annotations);
+                extractModifiersAndAttributes(source, acc, ai);
                 // Prefer block, otherwise arrow
                 TSNode body = findFirstChild(acc, "block");
                 if (body == null) body = findFirstChild(acc, "arrow_expression_clause");
@@ -1065,6 +821,43 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
                 }
                 pi.accessors.add(ai);
             }
+        }
+    }
+    
+    // Helper: Extract both modifiers/visibility and attributes in one call
+    private void extractModifiersAndAttributes(String source, TSNode node, Object target) {
+        List<String> modifiers = null;
+        if (target instanceof TypeInfo) {
+            modifiers = ((TypeInfo) target).modifiers;
+        } else if (target instanceof MethodInfo) {
+            modifiers = ((MethodInfo) target).modifiers;
+        } else if (target instanceof FieldInfo) {
+            modifiers = ((FieldInfo) target).modifiers;
+        } else if (target instanceof PropertyInfo) {
+            modifiers = ((PropertyInfo) target).modifiers;
+        } else if (target instanceof AccessorInfo) {
+            modifiers = ((AccessorInfo) target).modifiers;
+        }
+        
+        if (modifiers != null) {
+            extractModifiersAndVisibility(source, node, modifiers, target);
+        }
+        
+        List<String> annotations = null;
+        if (target instanceof TypeInfo) {
+            annotations = ((TypeInfo) target).annotations;
+        } else if (target instanceof MethodInfo) {
+            annotations = ((MethodInfo) target).annotations;
+        } else if (target instanceof FieldInfo) {
+            annotations = ((FieldInfo) target).annotations;
+        } else if (target instanceof PropertyInfo) {
+            annotations = ((PropertyInfo) target).annotations;
+        } else if (target instanceof AccessorInfo) {
+            annotations = ((AccessorInfo) target).annotations;
+        }
+        
+        if (annotations != null) {
+            extractAttributes(source, node, annotations);
         }
     }
     
@@ -1146,5 +939,119 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
             }
         } catch (Exception ignored) { }
         return getNodeText(source, baseTypeNode);
+    }
+    
+    // Helper: Extract name with optional type parameters
+    private String extractNameWithTypeParams(String source, TSNode node) {
+        TSNode nameNode = findFirstChild(node, "identifier");
+        if (nameNode == null) return null;
+        String baseName = getNodeText(source, nameNode);
+        TSNode typeParams = findFirstChild(node, "type_parameter_list");
+        if (typeParams != null) {
+            return baseName + getNodeText(source, typeParams);
+        }
+        return baseName;
+    }
+    
+    // Helper: Extract base list (extends/implements) with interface heuristic
+    private void extractBaseList(String source, TSNode node, TypeInfo typeInfo) {
+        extractBaseList(source, node, typeInfo, false);
+    }
+    
+    private void extractBaseList(String source, TSNode node, TypeInfo typeInfo, boolean allAreInterfaces) {
+        TSNode baseListNode = findFirstChild(node, "base_list");
+        if (baseListNode == null) return;
+        
+        List<String> baseTypeNames = new ArrayList<>();
+        for (int i = 0; i < baseListNode.getNamedChildCount(); i++) {
+            TSNode baseTypeNode = baseListNode.getNamedChild(i);
+            String typeName = getNodeText(source, baseTypeNode);
+            if (typeName != null && !typeName.isEmpty()) {
+                baseTypeNames.add(typeName);
+            }
+        }
+        
+        if (allAreInterfaces) {
+            // For interfaces extending interfaces, all are interfaces
+            typeInfo.implementsInterfaces.addAll(baseTypeNames);
+        } else {
+            // For classes/records: first is base class if it doesn't look like interface
+            for (int i = 0; i < baseTypeNames.size(); i++) {
+                String typeName = baseTypeNames.get(i);
+                if (i == 0 && !looksLikeInterface(typeName)) {
+                    typeInfo.extendsType = typeName;
+                } else {
+                    typeInfo.implementsInterfaces.add(typeName);
+                }
+            }
+        }
+    }
+    
+    // Helper: Extract identifier text from various node types
+    private String extractIdentifierText(String source, TSNode node) {
+        if (node == null) return null;
+        String nodeType = node.getType();
+        
+        if ("identifier".equals(nodeType) || "identifier_name".equals(nodeType)) {
+            return getNodeText(source, node);
+        } else if ("generic_name".equals(nodeType)) {
+            TSNode idNode = findFirstChild(node, "identifier");
+            return idNode != null ? getNodeText(source, idNode) : null;
+        } else {
+            // Fallback: try to find an identifier descendant, else use raw text
+            TSNode anyId = findFirstChild(node, "identifier");
+            if (anyId == null) anyId = findFirstChild(node, "identifier_name");
+            return anyId != null ? getNodeText(source, anyId) : getNodeText(source, node);
+        }
+    }
+    
+    // Helper: Extract object name and type from expression node
+    private ObjectTypeInfo extractObjectAndType(String source, TSNode expressionNode, 
+                                                Map<String, String> localTypes, String className) {
+        String objectName = null;
+        String objectType = null;
+        
+        if (expressionNode == null) {
+            return new ObjectTypeInfo(null, null);
+        }
+        
+        String exprType = expressionNode.getType();
+        String exprText = getNodeText(source, expressionNode);
+        
+        if ("identifier".equals(exprType)) {
+            objectName = exprText;
+            objectType = localTypes.get(objectName);
+            if ("this".equals(objectName) && className != null) {
+                objectType = className;
+            }
+        } else if ("this_expression".equals(exprType)) {
+            objectName = "this";
+            objectType = className;
+        } else if ("generic_name".equals(exprType) || "qualified_name".equals(exprType)) {
+            // Static access - type name, not instance
+            objectName = null;
+            objectType = exprText;
+        } else if ("predefined_type".equals(exprType)) {
+            // Static access on predefined type
+            objectName = null;
+            objectType = exprText;
+        } else if ("member_access_expression".equals(exprType) || "invocation_expression".equals(exprType)) {
+            // Chained call - cannot determine type without semantic analysis
+            objectName = null;
+            objectType = null;
+        }
+        
+        return new ObjectTypeInfo(objectName, objectType);
+    }
+    
+    // Helper class for returning object name and type together
+    private static class ObjectTypeInfo {
+        final String objectName;
+        final String objectType;
+        
+        ObjectTypeInfo(String objectName, String objectType) {
+            this.objectName = objectName;
+            this.objectType = objectType;
+        }
     }
 }
