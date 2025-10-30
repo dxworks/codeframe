@@ -28,19 +28,19 @@
         "objectType" : null,
         "objectName" : null,
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "orElse",
         "objectType" : null,
         "objectName" : null,
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "stream",
         "objectType" : "List<T>",
         "objectName" : "items",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       } ]
     }, {
       "name" : "findFirst",
@@ -58,25 +58,25 @@
         "objectType" : null,
         "objectName" : "Optional",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       }, {
         "methodName" : "get",
         "objectType" : "List<T>",
         "objectName" : "items",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "isEmpty",
         "objectType" : "List<T>",
         "objectName" : "items",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       }, {
         "methodName" : "of",
         "objectType" : null,
         "objectName" : "Optional",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       } ]
     }, {
       "name" : "processWildcard",
@@ -94,13 +94,13 @@
         "objectType" : null,
         "objectName" : "n",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       }, {
         "methodName" : "println",
         "objectType" : null,
         "objectName" : "System.out",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       } ]
     }, {
       "name" : "addToMap",
@@ -124,7 +124,7 @@
         "objectType" : "GenericContainer<K, V>",
         "objectName" : "container",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 2
       } ]
     } ],
     "types" : [ ]
@@ -181,7 +181,7 @@
         "objectType" : "K",
         "objectName" : "this.key",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       } ]
     } ],
     "types" : [ ]

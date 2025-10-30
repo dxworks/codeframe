@@ -52,7 +52,7 @@
         "objectType" : "Dependency",
         "objectName" : "dep",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       } ]
     } ],
     "types" : [ ]

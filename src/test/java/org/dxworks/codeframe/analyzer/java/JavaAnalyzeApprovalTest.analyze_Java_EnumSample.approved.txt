@@ -28,7 +28,7 @@
         "objectType" : "Status",
         "objectName" : "status",
         "callCount" : 3,
-        "parameterCount" : null
+        "parameterCount" : 0
       } ]
     }, {
       "name" : "processAllStatuses",
@@ -43,19 +43,19 @@
         "objectType" : null,
         "objectName" : "s",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       }, {
         "methodName" : "println",
         "objectType" : null,
         "objectName" : "System.out",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "values",
         "objectType" : null,
         "objectName" : "Status",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       } ]
     } ],
     "types" : [ ]

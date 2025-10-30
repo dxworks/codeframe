@@ -457,19 +457,35 @@ public class JavaAnalyzer implements LanguageAnalyzer {
             }
 
             if (methodName != null) {
+                // Count parameters in the invocation
+                int paramCount = countInvocationParameters(invocation);
                 boolean found = false;
                 for (MethodCall existingCall : methodInfo.methodCalls) {
-                    if (existingCall.matches(methodName, objectType, objectName, null)) {
+                    if (existingCall.matches(methodName, objectType, objectName, paramCount)) {
                         existingCall.callCount++;
                         found = true;
                         break;
                     }
                 }
                 if (!found) {
-                    methodInfo.methodCalls.add(new MethodCall(methodName, objectType, objectName));
+                    methodInfo.methodCalls.add(new MethodCall(methodName, objectType, objectName, paramCount));
                 }
             }
         }
+    }
+
+    private int countInvocationParameters(TSNode invocation) {
+        // Find the argument_list node in the method_invocation
+        TSNode argList = findFirstChild(invocation, "argument_list");
+        if (argList == null) {
+            return 0;
+        }
+        // Count direct children that are not punctuation (commas, parens)
+        int count = 0;
+        for (int i = 0; i < argList.getNamedChildCount(); i++) {
+            count++;
+        }
+        return count;
     }
 
     private List<FieldInfo> collectFieldsFromBody(String source, TSNode classBody, Map<String, String> fieldTypes) {

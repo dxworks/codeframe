@@ -46,13 +46,13 @@
         "objectType" : "Logger",
         "objectName" : "logger",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "query",
         "objectType" : "DatabaseConnection",
         "objectName" : "db",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 2
       } ]
     }, {
       "name" : "findAll",
@@ -67,7 +67,7 @@
         "objectType" : "DatabaseConnection",
         "objectName" : "db",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       } ]
     }, {
       "name" : "save",
@@ -85,19 +85,19 @@
         "objectType" : "User",
         "objectName" : "user",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       }, {
         "methodName" : "insert",
         "objectType" : null,
         "objectName" : null,
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "update",
         "objectType" : null,
         "objectName" : null,
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       } ]
     }, {
       "name" : "insert",
@@ -115,19 +115,19 @@
         "objectType" : "DatabaseConnection",
         "objectName" : "db",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 3
       }, {
         "methodName" : "getEmail",
         "objectType" : "User",
         "objectName" : "user",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       }, {
         "methodName" : "getName",
         "objectType" : "User",
         "objectName" : "user",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       } ]
     }, {
       "name" : "update",
@@ -145,25 +145,25 @@
         "objectType" : "DatabaseConnection",
         "objectName" : "db",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 4
       }, {
         "methodName" : "getEmail",
         "objectType" : "User",
         "objectName" : "user",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       }, {
         "methodName" : "getId",
         "objectType" : "User",
         "objectName" : "user",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       }, {
         "methodName" : "getName",
         "objectType" : "User",
         "objectName" : "user",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       } ]
     }, {
       "name" : "Sample",

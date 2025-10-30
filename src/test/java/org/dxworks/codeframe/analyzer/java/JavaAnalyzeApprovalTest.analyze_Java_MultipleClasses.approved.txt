@@ -28,7 +28,7 @@
         "objectType" : null,
         "objectName" : "System.out",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       } ]
     }, {
       "name" : "greet",
@@ -49,13 +49,13 @@
         "objectType" : "ExtraClass",
         "objectName" : "x",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       }, {
         "methodName" : "println",
         "objectType" : null,
         "objectName" : "System.out",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       } ]
     } ],
     "types" : [ {
@@ -81,7 +81,7 @@
           "objectType" : null,
           "objectName" : "System.out",
           "callCount" : 1,
-          "parameterCount" : null
+          "parameterCount" : 1
         } ]
       } ],
       "types" : [ ]
@@ -109,7 +109,7 @@
         "objectType" : null,
         "objectName" : "System.out",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       } ]
     } ],
     "types" : [ ]

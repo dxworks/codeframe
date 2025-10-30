@@ -34,31 +34,31 @@
         "objectType" : null,
         "objectName" : null,
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       }, {
         "methodName" : "error",
         "objectType" : "Logger",
         "objectName" : "logger",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "getMessage",
         "objectType" : null,
         "objectName" : "e",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       }, {
         "methodName" : "info",
         "objectType" : "Logger",
         "objectName" : "logger",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "read",
         "objectType" : null,
         "objectName" : "reader",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       } ]
     }, {
       "name" : "validateInput",
@@ -76,13 +76,13 @@
         "objectType" : "Logger",
         "objectName" : "logger",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "isEmpty",
         "objectType" : "String",
         "objectName" : "input",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       } ]
     }, {
       "name" : "cleanup",
@@ -97,7 +97,7 @@
         "objectType" : "Logger",
         "objectName" : "logger",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       } ]
     } ],
     "types" : [ ]

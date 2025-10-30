@@ -25,7 +25,7 @@
         "objectType" : null,
         "objectName" : "Math",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       } ]
     }, {
       "name" : "origin",
@@ -97,7 +97,7 @@
         "objectType" : "String",
         "objectName" : "name",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       } ]
     } ],
     "types" : [ ]

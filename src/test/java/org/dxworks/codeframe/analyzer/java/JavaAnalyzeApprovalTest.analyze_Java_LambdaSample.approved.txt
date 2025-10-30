@@ -34,55 +34,55 @@
         "objectType" : null,
         "objectName" : null,
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "filter",
         "objectType" : null,
         "objectName" : null,
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "forEach",
         "objectType" : "List<User>",
         "objectName" : "users",
         "callCount" : 2,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "getName",
         "objectType" : null,
         "objectName" : "u",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       }, {
         "methodName" : "info",
         "objectType" : "Logger",
         "objectName" : "logger",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "length",
         "objectType" : null,
         "objectName" : "n",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       }, {
         "methodName" : "map",
         "objectType" : null,
         "objectName" : null,
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "stream",
         "objectType" : "List<User>",
         "objectName" : "users",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       }, {
         "methodName" : "toList",
         "objectType" : null,
         "objectName" : "Collectors",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       } ]
     }, {
       "name" : "incrementAll",
@@ -100,13 +100,13 @@
         "objectType" : "List<Counter>",
         "objectName" : "counters",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "increment",
         "objectType" : null,
         "objectName" : "c",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       } ]
     } ],
     "types" : [ ]
