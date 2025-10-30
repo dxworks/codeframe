@@ -6,7 +6,8 @@ public enum Language {
     TYPESCRIPT("typescript"),
     PYTHON("python"),
     CSHARP("csharp"),
-    PHP("php");
+    PHP("php"),
+    SQL("sql");
 
     private final String name;
 

@@ -10,7 +10,19 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
-    "fields" : [ ],
+    "fields" : [ {
+      "name" : "logger",
+      "type" : "Logger",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "config",
+      "type" : "Config",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    } ],
     "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
@@ -64,6 +76,24 @@
     } ],
     "types" : [ ]
   }, {
+    "kind" : "class",
+    "name" : "SavePatientTransactionManager",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "fields" : [ {
+      "name" : "patientSaved",
+      "type" : "boolean",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ ],
+    "types" : [ ]
+  }, {
     "kind" : "interface",
     "name" : "User",
     "visibility" : null,
@@ -72,7 +102,28 @@
     "extendsType" : null,
     "implementsInterfaces" : [ ],
     "fields" : [ ],
-    "properties" : [ ],
+    "properties" : [ {
+      "name" : "id",
+      "type" : "string",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "accessors" : [ ]
+    }, {
+      "name" : "name",
+      "type" : "string",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "accessors" : [ ]
+    }, {
+      "name" : "email",
+      "type" : "string",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "accessors" : [ ]
+    } ],
     "methods" : [ ],
     "types" : [ ]
   } ],

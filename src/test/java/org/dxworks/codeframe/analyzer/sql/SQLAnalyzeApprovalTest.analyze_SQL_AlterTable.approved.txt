@@ -1,0 +1,56 @@
+{
+  "filePath" : "src/test/resources/samples/sql/alter_table.sql",
+  "language" : "sql",
+  "createTables" : [ ],
+  "alterTables" : [ {
+    "tableName" : "users",
+    "schema" : "public",
+    "operationType" : "ADD_COLUMN",
+    "addedColumns" : [ {
+      "name" : "last_login",
+      "type" : "TIMESTAMP",
+      "nullable" : true,
+      "constraints" : [ ]
+    } ],
+    "droppedColumns" : [ ],
+    "modifiedColumns" : [ ],
+    "addedConstraints" : [ ],
+    "droppedConstraints" : [ ]
+  }, {
+    "tableName" : "orders",
+    "schema" : "sales",
+    "operationType" : "ADD_CONSTRAINT",
+    "addedColumns" : [ ],
+    "droppedColumns" : [ ],
+    "modifiedColumns" : [ ],
+    "addedConstraints" : [ "PRIMARY KEY (order_id, user_id)" ],
+    "droppedConstraints" : [ ]
+  }, {
+    "tableName" : "orders",
+    "schema" : "sales",
+    "operationType" : "ADD_CONSTRAINT",
+    "addedColumns" : [ ],
+    "droppedColumns" : [ ],
+    "modifiedColumns" : [ ],
+    "addedConstraints" : [ "FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE ON UPDATE NO ACTION" ],
+    "droppedConstraints" : [ ]
+  }, {
+    "tableName" : "orders",
+    "schema" : "sales",
+    "operationType" : "DROP_COLUMN",
+    "addedColumns" : [ ],
+    "droppedColumns" : [ "total_amount" ],
+    "modifiedColumns" : [ ],
+    "addedConstraints" : [ ],
+    "droppedConstraints" : [ ]
+  } ],
+  "createViews" : [ ],
+  "createIndexes" : [ ],
+  "createProcedures" : [ ],
+  "createFunctions" : [ ],
+  "createTriggers" : [ ],
+  "dropOperations" : [ ],
+  "referencedTables" : [ "public.users", "sales.orders" ],
+  "referencedViews" : [ ],
+  "referencedProcedures" : [ ]
+}

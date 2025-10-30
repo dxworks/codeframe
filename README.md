@@ -299,6 +299,18 @@ This project uses Tree-sitter and its language grammars, which are licensed unde
   - The classes themselves do not appear as distinct `types` entries.
   - See `src/test/resources/samples/java/AnonymousInnerClassesSample.java`.
 
+### SQL
+
+- **DROP INDEX qualified names**
+  - Some SQL grammar variants emit an `ERROR` node when parsing qualified index names like `DROP INDEX schema.index_name` (e.g., the dot-separated form may be partially outside the `drop_index` node).
+  - We parse using AST-first approaches. If the index name token is not present under `drop_index`, the analyzer falls back conservatively and may report only the schema or leave the name unset.
+  - This is by design to keep parsing robust. If necessary, a future enhancement can use a scoped text read around the statement to recover the missing identifier without relying on global text parsing.
+
+- **MySQL CREATE FUNCTION (BEGIN...END) partial support**
+  - The current Tree-sitter SQL grammar used by Codeframe often marks MySQL-style bodies as `ERROR`. The analyzer still parses the function header (name, parameters, `RETURNS`) but does not analyze the body.
+  - As a result, referenced tables are not collected for these functions, and the captured `returnType` may include attributes (e.g., `DETERMINISTIC`).
+  - PostgreSQL-style functions (including dollar-quoted bodies) are supported and will be extracted with name, schema (optional), parameters, return type, and referenced tables from `FROM`/`JOIN` clauses in the body.
+
 ## Testing
 
 - **ApprovalTests-based strategy**

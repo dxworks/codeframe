@@ -34,7 +34,7 @@ public class PhpAnalyzeApprovalTest {
     }
 
     private static void verify(Path file, Language language) throws IOException {
-        FileAnalysis analysis = App.analyzeFile(file, language);
+        FileAnalysis analysis = (FileAnalysis) App.analyzeFile(file, language);
         Approvals.verify(MAPPER.writeValueAsString(analysis));
     }
 }

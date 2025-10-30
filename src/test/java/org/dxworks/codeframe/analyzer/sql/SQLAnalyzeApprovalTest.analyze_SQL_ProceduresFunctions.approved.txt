@@ -1,0 +1,37 @@
+{
+  "filePath" : "src/test/resources/samples/sql/procedures_functions.sql",
+  "language" : "sql",
+  "createTables" : [ ],
+  "alterTables" : [ ],
+  "createViews" : [ ],
+  "createIndexes" : [ ],
+  "createProcedures" : [ ],
+  "createFunctions" : [ {
+    "functionName" : "get_total",
+    "schema" : "sales",
+    "orReplace" : false,
+    "parameters" : [ {
+      "name" : "order_id",
+      "type" : "INT",
+      "direction" : null
+    } ],
+    "returnType" : "DECIMAL(12,2)",
+    "referencedTables" : [ "sales.order_lines" ]
+  }, {
+    "functionName" : "total_for_user",
+    "schema" : null,
+    "orReplace" : false,
+    "parameters" : [ {
+      "name" : "uid",
+      "type" : "INT",
+      "direction" : null
+    } ],
+    "returnType" : "DECIMAL(12,2)",
+    "referencedTables" : [ "sales.orders", "sales.order_lines", "public.users" ]
+  } ],
+  "createTriggers" : [ ],
+  "dropOperations" : [ ],
+  "referencedTables" : [ ],
+  "referencedViews" : [ ],
+  "referencedProcedures" : [ ]
+}

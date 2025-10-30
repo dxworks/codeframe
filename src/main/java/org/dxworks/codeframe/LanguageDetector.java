@@ -20,6 +20,8 @@ public class LanguageDetector {
             return Optional.of(Language.CSHARP);
         } else if (fileName.endsWith(".php")) {
             return Optional.of(Language.PHP);
+        } else if (fileName.endsWith(".sql")) {
+            return Optional.of(Language.SQL);
         }
         
         return Optional.empty();

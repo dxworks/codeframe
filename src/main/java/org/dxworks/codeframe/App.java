@@ -2,7 +2,7 @@ package org.dxworks.codeframe;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.dxworks.codeframe.analyzer.*;
-import org.dxworks.codeframe.model.FileAnalysis;
+import org.dxworks.codeframe.model.Analysis;
 import org.treesitter.*;
 
 import java.io.BufferedWriter;
@@ -33,6 +33,8 @@ public class App {
             TREE_SITTER_LANGUAGES.put(Language.PYTHON, (TSLanguage) Class.forName("org.treesitter.TreeSitterPython").getDeclaredConstructor().newInstance());
             TREE_SITTER_LANGUAGES.put(Language.CSHARP, (TSLanguage) Class.forName("org.treesitter.TreeSitterCSharp").getDeclaredConstructor().newInstance());
             TREE_SITTER_LANGUAGES.put(Language.PHP, (TSLanguage) Class.forName("org.treesitter.TreeSitterPhp").getDeclaredConstructor().newInstance());
+            
+            TREE_SITTER_LANGUAGES.put(Language.SQL, (TSLanguage) Class.forName("org.treesitter.TreeSitterSql").getDeclaredConstructor().newInstance());
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize Tree-sitter languages", e);
         }
@@ -44,6 +46,7 @@ public class App {
         ANALYZERS.put(Language.PYTHON, new PythonAnalyzer());
         ANALYZERS.put(Language.CSHARP, new CSharpAnalyzer());
         ANALYZERS.put(Language.PHP, new PHPAnalyzer());
+        ANALYZERS.put(Language.SQL, new SQLAnalyzer());
     }
 
     public static void main(String[] args) throws Exception {
@@ -51,7 +54,7 @@ public class App {
             System.err.println("Usage: java -jar codeframe.jar <input-folder> <output-file>");
             System.err.println("  <input-folder>: Path to source code directory or file");
             System.err.println("  <output-file>:  Path to output JSONL file");
-            System.err.println("Supported languages: Java, JavaScript, TypeScript, Python, C#, PHP");
+            System.err.println("Supported languages: Java, JavaScript, TypeScript, Python, C#, PHP, SQL");
             System.exit(2);
         }
         
@@ -104,7 +107,7 @@ public class App {
                 }
                 
                 try {
-                    FileAnalysis analysis = analyzeFile(file, language);
+                    Analysis analysis = analyzeFile(file, language);
                     
                     // Write result immediately (synchronized to avoid concurrent writes)
                     synchronized (writer) {
@@ -181,7 +184,7 @@ public class App {
         return files;
     }
     
-    public static FileAnalysis analyzeFile(Path filePath, Language language) throws IOException {
+    public static Analysis analyzeFile(Path filePath, Language language) throws IOException {
         String sourceCode = Files.readString(filePath, StandardCharsets.UTF_8);
         
         // Remove BOM if present (common in C# files)

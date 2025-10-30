@@ -1,0 +1,30 @@
+{
+  "filePath" : "src/test/resources/samples/sql/drop_statements.sql",
+  "language" : "sql",
+  "createTables" : [ ],
+  "alterTables" : [ ],
+  "createViews" : [ ],
+  "createIndexes" : [ ],
+  "createProcedures" : [ ],
+  "createFunctions" : [ ],
+  "createTriggers" : [ ],
+  "dropOperations" : [ {
+    "objectType" : "TABLE",
+    "objectName" : "legacy_users",
+    "schema" : "public",
+    "ifExists" : true
+  }, {
+    "objectType" : "VIEW",
+    "objectName" : "v_old_orders",
+    "schema" : "sales",
+    "ifExists" : false
+  }, {
+    "objectType" : "INDEX",
+    "objectName" : "ix_old_index",
+    "schema" : "sales",
+    "ifExists" : true
+  } ],
+  "referencedTables" : [ "public.legacy_users" ],
+  "referencedViews" : [ "sales.v_old_orders" ],
+  "referencedProcedures" : [ ]
+}

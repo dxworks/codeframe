@@ -1,0 +1,26 @@
+{
+  "filePath" : "src/test/resources/samples/sql/functions_crossdialects.sql",
+  "language" : "sql",
+  "createTables" : [ ],
+  "alterTables" : [ ],
+  "createViews" : [ ],
+  "createIndexes" : [ ],
+  "createProcedures" : [ ],
+  "createFunctions" : [ {
+    "functionName" : "calc_tax",
+    "schema" : null,
+    "orReplace" : false,
+    "parameters" : [ {
+      "name" : "amount",
+      "type" : "DECIMAL(10,2)",
+      "direction" : null
+    } ],
+    "returnType" : "DECIMAL(10,2) DETERMINISTIC",
+    "referencedTables" : [ ]
+  } ],
+  "createTriggers" : [ ],
+  "dropOperations" : [ ],
+  "referencedTables" : [ ],
+  "referencedViews" : [ ],
+  "referencedProcedures" : [ ]
+}

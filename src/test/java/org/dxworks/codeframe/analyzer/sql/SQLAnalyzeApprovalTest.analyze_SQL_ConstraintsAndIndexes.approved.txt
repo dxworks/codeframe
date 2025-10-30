@@ -1,0 +1,90 @@
+{
+  "filePath" : "src/test/resources/samples/sql/constraints_and_indexes.sql",
+  "language" : "sql",
+  "createTables" : [ {
+    "tableName" : "users",
+    "schema" : "public",
+    "ifNotExists" : true,
+    "columns" : [ {
+      "name" : "id",
+      "type" : "INT",
+      "nullable" : true,
+      "constraints" : [ "PRIMARY KEY" ]
+    }, {
+      "name" : "email",
+      "type" : "VARCHAR(255)",
+      "nullable" : false,
+      "constraints" : [ "NOT NULL", "UNIQUE" ]
+    }, {
+      "name" : "username",
+      "type" : "VARCHAR(50)",
+      "nullable" : false,
+      "constraints" : [ "NOT NULL" ]
+    } ],
+    "primaryKeys" : [ "id" ],
+    "foreignKeys" : [ ]
+  }, {
+    "tableName" : "orders",
+    "schema" : "sales",
+    "ifNotExists" : true,
+    "columns" : [ {
+      "name" : "order_id",
+      "type" : "INT",
+      "nullable" : false,
+      "constraints" : [ "NOT NULL" ]
+    }, {
+      "name" : "user_id",
+      "type" : "INT",
+      "nullable" : false,
+      "constraints" : [ "NOT NULL" ]
+    }, {
+      "name" : "order_date",
+      "type" : "DATE",
+      "nullable" : true,
+      "constraints" : [ ]
+    }, {
+      "name" : "total_amount",
+      "type" : "DECIMAL(12, 2)",
+      "nullable" : true,
+      "constraints" : [ ]
+    } ],
+    "primaryKeys" : [ "order_id", "user_id" ],
+    "foreignKeys" : [ {
+      "name" : null,
+      "columns" : [ "user_id" ],
+      "referencedTable" : "public.users",
+      "referencedColumns" : [ "id" ],
+      "onDelete" : "CASCADE",
+      "onUpdate" : "NO ACTION"
+    } ]
+  } ],
+  "alterTables" : [ ],
+  "createViews" : [ {
+    "viewName" : "v_orders",
+    "schema" : "sales",
+    "orReplace" : false,
+    "referencedTables" : [ "sales.orders", "public.users" ]
+  } ],
+  "createIndexes" : [ {
+    "indexName" : "ix_orders_date_amount",
+    "tableName" : "orders",
+    "schema" : "sales",
+    "unique" : false,
+    "columns" : [ "order_date", "total_amount" ],
+    "indexType" : null
+  }, {
+    "indexName" : "ux_users_email",
+    "tableName" : "users",
+    "schema" : "public",
+    "unique" : true,
+    "columns" : [ "email" ],
+    "indexType" : null
+  } ],
+  "createProcedures" : [ ],
+  "createFunctions" : [ ],
+  "createTriggers" : [ ],
+  "dropOperations" : [ ],
+  "referencedTables" : [ "public.users", "sales.orders" ],
+  "referencedViews" : [ "sales.v_orders" ],
+  "referencedProcedures" : [ ]
+}

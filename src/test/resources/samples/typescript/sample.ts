@@ -39,3 +39,7 @@ export interface User {
     name: string;
     email: string;
 }
+
+export class SavePatientTransactionManager {
+  patientSaved = false;
+}

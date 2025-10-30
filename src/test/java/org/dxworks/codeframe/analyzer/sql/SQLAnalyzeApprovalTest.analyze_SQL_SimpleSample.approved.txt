@@ -1,0 +1,99 @@
+{
+  "filePath" : "src/test/resources/samples/sql/simple_table.sql",
+  "language" : "sql",
+  "createTables" : [ {
+    "tableName" : "users",
+    "schema" : null,
+    "ifNotExists" : false,
+    "columns" : [ {
+      "name" : "id",
+      "type" : "INT",
+      "nullable" : true,
+      "constraints" : [ "PRIMARY KEY" ]
+    }, {
+      "name" : "username",
+      "type" : "VARCHAR(50)",
+      "nullable" : false,
+      "constraints" : [ "NOT NULL" ]
+    }, {
+      "name" : "email",
+      "type" : "VARCHAR(100)",
+      "nullable" : true,
+      "constraints" : [ "UNIQUE" ]
+    }, {
+      "name" : "created_at",
+      "type" : "TIMESTAMP",
+      "nullable" : true,
+      "constraints" : [ ]
+    } ],
+    "primaryKeys" : [ "id" ],
+    "foreignKeys" : [ ]
+  }, {
+    "tableName" : "orders",
+    "schema" : null,
+    "ifNotExists" : false,
+    "columns" : [ {
+      "name" : "order_id",
+      "type" : "INT",
+      "nullable" : true,
+      "constraints" : [ "PRIMARY KEY" ]
+    }, {
+      "name" : "user_id",
+      "type" : "INT",
+      "nullable" : false,
+      "constraints" : [ "NOT NULL" ]
+    }, {
+      "name" : "total_amount",
+      "type" : "DECIMAL(10, 2)",
+      "nullable" : true,
+      "constraints" : [ ]
+    }, {
+      "name" : "order_date",
+      "type" : "DATE",
+      "nullable" : true,
+      "constraints" : [ ]
+    } ],
+    "primaryKeys" : [ "order_id" ],
+    "foreignKeys" : [ {
+      "name" : null,
+      "columns" : [ "user_id" ],
+      "referencedTable" : "users",
+      "referencedColumns" : [ "id" ],
+      "onDelete" : null,
+      "onUpdate" : null
+    } ]
+  } ],
+  "alterTables" : [ ],
+  "createViews" : [ {
+    "viewName" : "active_users",
+    "schema" : null,
+    "orReplace" : false,
+    "referencedTables" : [ "users" ]
+  } ],
+  "createIndexes" : [ {
+    "indexName" : "idx_username",
+    "tableName" : "users",
+    "schema" : null,
+    "unique" : false,
+    "columns" : [ "username" ],
+    "indexType" : null
+  } ],
+  "createProcedures" : [ ],
+  "createFunctions" : [ {
+    "functionName" : "CalculateTotal",
+    "schema" : null,
+    "orReplace" : false,
+    "parameters" : [ {
+      "name" : "orderId",
+      "type" : "INT",
+      "direction" : null
+    } ],
+    "returnType" : "DECIMAL(10, 2)",
+    "referencedTables" : [ ]
+  } ],
+  "createTriggers" : [ ],
+  "dropOperations" : [ ],
+  "referencedTables" : [ "orders", "users" ],
+  "referencedViews" : [ "active_users" ],
+  "referencedProcedures" : [ ]
+}

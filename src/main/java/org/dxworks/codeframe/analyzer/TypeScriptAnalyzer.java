@@ -254,6 +254,34 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
             }
         }
         
+        // Collect interface properties (field-like signatures)
+        List<TSNode> propSigs = new ArrayList<>();
+        if (objectType != null) {
+            propSigs.addAll(findAllDescendants(objectType, "property_signature"));
+        }
+        if (propSigs.isEmpty()) {
+            propSigs.addAll(findAllDescendants(interfaceDecl, "property_signature"));
+        }
+        for (TSNode ps : propSigs) {
+            PropertyInfo pi = new PropertyInfo();
+            // Modifiers like readonly
+            extractModifiersAndVisibility(source, ps, pi.modifiers, pi);
+            // Name
+            TSNode propNameNode = findFirstChild(ps, "property_identifier");
+            if (propNameNode == null) propNameNode = findFirstChild(ps, "identifier");
+            if (propNameNode != null) {
+                pi.name = getNodeText(source, propNameNode);
+            }
+            // Type annotation
+            TSNode typeAnn = findFirstChild(ps, "type_annotation");
+            if (typeAnn != null) {
+                pi.type = getNodeText(source, typeAnn).replaceFirst("^:\\s*", "");
+            }
+            if (pi.name != null) {
+                typeInfo.properties.add(pi);
+            }
+        }
+        
         return typeInfo;
     }
     
@@ -646,7 +674,11 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         if (classBody == null) return fields;
         
         // Only direct field_definition children of this class body
-        List<TSNode> fieldDecls = findAllChildren(classBody, "field_definition");
+        List<TSNode> fieldDecls = new ArrayList<>();
+        fieldDecls.addAll(findAllChildren(classBody, "field_definition"));
+        // Support TS/JS grammar variants
+        fieldDecls.addAll(findAllChildren(classBody, "public_field_definition"));
+        fieldDecls.addAll(findAllChildren(classBody, "private_field_definition"));
         
         for (TSNode field : fieldDecls) {
             FieldInfo fieldInfo = new FieldInfo();
@@ -658,6 +690,9 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
             
             // Get field name
             TSNode nameNode = findFirstChild(field, "property_identifier");
+            if (nameNode == null) {
+                nameNode = findFirstChild(field, "private_property_identifier");
+            }
             if (nameNode != null) {
                 fieldInfo.name = getNodeText(source, nameNode);
             }
@@ -666,6 +701,23 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
             TSNode typeAnnotation = findFirstChild(field, "type_annotation");
             if (typeAnnotation != null) {
                 fieldInfo.type = getNodeText(source, typeAnnotation).replaceFirst("^:\\s*", "");
+            } else {
+                // Try to infer type from initializer expression, if present
+                int childCount = field.getNamedChildCount();
+                if (childCount > 0) {
+                    TSNode last = field.getNamedChild(childCount - 1);
+                    if (last != null) {
+                        String lt = last.getType();
+                        // Avoid using the name or the annotation nodes as initializer
+                        if (!"property_identifier".equals(lt) && !"private_property_identifier".equals(lt)
+                                && !"type_annotation".equals(lt)) {
+                            String inferred = inferTypeFromExpression(source, last);
+                            if (inferred != null) {
+                                fieldInfo.type = inferred;
+                            }
+                        }
+                    }
+                }
             }
             
             fields.add(fieldInfo);
@@ -737,7 +789,7 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
     }
     
     private String inferTypeFromExpression(String source, TSNode expr) {
-        if (expr == null) return null;
+        if (expr == null || expr.isNull()) return null;
         
         String exprType = expr.getType();
         
@@ -770,6 +822,20 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         // Handle object literals: {...}
         if ("object".equals(exprType)) {
             return "Object";
+        }
+        
+        // Primitive literals
+        if ("true".equals(exprType) || "false".equals(exprType)) {
+            return "boolean";
+        }
+        if ("number".equals(exprType)) {
+            return "number";
+        }
+        if ("string".equals(exprType) || "template_string".equals(exprType)) {
+            return "string";
+        }
+        if ("null".equals(exprType)) {
+            return "null";
         }
         
         // Handle arrow functions and function expressions
