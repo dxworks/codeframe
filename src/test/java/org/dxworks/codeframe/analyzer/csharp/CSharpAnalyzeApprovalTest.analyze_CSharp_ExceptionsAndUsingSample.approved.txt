@@ -51,12 +51,14 @@
         "methodName" : "Parse",
         "objectType" : "int",
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 1
       }, {
         "methodName" : "get_Message",
         "objectType" : null,
         "objectName" : "ex",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "ReadFirstByteLength",
@@ -73,12 +75,14 @@
         "methodName" : "OpenRead",
         "objectType" : null,
         "objectName" : "File",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 1
       }, {
         "methodName" : "ReadByte",
         "objectType" : "var",
         "objectName" : "stream",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 0
       } ]
     } ],
     "types" : [ ]
