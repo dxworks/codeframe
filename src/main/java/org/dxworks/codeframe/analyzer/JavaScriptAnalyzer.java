@@ -594,7 +594,7 @@ public class JavaScriptAnalyzer implements LanguageAnalyzer {
 
     private void collectMethodCall(MethodInfo methodInfo, String methodName, String objectType, String objectName) {
         for (MethodCall existingCall : methodInfo.methodCalls) {
-            if (existingCall.matches(methodName, objectType, objectName)) {
+            if (existingCall.matches(methodName, objectType, objectName, null)) {
                 existingCall.callCount++;
                 return;
             }

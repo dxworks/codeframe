@@ -27,17 +27,20 @@
         "methodName" : "max",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "orElse",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "stream",
         "objectType" : "List<T>",
         "objectName" : "items",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "findFirst",
@@ -54,22 +57,26 @@
         "methodName" : "empty",
         "objectType" : null,
         "objectName" : "Optional",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "get",
         "objectType" : "List<T>",
         "objectName" : "items",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "isEmpty",
         "objectType" : "List<T>",
         "objectName" : "items",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "of",
         "objectType" : null,
         "objectName" : "Optional",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "processWildcard",
@@ -86,12 +93,14 @@
         "methodName" : "doubleValue",
         "objectType" : null,
         "objectName" : "n",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "println",
         "objectType" : null,
         "objectName" : "System.out",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "addToMap",
@@ -114,7 +123,8 @@
         "methodName" : "put",
         "objectType" : "GenericContainer<K, V>",
         "objectName" : "container",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]
@@ -170,7 +180,8 @@
         "methodName" : "equals",
         "objectType" : "K",
         "objectName" : "this.key",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]

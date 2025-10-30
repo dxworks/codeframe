@@ -27,7 +27,8 @@
         "methodName" : "get_Length",
         "objectType" : "ReadOnlySpan<int>",
         "objectName" : "data",
-        "callCount" : 2
+        "callCount" : 2,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "Tail",
@@ -53,7 +54,8 @@
         "methodName" : "SumAndCount",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 1
       } ]
     } ],
     "types" : [ ]

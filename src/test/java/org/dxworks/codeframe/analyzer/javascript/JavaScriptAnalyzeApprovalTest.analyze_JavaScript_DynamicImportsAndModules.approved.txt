@@ -36,17 +36,20 @@
         "methodName" : "get",
         "objectType" : null,
         "objectName" : "this.cache",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "has",
         "objectType" : null,
         "objectName" : "this.cache",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "set",
         "objectType" : null,
         "objectName" : "this.cache",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "loadMultiple",
@@ -63,17 +66,20 @@
         "methodName" : "all",
         "objectType" : null,
         "objectName" : "Promise",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "load",
         "objectType" : "ModuleLoader",
         "objectName" : "this",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "map",
         "objectType" : null,
         "objectName" : "moduleNames",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "clearCache",
@@ -87,7 +93,8 @@
         "methodName" : "clear",
         "objectType" : null,
         "objectName" : "this.cache",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "has",
@@ -104,7 +111,8 @@
         "methodName" : "has",
         "objectType" : null,
         "objectName" : "this.cache",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]
@@ -145,17 +153,20 @@
         "methodName" : "error",
         "objectType" : null,
         "objectName" : "console",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "init",
         "objectType" : null,
         "objectName" : "plugin",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "set",
         "objectType" : null,
         "objectName" : "this.plugins",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "execute",
@@ -178,7 +189,8 @@
         "methodName" : "get",
         "objectType" : null,
         "objectName" : "this.plugins",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "getPlugin",
@@ -195,7 +207,8 @@
         "methodName" : "get",
         "objectType" : null,
         "objectName" : "this.plugins",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "listPlugins",
@@ -209,12 +222,14 @@
         "methodName" : "from",
         "objectType" : null,
         "objectName" : "Array",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "keys",
         "objectType" : null,
         "objectName" : "this.plugins",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]
@@ -252,22 +267,26 @@
         "methodName" : "get",
         "objectType" : null,
         "objectName" : "this.features",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "has",
         "objectType" : null,
         "objectName" : "this.features",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "onEnable",
         "objectType" : null,
         "objectName" : "feature",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "set",
         "objectType" : null,
         "objectName" : "this.features",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "isEnabled",
@@ -284,7 +303,8 @@
         "methodName" : "has",
         "objectType" : null,
         "objectName" : "this.features",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "disableFeature",
@@ -301,17 +321,20 @@
         "methodName" : "delete",
         "objectType" : null,
         "objectName" : "this.features",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "get",
         "objectType" : null,
         "objectName" : "this.features",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "onDisable",
         "objectType" : null,
         "objectName" : "feature",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]
@@ -352,7 +375,8 @@
         "methodName" : "set",
         "objectType" : null,
         "objectName" : "this.routes",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "navigate",
@@ -369,12 +393,14 @@
         "methodName" : "get",
         "objectType" : null,
         "objectName" : "this.routes",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "importFn",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]
@@ -412,32 +438,38 @@
         "methodName" : "add",
         "objectType" : null,
         "objectName" : "this.preloaded",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "all",
         "objectType" : null,
         "objectName" : "Promise",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "filter",
         "objectType" : null,
         "objectName" : "modulePaths",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "has",
         "objectType" : null,
         "objectName" : "this.preloaded",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "map",
         "objectType" : null,
         "objectName" : "modulePaths\n            .filter(path => !this.preloaded.has(path))",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "warn",
         "objectType" : null,
         "objectName" : "console",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "isPreloaded",
@@ -454,7 +486,8 @@
         "methodName" : "has",
         "objectType" : null,
         "objectName" : "this.preloaded",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]
@@ -498,7 +531,8 @@
       "methodName" : "error",
       "objectType" : null,
       "objectName" : "console",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   }, {
     "name" : "setupRouter",
@@ -512,7 +546,8 @@
       "methodName" : "register",
       "objectType" : "Router",
       "objectName" : "router",
-      "callCount" : 3
+      "callCount" : 3,
+      "parameterCount" : null
     } ]
   } ],
   "imports" : [ ]

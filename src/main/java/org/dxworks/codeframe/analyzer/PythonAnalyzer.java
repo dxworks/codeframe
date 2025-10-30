@@ -570,7 +570,7 @@ public class PythonAnalyzer implements LanguageAnalyzer {
                         // Aggregate method calls
                         boolean found = false;
                         for (MethodCall existingCall : methodInfo.methodCalls) {
-                            if (existingCall.matches(methodName, objectType, objectName)) {
+                            if (existingCall.matches(methodName, objectType, objectName, null)) {
                                 existingCall.callCount++;
                                 found = true;
                                 break;

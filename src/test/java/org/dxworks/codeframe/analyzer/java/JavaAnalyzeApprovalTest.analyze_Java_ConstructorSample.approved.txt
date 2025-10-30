@@ -51,7 +51,8 @@
         "methodName" : "init",
         "objectType" : "Dependency",
         "objectName" : "dep",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]

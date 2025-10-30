@@ -505,6 +505,13 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
                         expressionNode = functionNode.getNamedChild(0);
                         // Last child is the identifier (method name)
                         nameNode = functionNode.getNamedChild(childCount - 1);
+                    } else if (childCount == 1) {
+                        // Only one child - this is the method name, and the object is implicit 'this'
+                        // This happens with explicit 'this.Method()' where Tree-sitter omits the 'this' node
+                        nameNode = functionNode.getNamedChild(0);
+                        // Treat as implicit 'this' call
+                        objectName = "this";
+                        objectType = className;
                     }
                     
                     if (nameNode != null) {
@@ -536,14 +543,16 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
                     // Deduplicate by call site using the invocation span + method name
                     String callSiteKey = methodName + "@" + invocation.getStartByte() + ":" + invocation.getEndByte();
                     if (seenCallSites.add(callSiteKey)) {
+                        // Count parameters in the invocation
+                        int paramCount = countInvocationParameters(invocation);
                         // Additional dedupe by callee identifier span
                         if (calleeNameNodeForDedupe != null) {
                             String calleeKey = methodName + "@id(" + calleeNameNodeForDedupe.getStartByte() + ":" + calleeNameNodeForDedupe.getEndByte() + ")";
                             if (seenCallSites.add(calleeKey)) {
-                                addOrIncrementMethodCall(methodInfo, methodName, objectType, objectName);
+                                addOrIncrementMethodCall(methodInfo, methodName, objectType, objectName, paramCount);
                             }
                         } else {
-                            addOrIncrementMethodCall(methodInfo, methodName, objectType, objectName);
+                            addOrIncrementMethodCall(methodInfo, methodName, objectType, objectName, paramCount);
                         }
                     }
                 }
@@ -690,13 +699,28 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
     }
     
     private void addOrIncrementMethodCall(MethodInfo methodInfo, String methodName, String objectType, String objectName) {
+        addOrIncrementMethodCall(methodInfo, methodName, objectType, objectName, null);
+    }
+    
+    private void addOrIncrementMethodCall(MethodInfo methodInfo, String methodName, String objectType, String objectName, Integer parameterCount) {
         for (MethodCall existingCall : methodInfo.methodCalls) {
-            if (existingCall.matches(methodName, objectType, objectName)) {
+            if (existingCall.matches(methodName, objectType, objectName, parameterCount)) {
                 existingCall.callCount++;
                 return;
             }
         }
-        methodInfo.methodCalls.add(new MethodCall(methodName, objectType, objectName));
+        methodInfo.methodCalls.add(new MethodCall(methodName, objectType, objectName, parameterCount));
+    }
+    
+    private int countInvocationParameters(TSNode invocation) {
+        // Find the argument_list node
+        TSNode argList = findFirstChild(invocation, "argument_list");
+        if (argList == null) {
+            return 0;
+        }
+        // Count argument nodes
+        List<TSNode> arguments = findAllChildren(argList, "argument");
+        return arguments.size();
     }
     
     private void sortMethodCalls(MethodInfo methodInfo) {

@@ -483,7 +483,7 @@ public class PHPAnalyzer implements LanguageAnalyzer {
                     // Check if we already have this call, if so increment count
                     boolean found = false;
                     for (MethodCall existingCall : methodInfo.methodCalls) {
-                        if (existingCall.matches(methodName, null, null)) {
+                        if (existingCall.matches(methodName, null, null, null)) {
                             existingCall.callCount++;
                             found = true;
                             break;
@@ -539,7 +539,7 @@ public class PHPAnalyzer implements LanguageAnalyzer {
                 // Check if we already have this call, if so increment count
                 boolean found = false;
                 for (MethodCall existingCall : methodInfo.methodCalls) {
-                    if (existingCall.matches(methodName, objectType, objectName)) {
+                    if (existingCall.matches(methodName, objectType, objectName, null)) {
                         existingCall.callCount++;
                         found = true;
                         break;
@@ -572,7 +572,7 @@ public class PHPAnalyzer implements LanguageAnalyzer {
                 // Check if we already have this call, if so increment count
                 boolean found = false;
                 for (MethodCall existingCall : methodInfo.methodCalls) {
-                    if (existingCall.matches(methodName, objectType, null)) {
+                    if (existingCall.matches(methodName, objectType, null, null)) {
                         existingCall.callCount++;
                         found = true;
                         break;

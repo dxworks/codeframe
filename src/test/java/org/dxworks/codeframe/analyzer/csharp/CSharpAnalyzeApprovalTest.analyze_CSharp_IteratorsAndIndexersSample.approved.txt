@@ -54,7 +54,8 @@
         "methodName" : "GetEnumerator",
         "objectType" : null,
         "objectName" : "_inner",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 0
       } ]
     }, {
       "name" : "GetEnumerator",
@@ -68,7 +69,8 @@
         "methodName" : "GetEnumerator",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 0
       } ]
     } ],
     "types" : [ ]

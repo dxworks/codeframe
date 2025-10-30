@@ -30,12 +30,14 @@
         "methodName" : "DoWork",
         "objectType" : "var",
         "objectName" : "x",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 0
       }, {
         "methodName" : "WriteLine",
         "objectType" : null,
         "objectName" : "Console",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 1
       } ]
     }, {
       "name" : "greet<T, U>",
@@ -58,12 +60,14 @@
         "methodName" : "DoWork",
         "objectType" : "var",
         "objectName" : "x",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 0
       }, {
         "methodName" : "WriteLine",
         "objectType" : null,
         "objectName" : "Console",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 1
       } ]
     } ],
     "types" : [ ]

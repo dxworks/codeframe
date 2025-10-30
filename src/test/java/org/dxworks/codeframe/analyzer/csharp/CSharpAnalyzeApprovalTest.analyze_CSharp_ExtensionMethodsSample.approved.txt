@@ -27,7 +27,8 @@
         "methodName" : "IsNullOrWhiteSpace",
         "objectType" : "string",
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 1
       } ]
     }, {
       "name" : "IsBlank2",
@@ -44,7 +45,8 @@
         "methodName" : "IsBlank",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 1
       } ]
     } ],
     "types" : [ ]
@@ -73,7 +75,8 @@
         "methodName" : "IsBlank",
         "objectType" : "string?",
         "objectName" : "value",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 0
       } ]
     } ],
     "types" : [ ]

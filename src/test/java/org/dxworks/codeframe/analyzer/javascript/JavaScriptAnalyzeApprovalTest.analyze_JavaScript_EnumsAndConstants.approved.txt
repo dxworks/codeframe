@@ -84,12 +84,14 @@
         "methodName" : "find",
         "objectType" : null,
         "objectName" : "OrderStatus.values()",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "values",
         "objectType" : null,
         "objectName" : "OrderStatus",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "isTerminal",
@@ -115,7 +117,8 @@
         "methodName" : "isTerminal",
         "objectType" : "OrderStatus",
         "objectName" : "this",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "toString",
@@ -168,12 +171,14 @@
         "methodName" : "canTransitionTo",
         "objectType" : null,
         "objectName" : "this.status",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "push",
         "objectType" : null,
         "objectName" : "this.statusHistory",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "getStatusLabel",
@@ -187,7 +192,8 @@
         "methodName" : "toString",
         "objectType" : null,
         "objectName" : "this.status",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "isComplete",
@@ -201,7 +207,8 @@
         "methodName" : "isTerminal",
         "objectType" : null,
         "objectName" : "this.status",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]
@@ -233,7 +240,8 @@
       "methodName" : "get",
       "objectType" : "Map",
       "objectName" : "messages",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   } ],
   "imports" : [ ]

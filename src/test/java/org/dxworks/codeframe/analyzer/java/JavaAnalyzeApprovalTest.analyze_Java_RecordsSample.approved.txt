@@ -24,7 +24,8 @@
         "methodName" : "sqrt",
         "objectType" : null,
         "objectName" : "Math",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "origin",
@@ -95,7 +96,8 @@
         "methodName" : "isEmpty",
         "objectType" : "String",
         "objectName" : "name",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]

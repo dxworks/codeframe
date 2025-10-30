@@ -459,7 +459,7 @@ public class JavaAnalyzer implements LanguageAnalyzer {
             if (methodName != null) {
                 boolean found = false;
                 for (MethodCall existingCall : methodInfo.methodCalls) {
-                    if (existingCall.matches(methodName, objectType, objectName)) {
+                    if (existingCall.matches(methodName, objectType, objectName, null)) {
                         existingCall.callCount++;
                         found = true;
                         break;

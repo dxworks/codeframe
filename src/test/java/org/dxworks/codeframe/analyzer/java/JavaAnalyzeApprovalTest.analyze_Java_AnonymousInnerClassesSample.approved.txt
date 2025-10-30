@@ -33,12 +33,14 @@
         "methodName" : "info",
         "objectType" : "Logger",
         "objectName" : "logger",
-        "callCount" : 2
+        "callCount" : 2,
+        "parameterCount" : null
       }, {
         "methodName" : "process",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "executeWithCallback",
@@ -55,7 +57,8 @@
         "methodName" : "onComplete",
         "objectType" : "Callback",
         "objectName" : "callback",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "demonstrateLocalClass",
@@ -69,12 +72,14 @@
         "methodName" : "info",
         "objectType" : "Logger",
         "objectName" : "logger",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "process",
         "objectType" : "LocalProcessor",
         "objectName" : "processor",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ {
@@ -99,7 +104,8 @@
           "methodName" : "info",
           "objectType" : null,
           "objectName" : "logger",
-          "callCount" : 1
+          "callCount" : 1,
+          "parameterCount" : null
         } ]
       } ],
       "types" : [ ]
@@ -125,7 +131,8 @@
           "methodName" : "println",
           "objectType" : null,
           "objectName" : "System.out",
-          "callCount" : 1
+          "callCount" : 1,
+          "parameterCount" : null
         } ]
       } ],
       "types" : [ ]

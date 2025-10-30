@@ -102,7 +102,8 @@
       "methodName" : "reduce",
       "objectType" : null,
       "objectName" : "numbers",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   }, {
     "name" : "logWithPrefix",
@@ -122,12 +123,14 @@
       "methodName" : "forEach",
       "objectType" : null,
       "objectName" : "messages",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "log",
       "objectType" : null,
       "objectName" : "console",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   }, {
     "name" : "extractUserInfo",
@@ -171,7 +174,8 @@
       "methodName" : "push",
       "objectType" : "Array",
       "objectName" : "results",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   }, {
     "name" : "createConfig",
@@ -194,7 +198,8 @@
       "methodName" : "now",
       "objectType" : null,
       "objectName" : "Date",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   }, {
     "name" : "parseOptions",
@@ -232,7 +237,8 @@
       "methodName" : "filter",
       "objectType" : null,
       "objectName" : "<literal>",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   }, {
     "name" : "swapValues",
@@ -270,7 +276,8 @@
       "methodName" : "getDimensions",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   } ],
   "imports" : [ ]

@@ -39,7 +39,8 @@
         "methodName" : "nameof",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 1
       } ]
     }, {
       "name" : "Suppress",

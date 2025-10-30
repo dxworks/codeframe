@@ -42,42 +42,50 @@
         "methodName" : "bind",
         "objectType" : null,
         "objectName" : "this.fetchAllResourceLocations",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "bind",
         "objectType" : null,
         "objectName" : "this.fetchAllVisitLocations",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "bind",
         "objectType" : null,
         "objectName" : "this.fetchItemTypes",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "bind",
         "objectType" : null,
         "objectName" : "this.getBody",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "fetchAllResourceLocations",
         "objectType" : "ResourceLocationWrapper",
         "objectName" : "this",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "fetchAllVisitLocations",
         "objectType" : "ResourceLocationWrapper",
         "objectName" : "this",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "fetchItemTypes",
         "objectType" : "ResourceLocationWrapper",
         "objectName" : "this",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "super",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "fetchAllResourceLocations",
@@ -94,52 +102,62 @@
         "methodName" : "apiBaseUrl",
         "objectType" : null,
         "objectName" : "this.urlHelper",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "catch",
         "objectType" : null,
         "objectName" : "axios\n            .get(this.urlHelper.apiBaseUrl() + '/location?tag=Resource%20Location&v=full')\n            .then(function (resourceLocationsResponse) {\n                const resourceLocationUuidList =\n                    _.map(resourceLocationsResponse.data.results, (location) => location.uuid);\n\n                const resourceLocations = _.reduce(\n                    resourceLocationsResponse.data.results,\n                    (acc, curr) => {\n                        if (_.includes(resourceLocationUuidList, curr.uuid)) {\n                            acc[curr.uuid] = {\n                                uuid: curr.uuid,\n                                name: curr.name,\n                                description: curr.description,\n                                parentResourceLocationUuid:\n                                    curr.parentLocation != null ? curr.parentLocation.uuid : null,\n                                isOpen:\n                                    typeof self.state.resourceLocations[curr.uuid] != 'undefined'\n                                        ? self.state.resourceLocations[curr.uuid].isOpen\n                                        : false,\n                                isHigherLevel:\n                                    curr.parentLocation != null\n                                        ? !_.includes(resourceLocationUuidList, curr.parentLocation.uuid)\n                                        : true\n                            };\n                        }\n\n                        return acc;\n                    },\n                    {}\n                );\n\n                self.setState({resourceLocations: resourceLocations});\n            })",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "get",
         "objectType" : null,
         "objectName" : "axios",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "includes",
         "objectType" : null,
         "objectName" : "_",
-        "callCount" : 2
+        "callCount" : 2,
+        "parameterCount" : null
       }, {
         "methodName" : "map",
         "objectType" : null,
         "objectName" : "_",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "notify",
         "objectType" : null,
         "objectName" : "self.resourceLocationFunctions",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "reduce",
         "objectType" : null,
         "objectName" : "_",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "replace",
         "objectType" : null,
         "objectName" : "error.message",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "setState",
         "objectType" : null,
         "objectName" : "self",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "then",
         "objectType" : null,
         "objectName" : "axios\n            .get(this.urlHelper.apiBaseUrl() + '/location?tag=Resource%20Location&v=full')",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "fetchAllVisitLocations",
@@ -156,52 +174,62 @@
         "methodName" : "apiBaseUrl",
         "objectType" : null,
         "objectName" : "this.urlHelper",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "catch",
         "objectType" : null,
         "objectName" : "axios\n            .get(this.urlHelper.apiBaseUrl() + '/location?tag=Visit%20Location&v=full')\n            .then(function (visitLocationsResponse) {\n                const visitLocationUuidList =\n                    _.map(visitLocationsResponse.data.results, (location) => location.uuid);\n                const visitLocations = _.reduce(\n                    visitLocationsResponse.data.results,\n                    (acc, curr) => {\n                        if (_.includes(visitLocationUuidList, curr.uuid)) {\n                            acc[curr.uuid] = {\n                                uuid: curr.uuid,\n                                name: curr.name,\n                                description: curr.description\n                            };\n                        }\n\n                        return acc;\n                    },\n                    {}\n                );\n                self.setState({visitLocations: visitLocations});\n            })",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "get",
         "objectType" : null,
         "objectName" : "axios",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "includes",
         "objectType" : null,
         "objectName" : "_",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "map",
         "objectType" : null,
         "objectName" : "_",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "notify",
         "objectType" : null,
         "objectName" : "self.resourceLocationFunctions",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "reduce",
         "objectType" : null,
         "objectName" : "_",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "replace",
         "objectType" : null,
         "objectName" : "error.message",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "setState",
         "objectType" : null,
         "objectName" : "self",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "then",
         "objectType" : null,
         "objectName" : "axios\n            .get(this.urlHelper.apiBaseUrl() + '/location?tag=Visit%20Location&v=full')",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "fetchItemTypes",
@@ -215,37 +243,44 @@
         "methodName" : "apiBaseUrl",
         "objectType" : null,
         "objectName" : "this.urlHelper",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "catch",
         "objectType" : null,
         "objectName" : "axios\n            .get(this.urlHelper.apiBaseUrl() + '/itemtype', {\n                params: {\n                    v: 'full'\n                }\n            })\n            .then(function (response) {\n                self.setState({\n                    itemTypes: response.data.results\n                });\n            })",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "get",
         "objectType" : null,
         "objectName" : "axios",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "notify",
         "objectType" : null,
         "objectName" : "self.resourceLocationFunctions",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "replace",
         "objectType" : null,
         "objectName" : "error.message",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "setState",
         "objectType" : null,
         "objectName" : "self",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "then",
         "objectType" : null,
         "objectName" : "axios\n            .get(this.urlHelper.apiBaseUrl() + '/itemtype', {\n                params: {\n                    v: 'full'\n                }\n            })",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "getBody",
@@ -268,7 +303,8 @@
         "methodName" : "getBody",
         "objectType" : "ResourceLocationWrapper",
         "objectName" : "this",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]

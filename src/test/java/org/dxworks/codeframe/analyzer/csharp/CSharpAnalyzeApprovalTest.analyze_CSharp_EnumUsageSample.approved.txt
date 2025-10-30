@@ -27,17 +27,20 @@
         "methodName" : "get_Active",
         "objectType" : null,
         "objectName" : "Status",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "get_Closed",
         "objectType" : null,
         "objectName" : "Status",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "get_Pending",
         "objectType" : null,
         "objectName" : "Status",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "PrintAll",
@@ -51,17 +54,20 @@
         "methodName" : "GetValues",
         "objectType" : null,
         "objectName" : "Enum",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 1
       }, {
         "methodName" : "ToString",
         "objectType" : null,
         "objectName" : "s",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 0
       }, {
         "methodName" : "WriteLine",
         "objectType" : null,
         "objectName" : "Console",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 1
       } ]
     } ],
     "types" : [ ]

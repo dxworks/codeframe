@@ -171,17 +171,20 @@
         "methodName" : "area",
         "objectType" : null,
         "objectName" : "r",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "area",
         "objectType" : null,
         "objectName" : "t",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "getRadius",
         "objectType" : null,
         "objectName" : "c",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]

@@ -39,7 +39,8 @@
         "methodName" : "get_Age",
         "objectType" : "Person",
         "objectName" : "p",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]

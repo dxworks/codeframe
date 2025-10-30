@@ -48,7 +48,8 @@
         "methodName" : "env",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "findUser",
@@ -65,22 +66,26 @@
         "methodName" : "find",
         "objectType" : null,
         "objectName" : "repository",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "get",
         "objectType" : null,
         "objectName" : "cache",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "info",
         "objectType" : null,
         "objectName" : "logger",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "set",
         "objectType" : null,
         "objectName" : "cache",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "validateUser",
@@ -97,17 +102,20 @@
         "methodName" : "hasValidEmail",
         "objectType" : null,
         "objectName" : "user",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "isActive",
         "objectType" : null,
         "objectName" : "user",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "warning",
         "objectType" : "Log",
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "sendNotification",
@@ -127,12 +135,14 @@
         "methodName" : "debug",
         "objectType" : null,
         "objectName" : "logger",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "send",
         "objectType" : null,
         "objectName" : "notifier",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "getInstanceCount",
@@ -158,22 +168,26 @@
         "methodName" : "delete",
         "objectType" : null,
         "objectName" : "cache",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "delete",
         "objectType" : null,
         "objectName" : "repository",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "findUser",
         "objectType" : null,
         "objectName" : "this",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "validateUser",
         "objectType" : null,
         "objectName" : "this",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]
@@ -289,12 +303,14 @@
       "methodName" : "trim",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "ucwords",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   } ],
   "imports" : [ "namespace App\\Services;", "use App\\Models\\User;", "use App\\Repositories\\UserRepository;", "use Illuminate\\Support\\Facades\\Log;" ]

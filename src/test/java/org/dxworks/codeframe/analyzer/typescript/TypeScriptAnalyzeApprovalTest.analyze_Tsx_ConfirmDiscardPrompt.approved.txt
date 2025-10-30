@@ -11,7 +11,21 @@
     "extendsType" : null,
     "implementsInterfaces" : [ ],
     "fields" : [ ],
-    "properties" : [ ],
+    "properties" : [ {
+      "name" : "when",
+      "type" : "boolean",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "accessors" : [ ]
+    }, {
+      "name" : "redirect",
+      "type" : "string",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "accessors" : [ ]
+    } ],
     "methods" : [ ],
     "types" : [ ]
   } ],
@@ -36,7 +50,8 @@
       "methodName" : "onClosed",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   }, {
     "name" : "navigate",
@@ -65,7 +80,8 @@
       "methodName" : "split",
       "objectType" : null,
       "objectName" : "url",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   }, {
     "name" : "ConfirmDiscardPrompt",
@@ -79,77 +95,92 @@
       "methodName" : "addEventListener",
       "objectType" : null,
       "objectName" : "window",
-      "callCount" : 2
+      "callCount" : 2,
+      "parameterCount" : null
     }, {
       "methodName" : "cancelNavigation",
       "objectType" : null,
       "objectName" : "evt",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "dispose",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "navigate",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "preventDefault",
       "objectType" : null,
       "objectName" : "e",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "removeEventListener",
       "objectType" : null,
       "objectName" : "window",
-      "callCount" : 2
+      "callCount" : 2,
+      "parameterCount" : null
     }, {
       "methodName" : "setTarget",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "showModal",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "stripAppBaseFromUrl",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "t",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "useCallback",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 2
+      "callCount" : 2,
+      "parameterCount" : null
     }, {
       "methodName" : "useEffect",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 2
+      "callCount" : 2,
+      "parameterCount" : null
     }, {
       "methodName" : "useRef",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "useState",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "useTranslation",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   } ],
   "imports" : [ "import type React from 'react';", "import { useCallback, useEffect, useRef, useState } from 'react';", "import { useTranslation } from 'react-i18next';" ]

@@ -631,7 +631,7 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
                     // Check if we already have this call, if so increment count
                     boolean found = false;
                     for (MethodCall existingCall : methodInfo.methodCalls) {
-                        if (existingCall.matches(callText, objectType, objectName)) {
+                        if (existingCall.matches(callText, objectType, objectName, null)) {
                             existingCall.callCount++;
                             found = true;
                             break;

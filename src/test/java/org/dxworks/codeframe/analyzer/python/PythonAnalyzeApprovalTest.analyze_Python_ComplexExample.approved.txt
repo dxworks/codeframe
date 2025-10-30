@@ -63,7 +63,8 @@
         "methodName" : "utcnow",
         "objectType" : null,
         "objectName" : "datetime",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "put",
@@ -83,17 +84,20 @@
         "methodName" : "_normalize_key",
         "objectType" : "Repository",
         "objectName" : "self",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "_put_impl",
         "objectType" : "Repository",
         "objectName" : "self",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "_validate",
         "objectType" : "Repository",
         "objectName" : "self",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "get",
@@ -110,12 +114,14 @@
         "methodName" : "_get_impl",
         "objectType" : "Repository",
         "objectName" : "self",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "_normalize_key",
         "objectType" : "Repository",
         "objectName" : "self",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "delete",
@@ -132,12 +138,14 @@
         "methodName" : "_delete_impl",
         "objectType" : "Repository",
         "objectName" : "self",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "_normalize_key",
         "objectType" : "Repository",
         "objectName" : "self",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "keys",
@@ -151,12 +159,14 @@
         "methodName" : "_keys_impl",
         "objectType" : "Repository",
         "objectName" : "self",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "list",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "_normalize_key",
@@ -173,12 +183,14 @@
         "methodName" : "lower",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "strip",
         "objectType" : null,
         "objectName" : "key",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "_validate",
@@ -198,7 +210,8 @@
         "methodName" : "ValueError",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 2
+        "callCount" : 2,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]
@@ -227,12 +240,14 @@
         "methodName" : "__init__",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "super",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "upsert",
@@ -252,7 +267,8 @@
         "methodName" : "put",
         "objectType" : "InMemoryRepository",
         "objectName" : "self",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "_put_impl",
@@ -272,7 +288,8 @@
         "methodName" : "print",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "_get_impl",
@@ -289,7 +306,8 @@
         "methodName" : "get",
         "objectType" : null,
         "objectName" : "self.__store",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "_delete_impl",
@@ -306,12 +324,14 @@
         "methodName" : "pop",
         "objectType" : null,
         "objectName" : "self.__store",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "print",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "_keys_impl",
@@ -325,7 +345,8 @@
         "methodName" : "keys",
         "objectType" : null,
         "objectName" : "self.__store",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]
@@ -363,7 +384,8 @@
         "methodName" : "print",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "__exit__",
@@ -386,7 +408,8 @@
         "methodName" : "print",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "is_active",
@@ -427,17 +450,20 @@
       "methodName" : "ValueError",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "append",
       "objectType" : null,
       "objectName" : "batch",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "len",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   }, {
     "name" : "slugify",
@@ -454,22 +480,26 @@
       "methodName" : "lower",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "strip",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "strip",
       "objectType" : "text.strip().lower",
       "objectName" : "text",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "sub",
       "objectType" : null,
       "objectName" : "re",
-      "callCount" : 3
+      "callCount" : 3,
+      "parameterCount" : null
     } ]
   }, {
     "name" : "safe_divide",
@@ -504,17 +534,20 @@
       "methodName" : "list",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "range",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "sleep",
       "objectType" : null,
       "objectName" : "asyncio",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   }, {
     "name" : "_demo",
@@ -528,12 +561,14 @@
       "methodName" : "fetch_data_async",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "print",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   } ],
   "imports" : [ "import abc", "import asyncio", "import contextlib", "import math", "import re", "from dataclasses import dataclass, field", "from datetime import datetime", "from typing import Any, Dict, Generator, Iterable, List, Optional, Tuple" ]

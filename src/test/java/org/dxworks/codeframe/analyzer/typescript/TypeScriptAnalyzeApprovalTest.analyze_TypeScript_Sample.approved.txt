@@ -54,12 +54,14 @@
         "methodName" : "fetchFromDb",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "info",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "fetchFromDb",
@@ -142,7 +144,8 @@
       "methodName" : "reduce",
       "objectType" : null,
       "objectName" : "items",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   }, {
     "name" : "formatMessage",

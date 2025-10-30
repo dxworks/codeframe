@@ -88,7 +88,8 @@
         "methodName" : "step",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 1
       } ]
     } ],
     "types" : [ ]
@@ -114,22 +115,26 @@
         "methodName" : "Increment",
         "objectType" : "var",
         "objectName" : "c",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 1
       }, {
         "methodName" : "WriteLine",
         "objectType" : null,
         "objectName" : "Console",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 1
       }, {
         "methodName" : "get_NewValue",
         "objectType" : null,
         "objectName" : "e",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "onChanged",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 2
       } ]
     } ],
     "types" : [ ]

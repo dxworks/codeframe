@@ -39,22 +39,26 @@
         "methodName" : "fetchData",
         "objectType" : "DataManager",
         "objectName" : "this",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "get",
         "objectType" : null,
         "objectName" : "this.cache",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "has",
         "objectType" : null,
         "objectName" : "this.cache",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "set",
         "objectType" : null,
         "objectName" : "this.cache",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "fetchData",
@@ -71,7 +75,8 @@
         "methodName" : "get",
         "objectType" : null,
         "objectName" : "axios",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]
@@ -91,7 +96,8 @@
       "methodName" : "map",
       "objectType" : null,
       "objectName" : "data",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   }, {
     "name" : "fetchUser",
@@ -108,7 +114,8 @@
       "methodName" : "get",
       "objectType" : null,
       "objectName" : "axios",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   } ],
   "imports" : [ "import axios from 'axios';", "import { formatDate } from './utils';" ]

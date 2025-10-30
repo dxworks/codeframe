@@ -66,7 +66,8 @@
         "methodName" : "toISOString",
         "objectType" : null,
         "objectName" : "this.#createdAt",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]
@@ -134,7 +135,8 @@
         "methodName" : "super",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "name",
@@ -181,7 +183,8 @@
         "methodName" : "includes",
         "objectType" : null,
         "objectName" : "value",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "role",
@@ -225,7 +228,8 @@
         "methodName" : "includes",
         "objectType" : null,
         "objectName" : "permissions[this.#role]",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "canPerform",
@@ -251,7 +255,8 @@
         "methodName" : "toJSON",
         "objectType" : null,
         "objectName" : "super",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]
@@ -292,7 +297,8 @@
         "methodName" : "super",
         "objectType" : null,
         "objectName" : null,
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "permissions",
@@ -306,7 +312,8 @@
         "methodName" : "from",
         "objectType" : null,
         "objectName" : "Array",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "addPermission",
@@ -323,7 +330,8 @@
         "methodName" : "add",
         "objectType" : null,
         "objectName" : "this.#permissions",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "removePermission",
@@ -340,7 +348,8 @@
         "methodName" : "delete",
         "objectType" : null,
         "objectName" : "this.#permissions",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "hasPermission",
@@ -357,7 +366,8 @@
         "methodName" : "has",
         "objectType" : null,
         "objectName" : "this.#permissions",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]

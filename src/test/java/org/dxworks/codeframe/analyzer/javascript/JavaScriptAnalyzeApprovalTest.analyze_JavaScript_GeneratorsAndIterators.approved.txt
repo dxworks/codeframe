@@ -78,7 +78,8 @@
         "methodName" : "slice",
         "objectType" : null,
         "objectName" : "this.items",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]
@@ -119,7 +120,8 @@
         "methodName" : "preOrder",
         "objectType" : null,
         "objectName" : "child",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "postOrder",
@@ -133,7 +135,8 @@
         "methodName" : "postOrder",
         "objectType" : null,
         "objectName" : "child",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "breadthFirst",
@@ -147,12 +150,14 @@
         "methodName" : "push",
         "objectType" : "Array",
         "objectName" : "queue",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "shift",
         "objectType" : "Array",
         "objectName" : "queue",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]
@@ -172,7 +177,8 @@
       "methodName" : "push",
       "objectType" : "Array",
       "objectName" : "results",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   }, {
     "name" : "numberGenerator",
@@ -204,12 +210,14 @@
       "methodName" : "flattenArray",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "isArray",
       "objectType" : null,
       "objectName" : "Array",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   }, {
     "name" : "fibonacci",
@@ -247,12 +255,14 @@
       "methodName" : "fetch",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "json",
       "objectType" : null,
       "objectName" : "response",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   }, {
     "name" : "streamData",
@@ -269,12 +279,14 @@
       "methodName" : "error",
       "objectType" : null,
       "objectName" : "console",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     }, {
       "methodName" : "fetch",
       "objectType" : null,
       "objectName" : "source",
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   }, {
     "name" : "map",
@@ -294,7 +306,8 @@
       "methodName" : "fn",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   }, {
     "name" : "filter",
@@ -314,7 +327,8 @@
       "methodName" : "predicate",
       "objectType" : null,
       "objectName" : null,
-      "callCount" : 1
+      "callCount" : 1,
+      "parameterCount" : null
     } ]
   }, {
     "name" : "take",

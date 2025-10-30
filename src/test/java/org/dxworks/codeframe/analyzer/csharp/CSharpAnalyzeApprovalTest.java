@@ -93,6 +93,11 @@ public class CSharpAnalyzeApprovalTest {
         verify(Paths.get("src/test/resources/samples/csharp/EnumUsageSample.cs"), Language.CSHARP);
     }
 
+    @Test
+    void analyze_CSharp_RecursionSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/csharp/RecursionSample.cs"), Language.CSHARP);
+    }
+
     private static void verify(Path file, Language language) throws IOException {
         FileAnalysis analysis = (FileAnalysis) App.analyzeFile(file, language);
         Approvals.verify(MAPPER.writeValueAsString(analysis));

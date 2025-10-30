@@ -61,12 +61,14 @@
           "methodName" : "Concat",
           "objectType" : "string",
           "objectName" : null,
-          "callCount" : 1
+          "callCount" : 1,
+          "parameterCount" : 3
         }, {
           "methodName" : "ToUpperInvariant",
           "objectType" : "var",
           "objectName" : "name",
-          "callCount" : 1
+          "callCount" : 1,
+          "parameterCount" : 0
         } ]
       } ]
     }, {
@@ -106,7 +108,8 @@
           "methodName" : "get_Length",
           "objectType" : null,
           "objectName" : "DisplayName",
-          "callCount" : 1
+          "callCount" : 1,
+          "parameterCount" : null
         } ]
       } ]
     } ],
@@ -155,22 +158,26 @@
         "methodName" : "get_Age",
         "objectType" : "Person",
         "objectName" : "p",
-        "callCount" : 2
+        "callCount" : 2,
+        "parameterCount" : null
       }, {
         "methodName" : "get_DisplayName",
         "objectType" : "Person",
         "objectName" : "p",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "get_NameLength",
         "objectType" : "Person",
         "objectName" : "p",
-        "callCount" : 2
+        "callCount" : 2,
+        "parameterCount" : null
       }, {
         "methodName" : "set_Age",
         "objectType" : "Person",
         "objectName" : "p",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "Describe",
@@ -187,17 +194,20 @@
         "methodName" : "get_Age",
         "objectType" : "Person",
         "objectName" : "p",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "get_DisplayName",
         "objectType" : "Person",
         "objectName" : "p",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "get_NameLength",
         "objectType" : "Person",
         "objectName" : "p",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]

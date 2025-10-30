@@ -27,7 +27,8 @@
         "methodName" : "getCode",
         "objectType" : "Status",
         "objectName" : "status",
-        "callCount" : 3
+        "callCount" : 3,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "processAllStatuses",
@@ -41,17 +42,20 @@
         "methodName" : "getCode",
         "objectType" : null,
         "objectName" : "s",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "println",
         "objectType" : null,
         "objectName" : "System.out",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       }, {
         "methodName" : "values",
         "objectType" : null,
         "objectName" : "Status",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     } ],
     "types" : [ ]

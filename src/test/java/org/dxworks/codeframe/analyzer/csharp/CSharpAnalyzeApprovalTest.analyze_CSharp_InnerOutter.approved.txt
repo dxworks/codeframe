@@ -45,7 +45,8 @@
         "methodName" : "WriteLine",
         "objectType" : null,
         "objectName" : "Console",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 1
       } ]
     }, {
       "name" : "RunHelper",
@@ -59,7 +60,8 @@
         "methodName" : "DoWork",
         "objectType" : "var",
         "objectName" : "helper",
-        "callCount" : 1
+        "callCount" : 1,
+        "parameterCount" : 0
       } ]
     }, {
       "name" : "OuterClass",
@@ -117,7 +119,8 @@
           "methodName" : "WriteLine",
           "objectType" : null,
           "objectName" : "Console",
-          "callCount" : 1
+          "callCount" : 1,
+          "parameterCount" : 1
         } ]
       }, {
         "name" : "InnerClassA",
@@ -154,7 +157,8 @@
             "methodName" : "WriteLine",
             "objectType" : null,
             "objectName" : "Console",
-            "callCount" : 1
+            "callCount" : 1,
+            "parameterCount" : 1
           } ]
         } ],
         "types" : [ ]
@@ -181,7 +185,8 @@
           "methodName" : "WriteLine",
           "objectType" : null,
           "objectName" : "Console",
-          "callCount" : 1
+          "callCount" : 1,
+          "parameterCount" : 1
         } ]
       } ],
       "types" : [ ]
