@@ -320,12 +320,9 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
     private String extractMethodName(String source, TSNode methodDecl) {
         String baseName = null;
         // Prefer the child with field name 'name' (Tree-sitter assigns fields)
-        for (int i = 0; i < methodDecl.getNamedChildCount(); i++) {
-            if ("name".equals(methodDecl.getFieldNameForChild(i))) {
-                TSNode nameNode = methodDecl.getNamedChild(i);
-                baseName = getNodeText(source, nameNode);
-                break;
-            }
+        TSNode nameField = getChildByFieldName(methodDecl, "name");
+        if (nameField != null) {
+            baseName = getNodeText(source, nameField);
         }
         // Fallback: first identifier child
         if (baseName == null) {
@@ -347,11 +344,9 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
     }
     
     private String extractReturnType(String source, TSNode methodDecl) {
-        for (int i = 0; i < methodDecl.getNamedChildCount(); i++) {
-            if ("returns".equals(methodDecl.getFieldNameForChild(i))) {
-                TSNode returnTypeNode = methodDecl.getNamedChild(i);
-                return extractTypeWithGenerics(source, returnTypeNode, methodDecl);
-            }
+        TSNode returnTypeNode = getChildByFieldName(methodDecl, "returns");
+        if (returnTypeNode != null) {
+            return extractTypeWithGenerics(source, returnTypeNode, methodDecl);
         }
         return null;
     }
@@ -379,17 +374,10 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
     private ParameterInfo extractParameter(String source, TSNode param) {
         String paramName = null;
         String paramType = null;
-        
-        for (int i = 0; i < param.getNamedChildCount(); i++) {
-            TSNode child = param.getNamedChild(i);
-            String fieldName = param.getFieldNameForChild(i);
-            
-            if ("name".equals(fieldName)) {
-                paramName = getNodeText(source, child);
-            } else if ("type".equals(fieldName)) {
-                paramType = extractTypeWithGenerics(source, child, param);
-            }
-        }
+        TSNode nameNode = getChildByFieldName(param, "name");
+        if (nameNode != null) paramName = getNodeText(source, nameNode);
+        TSNode typeNode = getChildByFieldName(param, "type");
+        if (typeNode != null) paramType = extractTypeWithGenerics(source, typeNode, param);
         return new ParameterInfo(paramName, paramType);
     }
     
@@ -464,14 +452,7 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
                 continue;
             }
             // The function node contains the method being called
-            TSNode functionNode = null;
-            for (int i = 0; i < invocation.getNamedChildCount(); i++) {
-                String fieldName = invocation.getFieldNameForChild(i);
-                if ("function".equals(fieldName)) {
-                    functionNode = invocation.getNamedChild(i);
-                    break;
-                }
-            }
+            TSNode functionNode = getChildByFieldName(invocation, "function");
             
             if (functionNode != null) {
                 // Mark this member_access as part of an invocation
@@ -661,11 +642,10 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
                 continue;
             }
             // Expect first named child to be LHS expression
-            TSNode lhs = null;
-            for (int i = 0; i < assignment.getNamedChildCount(); i++) {
-                TSNode child = assignment.getNamedChild(i);
-                String fname = assignment.getFieldNameForChild(i);
-                if (fname == null || "left".equals(fname)) { lhs = child; break; }
+            TSNode lhs = getChildByFieldName(assignment, "left");
+            if (lhs == null) {
+                // Some grammars omit field names; fall back to first named child
+                lhs = assignment.getNamedChildCount() > 0 ? assignment.getNamedChild(0) : null;
             }
             if (lhs == null) continue;
             if ("member_access_expression".equals(lhs.getType())) {

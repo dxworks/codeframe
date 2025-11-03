@@ -475,8 +475,8 @@ public class JavaAnalyzer implements LanguageAnalyzer {
     }
 
     private int countInvocationParameters(TSNode invocation) {
-        // Find the argument_list node in the method_invocation
-        TSNode argList = findFirstChild(invocation, "argument_list");
+        // Find the argument list node in the method_invocation
+        TSNode argList = getArgumentListNode(invocation);
         if (argList == null) {
             return 0;
         }

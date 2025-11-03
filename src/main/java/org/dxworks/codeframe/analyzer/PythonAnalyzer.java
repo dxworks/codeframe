@@ -258,36 +258,15 @@ public class PythonAnalyzer implements LanguageAnalyzer {
                         fieldInfo.name = getNodeText(source, leftSide);
                         
                         // Check for type annotation (e.g., name: str)
-                        TSNode typeNode = null;
-                        for (int j = 0; j < assignment.getNamedChildCount(); j++) {
-                            try {
-                                String fieldName = assignment.getFieldNameForChild(j);
-                                if ("type".equals(fieldName)) {
-                                    typeNode = assignment.getNamedChild(j);
-                                    break;
-                                }
-                            } catch (Exception e) {
-                                // Skip if field name cannot be retrieved
-                            }
-                        }
+                        TSNode typeNode = getChildByFieldName(assignment, "type");
                         
                         if (typeNode != null && !typeNode.isNull()) {
                             fieldInfo.type = getNodeText(source, typeNode);
                         } else {
                             // Try to infer type from the right side
-                            for (int j = 0; j < assignment.getNamedChildCount(); j++) {
-                                try {
-                                    String fieldName = assignment.getFieldNameForChild(j);
-                                    if ("right".equals(fieldName)) {
-                                        TSNode rightSide = assignment.getNamedChild(j);
-                                        if (rightSide != null && !rightSide.isNull()) {
-                                            fieldInfo.type = inferType(source, rightSide);
-                                        }
-                                        break;
-                                    }
-                                } catch (Exception e) {
-                                    // Skip if field name cannot be retrieved
-                                }
+                            TSNode rightSide = getChildByFieldName(assignment, "right");
+                            if (rightSide != null && !rightSide.isNull()) {
+                                fieldInfo.type = inferType(source, rightSide);
                             }
                         }
                         
@@ -410,19 +389,9 @@ public class PythonAnalyzer implements LanguageAnalyzer {
         }
         
         // Get return type from type hint using field name
-        for (int i = 0; i < funcDef.getNamedChildCount(); i++) {
-            try {
-                String fieldName = funcDef.getFieldNameForChild(i);
-                if ("return_type".equals(fieldName)) {
-                    TSNode returnTypeNode = funcDef.getNamedChild(i);
-                    if (returnTypeNode != null && !returnTypeNode.isNull()) {
-                        methodInfo.returnType = getNodeText(source, returnTypeNode);
-                    }
-                    break;
-                }
-            } catch (Exception e) {
-                // Skip if field name cannot be retrieved
-            }
+        TSNode returnTypeNode = getChildByFieldName(funcDef, "return_type");
+        if (returnTypeNode != null && !returnTypeNode.isNull()) {
+            methodInfo.returnType = getNodeText(source, returnTypeNode);
         }
         
         // Get function body
@@ -584,29 +553,8 @@ public class PythonAnalyzer implements LanguageAnalyzer {
             }
         }
         
-        // Sort method calls alphabetically
-        methodInfo.methodCalls.sort((a, b) -> {
-            int nameCompare = a.methodName.compareTo(b.methodName);
-            if (nameCompare != 0) return nameCompare;
-            
-            if (a.objectType != null && b.objectType != null) {
-                int typeCompare = a.objectType.compareTo(b.objectType);
-                if (typeCompare != 0) return typeCompare;
-            } else if (a.objectType != null) {
-                return 1;
-            } else if (b.objectType != null) {
-                return -1;
-            }
-            
-            if (a.objectName != null && b.objectName != null) {
-                return a.objectName.compareTo(b.objectName);
-            } else if (a.objectName != null) {
-                return 1;
-            } else if (b.objectName != null) {
-                return -1;
-            }
-            return 0;
-        });
+        // Sort method calls consistently with other analyzers
+        methodInfo.methodCalls.sort(TreeSitterHelper.METHOD_CALL_COMPARATOR);
     }
     
     private void extractDecorators(String source, TSNode decoratedNode, List<String> annotations) {
