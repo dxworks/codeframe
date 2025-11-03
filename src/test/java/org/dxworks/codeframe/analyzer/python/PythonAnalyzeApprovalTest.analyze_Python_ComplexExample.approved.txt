@@ -10,6 +10,7 @@
     "annotations" : [ "@dataclass(frozen=True)" ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ {
       "name" : "name",
       "type" : null,
@@ -46,6 +47,7 @@
     "annotations" : [ ],
     "extendsType" : "abc",
     "implementsInterfaces" : [ "ABC" ],
+    "mixins" : [ ],
     "fields" : [ ],
     "properties" : [ ],
     "methods" : [ {
@@ -223,6 +225,7 @@
     "annotations" : [ ],
     "extendsType" : "Repository",
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ ],
     "properties" : [ ],
     "methods" : [ {
@@ -358,6 +361,7 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ ],
     "properties" : [ ],
     "methods" : [ {

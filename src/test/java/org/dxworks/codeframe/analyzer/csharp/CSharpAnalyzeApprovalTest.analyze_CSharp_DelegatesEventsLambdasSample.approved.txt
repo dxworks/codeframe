@@ -10,6 +10,7 @@
     "annotations" : [ ],
     "extendsType" : "EventArgs",
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ ],
     "properties" : [ {
       "name" : "OldValue",
@@ -65,6 +66,7 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ {
       "name" : "_value",
       "type" : "int",
@@ -101,6 +103,7 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ ],
     "properties" : [ ],
     "methods" : [ {

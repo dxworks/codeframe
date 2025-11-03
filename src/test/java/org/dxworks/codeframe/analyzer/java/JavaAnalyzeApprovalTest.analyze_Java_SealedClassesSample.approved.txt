@@ -10,6 +10,7 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ "Shape" ],
+    "mixins" : [ ],
     "fields" : [ {
       "name" : "radius",
       "type" : null,
@@ -58,6 +59,7 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ "Shape" ],
+    "mixins" : [ ],
     "fields" : [ {
       "name" : "width",
       "type" : null,
@@ -106,6 +108,7 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ "Shape" ],
+    "mixins" : [ ],
     "fields" : [ {
       "name" : "base",
       "type" : null,
@@ -154,6 +157,7 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ ],
     "properties" : [ ],
     "methods" : [ {
@@ -196,6 +200,7 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ ],
     "properties" : [ ],
     "methods" : [ {

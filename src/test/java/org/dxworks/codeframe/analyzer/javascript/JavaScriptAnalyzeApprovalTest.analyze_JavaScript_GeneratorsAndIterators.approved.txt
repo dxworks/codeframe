@@ -10,6 +10,7 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ ],
     "properties" : [ ],
     "methods" : [ {
@@ -49,6 +50,7 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ ],
     "properties" : [ ],
     "methods" : [ {
@@ -91,6 +93,7 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ ],
     "properties" : [ ],
     "methods" : [ {

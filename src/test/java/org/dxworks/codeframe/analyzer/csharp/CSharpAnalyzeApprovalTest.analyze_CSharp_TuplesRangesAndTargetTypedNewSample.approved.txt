@@ -10,6 +10,7 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ ],
     "properties" : [ ],
     "methods" : [ {

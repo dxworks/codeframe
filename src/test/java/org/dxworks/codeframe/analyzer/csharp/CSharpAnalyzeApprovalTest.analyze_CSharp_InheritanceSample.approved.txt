@@ -10,6 +10,7 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ ],
     "properties" : [ {
       "name" : "Name",
@@ -57,6 +58,7 @@
     "annotations" : [ ],
     "extendsType" : "Animal",
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ ],
     "properties" : [ ],
     "methods" : [ {
@@ -90,6 +92,7 @@
     "annotations" : [ ],
     "extendsType" : "Dog",
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ ],
     "properties" : [ ],
     "methods" : [ {

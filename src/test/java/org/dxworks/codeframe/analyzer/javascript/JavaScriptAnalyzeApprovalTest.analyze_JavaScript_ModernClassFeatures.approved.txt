@@ -10,6 +10,7 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ {
       "name" : "#id",
       "type" : null,
@@ -79,6 +80,7 @@
     "annotations" : [ ],
     "extendsType" : "BaseEntity",
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ {
       "name" : "#instanceCount",
       "type" : "Number",
@@ -268,6 +270,7 @@
     "annotations" : [ ],
     "extendsType" : "User",
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ {
       "name" : "#permissions",
       "type" : null,

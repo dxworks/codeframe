@@ -17,6 +17,7 @@ public class Sample {
     
     public User findById(String id) {
         logger.info("Finding user by id: " + id);
+        db.query().debug().printoTo(output());
         return db.query("SELECT * FROM users WHERE id = ?", id);
     }
     

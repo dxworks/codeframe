@@ -10,6 +10,7 @@ public class DataContainer : IDetectTypeCodeIssue
 
     public Maybe<CodeIssue> Detect(ClassModel t)
     {
+        Query().Debug().PrintoTo(Output());
         var metrics = Metrics.Metrics.For(t);
 
         var woc = metrics.WeightOfAClass;

@@ -10,6 +10,7 @@
     "annotations" : [ "@Resource(name = RestConstants.VERSION_1 + \"/user\", supportedClass = Sample.class, supportedVersions = { \"1.0.* - 2.0.*\" })" ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ {
       "name" : "db",
       "type" : "DatabaseConnection",
@@ -42,11 +43,35 @@
       } ],
       "localVariables" : [ ],
       "methodCalls" : [ {
+        "methodName" : "debug",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 0
+      }, {
         "methodName" : "info",
         "objectType" : "Logger",
         "objectName" : "logger",
         "callCount" : 1,
         "parameterCount" : 1
+      }, {
+        "methodName" : "output",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 0
+      }, {
+        "methodName" : "printoTo",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 1
+      }, {
+        "methodName" : "query",
+        "objectType" : "DatabaseConnection",
+        "objectName" : "db",
+        "callCount" : 1,
+        "parameterCount" : 0
       }, {
         "methodName" : "query",
         "objectType" : "DatabaseConnection",
@@ -190,6 +215,7 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ {
       "name" : "id",
       "type" : "String",

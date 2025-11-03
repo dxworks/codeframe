@@ -10,6 +10,7 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ "IDetectTypeCodeIssue" ],
+    "mixins" : [ ],
     "fields" : [ {
       "name" : "Few",
       "type" : "int",
@@ -42,6 +43,12 @@
         "callCount" : 1,
         "parameterCount" : 3
       }, {
+        "methodName" : "Debug",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 0
+      }, {
         "methodName" : "For",
         "objectType" : null,
         "objectName" : null,
@@ -54,9 +61,27 @@
         "callCount" : 1,
         "parameterCount" : 1
       }, {
+        "methodName" : "Output",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 0
+      }, {
+        "methodName" : "PrintoTo",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 1
+      }, {
         "methodName" : "PublicAttributes",
         "objectType" : "ClassModel",
         "objectName" : "t",
+        "callCount" : 1,
+        "parameterCount" : 0
+      }, {
+        "methodName" : "Query",
+        "objectType" : null,
+        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 0
       }, {
@@ -298,6 +323,7 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ "IDetectMethodCodeIssue" ],
+    "mixins" : [ ],
     "fields" : [ ],
     "properties" : [ ],
     "methods" : [ {

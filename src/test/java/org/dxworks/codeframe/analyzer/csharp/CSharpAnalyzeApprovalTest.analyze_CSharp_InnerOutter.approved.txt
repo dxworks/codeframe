@@ -10,6 +10,7 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ ],
     "properties" : [ {
       "name" : "Name",
@@ -84,6 +85,7 @@
       "annotations" : [ ],
       "extendsType" : null,
       "implementsInterfaces" : [ ],
+      "mixins" : [ ],
       "fields" : [ ],
       "properties" : [ {
         "name" : "Value",
@@ -143,6 +145,7 @@
         "annotations" : [ ],
         "extendsType" : null,
         "implementsInterfaces" : [ ],
+        "mixins" : [ ],
         "fields" : [ ],
         "properties" : [ ],
         "methods" : [ {
@@ -171,6 +174,7 @@
       "annotations" : [ ],
       "extendsType" : null,
       "implementsInterfaces" : [ ],
+      "mixins" : [ ],
       "fields" : [ ],
       "properties" : [ ],
       "methods" : [ {

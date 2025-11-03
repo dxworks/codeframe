@@ -10,6 +10,7 @@
     "annotations" : [ "@Deprecated" ],
     "extendsType" : null,
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ ],
     "properties" : [ ],
     "methods" : [ {

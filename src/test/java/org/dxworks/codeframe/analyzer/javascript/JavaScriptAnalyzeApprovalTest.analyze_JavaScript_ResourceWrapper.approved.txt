@@ -10,6 +10,7 @@
     "annotations" : [ ],
     "extendsType" : "React.Component",
     "implementsInterfaces" : [ ],
+    "mixins" : [ ],
     "fields" : [ {
       "name" : "resourceLocationFunctions",
       "type" : "Object",

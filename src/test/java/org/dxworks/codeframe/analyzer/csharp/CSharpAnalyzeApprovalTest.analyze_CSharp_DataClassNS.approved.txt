@@ -10,6 +10,7 @@
     "annotations" : [ ],
     "extendsType" : null,
     "implementsInterfaces" : [ "IDetectTypeCodeIssue" ],
+    "mixins" : [ ],
     "fields" : [ {
       "name" : "Few",
       "type" : "int",
