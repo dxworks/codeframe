@@ -11,6 +11,7 @@ public class TypeInfo {
     public List<String> annotations = new ArrayList<>();
     public String extendsType;
     public List<String> implementsInterfaces = new ArrayList<>();
+    public List<String> mixins = new ArrayList<>();  // Mixins/traits included in this type (Ruby include/extend, PHP use)
     public List<FieldInfo> fields = new ArrayList<>();  // Fields belonging to this type
     public List<PropertyInfo> properties = new ArrayList<>();  // Properties belonging to this type
     public List<MethodInfo> methods = new ArrayList<>();  // Methods belonging to this type

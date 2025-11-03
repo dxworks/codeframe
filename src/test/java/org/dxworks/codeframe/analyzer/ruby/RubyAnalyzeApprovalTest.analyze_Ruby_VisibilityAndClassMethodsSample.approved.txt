@@ -1,0 +1,250 @@
+{
+  "filePath" : "src/test/resources/samples/ruby/VisibilityAndClassMethodsSample.rb",
+  "language" : "ruby",
+  "packageName" : null,
+  "types" : [ {
+    "kind" : "class",
+    "name" : "UserService",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ "@alias(old_public_method=another_public_method)" ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "@email",
+      "type" : null,
+      "visibility" : "private",
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    }, {
+      "name" : "@@service_count",
+      "type" : null,
+      "visibility" : "private",
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    }, {
+      "name" : "@@settings",
+      "type" : null,
+      "visibility" : "private",
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "find_by_email",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "email",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "first",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 0
+      }, {
+        "methodName" : "where",
+        "objectType" : "User",
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    }, {
+      "name" : "create_guest",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "static" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "new",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    }, {
+      "name" : "initialize",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "email",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "process_user",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "public_method",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "inline_private",
+      "returnType" : null,
+      "visibility" : "private",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "inline_private2",
+      "returnType" : null,
+      "visibility" : "private",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "validate_email",
+      "returnType" : null,
+      "visibility" : "private",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "include?",
+        "objectType" : null,
+        "objectName" : "@email",
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    }, {
+      "name" : "send_notification",
+      "returnType" : null,
+      "visibility" : "private",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "puts",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    }, {
+      "name" : "inline_protected",
+      "returnType" : null,
+      "visibility" : "protected",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "inline_protected2",
+      "returnType" : null,
+      "visibility" : "protected",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "internal_helper",
+      "returnType" : null,
+      "visibility" : "protected",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "another_public_method",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "Calculator",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ "@alias_method(sum=add)" ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "@@ops",
+      "type" : null,
+      "visibility" : "private",
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "add",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "a",
+        "type" : null
+      }, {
+        "name" : "b",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "multiply",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "a",
+        "type" : null
+      }, {
+        "name" : "b",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "instance_method",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ ]
+}

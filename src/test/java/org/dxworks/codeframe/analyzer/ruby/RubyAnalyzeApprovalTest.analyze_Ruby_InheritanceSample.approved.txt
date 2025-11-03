@@ -1,0 +1,157 @@
+{
+  "filePath" : "src/test/resources/samples/ruby/InheritanceSample.rb",
+  "language" : "ruby",
+  "packageName" : null,
+  "types" : [ {
+    "kind" : "class",
+    "name" : "Animal",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "@name",
+      "type" : null,
+      "visibility" : "private",
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ {
+      "name" : "name",
+      "type" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "accessors" : [ {
+        "kind" : "get",
+        "visibility" : null,
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "localVariables" : [ ],
+        "methodCalls" : [ ]
+      }, {
+        "kind" : "set",
+        "visibility" : null,
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "localVariables" : [ ],
+        "methodCalls" : [ ]
+      } ]
+    } ],
+    "methods" : [ {
+      "name" : "initialize",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "speak",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "Dog",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : "Animal",
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "@breed",
+      "type" : null,
+      "visibility" : "private",
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ {
+      "name" : "breed",
+      "type" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "accessors" : [ {
+        "kind" : "get",
+        "visibility" : null,
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "localVariables" : [ ],
+        "methodCalls" : [ ]
+      }, {
+        "kind" : "set",
+        "visibility" : null,
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "localVariables" : [ ],
+        "methodCalls" : [ ]
+      } ]
+    } ],
+    "methods" : [ {
+      "name" : "initialize",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : null
+      }, {
+        "name" : "breed",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "super",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    }, {
+      "name" : "speak",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "fetch",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "item",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "puts",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ ]
+}

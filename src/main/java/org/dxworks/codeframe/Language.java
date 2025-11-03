@@ -7,7 +7,8 @@ public enum Language {
     PYTHON("python"),
     CSHARP("csharp"),
     PHP("php"),
-    SQL("sql");
+    SQL("sql"),
+    RUBY("ruby");
 
     private final String name;
 

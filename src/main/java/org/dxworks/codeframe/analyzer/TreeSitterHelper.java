@@ -142,4 +142,69 @@ public class TreeSitterHelper {
         }
         return result;
     }
+
+    // --- Generic helpers to reduce duplication across analyzers ---
+
+    public static TSNode getChildByFieldName(TSNode parent, String fieldName) {
+        if (parent == null || parent.isNull()) return null;
+        for (int i = 0; i < parent.getNamedChildCount(); i++) {
+            try {
+                String fn = parent.getFieldNameForChild(i);
+                if (fieldName.equals(fn)) return parent.getNamedChild(i);
+            } catch (Exception ignored) { }
+        }
+        return null;
+    }
+
+    public static boolean isTypeOneOf(String type, String... types) {
+        if (type == null) return false;
+        for (String t : types) if (type.equals(t)) return true;
+        return false;
+    }
+
+    public static boolean isNodeTypeOneOf(TSNode node, String... types) {
+        if (node == null || node.isNull()) return false;
+        return isTypeOneOf(node.getType(), types);
+    }
+
+    public static TSNode getFirstChildOfTypes(TSNode parent, String... types) {
+        if (parent == null || parent.isNull()) return null;
+        for (int i = 0; i < parent.getNamedChildCount(); i++) {
+            TSNode child = parent.getNamedChild(i);
+            if (child != null && !child.isNull() && isTypeOneOf(child.getType(), types)) {
+                return child;
+            }
+        }
+        return null;
+    }
+
+    public static List<TSNode> findAllDescendantsOfTypes(TSNode root, String... types) {
+        List<TSNode> result = new ArrayList<>();
+        if (root == null || root.isNull()) return result;
+        Deque<TSNode> stack = new ArrayDeque<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            TSNode node = stack.pop();
+            if (node == null || node.isNull()) continue;
+            if (isTypeOneOf(node.getType(), types)) result.add(node);
+            for (int i = node.getNamedChildCount() - 1; i >= 0; i--) {
+                TSNode child = node.getNamedChild(i);
+                if (child != null && !child.isNull()) stack.push(child);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Return the argument list node ("argument_list" or "arguments") if present.
+     */
+    public static TSNode getArgumentListNode(TSNode callLike) {
+        if (callLike == null || callLike.isNull()) return null;
+        TSNode byField = getChildByFieldName(callLike, "arguments");
+        if (byField != null && !byField.isNull()) return byField;
+        TSNode byType = findFirstChild(callLike, "argument_list");
+        if (byType != null && !byType.isNull()) return byType;
+        byType = findFirstChild(callLike, "arguments");
+        return byType;
+    }
 }

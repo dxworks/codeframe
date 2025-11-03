@@ -10,6 +10,7 @@ A Tree-sitter-based code parser that extracts structural information from source
 - **Python** (.py)
 - **C#** (.cs)
 - **PHP** (.php)
+- **Ruby** (.rb)
 
 ## Features
 
@@ -154,8 +155,21 @@ Each line is a separate JSON object with a `kind` field:
 
 **Lines 2-N - File analyses:**
 ```json
-{"filePath":"src/Example.java","language":"java","packageName":"com.example","types":[{"kind":"class","name":"Example","visibility":"public","modifiers":["public"],"annotations":["@Component"],"extendsType":"BaseClass","implementsInterfaces":["Interface1"]}],"fields":[{"name":"service","type":"MyService","visibility":"private","modifiers":["private","final"],"annotations":["@Autowired"]}],"methods":[{"name":"processData","returnType":"Result","visibility":"public","modifiers":["public"],"annotations":["@Override"],"parameters":[{"name":"input","type":"String"}],"localVariables":["result"],"methodCalls":[{"methodName":"validate","objectType":"String","objectName":"input","callCount":1}]}],"imports":["import com.example.MyService;"]}
+{"filePath":"src/Example.java","language":"java","packageName":"com.example","types":[{"kind":"class","name":"Example","visibility":"public","modifiers":["public"],"annotations":["@Component"],"extendsType":"BaseClass","implementsInterfaces":["Interface1"],"mixins":[]}],"fields":[{"name":"service","type":"MyService","visibility":"private","modifiers":["private","final"],"annotations":["@Autowired"]}],"methods":[{"name":"processData","returnType":"Result","visibility":"public","modifiers":["public"],"annotations":["@Override"],"parameters":[{"name":"input","type":"String"}],"localVariables":["result"],"methodCalls":[{"methodName":"validate","objectType":"String","objectName":"input","callCount":1}]}],"imports":["import com.example.MyService;"]}
 ```
+
+**Type Information Fields:**
+- `extendsType`: Base class (single inheritance)
+- `implementsInterfaces`: Interfaces implemented by the type
+- `mixins`: Modules/traits mixed into the type (Ruby `include`/`extend`/`prepend`, PHP `use`)
+  - Ruby: `include StringHelpers` → `"mixins": ["StringHelpers"]`
+  - PHP: `use LoggerTrait;` → `"mixins": ["LoggerTrait"]`
+  - Other languages: Empty array
+- `properties`: Property declarations with accessors
+  - Ruby: `attr_accessor :name` → `{"name": "name", "accessors": [{"kind": "get"}, {"kind": "set"}]}`
+  - Ruby: `attr_reader :email` → `{"name": "email", "accessors": [{"kind": "get"}]}`
+  - C#: Properties with get/set accessors
+  - Other languages: Empty array
 
 **Error records (if any):**
 ```json
@@ -186,6 +200,7 @@ Each language has a dedicated analyzer:
 - `PythonAnalyzer` - Parses Python classes and functions
 - `CSharpAnalyzer` - Parses C# classes, interfaces, methods
 - `PHPAnalyzer` - Parses PHP classes, interfaces, functions
+- `RubyAnalyzer` - Parses Ruby classes, modules, methods
 
 ### Tree-sitter Integration
 
@@ -196,6 +211,7 @@ The project uses Tree-sitter grammar libraries:
 - `tree-sitter-python`
 - `tree-sitter-c-sharp`
 - `tree-sitter-php`
+- `tree-sitter-ruby`
 
 ## Architectural Decisions
 
@@ -221,6 +237,49 @@ The project uses Tree-sitter grammar libraries:
 3. Update `LanguageDetector` with file extension mapping
 4. Create a new analyzer implementing `LanguageAnalyzer`
 5. Register the language and analyzer in `App.java`
+6. Create test samples and approval tests
+
+### Analyzer Implementation Conventions
+
+When implementing a new language analyzer, follow these conventions to ensure consistency across all analyzers:
+
+#### Method Call Extraction
+
+**Chained Method Calls:**
+- For chained calls where the receiver is the result of another method call (e.g., `obj.method1().method2()`), set both `objectName` and `objectType` to `null`
+- This is because the type cannot be determined without semantic analysis
+- Example: For `db.query().debug().printTo(output())`:
+  - `query` → `objectName: "db"`, `objectType: "DatabaseConnection"`
+  - `debug` → `objectName: null`, `objectType: null` (chained)
+  - `printTo` → `objectName: null`, `objectType: null` (chained)
+  - `output` → `objectName: null`, `objectType: null` (standalone)
+
+**Property Access vs Method Calls:**
+- **Language-specific handling:**
+  - **C#**: Record property accesses as `get_PropertyName` or `set_PropertyName` method calls (properties compile to methods)
+  - **Ruby**: Only record calls with arguments or special suffixes (`?`, `!`); skip simple property accessors like `user.name`
+  - **Java**: Record explicit getter/setter method calls (e.g., `user.getName()`); field access is not a method call
+- The goal is to capture semantically meaningful operations while avoiding noise from simple field/property access where appropriate
+
+**Object Type Resolution:**
+- Try to resolve `objectType` from local variables, parameters, or fields when possible
+- Use `null` when the type cannot be determined from the syntax tree alone
+
+#### Field/Variable Visibility
+
+- Use language-specific conventions for determining visibility
+- Ruby: Instance variables (`@var`) are private by default
+- Java/C#: Use explicit modifiers
+- Python: Leading underscore (`_var`) indicates private by convention
+
+#### Test Coverage
+
+- Create at least 3 sample files covering:
+  1. Basic class/method structure with method calls
+  2. Modules/interfaces/mixins (if applicable)
+  3. Inheritance and polymorphism
+- Use ApprovalTests framework for output verification
+- Ensure samples include chained method calls to verify correct handling
 
 ### Example: Adding Go Support
 
