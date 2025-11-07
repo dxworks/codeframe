@@ -1,6 +1,13 @@
 {
   "filePath" : "src/test/resources/samples/sql/alter_table.sql",
   "language" : "sql",
+  "topLevelReferences" : {
+    "relations" : [ ]
+  },
+  "topLevelCalls" : {
+    "functions" : [ ],
+    "procedures" : [ ]
+  },
   "createTables" : [ ],
   "alterTables" : [ {
     "tableName" : "users",
@@ -49,8 +56,5 @@
   "createProcedures" : [ ],
   "createFunctions" : [ ],
   "createTriggers" : [ ],
-  "dropOperations" : [ ],
-  "referencedTables" : [ "public.users", "sales.orders" ],
-  "referencedViews" : [ ],
-  "referencedProcedures" : [ ]
+  "dropOperations" : [ ]
 }

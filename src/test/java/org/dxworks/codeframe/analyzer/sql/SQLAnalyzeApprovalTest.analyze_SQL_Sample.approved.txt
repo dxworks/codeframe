@@ -1,6 +1,13 @@
 {
-  "filePath" : "src/test/resources/samples/sql/simple_table.sql",
+  "filePath" : "src/test/resources/samples/sql/sample.sql",
   "language" : "sql",
+  "topLevelReferences" : {
+    "relations" : [ ]
+  },
+  "topLevelCalls" : {
+    "functions" : [ ],
+    "procedures" : [ ]
+  },
   "createTables" : [ {
     "tableName" : "users",
     "schema" : null,
@@ -68,7 +75,9 @@
     "viewName" : "active_users",
     "schema" : null,
     "orReplace" : false,
-    "referencedTables" : [ "users" ]
+    "references" : {
+      "relations" : [ "users" ]
+    }
   } ],
   "createIndexes" : [ {
     "indexName" : "idx_username",
@@ -78,7 +87,23 @@
     "columns" : [ "username" ],
     "indexType" : null
   } ],
-  "createProcedures" : [ ],
+  "createProcedures" : [ {
+    "procedureName" : "GetUserById",
+    "schema" : null,
+    "orReplace" : false,
+    "parameters" : [ {
+      "name" : "userId",
+      "type" : "INT",
+      "direction" : "IN"
+    } ],
+    "references" : {
+      "relations" : [ "users" ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ ]
+    }
+  } ],
   "createFunctions" : [ {
     "functionName" : "CalculateTotal",
     "schema" : null,
@@ -89,11 +114,14 @@
       "direction" : null
     } ],
     "returnType" : "DECIMAL(10, 2)",
-    "referencedTables" : [ ]
+    "references" : {
+      "relations" : [ ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ ]
+    }
   } ],
   "createTriggers" : [ ],
-  "dropOperations" : [ ],
-  "referencedTables" : [ "orders", "users" ],
-  "referencedViews" : [ "active_users" ],
-  "referencedProcedures" : [ ]
+  "dropOperations" : [ ]
 }

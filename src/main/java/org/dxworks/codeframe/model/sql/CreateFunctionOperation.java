@@ -1,13 +1,11 @@
 package org.dxworks.codeframe.model.sql;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class CreateFunctionOperation {
     public String functionName;
     public String schema;  // optional
     public boolean orReplace;  // CREATE OR REPLACE FUNCTION
-    public List<ParameterDefinition> parameters = new ArrayList<>();
+    public java.util.List<ParameterDefinition> parameters = new java.util.ArrayList<>();
     public String returnType;
-    public List<String> referencedTables = new ArrayList<>();
+    public SqlReferences references = new SqlReferences();
+    public SqlInvocations calls = new SqlInvocations();
 }

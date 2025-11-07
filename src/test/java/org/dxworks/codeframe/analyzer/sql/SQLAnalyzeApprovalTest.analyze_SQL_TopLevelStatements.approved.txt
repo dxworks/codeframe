@@ -1,0 +1,19 @@
+{
+  "filePath" : "src/test/resources/samples/sql/top_level_statements.sql",
+  "language" : "sql",
+  "topLevelReferences" : {
+    "relations" : [ ]
+  },
+  "topLevelCalls" : {
+    "functions" : [ "COALESCE", "sales.get_total", "SUM" ],
+    "procedures" : [ "sales.recalc_order_total" ]
+  },
+  "createTables" : [ ],
+  "alterTables" : [ ],
+  "createViews" : [ ],
+  "createIndexes" : [ ],
+  "createProcedures" : [ ],
+  "createFunctions" : [ ],
+  "createTriggers" : [ ],
+  "dropOperations" : [ ]
+}

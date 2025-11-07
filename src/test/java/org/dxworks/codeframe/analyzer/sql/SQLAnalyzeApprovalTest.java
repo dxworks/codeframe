@@ -16,8 +16,8 @@ public class SQLAnalyzeApprovalTest {
             .enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
 
     @Test
-    void analyze_SQL_SimpleSample() throws Exception {
-        verify(Paths.get("src/test/resources/samples/sql/simple_table.sql"), Language.SQL);
+    void analyze_SQL_Sample() throws Exception {
+        verify(Paths.get("src/test/resources/samples/sql/sample.sql"), Language.SQL);
     }
 
     @Test
@@ -43,6 +43,11 @@ public class SQLAnalyzeApprovalTest {
     @Test
     void analyze_SQL_FunctionsCrossDialects() throws Exception {
         verify(Paths.get("src/test/resources/samples/sql/functions_crossdialects.sql"), Language.SQL);
+    }
+
+    @Test
+    void analyze_SQL_TopLevelStatements() throws Exception {
+        verify(Paths.get("src/test/resources/samples/sql/top_level_statements.sql"), Language.SQL);
     }
 
     private static void verify(java.nio.file.Path file, Language language) throws Exception {

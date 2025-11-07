@@ -360,6 +360,10 @@ This project uses Tree-sitter and its language grammars, which are licensed unde
 
 ### SQL
 
+- SQL Analysis semantics
+  - References are recorded as relations only. We do not distinguish between tables and views without a project-wide catalog. Each operation (view/function/procedure) exposes `references.relations`.
+  - Calls are recorded per operation using explicit AST nodes only. Functions are captured from `function_call` nodes into `calls.functions`. Procedures are captured from `call_statement` nodes into `calls.procedures`.
+
 - **DROP INDEX qualified names**
   - Some SQL grammar variants emit an `ERROR` node when parsing qualified index names like `DROP INDEX schema.index_name` (e.g., the dot-separated form may be partially outside the `drop_index` node).
   - We parse using AST-first approaches. If the index name token is not present under `drop_index`, the analyzer falls back conservatively and may report only the schema or leave the name unset.

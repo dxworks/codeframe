@@ -1,6 +1,13 @@
 {
   "filePath" : "src/test/resources/samples/sql/drop_statements.sql",
   "language" : "sql",
+  "topLevelReferences" : {
+    "relations" : [ ]
+  },
+  "topLevelCalls" : {
+    "functions" : [ ],
+    "procedures" : [ ]
+  },
   "createTables" : [ ],
   "alterTables" : [ ],
   "createViews" : [ ],
@@ -23,8 +30,5 @@
     "objectName" : "ix_old_index",
     "schema" : "sales",
     "ifExists" : true
-  } ],
-  "referencedTables" : [ "public.legacy_users" ],
-  "referencedViews" : [ "sales.v_old_orders" ],
-  "referencedProcedures" : [ ]
+  } ]
 }

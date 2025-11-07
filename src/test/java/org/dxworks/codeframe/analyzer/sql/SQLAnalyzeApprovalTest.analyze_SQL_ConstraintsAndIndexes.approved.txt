@@ -1,6 +1,13 @@
 {
   "filePath" : "src/test/resources/samples/sql/constraints_and_indexes.sql",
   "language" : "sql",
+  "topLevelReferences" : {
+    "relations" : [ ]
+  },
+  "topLevelCalls" : {
+    "functions" : [ ],
+    "procedures" : [ ]
+  },
   "createTables" : [ {
     "tableName" : "users",
     "schema" : "public",
@@ -63,7 +70,9 @@
     "viewName" : "v_orders",
     "schema" : "sales",
     "orReplace" : false,
-    "referencedTables" : [ "sales.orders", "public.users" ]
+    "references" : {
+      "relations" : [ "public.users", "sales.orders" ]
+    }
   } ],
   "createIndexes" : [ {
     "indexName" : "ix_orders_date_amount",
@@ -83,8 +92,5 @@
   "createProcedures" : [ ],
   "createFunctions" : [ ],
   "createTriggers" : [ ],
-  "dropOperations" : [ ],
-  "referencedTables" : [ "public.users", "sales.orders" ],
-  "referencedViews" : [ "sales.v_orders" ],
-  "referencedProcedures" : [ ]
+  "dropOperations" : [ ]
 }

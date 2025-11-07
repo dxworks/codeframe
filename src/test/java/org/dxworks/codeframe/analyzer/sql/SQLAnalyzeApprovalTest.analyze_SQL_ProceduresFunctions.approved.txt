@@ -1,11 +1,57 @@
 {
   "filePath" : "src/test/resources/samples/sql/procedures_functions.sql",
   "language" : "sql",
+  "topLevelReferences" : {
+    "relations" : [ ]
+  },
+  "topLevelCalls" : {
+    "functions" : [ ],
+    "procedures" : [ ]
+  },
   "createTables" : [ ],
   "alterTables" : [ ],
-  "createViews" : [ ],
+  "createViews" : [ {
+    "viewName" : "order_summaries",
+    "schema" : "sales",
+    "orReplace" : false,
+    "references" : {
+      "relations" : [ "sales.orders", "sales.order_lines" ]
+    }
+  } ],
   "createIndexes" : [ ],
-  "createProcedures" : [ ],
+  "createProcedures" : [ {
+    "procedureName" : "recalc_order_total",
+    "schema" : "sales",
+    "orReplace" : false,
+    "parameters" : [ {
+      "name" : "p_order_id",
+      "type" : "INT",
+      "direction" : "IN"
+    } ],
+    "references" : {
+      "relations" : [ "sales.orders" ]
+    },
+    "calls" : {
+      "functions" : [ "sales.get_total" ],
+      "procedures" : [ "sales.notify_order_update" ]
+    }
+  }, {
+    "procedureName" : "notify_order_update",
+    "schema" : "sales",
+    "orReplace" : false,
+    "parameters" : [ {
+      "name" : "p_order_id",
+      "type" : "INT",
+      "direction" : "IN"
+    } ],
+    "references" : {
+      "relations" : [ ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ ]
+    }
+  } ],
   "createFunctions" : [ {
     "functionName" : "get_total",
     "schema" : "sales",
@@ -16,7 +62,13 @@
       "direction" : null
     } ],
     "returnType" : "DECIMAL(12,2)",
-    "referencedTables" : [ "sales.order_lines" ]
+    "references" : {
+      "relations" : [ "sales.order_lines" ]
+    },
+    "calls" : {
+      "functions" : [ "COALESCE", "SUM" ],
+      "procedures" : [ ]
+    }
   }, {
     "functionName" : "total_for_user",
     "schema" : null,
@@ -27,11 +79,31 @@
       "direction" : null
     } ],
     "returnType" : "DECIMAL(12,2)",
-    "referencedTables" : [ "sales.orders", "sales.order_lines", "public.users" ]
+    "references" : {
+      "relations" : [ "public.users", "sales.orders", "sales.order_lines" ]
+    },
+    "calls" : {
+      "functions" : [ "COALESCE", "SUM" ],
+      "procedures" : [ ]
+    }
+  }, {
+    "functionName" : "total_for_user_v2",
+    "schema" : null,
+    "orReplace" : false,
+    "parameters" : [ {
+      "name" : "uid",
+      "type" : "INT",
+      "direction" : null
+    } ],
+    "returnType" : "DECIMAL(12,2)",
+    "references" : {
+      "relations" : [ "sales.orders", "sales.order_summaries" ]
+    },
+    "calls" : {
+      "functions" : [ "COALESCE", "sales.get_total", "SUM" ],
+      "procedures" : [ ]
+    }
   } ],
   "createTriggers" : [ ],
-  "dropOperations" : [ ],
-  "referencedTables" : [ ],
-  "referencedViews" : [ ],
-  "referencedProcedures" : [ ]
+  "dropOperations" : [ ]
 }

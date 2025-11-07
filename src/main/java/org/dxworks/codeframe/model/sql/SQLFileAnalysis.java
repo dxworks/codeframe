@@ -3,13 +3,14 @@ package org.dxworks.codeframe.model.sql;
 import org.dxworks.codeframe.model.Analysis;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class SQLFileAnalysis implements Analysis {
     public String filePath;
     public String language = "sql";
+    // Top-level standalone statements (outside definitions)
+    public SqlReferences topLevelReferences = new SqlReferences();
+    public SqlInvocations topLevelCalls = new SqlInvocations();
     
     // DDL Operations (definitions)
     public List<CreateTableOperation> createTables = new ArrayList<>();
@@ -22,11 +23,6 @@ public class SQLFileAnalysis implements Analysis {
     
     // Drop operations
     public List<DropOperation> dropOperations = new ArrayList<>();
-    
-    // Summary of referenced objects (for quick dependency analysis)
-    public Set<String> referencedTables = new HashSet<>();
-    public Set<String> referencedViews = new HashSet<>();
-    public Set<String> referencedProcedures = new HashSet<>();
     
     @Override
     public String getFilePath() {

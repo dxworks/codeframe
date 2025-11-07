@@ -3,6 +3,8 @@ package org.dxworks.codeframe.analyzer;
 import org.dxworks.codeframe.model.Analysis;
 import org.dxworks.codeframe.model.sql.*;
 import org.treesitter.TSNode;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SQLAnalyzer implements LanguageAnalyzer {
     
@@ -17,6 +19,182 @@ public class SQLAnalyzer implements LanguageAnalyzer {
         traverseNode(rootNode, sourceCode, sqlAnalysis);
         
         return sqlAnalysis;
+    }
+
+    // Returns true if the node is inside a function/procedure body or a definition context
+    private boolean isInsideDefinition(TSNode node) {
+        if (node == null || node.isNull()) return false;
+        TSNode cur = node.getParent();
+        while (cur != null && !cur.isNull()) {
+            String t = cur.getType();
+            if ("function_body".equals(t) || "create_function".equals(t) || "create_procedure".equals(t) || "block".equals(t) || "create_view".equals(t)) {
+                return true;
+            }
+            cur = cur.getParent();
+        }
+        return false;
+    }
+
+    // Parse CALL statements from a text fragment and add qualified names to the given collection.
+    private void findCallNamesInText(String text, java.util.Collection<String> out) {
+        if (text == null || text.isEmpty()) return;
+        Pattern pCall = Pattern.compile("(?is)\\bcall\\s+([A-Za-z_][\\w$]*)\\s*(?:\\.\\s*([A-Za-z_][\\w$]*))?\\s*\\(");
+        Matcher m = pCall.matcher(text);
+        while (m.find()) {
+            String s = m.group(2) != null ? m.group(1) : null;
+            String n = m.group(2) != null ? m.group(2) : m.group(1);
+            addToReferencedList(out, qualify(s, n));
+        }
+    }
+
+    // --- Fallback: procedure defined as ERROR header followed by block body ---
+    private void maybeExtractProcedureFromBlock(TSNode blockNode, String source, SQLFileAnalysis analysis) {
+        int start = blockNode.getStartByte();
+        int windowStart = Math.max(0, start - 512);
+        String prefix = source.substring(windowStart, start);
+        // Try schema-qualified: CREATE PROCEDURE schema.name
+        Pattern pQualified = Pattern.compile("(?is)create\\s+procedure\\s+([A-Za-z_][\\w$]*)\\s*\\.\\s*([A-Za-z_][\\w$]*)");
+        Matcher mq = pQualified.matcher(prefix);
+        String schema = null;
+        String name = null;
+        int nameEnd = -1;
+        while (mq.find()) { // take last match in window
+            schema = mq.group(1);
+            name = mq.group(2);
+            nameEnd = mq.end();
+        }
+        if (name == null) {
+            // Try unqualified: CREATE PROCEDURE name
+            Pattern pSimple = Pattern.compile("(?is)create\\s+procedure\\s+([A-Za-z_][\\w$]*)");
+            Matcher ms = pSimple.matcher(prefix);
+            while (ms.find()) {
+                name = ms.group(1);
+                nameEnd = ms.end();
+            }
+        }
+        if (name == null || name.isEmpty()) return;
+
+        if (procedureAlreadyExists(analysis, schema, name)) return;
+
+        CreateProcedureOperation op = new CreateProcedureOperation();
+        op.schema = schema;
+        op.procedureName = name;
+
+        // Try to parse parameters from header text located between the name and next keyword (LANGUAGE/AS/etc.)
+        if (nameEnd > 0) {
+            String afterName = prefix.substring(nameEnd);
+            String paramsSeg = extractParamsSegment(afterName);
+            if (paramsSeg != null) {
+                parseAndAddProcedureParams(paramsSeg, op);
+            }
+        }
+
+        // Collect from the block body
+        for (TSNode rel : descendantsOfType(blockNode, "relation")) {
+            TSNode ref = firstChildOfType(rel, "object_reference");
+            if (ref == null) continue;
+            QualifiedName qn = parseQualifiedName(ref, source);
+            addToReferencedList(op.references.relations, qualify(qn.schema, qn.name));
+        }
+        for (TSNode call : descendantsOfType(blockNode, "call_statement")) {
+            TSNode ref = firstChildOfType(call, "object_reference");
+            if (ref != null) {
+                QualifiedName qn = parseQualifiedName(ref, source);
+                addToReferencedList(op.calls.procedures, qualify(qn.schema, qn.name));
+            }
+        }
+        // Regex fallback for CALL statements if AST doesn't emit call_statement inside blocks
+        if (op.calls.procedures.isEmpty()) {
+            String bodyText = textOf(blockNode, source);
+            findCallNamesInText(bodyText, op.calls.procedures);
+        }
+        for (TSNode inv : descendantsOfType(blockNode, "invocation")) {
+            TSNode ref = firstChildOfType(inv, "object_reference");
+            String qualified = null;
+            if (ref != null) {
+                QualifiedName qn = parseQualifiedName(ref, source);
+                qualified = qualify(qn.schema, qn.name);
+            } else {
+                TSNode id = firstChildOfType(inv, "identifier");
+                if (id != null) qualified = textOf(id, source);
+            }
+            if (qualified != null && !qualified.isEmpty()) {
+                addToReferencedList(op.calls.functions, qualified);
+            }
+        }
+        analysis.createProcedures.add(op);
+    }
+
+    // Extracts the first parenthesized segment starting at or after the beginning of the header tail.
+    // Returns the inside of parentheses without the surrounding '(' and ')', or null if none.
+    private String extractParamsSegment(String headerTail) {
+        int i = headerTail.indexOf('(');
+        if (i < 0) return null;
+        int depth = 0;
+        for (int j = i; j < headerTail.length(); j++) {
+            char c = headerTail.charAt(j);
+            if (c == '(') depth++;
+            else if (c == ')') {
+                depth--;
+                if (depth == 0) {
+                    return headerTail.substring(i + 1, j);
+                }
+            }
+        }
+        return null;
+    }
+
+    // Parses a comma-separated parameter list. Each parameter may look like:
+    //   IN name TYPE
+    //   OUT name TYPE
+    //   INOUT name TYPE
+    //   name TYPE
+    // TYPE may contain spaces (e.g., DOUBLE PRECISION). We trim each item.
+    private void parseAndAddProcedureParams(String paramsSeg, CreateProcedureOperation op) {
+        java.util.List<String> parts = splitTopLevelByComma(paramsSeg);
+        for (String raw : parts) {
+            String s = raw.trim();
+            if (s.isEmpty()) continue;
+            ParameterDefinition pd = new ParameterDefinition();
+            java.util.regex.Pattern pat = java.util.regex.Pattern.compile("(?is)^(?:(INOUT|OUT|IN)\\s+)?([A-Za-z_][\\w$]*)\\s+(.+)$");
+            java.util.regex.Matcher m = pat.matcher(s);
+            if (m.find()) {
+                String dir = m.group(1);
+                if (dir != null) pd.direction = dir.toUpperCase(); else pd.direction = "IN";
+                pd.name = m.group(2);
+                pd.type = m.group(3).trim();
+            } else {
+                // Fallback: single identifier -> name; unknown type
+                pd.name = s.split("\\s+")[0];
+            }
+            op.parameters.add(pd);
+        }
+    }
+
+    // Splits by commas not nested inside parentheses.
+    private java.util.List<String> splitTopLevelByComma(String s) {
+        java.util.List<String> out = new java.util.ArrayList<>();
+        int depth = 0; int last = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '(') depth++;
+            else if (c == ')') depth--;
+            else if (c == ',' && depth == 0) {
+                out.add(s.substring(last, i));
+                last = i + 1;
+            }
+        }
+        if (last <= s.length()) out.add(s.substring(last));
+        return out;
+    }
+
+    private boolean procedureAlreadyExists(SQLFileAnalysis analysis, String schema, String name) {
+        String s1 = (schema != null && !schema.isEmpty()) ? schema : null;
+        for (CreateProcedureOperation p : analysis.createProcedures) {
+            boolean sameSchema = (s1 == null && (p.schema == null || p.schema.isEmpty())) || (s1 != null && s1.equals(p.schema));
+            if (sameSchema && name.equals(p.procedureName)) return true;
+        }
+        return false;
     }
 
     private void processConstraintsContainer(TSNode container, String source, CreateTableOperation op) {
@@ -139,10 +317,90 @@ public class SQLAnalyzer implements LanguageAnalyzer {
                 extractAlterTable(node, sourceCode, analysis);
                 break;
             case "create_function":
-                extractCreateFunction(node, sourceCode, analysis);
+                // Some grammars may emit create_function for procedures; detect via keyword_procedure
+                if (hasChildType(node, "keyword_procedure")) {
+                    extractCreateProcedure(node, sourceCode, analysis);
+                } else {
+                    extractCreateFunction(node, sourceCode, analysis);
+                }
                 break;
             case "create_procedure":
                 extractCreateProcedure(node, sourceCode, analysis);
+                break;
+            case "call_statement":
+                // Record top-level procedure calls (outside definitions)
+                if (!isInsideDefinition(node)) {
+                    TSNode procRef = firstChildOfType(node, "object_reference");
+                    if (procRef != null) {
+                        QualifiedName qn = parseQualifiedName(procRef, sourceCode);
+                        addToReferencedList(analysis.topLevelCalls.procedures, qualify(qn.schema, qn.name));
+                    }
+                }
+                break;
+            case "invocation":
+                // Record top-level function calls (outside definitions)
+                if (!isInsideDefinition(node)) {
+                    TSNode ref = firstChildOfType(node, "object_reference");
+                    String qualified = null;
+                    if (ref != null) {
+                        QualifiedName qn = parseQualifiedName(ref, sourceCode);
+                        qualified = qualify(qn.schema, qn.name);
+                    } else {
+                        TSNode id = firstChildOfType(node, "identifier");
+                        if (id != null) qualified = textOf(id, sourceCode);
+                    }
+                    if (qualified != null && !qualified.isEmpty()) {
+                        addToReferencedList(analysis.topLevelCalls.functions, qualified);
+                    }
+                }
+                break;
+            case "select":
+            case "select_statement":
+            case "insert":
+            case "insert_statement":
+            case "update":
+            case "update_statement":
+            case "delete":
+            case "delete_statement":
+                // Record top-level table/view references for standalone DML statements
+                if (!isInsideDefinition(node)) {
+                    collectRelations(node, sourceCode, analysis.topLevelReferences.relations);
+                }
+                break;
+            case "statement":
+                // Some grammars wrap top-level statements; CALL may appear as ERROR inside.
+                // When outside definitions, collect relations for DML and scan text for CALL fallbacks.
+                if (!isInsideDefinition(node)) {
+                    // Collect table/view references only from DML nodes that are not inside definitions
+                    String[] dmlTypes = new String[] {
+                        "select", "select_statement", "insert", "insert_statement",
+                        "update", "update_statement", "delete", "delete_statement"
+                    };
+                    for (String dml : dmlTypes) {
+                        for (TSNode dmlNode : descendantsOfType(node, dml)) {
+                            if (!isInsideDefinition(dmlNode)) {
+                                collectRelations(dmlNode, sourceCode, analysis.topLevelReferences.relations);
+                            }
+                        }
+                    }
+                    String stmtText = textOf(node, sourceCode);
+                    findCallNamesInText(stmtText, analysis.topLevelCalls.procedures);
+                }
+                break;
+            case "ERROR":
+                // Some grammars emit top-level CALL as ERROR. Scan text for CALL outside definitions.
+                if (!isInsideDefinition(node)) {
+                    // Use a forward window to allow pattern to span adjacent nodes (e.g., ERROR + '(' token)
+                    int start = node.getStartByte();
+                    int end = Math.min(sourceCode.length(), node.getEndByte() + 64);
+                    if (start >= 0 && end > start) {
+                        String slice = sourceCode.substring(start, end);
+                        findCallNamesInText(slice, analysis.topLevelCalls.procedures);
+                    } else {
+                        String errText = textOf(node, sourceCode);
+                        findCallNamesInText(errText, analysis.topLevelCalls.procedures);
+                    }
+                }
                 break;
             case "drop_table":
                 extractDrop(node, sourceCode, analysis, "TABLE");
@@ -158,6 +416,10 @@ public class SQLAnalyzer implements LanguageAnalyzer {
                 break;
             case "create_index":
                 extractCreateIndex(node, sourceCode, analysis);
+                break;
+            case "block":
+                // Fallback for CREATE PROCEDURE when grammar emits ERROR + block
+                maybeExtractProcedureFromBlock(node, sourceCode, analysis);
                 break;
             default:
                 break;
@@ -224,9 +486,6 @@ public class SQLAnalyzer implements LanguageAnalyzer {
         }
 
         analysis.createTables.add(op);
-        if (op.tableName != null) {
-            addToReferencedList(analysis.referencedTables, qualify(op.schema, op.tableName));
-        }
     }
 
     private void extractCreateView(TSNode node, String source, SQLFileAnalysis analysis) {
@@ -240,12 +499,9 @@ public class SQLAnalyzer implements LanguageAnalyzer {
         // Find referenced tables under create_query -> from subtree (relation -> object_reference -> identifier)
         TSNode createQuery = firstChildOfType(node, "create_query");
         if (createQuery != null) {
-            collectRelations(createQuery, source, op.referencedTables);
+            collectRelations(createQuery, source, op.references.relations);
         }
         analysis.createViews.add(op);
-        if (op.viewName != null) {
-            addToReferencedList(analysis.referencedViews, qualify(op.schema, op.viewName));
-        }
     }
 
     private void extractCreateIndex(TSNode node, String source, SQLFileAnalysis analysis) {
@@ -342,7 +598,7 @@ public class SQLAnalyzer implements LanguageAnalyzer {
                 }
             }
         }
-        // referenced tables from function body (AST-only): only take object_reference under relation nodes (FROM/JOIN)
+        // referenced objects from function body (AST-only)
         TSNode body = firstChildOfType(node, "function_body");
         if (body != null) {
             java.util.List<TSNode> relations = descendantsOfType(body, "relation");
@@ -353,7 +609,33 @@ public class SQLAnalyzer implements LanguageAnalyzer {
                 QualifiedName qn = parseQualifiedName(ref, source);
                 if (qn.name == null || qn.name.isEmpty()) continue;
                 String qualified = qualify(qn.schema, qn.name);
-                if (seen.add(qualified)) op.referencedTables.add(qualified);
+                if (seen.add(qualified)) {
+                    addToReferencedList(op.references.relations, qualified);
+                }
+            }
+            // procedure calls inside function bodies
+            for (TSNode call : descendantsOfType(body, "call_statement")) {
+                TSNode ref = firstChildOfType(call, "object_reference");
+                if (ref != null) {
+                    QualifiedName qn = parseQualifiedName(ref, source);
+                    addToReferencedList(op.calls.procedures, qualify(qn.schema, qn.name));
+                }
+            }
+            // function calls inside function bodies (explicit nodes)
+            // The grammar emits 'invocation' nodes for function calls in expressions
+            for (TSNode fcall : descendantsOfType(body, "invocation")) {
+                TSNode ref = firstChildOfType(fcall, "object_reference");
+                String qualified = null;
+                if (ref != null) {
+                    QualifiedName qn = parseQualifiedName(ref, source);
+                    qualified = qualify(qn.schema, qn.name);
+                } else {
+                    TSNode id = firstChildOfType(fcall, "identifier");
+                    if (id != null) qualified = textOf(id, source);
+                }
+                if (qualified != null && !qualified.isEmpty()) {
+                    addToReferencedList(op.calls.functions, qualified);
+                }
             }
         }
         analysis.createFunctions.add(op);
@@ -388,6 +670,43 @@ public class SQLAnalyzer implements LanguageAnalyzer {
                 op.parameters.add(pd);
             }
         }
+        // referenced objects from procedure body (relations and calls)
+        java.util.List<TSNode> relations = descendantsOfType(node, "relation");
+        for (TSNode rel : relations) {
+            TSNode ref = firstChildOfType(rel, "object_reference");
+            if (ref == null) continue;
+            QualifiedName qn = parseQualifiedName(ref, source);
+            String qualified = qualify(qn.schema, qn.name);
+            addToReferencedList(op.references.relations, qualified);
+        }
+        for (TSNode call : descendantsOfType(node, "call_statement")) {
+            TSNode ref = firstChildOfType(call, "object_reference");
+            if (ref != null) {
+                QualifiedName qn = parseQualifiedName(ref, source);
+                addToReferencedList(op.calls.procedures, qualify(qn.schema, qn.name));
+            }
+        }
+        // Regex fallback for CALL statements inside procedure node
+        if (op.calls.procedures.isEmpty()) {
+            String nodeText = textOf(node, source);
+            findCallNamesInText(nodeText, op.calls.procedures);
+        }
+        // function calls inside procedures (explicit nodes)
+        // The grammar emits 'invocation' nodes for function calls in expressions
+        for (TSNode fcall : descendantsOfType(node, "invocation")) {
+            TSNode ref = firstChildOfType(fcall, "object_reference");
+            String qualified = null;
+            if (ref != null) {
+                QualifiedName qn = parseQualifiedName(ref, source);
+                qualified = qualify(qn.schema, qn.name);
+            } else {
+                TSNode id = firstChildOfType(fcall, "identifier");
+                if (id != null) qualified = textOf(id, source);
+            }
+            if (qualified != null && !qualified.isEmpty()) {
+                addToReferencedList(op.calls.functions, qualified);
+            }
+        }
         analysis.createProcedures.add(op);
     }
 
@@ -404,9 +723,7 @@ public class SQLAnalyzer implements LanguageAnalyzer {
             QualifiedName qn = parseQualifiedName(objRef, source);
             drop.schema = qn.schema;
             drop.objectName = qn.name;
-            // add to referenced sets for completeness
-            if ("TABLE".equals(objectType)) addToReferencedList(analysis.referencedTables, qualify(qn.schema, qn.name));
-            if ("VIEW".equals(objectType)) addToReferencedList(analysis.referencedViews, qualify(qn.schema, qn.name));
+            // file-level referenced tables/views removed; keep only drop operation fields
         } else {
             // Some drops (e.g., INDEX) may present raw identifier(s) without object_reference
             java.util.List<TSNode> ids = descendantsOfType(node, "identifier");
@@ -468,7 +785,6 @@ public class SQLAnalyzer implements LanguageAnalyzer {
             QualifiedName qn = parseQualifiedName(objRef, source);
             op.schema = qn.schema;
             op.tableName = qn.name;
-            addToReferencedList(analysis.referencedTables, qualify(qn.schema, qn.name));
         }
 
         // Determine specific alteration via concrete child nodes
@@ -537,7 +853,7 @@ public class SQLAnalyzer implements LanguageAnalyzer {
                             (fk.onDelete != null ? (" ON DELETE " + fk.onDelete) : "") +
                             (fk.onUpdate != null ? (" ON UPDATE " + fk.onUpdate) : "");
                     op.addedConstraints.add(fkStr);
-                    if (fk.referencedTable != null) addToReferencedList(analysis.referencedTables, fk.referencedTable);
+                    // file-level referenced tables removed
                 }
             }
             analysis.alterTables.add(op);
@@ -556,7 +872,7 @@ public class SQLAnalyzer implements LanguageAnalyzer {
         return list;
     }
 
-    private void collectRelations(TSNode node, String source, java.util.List<String> out) {
+    private void collectRelations(TSNode node, String source, java.util.Collection<String> out) {
         // Collect object_reference nodes that are under a 'relation' node to avoid aliases
         if ("relation".equals(node.getType())) {
             TSNode or = firstChildOfType(node, "object_reference");

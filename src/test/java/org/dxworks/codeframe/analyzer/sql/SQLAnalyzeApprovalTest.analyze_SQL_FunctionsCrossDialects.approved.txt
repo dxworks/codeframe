@@ -1,6 +1,13 @@
 {
   "filePath" : "src/test/resources/samples/sql/functions_crossdialects.sql",
   "language" : "sql",
+  "topLevelReferences" : {
+    "relations" : [ ]
+  },
+  "topLevelCalls" : {
+    "functions" : [ ],
+    "procedures" : [ ]
+  },
   "createTables" : [ ],
   "alterTables" : [ ],
   "createViews" : [ ],
@@ -16,11 +23,14 @@
       "direction" : null
     } ],
     "returnType" : "DECIMAL(10,2) DETERMINISTIC",
-    "referencedTables" : [ ]
+    "references" : {
+      "relations" : [ ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ ]
+    }
   } ],
   "createTriggers" : [ ],
-  "dropOperations" : [ ],
-  "referencedTables" : [ ],
-  "referencedViews" : [ ],
-  "referencedProcedures" : [ ]
+  "dropOperations" : [ ]
 }
