@@ -11,6 +11,7 @@ A Tree-sitter-based code parser that extracts structural information from source
 - **C#** (.cs)
 - **PHP** (.php)
 - **Ruby** (.rb)
+- **SQL** (.sql)
 
 ## Features
 
@@ -181,6 +182,34 @@ Each line is a separate JSON object with a `kind` field:
 {"kind":"done","ended_at":"2025-09-30T11:00:05Z","files_analyzed":998,"files_with_errors":2,"duration_seconds":5}
 ```
 
+### SQL Analysis Output
+
+For `.sql` files, the analyzer emits a SQL-specific structure inside each file analysis:
+
+- **topLevelReferences**: Relations (tables/views) used by top-level DML statements (outside any definition).
+- **topLevelCalls**: Top-level function and procedure calls (outside any definition).
+- **Operation lists**: Per-file operations discovered (definitions and drops):
+  - `createTables`, `alterTables`, `createViews`, `createIndexes`, `createProcedures`, `createFunctions`, `createTriggers`, `dropOperations`.
+
+Example (abbreviated):
+
+```json
+{
+  "filePath": "src/test/resources/samples/sql/top_level_statements.sql",
+  "language": "sql",
+  "topLevelReferences": { "relations": ["sales.orders", "sales.order_summaries"] },
+  "topLevelCalls": { "functions": ["COALESCE", "SUM"], "procedures": ["sales.recalc_order_total"] },
+  "createTables": [],
+  "alterTables": [],
+  "createViews": [],
+  "createIndexes": [],
+  "createProcedures": [],
+  "createFunctions": [],
+  "createTriggers": [],
+  "dropOperations": []
+}
+```
+
 ## Architecture
 
 ### Core Components
@@ -201,6 +230,7 @@ Each language has a dedicated analyzer:
 - `CSharpAnalyzer` - Parses C# classes, interfaces, methods
 - `PHPAnalyzer` - Parses PHP classes, interfaces, functions
 - `RubyAnalyzer` - Parses Ruby classes, modules, methods
+- `SQLAnalyzer` - Parses SQL files for DDL operations and top-level references/calls
 
 ### Tree-sitter Integration
 
@@ -212,6 +242,7 @@ The project uses Tree-sitter grammar libraries:
 - `tree-sitter-c-sharp`
 - `tree-sitter-php`
 - `tree-sitter-ruby`
+- `tree-sitter-sql`
 
 ## Architectural Decisions
 
