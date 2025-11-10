@@ -351,6 +351,7 @@ This project uses Tree-sitter and its language grammars, which are licensed unde
 ### All languages
 
 - Top-level fields/constants (for langauges that support them, e.g., JavaScript, TypeScript, Python, PHP) are not emitted as entries in the analysis output. The analyzer focuses on types (classes/interfaces/enums/records where applicable) and functions/methods.
+ - Parameters: currently only the parameter `name` and `type` are captured across languages. Any modifiers/attributes/decorators (e.g., Java `final`, C# `ref`/`out`/`params`, PHP by-reference `&`, TS `readonly`/decorators) are ignored for now. Varargs/rest are parsed for the correct element type but not flagged separately.
 
 ### JavaScript
 

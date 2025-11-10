@@ -76,6 +76,18 @@
       } ],
       "localVariables" : [ ],
       "methodCalls" : [ ]
+    }, {
+      "name" : "addTags",
+      "returnType" : "void",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "...tags",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
     } ],
     "types" : [ ]
   }, {

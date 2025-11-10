@@ -37,6 +37,24 @@
       } ],
       "localVariables" : [ "sum" ],
       "methodCalls" : [ ]
+    }, {
+      "name" : "Process",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "n",
+        "type" : "int"
+      }, {
+        "name" : "result",
+        "type" : "int"
+      }, {
+        "name" : "values",
+        "type" : "int[]"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
     } ],
     "types" : [ ]
   } ],

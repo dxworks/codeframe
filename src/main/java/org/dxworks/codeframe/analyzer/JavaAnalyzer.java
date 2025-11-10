@@ -19,6 +19,10 @@ public class JavaAnalyzer implements LanguageAnalyzer {
     private static final String NT_SCOPED_IDENTIFIER = "scoped_identifier";
     private static final String NT_SCOPED_TYPE_IDENTIFIER = "scoped_type_identifier";
     private static final String NT_INTEGRAL_TYPE = "integral_type";
+    private static final String NT_FLOATING_POINT_TYPE = "floating_point_type";
+    private static final String NT_BOOLEAN_TYPE = "boolean_type";
+    private static final String NT_PRIMITIVE_TYPE = "primitive_type";
+    private static final String NT_ARRAY_TYPE = "array_type";
     
     @Override
     public FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
@@ -361,8 +365,9 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         List<TSNode> params = findAllChildren(paramsNode, "formal_parameter");
         for (TSNode param : params) {
             String typeName = null;
-            TSNode typeNode = param.getNamedChild(0);
-            if (typeNode != null && !"identifier".equals(typeNode.getType())) {
+            // Use a robust finder to skip modifiers (e.g., 'final') and get the actual type node
+            TSNode typeNode = findTypeNode(param);
+            if (typeNode != null) {
                 typeName = extractTypeWithGenerics(source, typeNode, param);
             }
             TSNode paramName = findFirstChild(param, "identifier");
@@ -673,7 +678,11 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         if (typeNode == null) typeNode = findFirstDescendant(searchScope, NT_TYPE_IDENTIFIER);
         if (typeNode == null) typeNode = findFirstDescendant(searchScope, NT_SCOPED_IDENTIFIER);
         if (typeNode == null) typeNode = findFirstDescendant(searchScope, NT_SCOPED_TYPE_IDENTIFIER);
+        if (typeNode == null) typeNode = findFirstDescendant(searchScope, NT_ARRAY_TYPE);
+        if (typeNode == null) typeNode = findFirstDescendant(searchScope, NT_PRIMITIVE_TYPE);
         if (typeNode == null) typeNode = findFirstDescendant(searchScope, NT_INTEGRAL_TYPE);
+        if (typeNode == null) typeNode = findFirstDescendant(searchScope, NT_FLOATING_POINT_TYPE);
+        if (typeNode == null) typeNode = findFirstDescendant(searchScope, NT_BOOLEAN_TYPE);
         return typeNode;
     }
     

@@ -18,4 +18,11 @@ public static class LoopLocals
         foreach (var x in xs) sum += x;
         return sum;
     }
+
+    public static void Process(ref int n, out int result, params int[] values)
+    {
+        result = 0;
+        foreach (var v in values) result += v;
+        n += result;
+    }
 }

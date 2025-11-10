@@ -190,6 +190,18 @@
         "callCount" : 1,
         "parameterCount" : null
       } ]
+    }, {
+      "name" : "processUser",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
     } ],
     "types" : [ ]
   }, {

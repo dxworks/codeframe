@@ -358,6 +358,7 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
             return paramTypes;
         }
         
+        // Regular parameters
         List<TSNode> params = findAllChildren(paramsNode, "parameter");
         for (TSNode param : params) {
             ParameterInfo paramInfo = extractParameter(source, param);
@@ -368,15 +369,76 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
                 }
             }
         }
+        // Variadic parameter: 'params T[] name' appears as a distinct node in the grammar
+        List<TSNode> variadics = findAllChildren(paramsNode, "parameter_array");
+        for (TSNode varParam : variadics) {
+            ParameterInfo paramInfo = extractParameter(source, varParam);
+            if (paramInfo.name != null) {
+                methodInfo.parameters.add(new Parameter(paramInfo.name, paramInfo.type));
+                if (paramInfo.type != null) {
+                    paramTypes.put(paramInfo.name, paramInfo.type);
+                }
+            }
+        }
+
+        // Fallback: Some grammar versions emit trailing params as separate children: [array_type][identifier]
+        // or with an optional modifier node before. We'll scan remaining children and coalesce pairs.
+        int childCount = paramsNode.getNamedChildCount();
+        for (int i = 0; i < childCount; i++) {
+            TSNode child = paramsNode.getNamedChild(i);
+            String t = child.getType();
+            if ("parameter".equals(t) || "parameter_array".equals(t)) continue;
+            // Skip modifier tokens (e.g., 'params') if they show up as named nodes
+            if ("modifier".equals(t)) {
+                continue;
+            }
+            // If this child looks like a type node, and next is identifier, treat as a parameter
+            if (isNodeTypeOneOf(child, "array_type", "nullable_type", "predefined_type", "qualified_name", "generic_name", "scoped_type_name", "identifier")) {
+                // Look ahead for identifier name (could be immediate next named child)
+                TSNode nameCandidate = null;
+                if (i + 1 < childCount) {
+                    TSNode next = paramsNode.getNamedChild(i + 1);
+                    if ("identifier".equals(next.getType())) {
+                        nameCandidate = next;
+                        // advance i to skip the identifier on next iteration
+                        i++;
+                    }
+                }
+                String pType = extractTypeWithGenerics(source, child, paramsNode);
+                String pName = nameCandidate != null ? getNodeText(source, nameCandidate) : null;
+                if (pName != null) {
+                    methodInfo.parameters.add(new Parameter(pName, pType));
+                    if (pType != null) paramTypes.put(pName, pType);
+                }
+            }
+        }
         return paramTypes;
     }
     
     private ParameterInfo extractParameter(String source, TSNode param) {
         String paramName = null;
         String paramType = null;
+        // Prefer field-named children when available
         TSNode nameNode = getChildByFieldName(param, "name");
-        if (nameNode != null) paramName = getNodeText(source, nameNode);
         TSNode typeNode = getChildByFieldName(param, "type");
+
+        // Fallbacks for nodes without named fields (e.g., parameter_array for 'params')
+        if (nameNode == null) {
+            nameNode = findFirstChild(param, "identifier");
+        }
+        if (typeNode == null) {
+            // Try common C# type node kinds in order of specificity
+            typeNode = getFirstChildOfTypes(param,
+                    "array_type",
+                    "nullable_type",
+                    "predefined_type",
+                    "qualified_name",
+                    "generic_name",
+                    "scoped_type_name",
+                    "identifier");
+        }
+
+        if (nameNode != null) paramName = getNodeText(source, nameNode);
         if (typeNode != null) paramType = extractTypeWithGenerics(source, typeNode, param);
         return new ParameterInfo(paramName, paramType);
     }

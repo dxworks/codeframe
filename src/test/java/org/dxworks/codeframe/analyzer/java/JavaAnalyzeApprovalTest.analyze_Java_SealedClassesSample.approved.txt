@@ -13,7 +13,7 @@
     "mixins" : [ ],
     "fields" : [ {
       "name" : "radius",
-      "type" : null,
+      "type" : "double",
       "visibility" : "private",
       "modifiers" : [ "private", "final" ],
       "annotations" : [ ]
@@ -62,13 +62,13 @@
     "mixins" : [ ],
     "fields" : [ {
       "name" : "width",
-      "type" : null,
+      "type" : "double",
       "visibility" : "private",
       "modifiers" : [ "private", "final" ],
       "annotations" : [ ]
     }, {
       "name" : "height",
-      "type" : null,
+      "type" : "double",
       "visibility" : "private",
       "modifiers" : [ "private", "final" ],
       "annotations" : [ ]
@@ -111,13 +111,13 @@
     "mixins" : [ ],
     "fields" : [ {
       "name" : "base",
-      "type" : null,
+      "type" : "double",
       "visibility" : "private",
       "modifiers" : [ "private", "final" ],
       "annotations" : [ ]
     }, {
       "name" : "height",
-      "type" : null,
+      "type" : "double",
       "visibility" : "private",
       "modifiers" : [ "private", "final" ],
       "annotations" : [ ]

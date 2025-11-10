@@ -86,6 +86,13 @@ class UserService
         
         return false;
     }
+
+    // Method demonstrating attributes, by-reference, and variadics
+    #[Deprecated]
+    public function processUser(& $id, string ...$tags): void
+    {
+        // no-op
+    }
 }
 
 // Standalone function outside the class

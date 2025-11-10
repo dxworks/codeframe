@@ -95,6 +95,36 @@
         "parameterCount" : 1
       } ]
     }, {
+      "name" : "logUser",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "String"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "info",
+        "objectType" : "Logger",
+        "objectName" : "logger",
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    }, {
+      "name" : "setUsers",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "users",
+        "type" : "List<User>"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
       "name" : "save",
       "returnType" : "void",
       "visibility" : "public",

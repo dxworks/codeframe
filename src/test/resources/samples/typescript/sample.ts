@@ -31,6 +31,11 @@ export class UserService {
         // Implementation
         return null;
     }
+
+    // Rest parameter and typed array
+    addTags(...tags: string[]): void {
+        // no-op
+    }
 }
 
 // Interface

@@ -25,6 +25,14 @@ public class Sample {
         return db.queryList("SELECT * FROM users");
     }
     
+    public void logUser(final String id) {
+        logger.info(id);
+    }
+    
+    public void setUsers(final List<User> users) {
+        this.users = users;
+    }
+    
     public void save(User user) {
         if (user.getId() == null) {
             insert(user);
