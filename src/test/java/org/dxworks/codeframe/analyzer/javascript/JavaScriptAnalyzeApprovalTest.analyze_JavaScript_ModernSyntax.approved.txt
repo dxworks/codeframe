@@ -1,0 +1,524 @@
+{
+  "filePath" : "src/test/resources/samples/javascript/ModernSyntax.js",
+  "language" : "javascript",
+  "packageName" : null,
+  "types" : [ ],
+  "methods" : [ {
+    "name" : "getUserCity",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "user",
+      "type" : null
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "getFirstItemName",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "order",
+      "type" : null
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "safelyCallMethod",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "obj",
+      "type" : null
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ {
+      "methodName" : "process",
+      "objectType" : null,
+      "objectName" : "obj",
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "getNestedValue",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "data",
+      "type" : null
+    } ],
+    "localVariables" : [ "street", "zipCode", "callback" ],
+    "methodCalls" : [ {
+      "methodName" : "callback",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "getConfigValue",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "config",
+      "type" : null
+    }, {
+      "name" : "key",
+      "type" : null
+    }, {
+      "name" : "defaultValue",
+      "type" : null
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "mergeSettings",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "userSettings",
+      "type" : null
+    }, {
+      "name" : "defaults",
+      "type" : null
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "getSafeValue",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "obj",
+      "type" : null
+    }, {
+      "name" : "path",
+      "type" : null
+    }, {
+      "name" : "defaultValue",
+      "type" : null
+    } ],
+    "localVariables" : [ "parts", "current" ],
+    "methodCalls" : [ {
+      "methodName" : "split",
+      "objectType" : null,
+      "objectName" : "path",
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "html",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "strings",
+      "type" : null
+    }, {
+      "name" : "...values",
+      "type" : null
+    } ],
+    "localVariables" : [ "escaped" ],
+    "methodCalls" : [ {
+      "methodName" : "String",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "map",
+      "objectType" : null,
+      "objectName" : "values",
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "reduce",
+      "objectType" : null,
+      "objectName" : "strings",
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "replace",
+      "objectType" : null,
+      "objectName" : "String(val)",
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "replace",
+      "objectType" : null,
+      "objectName" : "String(val)\n            .replace(/&/g, '&amp;')",
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "replace",
+      "objectType" : null,
+      "objectName" : "String(val)\n            .replace(/&/g, '&amp;')\n            .replace(/</g, '&lt;')",
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "replace",
+      "objectType" : null,
+      "objectName" : "String(val)\n            .replace(/&/g, '&amp;')\n            .replace(/</g, '&lt;')\n            .replace(/>/g, '&gt;')",
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "sql",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "strings",
+      "type" : null
+    }, {
+      "name" : "...values",
+      "type" : null
+    } ],
+    "localVariables" : [ "sanitized" ],
+    "methodCalls" : [ {
+      "methodName" : "String",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "map",
+      "objectType" : null,
+      "objectName" : "values",
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "reduce",
+      "objectType" : null,
+      "objectName" : "strings",
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "replace",
+      "objectType" : null,
+      "objectName" : "val",
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "trim",
+      "objectType" : null,
+      "objectName" : "strings.reduce((result, str, i) => \n        result + str + (sanitized[i] ?? ''), ''\n    )",
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "css",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "strings",
+      "type" : null
+    }, {
+      "name" : "...values",
+      "type" : null
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ {
+      "methodName" : "reduce",
+      "objectType" : null,
+      "objectName" : "strings",
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "renderUserCard",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "user",
+      "type" : null
+    } ],
+    "localVariables" : [ "cardHtml" ],
+    "methodCalls" : [ {
+      "methodName" : "html",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "buildQuery",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "tableName",
+      "type" : null
+    }, {
+      "name" : "conditions",
+      "type" : null
+    } ],
+    "localVariables" : [ "conditions" ],
+    "methodCalls" : [ {
+      "methodName" : "sql",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "parseJSON",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "jsonString",
+      "type" : null
+    } ],
+    "localVariables" : [ "result", "error", "parsed", "validated", "errorMessage", "errorStack", "timestamp" ],
+    "methodCalls" : [ {
+      "methodName" : "log",
+      "objectType" : null,
+      "objectName" : "console",
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "now",
+      "objectType" : null,
+      "objectName" : "Date",
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "parse",
+      "objectType" : null,
+      "objectName" : "JSON",
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "validateStructure",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "validateStructure",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "obj",
+      "type" : null
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "fetchWithRetry",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "async", "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "url",
+      "type" : null
+    }, {
+      "name" : "maxRetries",
+      "type" : null
+    } ],
+    "localVariables" : [ "lastError", "attempts", "response", "data", "retryCount", "delay", "attemptNumber" ],
+    "methodCalls" : [ {
+      "methodName" : "fetch",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "json",
+      "objectType" : null,
+      "objectName" : "response",
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "log",
+      "objectType" : null,
+      "objectName" : "console",
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "pow",
+      "objectType" : null,
+      "objectName" : "Math",
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "setTimeout",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "processFile",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "fileContent",
+      "type" : null
+    } ],
+    "localVariables" : [ "resources", "lines", "header", "body", "resource", "errorLine", "errorMessage", "resourceCount" ],
+    "methodCalls" : [ {
+      "methodName" : "log",
+      "objectType" : null,
+      "objectName" : "console",
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "parseLine",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "push",
+      "objectType" : "Array",
+      "objectName" : "resources",
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "slice",
+      "objectType" : null,
+      "objectName" : "lines",
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "split",
+      "objectType" : null,
+      "objectName" : "fileContent",
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "parseLine",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "line",
+      "type" : null
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "createPerson",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "initialName",
+      "type" : null
+    }, {
+      "name" : "initialAge",
+      "type" : null
+    } ],
+    "localVariables" : [ "_name", "_age" ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "createDynamicObject",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "keyPrefix",
+      "type" : null
+    }, {
+      "name" : "values",
+      "type" : null
+    } ],
+    "localVariables" : [ "result", "key" ],
+    "methodCalls" : [ {
+      "methodName" : "forEach",
+      "objectType" : null,
+      "objectName" : "values",
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "createAccessors",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "propertyName",
+      "type" : null
+    } ],
+    "localVariables" : [ "privateKey" ],
+    "methodCalls" : [ {
+      "methodName" : "charAt",
+      "objectType" : null,
+      "objectName" : "propertyName",
+      "callCount" : 2,
+      "parameterCount" : null
+    }, {
+      "methodName" : "slice",
+      "objectType" : null,
+      "objectName" : "propertyName",
+      "callCount" : 2,
+      "parameterCount" : null
+    }, {
+      "methodName" : "toUpperCase",
+      "objectType" : null,
+      "objectName" : "propertyName.charAt(0)",
+      "callCount" : 2,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "updateConfig",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "config",
+      "type" : null
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "initializeDefaults",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "options",
+      "type" : null
+    } ],
+    "localVariables" : [ "result" ],
+    "methodCalls" : [ ]
+  } ],
+  "imports" : [ ]
+}

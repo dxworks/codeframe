@@ -173,7 +173,7 @@ This project uses Tree-sitter and its language grammars, which are licensed unde
 
 ### Language-Specific
 
-- **JavaScript**: Destructured parameters emit leaf names only; dynamic imports ignored
+- **JavaScript**: Destructured parameters emit leaf names only; dynamic imports ignored; class expressions (`const X = class {}`) not detected as types; constructor functions appear as methods
 - **C#**: Events not handled; see test samples for details
 - **Java**: Local/anonymous classes not extracted as separate types
 - **SQL**: See [SQL_ANALYSIS.md](SQL_ANALYSIS.md)

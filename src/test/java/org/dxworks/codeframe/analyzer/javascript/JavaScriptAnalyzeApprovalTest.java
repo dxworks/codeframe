@@ -53,6 +53,16 @@ public class JavaScriptAnalyzeApprovalTest {
         verify(Paths.get("src/test/resources/samples/javascript/DynamicImportsAndModules.js"), Language.JAVASCRIPT);
     }
 
+    @Test
+    void analyze_JavaScript_ClassicPatterns() throws IOException {
+        verify(Paths.get("src/test/resources/samples/javascript/ClassicPatterns.js"), Language.JAVASCRIPT);
+    }
+
+    @Test
+    void analyze_JavaScript_ModernSyntax() throws IOException {
+        verify(Paths.get("src/test/resources/samples/javascript/ModernSyntax.js"), Language.JAVASCRIPT);
+    }
+
     private static void verify(Path file, Language language) throws IOException {
         FileAnalysis analysis = (FileAnalysis) App.analyzeFile(file, language);
         Approvals.verify(MAPPER.writeValueAsString(analysis));
