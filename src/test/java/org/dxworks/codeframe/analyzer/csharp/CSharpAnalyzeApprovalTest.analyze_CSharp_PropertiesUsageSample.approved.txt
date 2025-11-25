@@ -57,7 +57,7 @@
         "visibility" : null,
         "modifiers" : [ ],
         "annotations" : [ ],
-        "localVariables" : [ "label", "space", "name" ],
+        "localVariables" : [ "space", "name" ],
         "methodCalls" : [ {
           "methodName" : "Concat",
           "objectType" : "string",
@@ -90,7 +90,7 @@
         "visibility" : null,
         "modifiers" : [ ],
         "annotations" : [ ],
-        "localVariables" : [ "label", "v" ],
+        "localVariables" : [ "v" ],
         "methodCalls" : [ ]
       } ]
     }, {
@@ -155,7 +155,7 @@
         "name" : "p",
         "type" : "Person"
       } ],
-      "localVariables" : [ "label" ],
+      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "get_Age",
         "objectType" : "Person",
@@ -163,16 +163,10 @@
         "callCount" : 2,
         "parameterCount" : null
       }, {
-        "methodName" : "get_DisplayName",
-        "objectType" : "Person",
-        "objectName" : "p",
-        "callCount" : 1,
-        "parameterCount" : null
-      }, {
         "methodName" : "get_NameLength",
         "objectType" : "Person",
         "objectName" : "p",
-        "callCount" : 2,
+        "callCount" : 1,
         "parameterCount" : null
       }, {
         "methodName" : "set_Age",

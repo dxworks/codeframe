@@ -64,51 +64,17 @@ Examples:
 java -jar codeframe.jar src codeframe-out/analysis.jsonl
 ```
 
-### Docker workflow
+### Docker
 
-Use separate folders in the container:
-- `/workspace`: the CodeFrame project (bind-mounted to your repo)
-- `/src`: the codebase to analyze (mounted read-only)
-- Results are written under `/workspace/.out` (persisted on your host via the `/workspace` bind mount; `.out/` is gitignored)
-
-#### 1) Build the image
 ```bash
+# Build
 docker build -t codeframe-dev .
-```
 
-#### 2) Run the container with volumes
+# Run (mount your code at /src)
+docker run --rm -it -v "$PWD:/workspace" -v "/path/to/code:/src:ro" -w /workspace codeframe-dev
 
-- Windows (PowerShell):
-```powershell
-docker run --rm -it `
-  -v "$PWD:/workspace" `
-  -v "C:\data\repos\my-project\src:/src:ro" `
-  -w /workspace `
-  codeframe-dev
-```
-
-- Linux/macOS:
-```bash
-docker run --rm -it \
-  -v "$PWD:/workspace" \
-  -v "/absolute/path/to/your/repo:/src:ro" \
-  -w /workspace \
-  codeframe-dev
-```
-
-Optional debug port:
-```bash
-docker run --rm -it -p 5005:5005 \
-  -e "JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" \
-  -v "$PWD:/workspace" \
-  -v "/absolute/path/to/your/repo:/src:ro" \
-  -w /workspace \
-  codeframe-dev
-```
-
-#### 3) Run the program inside the container
-```bash
-./gradlew clean run --args="/src /workspace/.out/analysis.jsonl"
+# Inside container
+./gradlew run --args="/src /workspace/.out/analysis.jsonl"
 ```
 
 ### Output
@@ -157,49 +123,20 @@ maxFileLines: 20000
 - If `codeframe-config.yml` is missing, default values are used.
 - If the file exists but contains invalid YAML or missing/invalid values, defaults are applied silently.
 
-#### Why JSONL?
+### Output Format
 
-- **Memory efficient**: Constant memory usage regardless of codebase size
-- **Streamable**: Process results line-by-line without loading entire file
-- **Resumable**: Can stop/restart analysis without losing progress
-- **Parallel-friendly**: Multiple threads can write safely
+Output is **JSONL** (one JSON object per line) for memory efficiency and streaming.
 
-#### Output Structure
+Each line has a `kind` field:
+- `"run"` - Start metadata (timestamp, input path, file count)
+- File analysis objects (one per file)
+- `"error"` - Parse errors (if any)
+- `"done"` - Completion metadata (duration, counts)
 
-Each line is a separate JSON object with a `kind` field:
-
-**Line 1 - Run metadata:**
-```json
-{"kind":"run","started_at":"2025-09-30T11:00:00Z","input_path":"src","total_files":1000}
-```
-
-**Lines 2-N - File analyses:**
-```json
-{"filePath":"src/Example.java","language":"java","packageName":"com.example","types":[{"kind":"class","name":"Example","visibility":"public","modifiers":["public"],"annotations":["@Component"],"extendsType":"BaseClass","implementsInterfaces":["Interface1"],"mixins":[]}],"fields":[{"name":"service","type":"MyService","visibility":"private","modifiers":["private","final"],"annotations":["@Autowired"]}],"methods":[{"name":"processData","returnType":"Result","visibility":"public","modifiers":["public"],"annotations":["@Override"],"parameters":[{"name":"input","type":"String"}],"localVariables":["result"],"methodCalls":[{"methodName":"validate","objectType":"String","objectName":"input","callCount":1}]}],"imports":["import com.example.MyService;"]}
-```
-
-**Type Information Fields:**
-- `extendsType`: Base class (single inheritance)
-- `implementsInterfaces`: Interfaces implemented by the type
-- `mixins`: Modules/traits mixed into the type (Ruby `include`/`extend`/`prepend`, PHP `use`)
-  - Ruby: `include StringHelpers` → `"mixins": ["StringHelpers"]`
-  - PHP: `use LoggerTrait;` → `"mixins": ["LoggerTrait"]`
-  - Other languages: Empty array
-- `properties`: Property declarations with accessors
-  - Ruby: `attr_accessor :name` → `{"name": "name", "accessors": [{"kind": "get"}, {"kind": "set"}]}`
-  - Ruby: `attr_reader :email` → `{"name": "email", "accessors": [{"kind": "get"}]}`
-  - C#: Properties with get/set accessors
-  - Other languages: Empty array
-
-**Error records (if any):**
-```json
-{"kind":"error","file":"src/Bad.java","language":"java","error":"Parse error"}
-```
-
-**Last line - Completion metadata:**
-```json
-{"kind":"done","ended_at":"2025-09-30T11:00:05Z","files_analyzed":998,"files_with_errors":2,"duration_seconds":5}
-```
+**Example outputs:** See [approved test outputs](src/test/java/org/dxworks/codeframe/analyzer/) for real analysis results, e.g.:
+- [Java sample](src/test/java/org/dxworks/codeframe/analyzer/java/JavaAnalyzeApprovalTest.analyze_Java_Sample.approved.txt)
+- [C# sample](src/test/java/org/dxworks/codeframe/analyzer/csharp/CSharpAnalyzeApprovalTest.analyze_CSharp_DataClass.approved.txt)
+- [SQL sample](src/test/java/org/dxworks/codeframe/analyzer/sql/SQLAnalyzeApprovalTest.analyze_SQL_Sample.approved.txt)
 
 ### SQL Analysis
 
@@ -209,130 +146,11 @@ For complete documentation on SQL support, see **[SQL_ANALYSIS.md](SQL_ANALYSIS.
 
 ## Architecture
 
-### Core Components
+See **[ARCHITECTURE.md](ARCHITECTURE.md)** for details on core components and design decisions.
 
-- **`Language`** - Enum defining supported languages
-- **`LanguageDetector`** - Detects language from file extension
-- **`LanguageAnalyzer`** - Interface for language-specific analyzers
-- **`FileAnalysis`** - Model containing analysis results
+## Contributing
 
-### Language Analyzers
-
-Each language has a dedicated analyzer:
-
-- `JavaAnalyzer` - Parses Java classes, interfaces, methods
-- `TypeScriptAnalyzer` - Parses TypeScript classes, interfaces, functions
-- `JavaScriptAnalyzer` - Parses JavaScript classes and functions
-- `PythonAnalyzer` - Parses Python classes and functions
-- `CSharpAnalyzer` - Parses C# classes, interfaces, methods
-- `PHPAnalyzer` - Parses PHP classes, interfaces, functions
-- `RubyAnalyzer` - Parses Ruby classes, modules, methods
-- `SQLAnalyzer` - Parses SQL files (see [SQL_ANALYSIS.md](SQL_ANALYSIS.md))
-
-### Tree-sitter Integration
-
-The project uses Tree-sitter grammar libraries for most languages:
-- `tree-sitter-java`
-- `tree-sitter-javascript`
-- `tree-sitter-typescript`
-- `tree-sitter-python`
-- `tree-sitter-c-sharp`
-- `tree-sitter-php`
-- `tree-sitter-ruby`
-
-**Note**: SQL uses a hybrid JSqlParser + ANTLR approach instead of Tree-sitter. See [SQL_ANALYSIS.md](SQL_ANALYSIS.md).
-
-## Architectural Decisions
-
-### 1) Choosing Tree-sitter
-
-- **Incremental, robust parsing**: Tree-sitter provides concrete syntax trees with stable node types across languages, suitable for structural extraction (`types`, `methods`, `fields`, `calls`).
-- **Multi-language, consistent API**: A single parsing approach across Java, JS/TS, Python, C#, PHP simplifies analyzer design and maintenance.
-- **Performance and memory**: Fast parsing with small memory footprint; aligns with our streaming JSONL output to keep RAM low for large repos.
-- **Runtime constraints**: In constrained runners/containers, we need deterministic, offline-friendly tooling. Tree-sitter grammars are shipped as Maven artifacts, avoiding runtime downloads or external CLIs.
-
-### 2) Java binding: tree-sitter bonede
-
-- **Bundled native libraries**: The `io.github.bonede:tree-sitter` artifacts include native binaries for Windows/Linux/macOS. This removes the need for a local C toolchain or building native libs during CI/runtime.
-- **Cross-OS compatibility**: Works the same on developer machines, Docker (Linux), and Windows hosts—critical for heterogeneous environments.
-- **Runtime constraints**: In sandboxed environments we cannot install system packages or compile natives. Bonede’s prebuilt natives make the analyzer portable and ready-to-run without extra steps.
-
-## Extending
-
-### Adding a New Language
-
-1. Add the Tree-sitter grammar dependency to `build.gradle`
-2. Add the language to the `Language` enum
-3. Update `LanguageDetector` with file extension mapping
-4. Create a new analyzer implementing `LanguageAnalyzer`
-5. Register the language and analyzer in `App.java`
-6. Create test samples and approval tests
-
-### Analyzer Implementation Conventions
-
-When implementing a new language analyzer, follow these conventions to ensure consistency across all analyzers:
-
-#### Method Call Extraction
-
-**Chained Method Calls:**
-- For chained calls where the receiver is the result of another method call (e.g., `obj.method1().method2()`), set both `objectName` and `objectType` to `null`
-- This is because the type cannot be determined without semantic analysis
-- Example: For `db.query().debug().printTo(output())`:
-  - `query` → `objectName: "db"`, `objectType: "DatabaseConnection"`
-  - `debug` → `objectName: null`, `objectType: null` (chained)
-  - `printTo` → `objectName: null`, `objectType: null` (chained)
-  - `output` → `objectName: null`, `objectType: null` (standalone)
-
-**Property Access vs Method Calls:**
-- **Language-specific handling:**
-  - **C#**: Record property accesses as `get_PropertyName` or `set_PropertyName` method calls (properties compile to methods)
-  - **Ruby**: Only record calls with arguments or special suffixes (`?`, `!`); skip simple property accessors like `user.name`
-  - **Java**: Record explicit getter/setter method calls (e.g., `user.getName()`); field access is not a method call
-- The goal is to capture semantically meaningful operations while avoiding noise from simple field/property access where appropriate
-
-**Object Type Resolution:**
-- Try to resolve `objectType` from local variables, parameters, or fields when possible
-- Use `null` when the type cannot be determined from the syntax tree alone
-
-#### Field/Variable Visibility
-
-- Use language-specific conventions for determining visibility
-- Ruby: Instance variables (`@var`) are private by default
-- Java/C#: Use explicit modifiers
-- Python: Leading underscore (`_var`) indicates private by convention
-
-#### Test Coverage
-
-- Create at least 3 sample files covering:
-  1. Basic class/method structure with method calls
-  2. Modules/interfaces/mixins (if applicable)
-  3. Inheritance and polymorphism
-- Use ApprovalTests framework for output verification
-- Ensure samples include chained method calls to verify correct handling
-
-### Example: Adding Go Support
-
-```java
-// 1. Add to Language enum
-GO("go")
-
-// 2. Update LanguageDetector
-if (fileName.endsWith(".go")) {
-    return Optional.of(Language.GO);
-}
-
-// 3. Create GoAnalyzer.java
-public class GoAnalyzer implements LanguageAnalyzer {
-    @Override
-    public FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
-        // Implementation
-    }
-}
-
-// 4. Register in App.java
-TREE_SITTER_LANGUAGES.put(Language.GO, new TreeSitterGo());
-ANALYZERS.put(Language.GO, new GoAnalyzer());
-```
+See **[CONTRIBUTING.md](CONTRIBUTING.md)** for guidelines on adding new languages and analyzer conventions.
 
 ## Requirements
 
@@ -346,61 +164,24 @@ This project uses Tree-sitter and its language grammars, which are licensed unde
 
 ## Limitations
 
-### All languages
+### General
 
-- Top-level fields/constants (for langauges that support them, e.g., JavaScript, TypeScript, Python, PHP) are not emitted as entries in the analysis output. The analyzer focuses on types (classes/interfaces/enums/records where applicable) and functions/methods.
- - Parameters: currently only the parameter `name` and `type` are captured across languages. Any modifiers/attributes/decorators (e.g., Java `final`, C# `ref`/`out`/`params`, PHP by-reference `&`, TS `readonly`/decorators) are ignored for now. Varargs/rest are parsed for the correct element type but not flagged separately.
+- Top-level fields/constants are not emitted; focus is on types and methods
+- Parameter modifiers (e.g., `final`, `ref`, `out`) are not captured
+- Constructor calls (`new ...`) are not captured in `methodCalls`
+- Loop header variables are not added to `localVariables`
 
-### JavaScript
+### Language-Specific
 
-- Destructured parameter extraction is leaf-only. For a signature like `fn({ data: { user, settings }, meta: { timestamp } })`, parameters emitted are `user`, `settings`, `timestamp` (not `data`, `meta`).
-- Generator functions are marked using syntax-like modifiers:
-  - Top-level functions: `"function*"` (e.g., `export function* name()`)
-  - Class methods: `"*"` (e.g., `*methodName()`)
-- Dynamic import expressions `import("path")` are not modeled as method calls and are currently ignored in `methodCalls`.
-
-### C#
-
-- **Called constructors and fields are not captured**
-  - Current call extraction focuses on method invocations and property accessors. Constructor calls (e.g., `new Type(...)` and `base(...)`/`this(...)`) and direct field reads/writes are not emitted in `methodCalls`.
-
-- **Loop local variables are not captured**
-  - Variables declared in loop headers (e.g., `for (var i = 0; ...)`, `foreach (var x in ...)`) are not added to `localVariables`.
-  - See `src/test/resources/samples/csharp/LoopLocalsSample.cs` for examples.
-
-- **Events are not handled**
-  - Event declarations/subscriptions/raises are not modeled.
-  - See `src/test/resources/samples/csharp/DelegatesEventsLambdasSample.cs`
-    
-
-### Java
-
-- **Constructor calls are not captured**
-  - Constructor invocations (e.g., `new ClassName(...)`) are not emitted in `methodCalls`.
-  - See `src/test/resources/samples/java/MultipleClasses.java` for an example (`new ExtraClass()`).
-
-- **Loop header locals are not captured**
-  - Variables declared in loop headers (e.g., `for (int i = 0; ...)`) are not added to `localVariables`.
-  - See `src/test/resources/samples/java/MultipleClasses.java` for an example (`for (int i = 0; i < times; i++)`).
-
-- **Local and anonymous classes are not extracted as separate types**
-  - Bodies are analyzed within the enclosing method or type, and their method calls are recorded.
-  - The classes themselves do not appear as distinct `types` entries.
-  - See `src/test/resources/samples/java/AnonymousInnerClassesSample.java`.
-
-### SQL
-
-See **[SQL_ANALYSIS.md](SQL_ANALYSIS.md)** for comprehensive SQL limitations and dialect-specific notes.
+- **JavaScript**: Destructured parameters emit leaf names only; dynamic imports ignored
+- **C#**: Events not handled; see test samples for details
+- **Java**: Local/anonymous classes not extracted as separate types
+- **SQL**: See [SQL_ANALYSIS.md](SQL_ANALYSIS.md)
 
 ## Testing
 
-- **ApprovalTests-based strategy**
-  - We use ApprovalTests-Java to snapshot analysis results. Each test verifies the pretty-printed JSON using an approved artifact.
-  - When output changes, a `.received.txt` is generated next to the test class; review and promote it to `.approved.txt` if correct.
+```bash
+./gradlew test
+```
 
-- **Running tests**
-  - All tests: `./gradlew test`
-  - Single test method, e.g. Java generics: `./gradlew test --tests "*JavaAnalyzeApprovalTest.analyze_Java_GenericsSample"`
-
-- **Workflow**
-  - Make a change → run tests → inspect `.received.txt` → approve if expected → commit both code and updated `.approved.txt`.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for testing workflow and conventions.
