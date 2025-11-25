@@ -1,0 +1,95 @@
+{
+  "filePath" : "src/test/resources/samples/sql/plsql_packages.sql",
+  "language" : "sql",
+  "topLevelReferences" : {
+    "relations" : [ ]
+  },
+  "topLevelCalls" : {
+    "functions" : [ ],
+    "procedures" : [ "ORDER_PKG.PROCESS", "HR.ORDER_PKG.PROCESS" ]
+  },
+  "createTables" : [ ],
+  "alterTables" : [ ],
+  "createViews" : [ ],
+  "createIndexes" : [ ],
+  "createProcedures" : [ {
+    "procedureName" : "ORDER_PKG.LOG_ORDER",
+    "schema" : "HR",
+    "orReplace" : false,
+    "parameters" : [ {
+      "name" : "p_order_id",
+      "type" : "NUMBER",
+      "direction" : "IN"
+    }, {
+      "name" : "p_action",
+      "type" : "VARCHAR2",
+      "direction" : "IN"
+    } ],
+    "references" : {
+      "relations" : [ "HR.ORDER_LOG" ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ ]
+    }
+  }, {
+    "procedureName" : "ORDER_PKG.PROCESS",
+    "schema" : "HR",
+    "orReplace" : false,
+    "parameters" : [ {
+      "name" : "p_order_id",
+      "type" : "NUMBER",
+      "direction" : "IN"
+    } ],
+    "references" : {
+      "relations" : [ ]
+    },
+    "calls" : {
+      "functions" : [ "HR.ORDER_PKG.GET_TOTAL" ],
+      "procedures" : [ "LOG_ORDER" ]
+    }
+  }, {
+    "procedureName" : "ORDER_PKG.PROCESS",
+    "schema" : "HR",
+    "orReplace" : false,
+    "parameters" : [ {
+      "name" : "p_order_id",
+      "type" : "NUMBER",
+      "direction" : "IN"
+    }, {
+      "name" : "p_priority",
+      "type" : "VARCHAR2",
+      "direction" : "IN"
+    } ],
+    "references" : {
+      "relations" : [ ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ "PROCESS", "HR.ORDER_PKG.LOG_ORDER" ]
+    }
+  } ],
+  "createFunctions" : [ {
+    "functionName" : "ORDER_PKG.GET_TOTAL",
+    "schema" : "HR",
+    "orReplace" : false,
+    "parameters" : [ {
+      "name" : "p_order_id",
+      "type" : "NUMBER",
+      "direction" : "IN"
+    } ],
+    "returnType" : "NUMBER",
+    "references" : {
+      "relations" : [ "HR.ORDER_ITEMS" ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ ]
+    }
+  } ],
+  "createTriggers" : [ ],
+  "alterViews" : [ ],
+  "alterFunctions" : [ ],
+  "alterProcedures" : [ ],
+  "dropOperations" : [ ]
+}

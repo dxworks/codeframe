@@ -51,6 +51,7 @@ jobs:
           cp "$JAR_PATH" codeframe/codeframe.jar
           cp instrument.yml codeframe/instrument.yml
           cp .ignore codeframe/.ignore
+          cp codeframe-config.yml codeframe/codeframe-config.yml
           # Voyager archive name
           ARCHIVE_NAME="codeframe-${{ steps.tag.outputs.suffix }}"
           echo "archive_name=$ARCHIVE_NAME" >> $GITHUB_OUTPUT

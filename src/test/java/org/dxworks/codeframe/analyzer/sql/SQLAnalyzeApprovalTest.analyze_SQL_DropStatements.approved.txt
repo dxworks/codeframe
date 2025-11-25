@@ -15,6 +15,9 @@
   "createProcedures" : [ ],
   "createFunctions" : [ ],
   "createTriggers" : [ ],
+  "alterViews" : [ ],
+  "alterFunctions" : [ ],
+  "alterProcedures" : [ ],
   "dropOperations" : [ {
     "objectType" : "TABLE",
     "objectName" : "legacy_users",

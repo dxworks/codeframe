@@ -1,0 +1,76 @@
+{
+  "filePath" : "src/test/resources/samples/sql/tsql_routine_bodies.sql",
+  "language" : "sql",
+  "topLevelReferences" : {
+    "relations" : [ ]
+  },
+  "topLevelCalls" : {
+    "functions" : [ ],
+    "procedures" : [ ]
+  },
+  "createTables" : [ ],
+  "alterTables" : [ ],
+  "createViews" : [ ],
+  "createIndexes" : [ ],
+  "createProcedures" : [ {
+    "procedureName" : "usp_GetOrdersByCustomer",
+    "schema" : "dbo",
+    "orReplace" : true,
+    "parameters" : [ {
+      "name" : "@CustomerId",
+      "type" : "INT",
+      "direction" : "IN"
+    } ],
+    "references" : {
+      "relations" : [ "dbo.OrderItems", "dbo.Orders" ]
+    },
+    "calls" : {
+      "functions" : [ "dbo.ufn_TotalAmount" ],
+      "procedures" : [ "dbo.usp_LogAccess" ]
+    }
+  } ],
+  "createFunctions" : [ {
+    "functionName" : "ufn_TotalAmount",
+    "schema" : "dbo",
+    "orReplace" : true,
+    "parameters" : [ {
+      "name" : "@OrderId",
+      "type" : "INT",
+      "direction" : "IN"
+    } ],
+    "returnType" : "DECIMAL(18,2)",
+    "references" : {
+      "relations" : [ "dbo.OrderItems" ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ ]
+    }
+  }, {
+    "functionName" : "ufn_OrderHasItem",
+    "schema" : "dbo",
+    "orReplace" : true,
+    "parameters" : [ {
+      "name" : "@OrderId",
+      "type" : "INT",
+      "direction" : "IN"
+    }, {
+      "name" : "@Sku",
+      "type" : "NVARCHAR(50)",
+      "direction" : "IN"
+    } ],
+    "returnType" : "BIT",
+    "references" : {
+      "relations" : [ "dbo.OrderItems" ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ ]
+    }
+  } ],
+  "createTriggers" : [ ],
+  "alterViews" : [ ],
+  "alterFunctions" : [ ],
+  "alterProcedures" : [ ],
+  "dropOperations" : [ ]
+}

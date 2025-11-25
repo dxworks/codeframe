@@ -1,0 +1,137 @@
+{
+  "filePath" : "src/test/resources/samples/sql/plsql_routine_bodies.sql",
+  "language" : "sql",
+  "topLevelReferences" : {
+    "relations" : [ ]
+  },
+  "topLevelCalls" : {
+    "functions" : [ "HR.CALC_DISCOUNT" ],
+    "procedures" : [ "HR.GET_ORDER_INFO" ]
+  },
+  "createTables" : [ ],
+  "alterTables" : [ ],
+  "createViews" : [ ],
+  "createIndexes" : [ ],
+  "createProcedures" : [ {
+    "procedureName" : "GET_ORDERS_BY_CUSTOMER",
+    "schema" : "HR",
+    "orReplace" : true,
+    "parameters" : [ {
+      "name" : "p_customer_id",
+      "type" : "NUMBER",
+      "direction" : "IN"
+    } ],
+    "references" : {
+      "relations" : [ "HR.ORDER_ITEMS", "HR.ORDERS" ]
+    },
+    "calls" : {
+      "functions" : [ "HR.TOTAL_AMOUNT" ],
+      "procedures" : [ "HR.LOG_ACCESS" ]
+    }
+  }, {
+    "procedureName" : "REPORT_CUSTOMER_ORDERS",
+    "schema" : "HR",
+    "orReplace" : true,
+    "parameters" : [ {
+      "name" : "p_customer_id",
+      "type" : "NUMBER",
+      "direction" : "IN"
+    } ],
+    "references" : {
+      "relations" : [ "HR.ORDERS" ]
+    },
+    "calls" : {
+      "functions" : [ "HR.ORDER_HAS_ITEM", "HR.TOTAL_AMOUNT" ],
+      "procedures" : [ "HR.LOG_ACCESS" ]
+    }
+  }, {
+    "procedureName" : "GET_ORDER_INFO",
+    "schema" : "HR",
+    "orReplace" : true,
+    "parameters" : [ {
+      "name" : "p_order_id",
+      "type" : "NUMBER",
+      "direction" : "IN"
+    }, {
+      "name" : "p_total",
+      "type" : "NUMBER",
+      "direction" : "OUT"
+    }, {
+      "name" : "p_status",
+      "type" : "VARCHAR2",
+      "direction" : "INOUT"
+    } ],
+    "references" : {
+      "relations" : [ "HR.ORDERS" ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ ]
+    }
+  } ],
+  "createFunctions" : [ {
+    "functionName" : "TOTAL_AMOUNT",
+    "schema" : "HR",
+    "orReplace" : true,
+    "parameters" : [ {
+      "name" : "p_order_id",
+      "type" : "NUMBER",
+      "direction" : "IN"
+    } ],
+    "returnType" : "NUMBER",
+    "references" : {
+      "relations" : [ "HR.ORDER_ITEMS" ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ ]
+    }
+  }, {
+    "functionName" : "ORDER_HAS_ITEM",
+    "schema" : "HR",
+    "orReplace" : true,
+    "parameters" : [ {
+      "name" : "p_order_id",
+      "type" : "NUMBER",
+      "direction" : "IN"
+    }, {
+      "name" : "p_sku",
+      "type" : "VARCHAR2",
+      "direction" : "IN"
+    } ],
+    "returnType" : "NUMBER",
+    "references" : {
+      "relations" : [ "HR.ORDER_ITEMS", "DUAL" ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ ]
+    }
+  }, {
+    "functionName" : "CALC_DISCOUNT",
+    "schema" : "HR",
+    "orReplace" : true,
+    "parameters" : [ {
+      "name" : "p_amount",
+      "type" : "NUMBER",
+      "direction" : "IN"
+    }, {
+      "name" : "p_rate",
+      "type" : "NUMBER",
+      "direction" : "IN"
+    } ],
+    "returnType" : "NUMBER",
+    "references" : {
+      "relations" : [ ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ ]
+    }
+  } ],
+  "createTriggers" : [ ],
+  "alterViews" : [ ],
+  "alterFunctions" : [ ],
+  "alterProcedures" : [ ],
+  "dropOperations" : [ ]
+}

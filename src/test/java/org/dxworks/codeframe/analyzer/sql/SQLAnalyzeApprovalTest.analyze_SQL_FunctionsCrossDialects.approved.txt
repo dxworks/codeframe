@@ -22,9 +22,9 @@
       "type" : "DECIMAL(10,2)",
       "direction" : null
     } ],
-    "returnType" : "DECIMAL(10,2) DETERMINISTIC",
+    "returnType" : "DECIMAL(10,2)",
     "references" : {
-      "relations" : [ ]
+      "relations" : [ "shop.tax_rates" ]
     },
     "calls" : {
       "functions" : [ ],
@@ -32,5 +32,8 @@
     }
   } ],
   "createTriggers" : [ ],
+  "alterViews" : [ ],
+  "alterFunctions" : [ ],
+  "alterProcedures" : [ ],
   "dropOperations" : [ ]
 }

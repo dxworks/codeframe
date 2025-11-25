@@ -20,6 +20,9 @@ public class SQLFileAnalysis implements Analysis {
     public List<CreateProcedureOperation> createProcedures = new ArrayList<>();
     public List<CreateFunctionOperation> createFunctions = new ArrayList<>();
     public List<CreateTriggerOperation> createTriggers = new ArrayList<>();
+    public List<AlterViewOperation> alterViews = new ArrayList<>();
+    public List<AlterFunctionOperation> alterFunctions = new ArrayList<>();
+    public List<AlterProcedureOperation> alterProcedures = new ArrayList<>();
     
     // Drop operations
     public List<DropOperation> dropOperations = new ArrayList<>();

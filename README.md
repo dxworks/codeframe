@@ -138,6 +138,25 @@ How it works:
 - CodeFrame loads `.ignore` at startup using `dx-ignore` and filters files before analysis.
 - If `.ignore` is missing, no files are excluded by ignore rules.
 
+### Configuration (codeframe-config.yml)
+
+CodeFrame supports optional configuration via a `codeframe-config.yml` file in the project root.
+
+**Available options:**
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `maxFileLines` | integer | 20000 | Maximum number of lines a file can have. Files exceeding this limit are skipped during analysis. |
+
+**Example configuration:**
+```yaml
+maxFileLines: 20000
+```
+
+**Behavior:**
+- If `codeframe-config.yml` is missing, default values are used.
+- If the file exists but contains invalid YAML or missing/invalid values, defaults are applied silently.
+
 #### Why JSONL?
 
 - **Memory efficient**: Constant memory usage regardless of codebase size
@@ -182,33 +201,11 @@ Each line is a separate JSON object with a `kind` field:
 {"kind":"done","ended_at":"2025-09-30T11:00:05Z","files_analyzed":998,"files_with_errors":2,"duration_seconds":5}
 ```
 
-### SQL Analysis Output
+### SQL Analysis
 
-For `.sql` files, the analyzer emits a SQL-specific structure inside each file analysis:
+SQL file analysis uses a hybrid JSqlParser + ANTLR approach to support multiple dialects (PostgreSQL, MySQL, T-SQL, PL/SQL) without configuration.
 
-- **topLevelReferences**: Relations (tables/views) used by top-level DML statements (outside any definition).
-- **topLevelCalls**: Top-level function and procedure calls (outside any definition).
-- **Operation lists**: Per-file operations discovered (definitions and drops):
-  - `createTables`, `alterTables`, `createViews`, `createIndexes`, `createProcedures`, `createFunctions`, `createTriggers`, `dropOperations`.
-
-Example (abbreviated):
-
-```json
-{
-  "filePath": "src/test/resources/samples/sql/top_level_statements.sql",
-  "language": "sql",
-  "topLevelReferences": { "relations": ["sales.orders", "sales.order_summaries"] },
-  "topLevelCalls": { "functions": ["COALESCE", "SUM"], "procedures": ["sales.recalc_order_total"] },
-  "createTables": [],
-  "alterTables": [],
-  "createViews": [],
-  "createIndexes": [],
-  "createProcedures": [],
-  "createFunctions": [],
-  "createTriggers": [],
-  "dropOperations": []
-}
-```
+For complete documentation on SQL support, see **[SQL_ANALYSIS.md](SQL_ANALYSIS.md)**.
 
 ## Architecture
 
@@ -230,11 +227,11 @@ Each language has a dedicated analyzer:
 - `CSharpAnalyzer` - Parses C# classes, interfaces, methods
 - `PHPAnalyzer` - Parses PHP classes, interfaces, functions
 - `RubyAnalyzer` - Parses Ruby classes, modules, methods
-- `SQLAnalyzer` - Parses SQL files for DDL operations and top-level references/calls
+- `SQLAnalyzer` - Parses SQL files (see [SQL_ANALYSIS.md](SQL_ANALYSIS.md))
 
 ### Tree-sitter Integration
 
-The project uses Tree-sitter grammar libraries:
+The project uses Tree-sitter grammar libraries for most languages:
 - `tree-sitter-java`
 - `tree-sitter-javascript`
 - `tree-sitter-typescript`
@@ -242,7 +239,8 @@ The project uses Tree-sitter grammar libraries:
 - `tree-sitter-c-sharp`
 - `tree-sitter-php`
 - `tree-sitter-ruby`
-- `tree-sitter-sql`
+
+**Note**: SQL uses a hybrid JSqlParser + ANTLR approach instead of Tree-sitter. See [SQL_ANALYSIS.md](SQL_ANALYSIS.md).
 
 ## Architectural Decisions
 
@@ -392,19 +390,7 @@ This project uses Tree-sitter and its language grammars, which are licensed unde
 
 ### SQL
 
-- SQL Analysis semantics
-  - References are recorded as relations only. We do not distinguish between tables and views without a project-wide catalog. Each operation (view/function/procedure) exposes `references.relations`.
-  - Calls are recorded per operation using explicit AST nodes only. Functions are captured from `function_call` nodes into `calls.functions`. Procedures are captured from `call_statement` nodes into `calls.procedures`.
-
-- **DROP INDEX qualified names**
-  - Some SQL grammar variants emit an `ERROR` node when parsing qualified index names like `DROP INDEX schema.index_name` (e.g., the dot-separated form may be partially outside the `drop_index` node).
-  - We parse using AST-first approaches. If the index name token is not present under `drop_index`, the analyzer falls back conservatively and may report only the schema or leave the name unset.
-  - This is by design to keep parsing robust. If necessary, a future enhancement can use a scoped text read around the statement to recover the missing identifier without relying on global text parsing.
-
-- **MySQL CREATE FUNCTION (BEGIN...END) partial support**
-  - The current Tree-sitter SQL grammar used by Codeframe often marks MySQL-style bodies as `ERROR`. The analyzer still parses the function header (name, parameters, `RETURNS`) but does not analyze the body.
-  - As a result, referenced tables are not collected for these functions, and the captured `returnType` may include attributes (e.g., `DETERMINISTIC`).
-  - PostgreSQL-style functions (including dollar-quoted bodies) are supported and will be extracted with name, schema (optional), parameters, return type, and referenced tables from `FROM`/`JOIN` clauses in the body.
+See **[SQL_ANALYSIS.md](SQL_ANALYSIS.md)** for comprehensive SQL limitations and dialect-specific notes.
 
 ## Testing
 

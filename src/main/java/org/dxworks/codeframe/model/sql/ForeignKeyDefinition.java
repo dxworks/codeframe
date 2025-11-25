@@ -8,6 +8,4 @@ public class ForeignKeyDefinition {
     public List<String> columns = new ArrayList<>();  // Columns in this table
     public String referencedTable;
     public List<String> referencedColumns = new ArrayList<>();
-    public String onDelete;  // CASCADE, SET NULL, etc.
-    public String onUpdate;  // CASCADE, SET NULL, etc.
 }

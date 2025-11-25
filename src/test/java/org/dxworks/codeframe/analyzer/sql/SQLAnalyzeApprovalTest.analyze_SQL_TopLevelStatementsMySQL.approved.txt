@@ -1,12 +1,12 @@
 {
-  "filePath" : "src/test/resources/samples/sql/top_level_statements.sql",
+  "filePath" : "src/test/resources/samples/sql/top_level_mysql.sql",
   "language" : "sql",
   "topLevelReferences" : {
-    "relations" : [ "sales.orders", "sales.order_summaries" ]
+    "relations" : [ "sales.orders" ]
   },
   "topLevelCalls" : {
-    "functions" : [ "COALESCE", "sales.get_total", "SUM" ],
-    "procedures" : [ "sales.recalc_order_total" ]
+    "functions" : [ "fn_net_amount" ],
+    "procedures" : [ "purchasing.process_purchase_order" ]
   },
   "createTables" : [ ],
   "alterTables" : [ ],

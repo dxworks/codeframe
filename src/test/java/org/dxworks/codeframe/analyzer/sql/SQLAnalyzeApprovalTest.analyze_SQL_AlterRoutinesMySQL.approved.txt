@@ -1,0 +1,96 @@
+{
+  "filePath" : "src/test/resources/samples/sql/alter_routines_mysql.sql",
+  "language" : "sql",
+  "topLevelReferences" : {
+    "relations" : [ ]
+  },
+  "topLevelCalls" : {
+    "functions" : [ ],
+    "procedures" : [ ]
+  },
+  "createTables" : [ ],
+  "alterTables" : [ ],
+  "createViews" : [ ],
+  "createIndexes" : [ ],
+  "createProcedures" : [ {
+    "procedureName" : "recalc_order_total",
+    "schema" : "sales",
+    "orReplace" : false,
+    "parameters" : [ {
+      "name" : "p_order_id",
+      "type" : "INT",
+      "direction" : "IN"
+    }, {
+      "name" : "p_customer_id",
+      "type" : "INT",
+      "direction" : "IN"
+    } ],
+    "references" : {
+      "relations" : [ "sales.order_items", "sales.orders", "sales.customer_tax_info_view" ]
+    },
+    "calls" : {
+      "functions" : [ "fn_net_amount", "SUM" ],
+      "procedures" : [ "log_order_update" ]
+    }
+  }, {
+    "procedureName" : "process_purchase_order",
+    "schema" : "purchasing",
+    "orReplace" : false,
+    "parameters" : [ {
+      "name" : "p_po_id",
+      "type" : "INT",
+      "direction" : "IN"
+    } ],
+    "references" : {
+      "relations" : [ "purchasing.purchase_orders", "purchasing.approved_vendors_view" ]
+    },
+    "calls" : {
+      "functions" : [ "COUNT", "fn_calculate_discount" ],
+      "procedures" : [ "update_expected_stock", "accounting.create_payable", "notifications.send_approval_notification" ]
+    }
+  } ],
+  "createFunctions" : [ {
+    "functionName" : "fn_net_amount",
+    "schema" : null,
+    "orReplace" : false,
+    "parameters" : [ {
+      "name" : "p_gross",
+      "type" : "DECIMAL(12,2)",
+      "direction" : null
+    }, {
+      "name" : "p_tax_rate_id",
+      "type" : "INT",
+      "direction" : null
+    } ],
+    "returnType" : "DECIMAL(12,2)",
+    "references" : {
+      "relations" : [ "active_discounts_view", "tax_rates" ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ ]
+    }
+  }, {
+    "functionName" : "fn_get_stock_value",
+    "schema" : "inventory",
+    "orReplace" : false,
+    "parameters" : [ {
+      "name" : "p_warehouse_id",
+      "type" : "INT",
+      "direction" : null
+    } ],
+    "returnType" : "DECIMAL(12,2)",
+    "references" : {
+      "relations" : [ "inventory.stock", "inventory.current_prices_view", "inventory.products" ]
+    },
+    "calls" : {
+      "functions" : [ "IFNULL", "SUM" ],
+      "procedures" : [ ]
+    }
+  } ],
+  "createTriggers" : [ ],
+  "alterViews" : [ ],
+  "alterFunctions" : [ ],
+  "alterProcedures" : [ ],
+  "dropOperations" : [ ]
+}

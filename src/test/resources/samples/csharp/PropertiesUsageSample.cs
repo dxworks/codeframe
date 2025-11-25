@@ -19,11 +19,6 @@ public class Person
     {
         get
         {
-            var label = DisplayName;
-            for (var i = 0; i < NameLength % 3; i++)
-            {
-                label = label + "!";
-            }
             var space = " ";
             var name = string.Concat(FirstName, space, LastName);
             return name.ToUpperInvariant();
@@ -35,12 +30,6 @@ public class Person
         get => _age;
         set
         {
-            var label = DisplayName;
-            for (var i = 0; i < NameLength % 3; i++)
-            {
-                label = label + "!";
-            }
-
             var v = value < 0 ? 0 : value;
             _age = v;
         }
@@ -53,12 +42,6 @@ public static class PersonService
 {
     public static void Promote(Person p)
     {
-        var label = p.DisplayName;
-        for (var i = 0; i < p.NameLength % 3; i++)
-        {
-            label = label + "!";
-        }
-
         if (p.Age >= 30 && p.NameLength > 5)
         {
             p.Age = p.Age + 1;

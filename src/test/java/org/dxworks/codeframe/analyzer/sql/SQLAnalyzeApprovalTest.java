@@ -21,13 +21,18 @@ public class SQLAnalyzeApprovalTest {
     }
 
     @Test
+    void analyze_SQL_AlterRoutinesPLSQL() throws Exception {
+        verify(Paths.get("src/test/resources/samples/sql/plsql_routine_bodies.sql"), Language.SQL);
+    }
+
+    @Test
     void analyze_SQL_ConstraintsAndIndexes() throws Exception {
         verify(Paths.get("src/test/resources/samples/sql/constraints_and_indexes.sql"), Language.SQL);
     }
 
     @Test
-    void analyze_SQL_AlterTable() throws Exception {
-        verify(Paths.get("src/test/resources/samples/sql/alter_table.sql"), Language.SQL);
+    void analyze_SQL_AlterTablesViews() throws Exception {
+        verify(Paths.get("src/test/resources/samples/sql/alter_tables_views.sql"), Language.SQL);
     }
 
     @Test
@@ -48,6 +53,51 @@ public class SQLAnalyzeApprovalTest {
     @Test
     void analyze_SQL_TopLevelStatements() throws Exception {
         verify(Paths.get("src/test/resources/samples/sql/top_level_statements.sql"), Language.SQL);
+    }
+
+    @Test
+    void analyze_SQL_TopLevelStatementsMySQL() throws Exception {
+        verify(Paths.get("src/test/resources/samples/sql/top_level_mysql.sql"), Language.SQL);
+    }
+
+    @Test
+    void analyze_SQL_TopLevelStatementsTSQL() throws Exception {
+        verify(Paths.get("src/test/resources/samples/sql/top_level_tsql.sql"), Language.SQL);
+    }
+
+    @Test
+    void analyze_SQL_TopLevelStatementsPLSQL() throws Exception {
+        verify(Paths.get("src/test/resources/samples/sql/top_level_plsql.sql"), Language.SQL);
+    }
+
+    @Test
+    void analyze_SQL_AlterRoutinesTSQL() throws Exception {
+        verify(Paths.get("src/test/resources/samples/sql/alter_routines_tsql.sql"), Language.SQL);
+    }
+
+    @Test
+    void analyze_SQL_AlterRoutinesPostgreSQL() throws Exception {
+        verify(Paths.get("src/test/resources/samples/sql/alter_routines_postgresql.sql"), Language.SQL);
+    }
+
+    @Test
+    void analyze_SQL_AlterRoutinesMySQL() throws Exception {
+        verify(Paths.get("src/test/resources/samples/sql/alter_routines_mysql.sql"), Language.SQL);
+    }
+
+    @Test
+    void analyze_SQL_TSqlRoutineBodies() throws Exception {
+        verify(Paths.get("src/test/resources/samples/sql/tsql_routine_bodies.sql"), Language.SQL);
+    }
+
+    @Test
+    void analyze_SQL_PLSQLRoutineVariants() throws Exception {
+        verify(Paths.get("src/test/resources/samples/sql/plsql_routine_variants.sql"), Language.SQL);
+    }
+
+    @Test
+    void analyze_SQL_PLSQLPackages() throws Exception {
+        verify(Paths.get("src/test/resources/samples/sql/plsql_packages.sql"), Language.SQL);
     }
 
     private static void verify(java.nio.file.Path file, Language language) throws Exception {

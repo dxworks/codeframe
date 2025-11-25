@@ -51,18 +51,16 @@
       "constraints" : [ ]
     }, {
       "name" : "total_amount",
-      "type" : "DECIMAL(12, 2)",
+      "type" : "DECIMAL(12,2)",
       "nullable" : true,
       "constraints" : [ ]
     } ],
     "primaryKeys" : [ "order_id", "user_id" ],
     "foreignKeys" : [ {
-      "name" : null,
+      "name" : "fk_orders_user",
       "columns" : [ "user_id" ],
       "referencedTable" : "public.users",
-      "referencedColumns" : [ "id" ],
-      "onDelete" : "CASCADE",
-      "onUpdate" : "NO ACTION"
+      "referencedColumns" : [ "id" ]
     } ]
   } ],
   "alterTables" : [ ],
@@ -92,5 +90,8 @@
   "createProcedures" : [ ],
   "createFunctions" : [ ],
   "createTriggers" : [ ],
+  "alterViews" : [ ],
+  "alterFunctions" : [ ],
+  "alterProcedures" : [ ],
   "dropOperations" : [ ]
 }

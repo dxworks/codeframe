@@ -1,12 +1,12 @@
 {
-  "filePath" : "src/test/resources/samples/sql/top_level_statements.sql",
+  "filePath" : "src/test/resources/samples/sql/top_level_tsql.sql",
   "language" : "sql",
   "topLevelReferences" : {
-    "relations" : [ "sales.orders", "sales.order_summaries" ]
+    "relations" : [ "dbo.OrderSummaries", "dbo.Orders" ]
   },
   "topLevelCalls" : {
-    "functions" : [ "COALESCE", "sales.get_total", "SUM" ],
-    "procedures" : [ "sales.recalc_order_total" ]
+    "functions" : [ "dbo.ufn_TotalAmount" ],
+    "procedures" : [ "dbo.usp_RecalcOrderTotal" ]
   },
   "createTables" : [ ],
   "alterTables" : [ ],

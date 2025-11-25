@@ -51,7 +51,7 @@
       "constraints" : [ "NOT NULL" ]
     }, {
       "name" : "total_amount",
-      "type" : "DECIMAL(10, 2)",
+      "type" : "DECIMAL(10,2)",
       "nullable" : true,
       "constraints" : [ ]
     }, {
@@ -65,9 +65,7 @@
       "name" : null,
       "columns" : [ "user_id" ],
       "referencedTable" : "users",
-      "referencedColumns" : [ "id" ],
-      "onDelete" : null,
-      "onUpdate" : null
+      "referencedColumns" : [ "id" ]
     } ]
   } ],
   "alterTables" : [ ],
@@ -113,9 +111,9 @@
       "type" : "INT",
       "direction" : null
     } ],
-    "returnType" : "DECIMAL(10, 2)",
+    "returnType" : "DECIMAL(10,2)",
     "references" : {
-      "relations" : [ ]
+      "relations" : [ "orders" ]
     },
     "calls" : {
       "functions" : [ ],
@@ -123,5 +121,8 @@
     }
   } ],
   "createTriggers" : [ ],
+  "alterViews" : [ ],
+  "alterFunctions" : [ ],
+  "alterProcedures" : [ ],
   "dropOperations" : [ ]
 }

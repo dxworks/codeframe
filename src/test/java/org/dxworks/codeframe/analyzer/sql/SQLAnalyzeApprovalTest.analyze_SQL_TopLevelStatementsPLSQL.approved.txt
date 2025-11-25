@@ -1,12 +1,12 @@
 {
-  "filePath" : "src/test/resources/samples/sql/top_level_statements.sql",
+  "filePath" : "src/test/resources/samples/sql/top_level_plsql.sql",
   "language" : "sql",
   "topLevelReferences" : {
-    "relations" : [ "sales.orders", "sales.order_summaries" ]
+    "relations" : [ "HR.ORDERS" ]
   },
   "topLevelCalls" : {
-    "functions" : [ "COALESCE", "sales.get_total", "SUM" ],
-    "procedures" : [ "sales.recalc_order_total" ]
+    "functions" : [ "HR.TOTAL_AMOUNT" ],
+    "procedures" : [ "GET_ORDERS_BY_CUSTOMER", "HR.GET_ORDERS_BY_CUSTOMER", "HR.REPORT_CUSTOMER_ORDERS" ]
   },
   "createTables" : [ ],
   "alterTables" : [ ],

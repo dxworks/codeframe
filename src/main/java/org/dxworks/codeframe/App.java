@@ -2,6 +2,7 @@ package org.dxworks.codeframe;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.dxworks.codeframe.analyzer.*;
+import org.dxworks.codeframe.analyzer.sql.SQLAnalyzer;
 import org.dxworks.codeframe.model.Analysis;
 import org.treesitter.*;
 
@@ -33,8 +34,6 @@ public class App {
             TREE_SITTER_LANGUAGES.put(Language.PYTHON, (TSLanguage) Class.forName("org.treesitter.TreeSitterPython").getDeclaredConstructor().newInstance());
             TREE_SITTER_LANGUAGES.put(Language.CSHARP, (TSLanguage) Class.forName("org.treesitter.TreeSitterCSharp").getDeclaredConstructor().newInstance());
             TREE_SITTER_LANGUAGES.put(Language.PHP, (TSLanguage) Class.forName("org.treesitter.TreeSitterPhp").getDeclaredConstructor().newInstance());
-            
-            TREE_SITTER_LANGUAGES.put(Language.SQL, (TSLanguage) Class.forName("org.treesitter.TreeSitterSql").getDeclaredConstructor().newInstance());
             TREE_SITTER_LANGUAGES.put(Language.RUBY, (TSLanguage) Class.forName("org.treesitter.TreeSitterRuby").getDeclaredConstructor().newInstance());
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize Tree-sitter languages", e);
@@ -75,7 +74,8 @@ public class App {
         System.out.println("Starting code analysis...");
         System.out.println("Input: " + input.toAbsolutePath());
         
-        List<Path> files = collectSourceFiles(input);
+        int maxFileLines = CodeframeConfig.load().getMaxFileLines();
+        List<Path> files = collectSourceFiles(input, maxFileLines);
         System.out.println("Found " + files.size() + " source files");
         
         Instant startTime = Instant.now();
@@ -165,25 +165,36 @@ public class App {
         System.out.println("=".repeat(60));
     }
 
-    private static List<Path> collectSourceFiles(Path input) throws IOException {
+    private static List<Path> collectSourceFiles(Path input, int maxFileLines) throws IOException {
         List<Path> files = new ArrayList<>();
-        // Load ignore matcher from .ignore using dx-ignore
         Ignorer ignorer = new IgnorerBuilder(Paths.get(".ignore")).compile();
         
         if (Files.isDirectory(input)) {
             try (Stream<Path> stream = Files.walk(input)) {
                 stream.filter(Files::isRegularFile)
                       .filter(p -> ignorer.accepts(p.toAbsolutePath().toString()))
+                      .filter(p -> withinMaxLines(p, maxFileLines))
                       .filter(p -> LanguageDetector.detectLanguage(p).isPresent())
                       .forEach(files::add);
             }
         } else if (Files.isRegularFile(input)) {
-            if (ignorer.accepts(input.toAbsolutePath().toString()) && LanguageDetector.detectLanguage(input).isPresent()) {
+            if (ignorer.accepts(input.toAbsolutePath().toString())
+                    && withinMaxLines(input, maxFileLines)
+                    && LanguageDetector.detectLanguage(input).isPresent()) {
                 files.add(input);
             }
         }
         
         return files;
+    }
+    
+    private static boolean withinMaxLines(Path path, int maxFileLines) {
+        try (Stream<String> lines = Files.lines(path)) {
+            long count = lines.limit((long) maxFileLines + 1L).count();
+            return count <= maxFileLines;
+        } catch (IOException e) {
+            return true;
+        }
     }
     
     public static Analysis analyzeFile(Path filePath, Language language) throws IOException {
@@ -194,6 +205,16 @@ public class App {
             sourceCode = sourceCode.substring(1);
         }
         
+        LanguageAnalyzer analyzer = ANALYZERS.get(language);
+        if (analyzer == null) {
+            throw new IllegalArgumentException("No analyzer available for: " + language);
+        }
+
+        // SQL is handled via JSqlParserAnalyzer and does not use Tree-sitter
+        if (language == Language.SQL) {
+            return analyzer.analyze(filePath.toString(), sourceCode, null);
+        }
+
         TSLanguage tsLanguage = TREE_SITTER_LANGUAGES.get(language);
         if (tsLanguage == null) {
             throw new IllegalArgumentException("No Tree-sitter language available for: " + language);
@@ -204,11 +225,6 @@ public class App {
         
         TSTree tree = parser.parseString(null, sourceCode);
         TSNode rootNode = tree.getRootNode();
-        
-        LanguageAnalyzer analyzer = ANALYZERS.get(language);
-        if (analyzer == null) {
-            throw new IllegalArgumentException("No analyzer available for: " + language);
-        }
         
         return analyzer.analyze(filePath.toString(), sourceCode, rootNode);
     }

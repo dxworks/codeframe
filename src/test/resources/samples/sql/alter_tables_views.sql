@@ -13,3 +13,9 @@ ALTER TABLE sales.orders
 
 ALTER TABLE sales.orders
   DROP COLUMN total_amount;
+
+-- ALTER VIEW samples
+ALTER VIEW reporting.active_users AS
+SELECT u.id, u.username, u.email
+FROM public.users u
+WHERE u.active = true;
