@@ -1005,5 +1005,61 @@
       "parameterCount" : null
     } ]
   } ],
+  "fields" : [ {
+    "name" : "T",
+    "type" : null,
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ]
+  }, {
+    "name" : "K",
+    "type" : null,
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ]
+  }, {
+    "name" : "V",
+    "type" : null,
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ]
+  }, {
+    "name" : "T_co",
+    "type" : null,
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ]
+  }, {
+    "name" : "T_contra",
+    "type" : null,
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ]
+  }, {
+    "name" : "Numeric",
+    "type" : null,
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ]
+  }, {
+    "name" : "Direction",
+    "type" : null,
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ]
+  }, {
+    "name" : "HttpMethod",
+    "type" : null,
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ]
+  }, {
+    "name" : "LogLevel",
+    "type" : null,
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ]
+  } ],
+  "methodCalls" : [ ],
   "imports" : [ "from __future__ import annotations", "from abc import abstractmethod", "from collections.abc import Iterable, Iterator, Mapping, Sequence", "from dataclasses import dataclass", "from typing import (\n    Any,\n    Callable,\n    ClassVar,\n    Final,\n    Generic,\n    Literal,\n    NamedTuple,\n    Optional,\n    Protocol,\n    TypeAlias,\n    TypeVar,\n    Union,\n    overload,\n    runtime_checkable,\n)" ]
 }

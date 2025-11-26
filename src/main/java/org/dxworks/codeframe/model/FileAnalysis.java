@@ -9,6 +9,8 @@ public class FileAnalysis implements Analysis {
     public String packageName;
     public List<TypeInfo> types = new ArrayList<>();
     public List<MethodInfo> methods = new ArrayList<>();
+    public List<FieldInfo> fields = new ArrayList<>();  // File-level constants/variables
+    public List<MethodCall> methodCalls = new ArrayList<>();  // File-level function calls (outside any function/class)
     public List<String> imports = new ArrayList<>();
     
     @Override

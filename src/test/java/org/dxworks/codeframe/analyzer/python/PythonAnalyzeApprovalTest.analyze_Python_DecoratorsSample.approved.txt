@@ -648,5 +648,13 @@
     "localVariables" : [ ],
     "methodCalls" : [ ]
   } ],
+  "fields" : [ {
+    "name" : "T",
+    "type" : null,
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ]
+  } ],
+  "methodCalls" : [ ],
   "imports" : [ "from functools import wraps", "from typing import Any, Callable, TypeVar" ]
 }

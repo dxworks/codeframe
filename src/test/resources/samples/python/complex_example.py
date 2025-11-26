@@ -3,11 +3,26 @@ from __future__ import annotations
 import abc
 import asyncio
 import contextlib
+import logging
 import math
 import re
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Dict, Generator, Iterable, List, Optional, Tuple
+
+
+# ---------------------------
+# Module-level constants
+# ---------------------------
+
+MAX_RETRIES: int = 3
+DEFAULT_TIMEOUT = 30.0
+APP_NAME = "ComplexApp"
+VERSION = "2.0.1"
+
+# Module-level setup calls
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 # ---------------------------

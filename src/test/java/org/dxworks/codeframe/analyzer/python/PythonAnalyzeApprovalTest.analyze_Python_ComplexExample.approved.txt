@@ -560,7 +560,7 @@
       "parameterCount" : null
     }, {
       "methodName" : "strip",
-      "objectType" : "text.strip().lower",
+      "objectType" : null,
       "objectName" : "text",
       "callCount" : 1,
       "parameterCount" : null
@@ -641,5 +641,43 @@
       "parameterCount" : null
     } ]
   } ],
-  "imports" : [ "from __future__ import annotations", "import abc", "import asyncio", "import contextlib", "import math", "import re", "from dataclasses import dataclass, field", "from datetime import datetime", "from typing import Any, Dict, Generator, Iterable, List, Optional, Tuple" ]
+  "fields" : [ {
+    "name" : "MAX_RETRIES",
+    "type" : "int",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ]
+  }, {
+    "name" : "DEFAULT_TIMEOUT",
+    "type" : "float",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ]
+  }, {
+    "name" : "APP_NAME",
+    "type" : "str",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ]
+  }, {
+    "name" : "VERSION",
+    "type" : "str",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ]
+  }, {
+    "name" : "logger",
+    "type" : null,
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ]
+  } ],
+  "methodCalls" : [ {
+    "methodName" : "basicConfig",
+    "objectType" : null,
+    "objectName" : "logging",
+    "callCount" : 1,
+    "parameterCount" : null
+  } ],
+  "imports" : [ "from __future__ import annotations", "import abc", "import asyncio", "import contextlib", "import logging", "import math", "import re", "from dataclasses import dataclass, field", "from datetime import datetime", "from typing import Any, Dict, Generator, Iterable, List, Optional, Tuple" ]
 }

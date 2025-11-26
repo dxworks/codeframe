@@ -773,5 +773,13 @@
       "parameterCount" : null
     } ]
   } ],
+  "fields" : [ {
+    "name" : "logger",
+    "type" : null,
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ]
+  } ],
+  "methodCalls" : [ ],
   "imports" : [ "from typing import Any, Optional", "import logging", "import json" ]
 }

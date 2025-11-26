@@ -56,8 +56,10 @@ public class PythonAnalyzer implements LanguageAnalyzer {
             }
         }
         
-        // Extract type aliases (both old-style TypeAlias and PEP 695 type statements)
+        // Extract module-level elements
         extractTypeAliases(sourceCode, rootNode, analysis);
+        extractFileLevelFields(sourceCode, rootNode, analysis);
+        extractFileLevelMethodCalls(sourceCode, rootNode, analysis);
         
         // Find standalone functions (not inside classes)
         // Note: Nested functions (like decorator wrappers) are included as top-level methods
@@ -107,16 +109,11 @@ public class PythonAnalyzer implements LanguageAnalyzer {
     }
     
     /**
-     * Extract type aliases from Python source.
-     * Handles two forms:
-     * 1. Old-style: `Name: TypeAlias = SomeType` (annotated assignment with TypeAlias)
-     * 2. PEP 695 (Python 3.12+): `type Name = SomeType` (type_alias_statement)
+     * Extract type aliases (both old-style TypeAlias annotation and PEP 695 style).
      */
     private void extractTypeAliases(String source, TSNode rootNode, FileAnalysis analysis) {
         // PEP 695 style: type Name = SomeType
-        // Tree-sitter parses this as "type_alias_statement"
-        List<TSNode> typeAliasStmts = findAllDescendants(rootNode, "type_alias_statement");
-        for (TSNode typeAliasStmt : typeAliasStmts) {
+        for (TSNode typeAliasStmt : findAllDescendants(rootNode, "type_alias_statement")) {
             TypeInfo typeAlias = analyzeTypeAliasStatement(source, typeAliasStmt);
             if (typeAlias != null && typeAlias.name != null) {
                 analysis.types.add(typeAlias);
@@ -124,24 +121,62 @@ public class PythonAnalyzer implements LanguageAnalyzer {
         }
         
         // Old-style: Name: TypeAlias = SomeType
-        // These are annotated assignments at module level where the annotation contains "TypeAlias"
-        // We need to look at top-level assignments with type annotations
         for (int i = 0; i < rootNode.getNamedChildCount(); i++) {
             TSNode child = rootNode.getNamedChild(i);
             if (child == null || child.isNull()) continue;
+            if (!"expression_statement".equals(child.getType())) continue;
             
-            String childType = child.getType();
-            // Look for expression_statement containing assignment with TypeAlias annotation
-            if ("expression_statement".equals(childType)) {
-                TSNode expr = child.getNamedChild(0);
-                if (expr != null && "assignment".equals(expr.getType())) {
-                    TypeInfo typeAlias = analyzeOldStyleTypeAlias(source, expr);
-                    if (typeAlias != null && typeAlias.name != null) {
-                        analysis.types.add(typeAlias);
-                    }
+            TSNode expr = child.getNamedChild(0);
+            if (expr != null && "assignment".equals(expr.getType())) {
+                TypeInfo typeAlias = analyzeOldStyleTypeAlias(source, expr);
+                if (typeAlias != null && typeAlias.name != null) {
+                    analysis.types.add(typeAlias);
                 }
             }
         }
+    }
+    
+    /**
+     * Extract file-level constants and variables (excluding type aliases).
+     */
+    private void extractFileLevelFields(String source, TSNode rootNode, FileAnalysis analysis) {
+        for (int i = 0; i < rootNode.getNamedChildCount(); i++) {
+            TSNode child = rootNode.getNamedChild(i);
+            if (child == null || child.isNull()) continue;
+            if (!"expression_statement".equals(child.getType())) continue;
+            
+            TSNode expr = child.getNamedChild(0);
+            if (expr == null || !"assignment".equals(expr.getType())) continue;
+            
+            // Skip type aliases
+            TSNode typeNode = getChildByFieldName(expr, "type");
+            if (typeNode != null && !typeNode.isNull()) {
+                String typeText = getNodeText(source, typeNode);
+                if (typeText != null && typeText.contains("TypeAlias")) continue;
+            }
+            
+            FieldInfo field = extractFieldFromAssignment(source, expr);
+            if (field != null && field.name != null) {
+                analysis.fields.add(field);
+            }
+        }
+    }
+    
+    /**
+     * Extract file-level method calls (outside any function or class).
+     */
+    private void extractFileLevelMethodCalls(String source, TSNode rootNode, FileAnalysis analysis) {
+        for (int i = 0; i < rootNode.getNamedChildCount(); i++) {
+            TSNode child = rootNode.getNamedChild(i);
+            if (child == null || child.isNull()) continue;
+            if (!"expression_statement".equals(child.getType())) continue;
+            
+            TSNode expr = child.getNamedChild(0);
+            if (expr != null && "call".equals(expr.getType())) {
+                extractCallIntoList(source, expr, analysis.methodCalls);
+            }
+        }
+        analysis.methodCalls.sort(TreeSitterHelper.METHOD_CALL_COMPARATOR);
     }
     
     /**
@@ -214,6 +249,38 @@ public class PythonAnalyzer implements LanguageAnalyzer {
         typeInfo.visibility = determineVisibility(name);
         typeInfo.extendsType = getNodeText(source, rightNode);
         return typeInfo;
+    }
+    
+    /** Extract a single call expression into a method call list. */
+    private void extractCallIntoList(String source, TSNode callNode, List<MethodCall> calls) {
+        TSNode functionNode = callNode.getNamedChild(0);
+        if (functionNode == null || functionNode.isNull()) return;
+        
+        String methodName = null;
+        String objectName = null;
+        
+        if ("attribute".equals(functionNode.getType())) {
+            TSNode objNode = functionNode.getNamedChild(0);
+            List<TSNode> identifiers = findAllChildren(functionNode, "identifier");
+            if (!identifiers.isEmpty()) {
+                methodName = getNodeText(source, identifiers.get(identifiers.size() - 1));
+            }
+            if (objNode != null && !objNode.isNull()) {
+                objectName = getNodeText(source, objNode);
+            }
+        } else if ("identifier".equals(functionNode.getType())) {
+            methodName = getNodeText(source, functionNode);
+        }
+        
+        if (methodName != null && isValidPythonIdentifier(methodName)) {
+            for (MethodCall existing : calls) {
+                if (existing.matches(methodName, null, objectName, null)) {
+                    existing.callCount++;
+                    return;
+                }
+            }
+            calls.add(new MethodCall(methodName, null, objectName));
+        }
     }
     
     private boolean isInsideClass(TSNode node) {
@@ -502,12 +569,8 @@ public class PythonAnalyzer implements LanguageAnalyzer {
             case "none":
                 return "None";
             case "call":
-                // Try to get the function name being called
-                TSNode funcNode = node.getNamedChild(0);
-                if (funcNode != null && !funcNode.isNull()) {
-                    return getNodeText(source, funcNode);
-                }
-                break;
+                // Can't determine return type from a call without type inference
+                return null;
         }
         
         return null;

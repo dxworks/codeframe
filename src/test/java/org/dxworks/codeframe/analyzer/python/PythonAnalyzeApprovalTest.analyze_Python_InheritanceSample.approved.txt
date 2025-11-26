@@ -688,7 +688,7 @@
       "localVariables" : [ "errors" ],
       "methodCalls" : [ {
         "methodName" : "append",
-        "objectType" : "super().validate",
+        "objectType" : null,
         "objectName" : "errors",
         "callCount" : 2,
         "parameterCount" : null
@@ -785,7 +785,7 @@
       "localVariables" : [ "errors" ],
       "methodCalls" : [ {
         "methodName" : "append",
-        "objectType" : "super().validate",
+        "objectType" : null,
         "objectName" : "errors",
         "callCount" : 2,
         "parameterCount" : null
@@ -1109,5 +1109,7 @@
     "types" : [ ]
   } ],
   "methods" : [ ],
+  "fields" : [ ],
+  "methodCalls" : [ ],
   "imports" : [ "from abc import ABC, abstractmethod", "from datetime import datetime", "from typing import Any, Optional" ]
 }

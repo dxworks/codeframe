@@ -912,5 +912,13 @@
     "localVariables" : [ ],
     "methodCalls" : [ ]
   } ],
+  "fields" : [ {
+    "name" : "T",
+    "type" : null,
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ]
+  } ],
+  "methodCalls" : [ ],
   "imports" : [ "from typing import Any, Callable, TypeVar", "from functools import reduce" ]
 }

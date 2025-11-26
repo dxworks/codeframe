@@ -236,25 +236,25 @@
       "annotations" : [ ]
     }, {
       "name" : "READ",
-      "type" : "auto",
+      "type" : null,
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ]
     }, {
       "name" : "WRITE",
-      "type" : "auto",
+      "type" : null,
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ]
     }, {
       "name" : "EXECUTE",
-      "type" : "auto",
+      "type" : null,
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ]
     }, {
       "name" : "DELETE",
-      "type" : "auto",
+      "type" : null,
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ]
@@ -303,25 +303,25 @@
     "mixins" : [ ],
     "fields" : [ {
       "name" : "NORTH",
-      "type" : "auto",
+      "type" : null,
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ]
     }, {
       "name" : "SOUTH",
-      "type" : "auto",
+      "type" : null,
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ]
     }, {
       "name" : "EAST",
-      "type" : "auto",
+      "type" : null,
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ]
     }, {
       "name" : "WEST",
-      "type" : "auto",
+      "type" : null,
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ]
@@ -461,5 +461,7 @@
     "localVariables" : [ ],
     "methodCalls" : [ ]
   } ],
+  "fields" : [ ],
+  "methodCalls" : [ ],
   "imports" : [ "from enum import Enum, IntEnum, Flag, auto, unique", "from typing import Optional" ]
 }
