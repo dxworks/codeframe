@@ -177,6 +177,7 @@ This project uses Tree-sitter and its language grammars, which are licensed unde
 - **JavaScript**: Destructured parameters emit leaf names only; dynamic imports ignored; class expressions (`const X = class {}`) not detected as types; constructor functions appear as methods
 - **C#**: Events not handled; see test samples for details
 - **Java**: Local/anonymous classes not extracted as separate types
+- **Python**: Nested functions (e.g., decorator wrappers like `wrapper` inside `log_calls`) are extracted as top-level methods to preserve code information, even though they are technically nested within their parent function. This may result in duplicate function names in the output (e.g., multiple `wrapper` functions from different decorators). Type aliases using `TypeAlias` annotation are captured with `kind: "type_alias"`. PEP 695 style (`type X = ...`) is not yet supported by the tree-sitter-python grammar
 - **SQL**: See [SQL_ANALYSIS.md](SQL_ANALYSIS.md)
 
 ## Testing

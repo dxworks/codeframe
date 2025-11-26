@@ -11,7 +11,28 @@ import java.util.Set;
 
 import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
 
+/**
+ * Python language analyzer using Tree-sitter.
+ * 
+ * Extracts classes, methods, fields, type aliases, and method calls from Python source files.
+ * Uses Python naming conventions for visibility (underscore prefix = protected, double underscore = private).
+ */
+
 public class PythonAnalyzer implements LanguageAnalyzer {
+    
+    /**
+     * Determines visibility based on Python naming conventions.
+     * - Names starting with __ (but not ending with __) are private (name mangling)
+     * - Names starting with _ are protected (convention)
+     * - Dunder names (__name__) and regular names are public
+     */
+    private static String determineVisibility(String name) {
+        if (name == null) return "public";
+        if (name.startsWith("__") && name.endsWith("__")) return "public";  // dunder methods
+        if (name.startsWith("__")) return "private";  // name mangled
+        if (name.startsWith("_")) return "protected";
+        return "public";
+    }
     
     @Override
     public FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
@@ -35,7 +56,12 @@ public class PythonAnalyzer implements LanguageAnalyzer {
             }
         }
         
+        // Extract type aliases (both old-style TypeAlias and PEP 695 type statements)
+        extractTypeAliases(sourceCode, rootNode, analysis);
+        
         // Find standalone functions (not inside classes)
+        // Note: Nested functions (like decorator wrappers) are included as top-level methods
+        // to preserve code information, even though they're technically nested
         List<TSNode> allFunctions = findAllDescendants(rootNode, "function_definition");
         for (TSNode funcDecl : allFunctions) {
             if (funcDecl == null || funcDecl.isNull()) {
@@ -69,17 +95,125 @@ public class PythonAnalyzer implements LanguageAnalyzer {
     }
     
     private void extractImports(String source, TSNode rootNode, FileAnalysis analysis) {
-        // Extract import statements
-        List<TSNode> importStmts = findAllDescendants(rootNode, "import_statement");
-        for (TSNode importStmt : importStmts) {
-            analysis.imports.add(getNodeText(source, importStmt).trim());
+        // Extract all import types: import, from...import, and from __future__ import
+        List<TSNode> allImports = findAllDescendantsOfTypes(rootNode, 
+            "import_statement", "import_from_statement", "future_import_statement");
+        for (TSNode importNode : allImports) {
+            String importText = getNodeText(source, importNode);
+            if (importText != null) {
+                analysis.imports.add(importText.trim());
+            }
+        }
+    }
+    
+    /**
+     * Extract type aliases from Python source.
+     * Handles two forms:
+     * 1. Old-style: `Name: TypeAlias = SomeType` (annotated assignment with TypeAlias)
+     * 2. PEP 695 (Python 3.12+): `type Name = SomeType` (type_alias_statement)
+     */
+    private void extractTypeAliases(String source, TSNode rootNode, FileAnalysis analysis) {
+        // PEP 695 style: type Name = SomeType
+        // Tree-sitter parses this as "type_alias_statement"
+        List<TSNode> typeAliasStmts = findAllDescendants(rootNode, "type_alias_statement");
+        for (TSNode typeAliasStmt : typeAliasStmts) {
+            TypeInfo typeAlias = analyzeTypeAliasStatement(source, typeAliasStmt);
+            if (typeAlias != null && typeAlias.name != null) {
+                analysis.types.add(typeAlias);
+            }
         }
         
-        // Extract from...import statements
-        List<TSNode> importFromStmts = findAllDescendants(rootNode, "import_from_statement");
-        for (TSNode importFromStmt : importFromStmts) {
-            analysis.imports.add(getNodeText(source, importFromStmt).trim());
+        // Old-style: Name: TypeAlias = SomeType
+        // These are annotated assignments at module level where the annotation contains "TypeAlias"
+        // We need to look at top-level assignments with type annotations
+        for (int i = 0; i < rootNode.getNamedChildCount(); i++) {
+            TSNode child = rootNode.getNamedChild(i);
+            if (child == null || child.isNull()) continue;
+            
+            String childType = child.getType();
+            // Look for expression_statement containing assignment with TypeAlias annotation
+            if ("expression_statement".equals(childType)) {
+                TSNode expr = child.getNamedChild(0);
+                if (expr != null && "assignment".equals(expr.getType())) {
+                    TypeInfo typeAlias = analyzeOldStyleTypeAlias(source, expr);
+                    if (typeAlias != null && typeAlias.name != null) {
+                        analysis.types.add(typeAlias);
+                    }
+                }
+            }
         }
+    }
+    
+    /**
+     * Analyze PEP 695 type alias statement: type Name = SomeType
+     */
+    private TypeInfo analyzeTypeAliasStatement(String source, TSNode typeAliasStmt) {
+        TypeInfo typeInfo = new TypeInfo();
+        typeInfo.kind = "type_alias";
+        typeInfo.visibility = "public";
+        
+        // Get the name (type_identifier or identifier)
+        TSNode nameNode = getChildByFieldName(typeAliasStmt, "name");
+        if (nameNode != null && !nameNode.isNull()) {
+            typeInfo.name = getNodeText(source, nameNode);
+        }
+        
+        // Get the aliased type (the value after =)
+        TSNode valueNode = getChildByFieldName(typeAliasStmt, "value");
+        if (valueNode != null && !valueNode.isNull()) {
+            typeInfo.extendsType = getNodeText(source, valueNode);
+        }
+        
+        // Check for type parameters (generics)
+        TSNode typeParams = getChildByFieldName(typeAliasStmt, "type_parameters");
+        if (typeParams != null && !typeParams.isNull() && typeInfo.name != null) {
+            typeInfo.name = typeInfo.name + getNodeText(source, typeParams);
+        }
+        
+        return typeInfo;
+    }
+    
+    /**
+     * Analyze old-style type alias: Name: TypeAlias = SomeType
+     * Returns null if this is not a type alias assignment.
+     */
+    private TypeInfo analyzeOldStyleTypeAlias(String source, TSNode assignment) {
+        // Structure: assignment has left (identifier with type annotation) and right (the aliased type)
+        // The annotation should contain "TypeAlias"
+        
+        TSNode leftNode = getChildByFieldName(assignment, "left");
+        TSNode rightNode = getChildByFieldName(assignment, "right");
+        
+        if (leftNode == null || leftNode.isNull() || rightNode == null || rightNode.isNull()) {
+            return null;
+        }
+        
+        // Check if left is an identifier with a type annotation containing "TypeAlias"
+        String leftType = leftNode.getType();
+        String name = null;
+        String annotation = null;
+        
+        if ("identifier".equals(leftType)) {
+            // Simple case: Name: TypeAlias = ...
+            // The type annotation is a sibling in the assignment
+            TSNode typeNode = getChildByFieldName(assignment, "type");
+            if (typeNode != null && !typeNode.isNull()) {
+                annotation = getNodeText(source, typeNode);
+                name = getNodeText(source, leftNode);
+            }
+        }
+        
+        // Check if the annotation contains "TypeAlias"
+        if (annotation == null || !annotation.contains("TypeAlias")) {
+            return null;
+        }
+        
+        TypeInfo typeInfo = new TypeInfo();
+        typeInfo.kind = "type_alias";
+        typeInfo.name = name;
+        typeInfo.visibility = determineVisibility(name);
+        typeInfo.extendsType = getNodeText(source, rightNode);
+        return typeInfo;
     }
     
     private boolean isInsideClass(TSNode node) {
@@ -104,7 +238,6 @@ public class PythonAnalyzer implements LanguageAnalyzer {
         }
         return false;
     }
-    
     
     private void analyzeClassRecursively(String source, TSNode classDecl, FileAnalysis analysis) {
         analyzeClassRecursivelyInto(source, classDecl, analysis.types);
@@ -134,28 +267,50 @@ public class PythonAnalyzer implements LanguageAnalyzer {
         typeInfo.fields.addAll(fields);
         
         // Analyze methods within this class only
+        // We need to look for both direct function_definition AND decorated_definition children
         List<TSNode> methods = findAllChildren(classBody, "function_definition");
+        List<TSNode> decoratedDefs = findAllChildren(classBody, "decorated_definition");
+        
+        // Process undecorated methods
         for (TSNode method : methods) {
             if (method == null || method.isNull()) continue;
             
-            // Check if method is wrapped in decorated_definition
-            TSNode methodParent = method.getParent();
-            TSNode methodNodeToAnalyze = method;
-            if (methodParent != null && !methodParent.isNull() && "decorated_definition".equals(methodParent.getType())) {
-                methodNodeToAnalyze = methodParent;
-            }
-            
-            MethodInfo methodInfo = analyzeMethod(source, method, methodNodeToAnalyze, typeInfo.name);
+            MethodInfo methodInfo = analyzeMethod(source, method, method, typeInfo.name);
             if (methodInfo.name != null && !methodInfo.name.isEmpty()) {
                 typeInfo.methods.add(methodInfo);
             }
         }
         
-        // Recursively process nested classes
+        // Process decorated methods (including @staticmethod, @classmethod, @property)
+        for (TSNode decoratedDef : decoratedDefs) {
+            if (decoratedDef == null || decoratedDef.isNull()) continue;
+            
+            // Find the function_definition inside the decorated_definition
+            TSNode funcDef = findFirstChild(decoratedDef, "function_definition");
+            if (funcDef == null || funcDef.isNull()) continue;
+            
+            MethodInfo methodInfo = analyzeMethod(source, funcDef, decoratedDef, typeInfo.name);
+            if (methodInfo.name != null && !methodInfo.name.isEmpty()) {
+                typeInfo.methods.add(methodInfo);
+            }
+        }
+        
+        // Recursively process nested classes (both decorated and undecorated)
         List<TSNode> nestedClasses = findAllChildren(classBody, "class_definition");
         for (TSNode nested : nestedClasses) {
             if (nested != null && !nested.isNull()) {
                 analyzeClassRecursivelyInto(source, nested, typeInfo.types);
+            }
+        }
+        
+        // Also check for decorated nested classes (e.g., @dataclass inside a class)
+        for (TSNode decoratedDef : decoratedDefs) {
+            if (decoratedDef == null || decoratedDef.isNull()) continue;
+            
+            // Check if this decorated_definition contains a class_definition (not function)
+            TSNode nestedClass = findFirstChild(decoratedDef, "class_definition");
+            if (nestedClass != null && !nestedClass.isNull()) {
+                analyzeClassRecursivelyInto(source, nestedClass, typeInfo.types);
             }
         }
     }
@@ -171,38 +326,34 @@ public class PythonAnalyzer implements LanguageAnalyzer {
         // Extract decorators (Python's annotations)
         extractDecorators(source, decoratedNode, typeInfo.annotations);
         
-        // Get class name - should be an identifier child
+        // Get class name
         TSNode nameNode = findFirstChild(classDefNode, "identifier");
         if (nameNode != null && !nameNode.isNull()) {
             typeInfo.name = getNodeText(source, nameNode);
         }
-        
-        // Determine visibility based on naming convention
-        // Python uses naming conventions for visibility (not explicit keywords)
-        if (typeInfo.name != null) {
-            // Special methods (dunder methods like __init__, __str__) are public by convention
-            if (typeInfo.name.startsWith("__") && typeInfo.name.endsWith("__")) {
-                typeInfo.visibility = "public";
-            } else if (typeInfo.name.startsWith("__")) {
-                // Name mangled private methods
-                typeInfo.visibility = "private";
-            } else if (typeInfo.name.startsWith("_")) {
-                typeInfo.visibility = "protected";
-            } else {
-                typeInfo.visibility = "public";
-            }
-        }
+        typeInfo.visibility = determineVisibility(typeInfo.name);
         
         // Get base classes (Python supports multiple inheritance)
+        // Base classes can be: identifier (e.g., "Repository") or attribute (e.g., "abc.ABC")
         TSNode argumentList = findFirstChild(classDefNode, "argument_list");
         if (argumentList != null && !argumentList.isNull()) {
-            List<TSNode> identifiers = findAllDescendants(argumentList, "identifier");
-            for (int i = 0; i < identifiers.size(); i++) {
-                String baseName = getNodeText(source, identifiers.get(i));
+            List<String> baseClasses = new ArrayList<>();
+            for (int i = 0; i < argumentList.getNamedChildCount(); i++) {
+                TSNode child = argumentList.getNamedChild(i);
+                if (child == null || child.isNull()) continue;
+                
+                String childType = child.getType();
+                if ("identifier".equals(childType) || "attribute".equals(childType)) {
+                    // For both simple names and qualified names (abc.ABC), get full text
+                    baseClasses.add(getNodeText(source, child));
+                }
+            }
+            
+            for (int i = 0; i < baseClasses.size(); i++) {
                 if (i == 0) {
-                    typeInfo.extendsType = baseName;
+                    typeInfo.extendsType = baseClasses.get(i);
                 } else {
-                    typeInfo.implementsInterfaces.add(baseName);
+                    typeInfo.implementsInterfaces.add(baseClasses.get(i));
                 }
             }
         }
@@ -227,46 +378,100 @@ public class PythonAnalyzer implements LanguageAnalyzer {
                 continue;
             }
             
-            // Look for assignments
+            // Look for assignments in expression_statement
             if ("expression_statement".equals(child.getType())) {
+                // Try regular assignment first
                 TSNode assignment = findFirstChild(child, "assignment");
                 if (assignment != null && !assignment.isNull()) {
-                    TSNode leftSide = assignment.getNamedChild(0);
-                    if (leftSide != null && !leftSide.isNull() && "identifier".equals(leftSide.getType())) {
-                        FieldInfo fieldInfo = new FieldInfo();
-                        fieldInfo.name = getNodeText(source, leftSide);
-                        
-                        // Check for type annotation (e.g., name: str)
-                        TSNode typeNode = getChildByFieldName(assignment, "type");
-                        
-                        if (typeNode != null && !typeNode.isNull()) {
-                            fieldInfo.type = getNodeText(source, typeNode);
-                        } else {
-                            // Try to infer type from the right side
-                            TSNode rightSide = getChildByFieldName(assignment, "right");
-                            if (rightSide != null && !rightSide.isNull()) {
-                                fieldInfo.type = inferType(source, rightSide);
-                            }
-                        }
-                        
-                        // Python uses naming conventions for visibility (not explicit keywords)
-                        if (fieldInfo.name != null) {
-                            if (fieldInfo.name.startsWith("__") && !fieldInfo.name.endsWith("__")) {
-                                fieldInfo.visibility = "private";
-                            } else if (fieldInfo.name.startsWith("_")) {
-                                fieldInfo.visibility = "protected";
-                            } else {
-                                fieldInfo.visibility = "public";
-                            }
-                        }
-                        
+                    FieldInfo fieldInfo = extractFieldFromAssignment(source, assignment);
+                    if (fieldInfo != null) {
                         fields.add(fieldInfo);
                     }
+                }
+            }
+            
+            // Also handle typed class attributes without assignment (e.g., "name: str")
+            // These appear as "type" nodes directly in the class body
+            if ("type".equals(child.getType())) {
+                FieldInfo fieldInfo = extractFieldFromTypeAnnotation(source, child);
+                if (fieldInfo != null) {
+                    fields.add(fieldInfo);
                 }
             }
         }
         
         return fields;
+    }
+    
+    /**
+     * Extracts field information from an assignment node.
+     * Handles both simple assignments (x = 1) and typed assignments (x: int = 1).
+     */
+    private FieldInfo extractFieldFromAssignment(String source, TSNode assignment) {
+        if (assignment == null || assignment.isNull()) {
+            return null;
+        }
+        
+        // Get field components using tree-sitter field names
+        TSNode leftNode = getChildByFieldName(assignment, "left");
+        TSNode typeNode = getChildByFieldName(assignment, "type");
+        TSNode rightNode = getChildByFieldName(assignment, "right");
+        
+        // Extract field name from left side (must be a simple identifier)
+        String fieldName = null;
+        if (leftNode != null && !leftNode.isNull() && "identifier".equals(leftNode.getType())) {
+            fieldName = getNodeText(source, leftNode);
+        }
+        if (fieldName == null || fieldName.isEmpty()) {
+            return null;
+        }
+        
+        // Get type from annotation, or infer from value
+        String fieldType = null;
+        if (typeNode != null && !typeNode.isNull()) {
+            fieldType = getNodeText(source, typeNode);
+        } else if (rightNode != null && !rightNode.isNull()) {
+            fieldType = inferType(source, rightNode);
+        }
+        
+        FieldInfo fieldInfo = new FieldInfo();
+        fieldInfo.name = fieldName;
+        fieldInfo.type = fieldType;
+        fieldInfo.visibility = determineVisibility(fieldName);
+        return fieldInfo;
+    }
+    
+    /**
+     * Extracts field information from a standalone type annotation (e.g., "name: str" without assignment).
+     */
+    private FieldInfo extractFieldFromTypeAnnotation(String source, TSNode typeNode) {
+        if (typeNode == null || typeNode.isNull()) {
+            return null;
+        }
+        
+        // Type annotation node structure: identifier followed by type
+        TSNode identNode = findFirstChild(typeNode, "identifier");
+        if (identNode == null || identNode.isNull()) {
+            return null;
+        }
+        
+        String fieldName = getNodeText(source, identNode);
+        if (fieldName == null || fieldName.isEmpty()) {
+            return null;
+        }
+        
+        // Get the type - it's usually the text after the colon
+        String fullText = getNodeText(source, typeNode);
+        String fieldType = null;
+        if (fullText != null && fullText.contains(":")) {
+            fieldType = fullText.substring(fullText.indexOf(":") + 1).trim();
+        }
+        
+        FieldInfo fieldInfo = new FieldInfo();
+        fieldInfo.name = fieldName;
+        fieldInfo.type = fieldType;
+        fieldInfo.visibility = determineVisibility(fieldName);
+        return fieldInfo;
     }
     
     private String inferType(String source, TSNode node) {
@@ -318,27 +523,12 @@ public class PythonAnalyzer implements LanguageAnalyzer {
         // Extract decorators
         extractDecorators(source, decoratedNode, methodInfo.annotations);
         
-        // Get function name - should be an identifier child
+        // Get function name
         TSNode nameNode = findFirstChild(funcDef, "identifier");
         if (nameNode != null && !nameNode.isNull()) {
             methodInfo.name = getNodeText(source, nameNode);
         }
-        
-        // Determine visibility based on naming convention
-        // Python uses naming conventions for visibility (not explicit keywords)
-        if (methodInfo.name != null) {
-            // Special methods (dunder methods like __init__, __str__) are public by convention
-            if (methodInfo.name.startsWith("__") && methodInfo.name.endsWith("__")) {
-                methodInfo.visibility = "public";
-            } else if (methodInfo.name.startsWith("__")) {
-                // Name mangled private methods
-                methodInfo.visibility = "private";
-            } else if (methodInfo.name.startsWith("_")) {
-                methodInfo.visibility = "protected";
-            } else {
-                methodInfo.visibility = "public";
-            }
-        }
+        methodInfo.visibility = determineVisibility(methodInfo.name);
         
         // Check if function is async by looking for the async keyword before the function
         // In Python tree-sitter, check if there's text "async" before the function definition
@@ -387,7 +577,8 @@ public class PythonAnalyzer implements LanguageAnalyzer {
             return;
         }
         
-        // Python parameters can be: identifier, typed_parameter, default_parameter, etc.
+        // Python parameters can be: identifier, typed_parameter, default_parameter,
+        // list_splat_pattern (*args), dictionary_splat_pattern (**kwargs), etc.
         for (int i = 0; i < paramsNode.getNamedChildCount(); i++) {
             TSNode paramNode = paramsNode.getNamedChild(i);
             if (paramNode == null || paramNode.isNull()) {
@@ -402,13 +593,31 @@ public class PythonAnalyzer implements LanguageAnalyzer {
             if ("identifier".equals(paramType)) {
                 paramName = getNodeText(source, paramNode);
             } else if ("typed_parameter".equals(paramType) || "typed_default_parameter".equals(paramType)) {
-                // Extract name and type
-                TSNode nameNode = findFirstChild(paramNode, "identifier");
+                // Could be regular typed param or typed variadic (*args: Any, **kwargs: Any)
+                TSNode splatNode = findFirstChild(paramNode, "list_splat_pattern");
+                TSNode dictSplatNode = findFirstChild(paramNode, "dictionary_splat_pattern");
                 TSNode typeNode = findFirstChild(paramNode, "type");
                 
-                if (nameNode != null && !nameNode.isNull()) {
-                    paramName = getNodeText(source, nameNode);
+                if (splatNode != null && !splatNode.isNull()) {
+                    // Typed *args
+                    TSNode nameNode = findFirstChild(splatNode, "identifier");
+                    if (nameNode != null && !nameNode.isNull()) {
+                        paramName = "*" + getNodeText(source, nameNode);
+                    }
+                } else if (dictSplatNode != null && !dictSplatNode.isNull()) {
+                    // Typed **kwargs
+                    TSNode nameNode = findFirstChild(dictSplatNode, "identifier");
+                    if (nameNode != null && !nameNode.isNull()) {
+                        paramName = "**" + getNodeText(source, nameNode);
+                    }
+                } else {
+                    // Regular typed parameter
+                    TSNode nameNode = findFirstChild(paramNode, "identifier");
+                    if (nameNode != null && !nameNode.isNull()) {
+                        paramName = getNodeText(source, nameNode);
+                    }
                 }
+                
                 if (typeNode != null && !typeNode.isNull()) {
                     paramTypeHint = getNodeText(source, typeNode);
                 }
@@ -417,16 +626,34 @@ public class PythonAnalyzer implements LanguageAnalyzer {
                 if (nameNode != null && !nameNode.isNull()) {
                     paramName = getNodeText(source, nameNode);
                 }
+            } else if ("list_splat_pattern".equals(paramType)) {
+                // *args - variadic positional parameter (untyped)
+                TSNode nameNode = findFirstChild(paramNode, "identifier");
+                if (nameNode != null && !nameNode.isNull()) {
+                    paramName = "*" + getNodeText(source, nameNode);
+                }
+            } else if ("dictionary_splat_pattern".equals(paramType)) {
+                // **kwargs - variadic keyword parameter (untyped)
+                TSNode nameNode = findFirstChild(paramNode, "identifier");
+                if (nameNode != null && !nameNode.isNull()) {
+                    paramName = "**" + getNodeText(source, nameNode);
+                }
             }
             
             // Skip 'self' and 'cls' parameters, and validate parameter name
             if (paramName != null && !"self".equals(paramName) && !"cls".equals(paramName)) {
-                // Validate parameter name is a valid identifier
-                if (paramName.matches("[a-zA-Z_][a-zA-Z0-9_]*")) {
+                // Validate parameter name (strip * or ** prefix for variadics before checking)
+                String cleanName = paramName.replaceFirst("^\\*\\*?", "");
+                if (isValidPythonIdentifier(cleanName)) {
                     methodInfo.parameters.add(new Parameter(paramName, paramTypeHint));
                 }
             }
         }
+    }
+    
+    /** Checks if a name is a valid Python identifier. */
+    private static boolean isValidPythonIdentifier(String name) {
+        return name != null && name.matches("[a-zA-Z_][a-zA-Z0-9_]*");
     }
     
     private void analyzeMethodBody(String source, TSNode bodyNode, MethodInfo methodInfo, String className) {
@@ -448,8 +675,9 @@ public class PythonAnalyzer implements LanguageAnalyzer {
             if (leftSide != null && !leftSide.isNull() && "identifier".equals(leftSide.getType())) {
                 String varName = getNodeText(source, leftSide);
                 // Avoid adding 'self' attributes and validate variable name
-                if (varName != null && !varName.startsWith("self.") && !methodInfo.localVariables.contains(varName)
-                    && varName.matches("[a-zA-Z_][a-zA-Z0-9_]*")) {
+                if (varName != null && !varName.startsWith("self.") 
+                    && !methodInfo.localVariables.contains(varName)
+                    && isValidPythonIdentifier(varName)) {
                     methodInfo.localVariables.add(varName);
                     
                     // Try to infer type
@@ -512,22 +740,8 @@ public class PythonAnalyzer implements LanguageAnalyzer {
                     methodName = getNodeText(source, functionNode);
                 }
                 
-                if (methodName != null && !methodName.isEmpty()) {
-                    // Validate method name - should be a valid identifier (letters, numbers, underscores)
-                    if (methodName.matches("[a-zA-Z_][a-zA-Z0-9_]*")) {
-                        // Aggregate method calls
-                        boolean found = false;
-                        for (MethodCall existingCall : methodInfo.methodCalls) {
-                            if (existingCall.matches(methodName, objectType, objectName, null)) {
-                                existingCall.callCount++;
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found) {
-                            methodInfo.methodCalls.add(new MethodCall(methodName, objectType, objectName));
-                        }
-                    }
+                if (methodName != null && !methodName.isEmpty() && isValidPythonIdentifier(methodName)) {
+                    collectMethodCall(methodInfo, methodName, objectType, objectName);
                 }
             }
         }

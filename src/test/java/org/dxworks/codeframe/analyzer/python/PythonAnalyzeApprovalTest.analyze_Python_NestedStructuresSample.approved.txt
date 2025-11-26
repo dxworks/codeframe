@@ -1,0 +1,916 @@
+{
+  "filePath" : "src/test/resources/samples/python/nested_structures_sample.py",
+  "language" : "python",
+  "packageName" : null,
+  "types" : [ {
+    "kind" : "class",
+    "name" : "Outer",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "__init__",
+      "returnType" : "None",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "label",
+        "type" : "str"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "create_inner",
+      "returnType" : "\"Outer.Inner\"",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "value",
+        "type" : "int"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "Inner",
+        "objectType" : null,
+        "objectName" : "Outer",
+        "callCount" : 1,
+        "parameterCount" : null
+      } ]
+    }, {
+      "name" : "get_label",
+      "returnType" : "str",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ {
+      "kind" : "class",
+      "name" : "Inner",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "extendsType" : null,
+      "implementsInterfaces" : [ ],
+      "mixins" : [ ],
+      "fields" : [ ],
+      "properties" : [ ],
+      "methods" : [ {
+        "name" : "__init__",
+        "returnType" : "None",
+        "visibility" : "public",
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "parameters" : [ {
+          "name" : "value",
+          "type" : "int"
+        } ],
+        "localVariables" : [ ],
+        "methodCalls" : [ ]
+      }, {
+        "name" : "get_value",
+        "returnType" : "int",
+        "visibility" : "public",
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "parameters" : [ ],
+        "localVariables" : [ ],
+        "methodCalls" : [ ]
+      } ],
+      "types" : [ {
+        "kind" : "class",
+        "name" : "DeepNested",
+        "visibility" : "public",
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "extendsType" : null,
+        "implementsInterfaces" : [ ],
+        "mixins" : [ ],
+        "fields" : [ ],
+        "properties" : [ ],
+        "methods" : [ {
+          "name" : "__init__",
+          "returnType" : "None",
+          "visibility" : "public",
+          "modifiers" : [ ],
+          "annotations" : [ ],
+          "parameters" : [ {
+            "name" : "data",
+            "type" : "str"
+          } ],
+          "localVariables" : [ ],
+          "methodCalls" : [ ]
+        }, {
+          "name" : "process",
+          "returnType" : "str",
+          "visibility" : "public",
+          "modifiers" : [ ],
+          "annotations" : [ ],
+          "parameters" : [ ],
+          "localVariables" : [ ],
+          "methodCalls" : [ {
+            "methodName" : "upper",
+            "objectType" : null,
+            "objectName" : "self._data",
+            "callCount" : 1,
+            "parameterCount" : null
+          } ]
+        } ],
+        "types" : [ ]
+      } ]
+    }, {
+      "kind" : "class",
+      "name" : "AnotherInner",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "extendsType" : null,
+      "implementsInterfaces" : [ ],
+      "mixins" : [ ],
+      "fields" : [ ],
+      "properties" : [ ],
+      "methods" : [ {
+        "name" : "__init__",
+        "returnType" : "None",
+        "visibility" : "public",
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "parameters" : [ {
+          "name" : "name",
+          "type" : "str"
+        } ],
+        "localVariables" : [ ],
+        "methodCalls" : [ ]
+      }, {
+        "name" : "greet",
+        "returnType" : "str",
+        "visibility" : "public",
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "parameters" : [ ],
+        "localVariables" : [ ],
+        "methodCalls" : [ ]
+      } ],
+      "types" : [ ]
+    } ]
+  }, {
+    "kind" : "class",
+    "name" : "Node",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "__init__",
+      "returnType" : "None",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "value",
+        "type" : "Any"
+      }, {
+        "name" : "children",
+        "type" : "list[\"Node\"] | None"
+      }, {
+        "name" : "metadata",
+        "type" : "dict[str, Any] | None"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "traverse",
+      "returnType" : "list[Any]",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ "result" ],
+      "methodCalls" : [ {
+        "methodName" : "extend",
+        "objectType" : "list",
+        "objectName" : "result",
+        "callCount" : 1,
+        "parameterCount" : null
+      }, {
+        "methodName" : "traverse",
+        "objectType" : null,
+        "objectName" : "child",
+        "callCount" : 1,
+        "parameterCount" : null
+      } ]
+    }, {
+      "name" : "builder",
+      "returnType" : "\"Node.Builder\"",
+      "visibility" : "public",
+      "modifiers" : [ "static" ],
+      "annotations" : [ "@staticmethod" ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "Builder",
+        "objectType" : null,
+        "objectName" : "Node",
+        "callCount" : 1,
+        "parameterCount" : null
+      } ]
+    } ],
+    "types" : [ {
+      "kind" : "class",
+      "name" : "Builder",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "extendsType" : null,
+      "implementsInterfaces" : [ ],
+      "mixins" : [ ],
+      "fields" : [ ],
+      "properties" : [ ],
+      "methods" : [ {
+        "name" : "__init__",
+        "returnType" : "None",
+        "visibility" : "public",
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "parameters" : [ ],
+        "localVariables" : [ ],
+        "methodCalls" : [ ]
+      }, {
+        "name" : "value",
+        "returnType" : "\"Node.Builder\"",
+        "visibility" : "public",
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "parameters" : [ {
+          "name" : "val",
+          "type" : "Any"
+        } ],
+        "localVariables" : [ ],
+        "methodCalls" : [ ]
+      }, {
+        "name" : "add_child",
+        "returnType" : "\"Node.Builder\"",
+        "visibility" : "public",
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "parameters" : [ {
+          "name" : "child",
+          "type" : "\"Node\""
+        } ],
+        "localVariables" : [ ],
+        "methodCalls" : [ {
+          "methodName" : "append",
+          "objectType" : null,
+          "objectName" : "self._children",
+          "callCount" : 1,
+          "parameterCount" : null
+        } ]
+      }, {
+        "name" : "metadata",
+        "returnType" : "\"Node.Builder\"",
+        "visibility" : "public",
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "parameters" : [ {
+          "name" : "key",
+          "type" : "str"
+        }, {
+          "name" : "val",
+          "type" : "Any"
+        } ],
+        "localVariables" : [ ],
+        "methodCalls" : [ ]
+      }, {
+        "name" : "build",
+        "returnType" : "\"Node\"",
+        "visibility" : "public",
+        "modifiers" : [ ],
+        "annotations" : [ ],
+        "parameters" : [ ],
+        "localVariables" : [ ],
+        "methodCalls" : [ {
+          "methodName" : "Node",
+          "objectType" : null,
+          "objectName" : null,
+          "callCount" : 1,
+          "parameterCount" : null
+        } ]
+      } ],
+      "types" : [ ]
+    } ]
+  }, {
+    "kind" : "class",
+    "name" : "ListProcessor",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "__init__",
+      "returnType" : "None",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "items",
+        "type" : "list[Any]"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "filter_positive",
+      "returnType" : "list[int]",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "filter",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      }, {
+        "methodName" : "list",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      } ]
+    }, {
+      "name" : "double_values",
+      "returnType" : "list[int]",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "list",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      }, {
+        "methodName" : "map",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      } ]
+    }, {
+      "name" : "sort_by_length",
+      "returnType" : "list[str]",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "len",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      }, {
+        "methodName" : "sorted",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      }, {
+        "methodName" : "str",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      } ]
+    }, {
+      "name" : "sort_by_key",
+      "returnType" : "list[dict]",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "str"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "get",
+        "objectType" : null,
+        "objectName" : "d",
+        "callCount" : 1,
+        "parameterCount" : null
+      }, {
+        "methodName" : "sorted",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      } ]
+    }, {
+      "name" : "reduce_sum",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "reduce",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      } ]
+    }, {
+      "name" : "find_first",
+      "returnType" : "Any | None",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "predicate",
+        "type" : "Callable[[Any], bool]"
+      } ],
+      "localVariables" : [ "matches" ],
+      "methodCalls" : [ {
+        "methodName" : "filter",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      }, {
+        "methodName" : "next",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "DataTransformer",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "__init__",
+      "returnType" : "None",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "data",
+        "type" : "list[Any]"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "list_comprehension",
+      "returnType" : "list[int]",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "isinstance",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      } ]
+    }, {
+      "name" : "dict_comprehension",
+      "returnType" : "dict[str, int]",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "isinstance",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      }, {
+        "methodName" : "str",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      } ]
+    }, {
+      "name" : "set_comprehension",
+      "returnType" : "set[int]",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "abs",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      }, {
+        "methodName" : "isinstance",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      } ]
+    }, {
+      "name" : "nested_comprehension",
+      "returnType" : "list[tuple[int, int]]",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "range",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 2,
+        "parameterCount" : null
+      } ]
+    }, {
+      "name" : "generator_expression",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "isinstance",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      }, {
+        "methodName" : "sum",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      } ]
+    }, {
+      "name" : "conditional_expression",
+      "returnType" : "list[str]",
+      "visibility" : "public",
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "isinstance",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      } ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ {
+    "name" : "make_counter",
+    "returnType" : "Callable[[], int]",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "start",
+      "type" : "int"
+    } ],
+    "localVariables" : [ "count" ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "counter",
+    "returnType" : "int",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "make_multiplier",
+    "returnType" : "Callable[[int], int]",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "factor",
+      "type" : "int"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "multiply",
+    "returnType" : "int",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "int"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "create_operations",
+    "returnType" : "dict[str, Callable[[int, int], int]]",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ ],
+    "localVariables" : [ ],
+    "methodCalls" : [ {
+      "methodName" : "ValueError",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "add",
+    "returnType" : "int",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "a",
+      "type" : "int"
+    }, {
+      "name" : "b",
+      "type" : "int"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "subtract",
+    "returnType" : "int",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "a",
+      "type" : "int"
+    }, {
+      "name" : "b",
+      "type" : "int"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "multiply",
+    "returnType" : "int",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "a",
+      "type" : "int"
+    }, {
+      "name" : "b",
+      "type" : "int"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "divide",
+    "returnType" : "int",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "a",
+      "type" : "int"
+    }, {
+      "name" : "b",
+      "type" : "int"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ {
+      "methodName" : "ValueError",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "memoize",
+    "returnType" : "Callable[..., T]",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "func",
+      "type" : "Callable[..., T]"
+    } ],
+    "localVariables" : [ "cache", "key" ],
+    "methodCalls" : [ {
+      "methodName" : "func",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "wrapper",
+    "returnType" : "T",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "*args",
+      "type" : "Any"
+    } ],
+    "localVariables" : [ "key" ],
+    "methodCalls" : [ {
+      "methodName" : "func",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "process_with_transform",
+    "returnType" : "list[int]",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "items",
+      "type" : "list[int]"
+    }, {
+      "name" : "transform",
+      "type" : "Callable[[int], int]"
+    }, {
+      "name" : "filter_func",
+      "type" : "Callable[[int], bool]"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ {
+      "methodName" : "filter_func",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "transform",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "sort_with_key",
+    "returnType" : "list[Any]",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "items",
+      "type" : "list[Any]"
+    }, {
+      "name" : "key",
+      "type" : "Callable[[Any], Any]"
+    }, {
+      "name" : "reverse",
+      "type" : "bool"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ {
+      "methodName" : "sorted",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "create_calculator",
+    "returnType" : null,
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ ],
+    "localVariables" : [ "result" ],
+    "methodCalls" : [ {
+      "methodName" : "do_add",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "do_subtract",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "add",
+    "returnType" : "None",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "int"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ {
+      "methodName" : "do_add",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "do_add",
+    "returnType" : "None",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "subtract",
+    "returnType" : "None",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "int"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ {
+      "methodName" : "do_subtract",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "do_subtract",
+    "returnType" : "None",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "get_result",
+    "returnType" : "int",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "reset",
+    "returnType" : "None",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  } ],
+  "imports" : [ "from typing import Any, Callable, TypeVar", "from functools import reduce" ]
+}

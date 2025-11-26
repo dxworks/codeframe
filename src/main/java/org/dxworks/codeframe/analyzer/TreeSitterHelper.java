@@ -150,10 +150,13 @@ public class TreeSitterHelper {
 
     public static TSNode getChildByFieldName(TSNode parent, String fieldName) {
         if (parent == null || parent.isNull()) return null;
-        for (int i = 0; i < parent.getNamedChildCount(); i++) {
+        // Use getChildCount() and getChild(i) because getFieldNameForChild(i) 
+        // expects the total child index (including anonymous nodes like operators, punctuation),
+        // not the named child index
+        for (int i = 0; i < parent.getChildCount(); i++) {
             try {
                 String fn = parent.getFieldNameForChild(i);
-                if (fieldName.equals(fn)) return parent.getNamedChild(i);
+                if (fieldName.equals(fn)) return parent.getChild(i);
             } catch (Exception ignored) { }
         }
         return null;

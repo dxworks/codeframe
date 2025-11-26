@@ -13,25 +13,25 @@
     "mixins" : [ ],
     "fields" : [ {
       "name" : "name",
-      "type" : null,
+      "type" : "str",
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ]
     }, {
       "name" : "version",
-      "type" : "\"1.0\"",
+      "type" : "str",
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ]
     }, {
       "name" : "debug",
-      "type" : "False",
+      "type" : "bool",
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ]
     }, {
       "name" : "metadata",
-      "type" : "field(default_factory=dict)",
+      "type" : "Dict[str, Any]",
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ]
@@ -45,14 +45,14 @@
     "visibility" : "public",
     "modifiers" : [ ],
     "annotations" : [ ],
-    "extendsType" : "abc",
-    "implementsInterfaces" : [ "ABC" ],
+    "extendsType" : "abc.ABC",
+    "implementsInterfaces" : [ ],
     "mixins" : [ ],
     "fields" : [ ],
     "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
-      "returnType" : null,
+      "returnType" : "None",
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ],
@@ -70,7 +70,7 @@
       } ]
     }, {
       "name" : "put",
-      "returnType" : null,
+      "returnType" : "None",
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ],
@@ -103,7 +103,7 @@
       } ]
     }, {
       "name" : "get",
-      "returnType" : null,
+      "returnType" : "Optional[Any]",
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ],
@@ -127,7 +127,7 @@
       } ]
     }, {
       "name" : "delete",
-      "returnType" : null,
+      "returnType" : "bool",
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ],
@@ -151,7 +151,7 @@
       } ]
     }, {
       "name" : "keys",
-      "returnType" : null,
+      "returnType" : "List[str]",
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ],
@@ -190,7 +190,7 @@
       } ]
     }, {
       "name" : "_normalize_key",
-      "returnType" : null,
+      "returnType" : "str",
       "visibility" : "protected",
       "modifiers" : [ ],
       "annotations" : [ ],
@@ -214,7 +214,7 @@
       } ]
     }, {
       "name" : "_validate",
-      "returnType" : null,
+      "returnType" : "None",
       "visibility" : "protected",
       "modifiers" : [ ],
       "annotations" : [ ],
@@ -233,6 +233,54 @@
         "callCount" : 2,
         "parameterCount" : null
       } ]
+    }, {
+      "name" : "_put_impl",
+      "returnType" : "None",
+      "visibility" : "protected",
+      "modifiers" : [ ],
+      "annotations" : [ "@abc.abstractmethod" ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "str"
+      }, {
+        "name" : "value",
+        "type" : "Any"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "_get_impl",
+      "returnType" : "Optional[Any]",
+      "visibility" : "protected",
+      "modifiers" : [ ],
+      "annotations" : [ "@abc.abstractmethod" ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "str"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "_delete_impl",
+      "returnType" : "bool",
+      "visibility" : "protected",
+      "modifiers" : [ ],
+      "annotations" : [ "@abc.abstractmethod" ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "str"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "_keys_impl",
+      "returnType" : "Iterable[str]",
+      "visibility" : "protected",
+      "modifiers" : [ ],
+      "annotations" : [ "@abc.abstractmethod" ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
     } ],
     "types" : [ ]
   }, {
@@ -248,7 +296,7 @@
     "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
-      "returnType" : null,
+      "returnType" : "None",
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ],
@@ -272,7 +320,7 @@
       } ]
     }, {
       "name" : "upsert",
-      "returnType" : null,
+      "returnType" : "None",
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ],
@@ -293,7 +341,7 @@
       } ]
     }, {
       "name" : "_put_impl",
-      "returnType" : null,
+      "returnType" : "None",
       "visibility" : "protected",
       "modifiers" : [ ],
       "annotations" : [ ],
@@ -314,7 +362,7 @@
       } ]
     }, {
       "name" : "_get_impl",
-      "returnType" : null,
+      "returnType" : "Optional[Any]",
       "visibility" : "protected",
       "modifiers" : [ ],
       "annotations" : [ ],
@@ -332,7 +380,7 @@
       } ]
     }, {
       "name" : "_delete_impl",
-      "returnType" : null,
+      "returnType" : "bool",
       "visibility" : "protected",
       "modifiers" : [ ],
       "annotations" : [ ],
@@ -356,7 +404,7 @@
       } ]
     }, {
       "name" : "_keys_impl",
-      "returnType" : null,
+      "returnType" : "Iterable[str]",
       "visibility" : "protected",
       "modifiers" : [ ],
       "annotations" : [ ],
@@ -384,7 +432,7 @@
     "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
-      "returnType" : null,
+      "returnType" : "None",
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ],
@@ -396,7 +444,7 @@
       "methodCalls" : [ ]
     }, {
       "name" : "__enter__",
-      "returnType" : null,
+      "returnType" : "\"ResourceManager\"",
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ],
@@ -411,7 +459,7 @@
       } ]
     }, {
       "name" : "__exit__",
-      "returnType" : null,
+      "returnType" : "None",
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ],
@@ -435,7 +483,7 @@
       } ]
     }, {
       "name" : "is_active",
-      "returnType" : null,
+      "returnType" : "bool",
       "visibility" : "public",
       "modifiers" : [ ],
       "annotations" : [ ],
@@ -444,7 +492,7 @@
       "methodCalls" : [ ]
     }, {
       "name" : "_tag",
-      "returnType" : null,
+      "returnType" : "str",
       "visibility" : "protected",
       "modifiers" : [ ],
       "annotations" : [ ],
@@ -456,7 +504,7 @@
   } ],
   "methods" : [ {
     "name" : "batched",
-    "returnType" : null,
+    "returnType" : "Generator[List[Any], None, None]",
     "visibility" : "public",
     "modifiers" : [ ],
     "annotations" : [ ],
@@ -489,7 +537,7 @@
     } ]
   }, {
     "name" : "slugify",
-    "returnType" : null,
+    "returnType" : "str",
     "visibility" : "public",
     "modifiers" : [ ],
     "annotations" : [ ],
@@ -525,7 +573,7 @@
     } ]
   }, {
     "name" : "safe_divide",
-    "returnType" : null,
+    "returnType" : "float",
     "visibility" : "public",
     "modifiers" : [ ],
     "annotations" : [ ],
@@ -540,7 +588,7 @@
     "methodCalls" : [ ]
   }, {
     "name" : "fetch_data_async",
-    "returnType" : null,
+    "returnType" : "List[int]",
     "visibility" : "public",
     "modifiers" : [ "async" ],
     "annotations" : [ ],
@@ -593,5 +641,5 @@
       "parameterCount" : null
     } ]
   } ],
-  "imports" : [ "import abc", "import asyncio", "import contextlib", "import math", "import re", "from dataclasses import dataclass, field", "from datetime import datetime", "from typing import Any, Dict, Generator, Iterable, List, Optional, Tuple" ]
+  "imports" : [ "from __future__ import annotations", "import abc", "import asyncio", "import contextlib", "import math", "import re", "from dataclasses import dataclass, field", "from datetime import datetime", "from typing import Any, Dict, Generator, Iterable, List, Optional, Tuple" ]
 }
