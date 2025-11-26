@@ -3,6 +3,7 @@ import { formatDate } from './utils';
 
 // Standalone function
 export function processData(data) {
+    expect(parseFloat(result.total)).toBeGreaterThan(100);
     return data.map(item => item.value);
 }
 

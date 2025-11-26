@@ -45,7 +45,7 @@ public class JavaScriptAnalyzer implements LanguageAnalyzer {
         
         // Find all class declarations and identify nested ones
         List<TSNode> allClasses = findAllDescendants(rootNode, "class_declaration");
-        Set<Integer> nestedClassIds = identifyNestedClasses(allClasses);
+        Set<Integer> nestedClassIds = identifyNestedNodes(allClasses, "class_body", "class_declaration");
         
         // Process only top-level classes recursively
         for (TSNode classDecl : allClasses) {
@@ -151,19 +151,6 @@ public class JavaScriptAnalyzer implements LanguageAnalyzer {
         return analysis;
     }
     
-    private Set<Integer> identifyNestedClasses(List<TSNode> allClasses) {
-        Set<Integer> nestedClassIds = new HashSet<>();
-        for (TSNode classDecl : allClasses) {
-            TSNode classBody = findFirstChild(classDecl, "class_body");
-            if (classBody != null) {
-                List<TSNode> nested = findAllDescendants(classBody, "class_declaration");
-                for (TSNode n : nested) {
-                    nestedClassIds.add(n.getStartByte());
-                }
-            }
-        }
-        return nestedClassIds;
-    }
     
     private void analyzeClassRecursively(String source, TSNode classDecl, FileAnalysis analysis) {
         analyzeClassRecursivelyInto(source, classDecl, analysis.types);
@@ -532,7 +519,7 @@ public class JavaScriptAnalyzer implements LanguageAnalyzer {
 
                 TSNode objectExpr = functionNode.getNamedChild(0);
                 if (objectExpr != null) {
-                    objectName = renderObjectName(source, objectExpr);
+                    objectName = renderObjectName(source, objectExpr, JS_LITERAL_TYPES);
                     if (NT_IDENTIFIER.equals(objectExpr.getType())) {
                         objectType = localTypes.get(objectName);
                     }
@@ -580,27 +567,9 @@ public class JavaScriptAnalyzer implements LanguageAnalyzer {
         return target;
     }
 
-    private boolean isValidIdentifier(String name) {
-        return name != null && name.matches("[a-zA-Z_$][a-zA-Z0-9_$]*");
-    }
+    // Literal types for renderObjectName
+    private static final String[] JS_LITERAL_TYPES = {NT_ARRAY, NT_OBJECT, NT_STRING, NT_NUMBER};
 
-    private String renderObjectName(String source, TSNode objectExpr) {
-        String objType = objectExpr.getType();
-        if (NT_ARRAY.equals(objType) || NT_OBJECT.equals(objType) || NT_STRING.equals(objType) || NT_NUMBER.equals(objType)) {
-            return "<literal>";
-        }
-        return getNodeText(source, objectExpr);
-    }
-
-    private void collectMethodCall(MethodInfo methodInfo, String methodName, String objectType, String objectName) {
-        for (MethodCall existingCall : methodInfo.methodCalls) {
-            if (existingCall.matches(methodName, objectType, objectName, null)) {
-                existingCall.callCount++;
-                return;
-            }
-        }
-        methodInfo.methodCalls.add(new MethodCall(methodName, objectType, objectName));
-    }
     
     private List<FieldInfo> collectFieldsFromBody(String source, TSNode classBody) {
         List<FieldInfo> fields = new ArrayList<>();
@@ -657,43 +626,12 @@ public class JavaScriptAnalyzer implements LanguageAnalyzer {
         
         String exprType = expr.getType();
         
-        // Handle new expressions: new ClassName()
-        if ("new_expression".equals(exprType)) {
-            TSNode typeNode = expr.getNamedChild(0);
-            if (typeNode != null && !typeNode.isNull() && "identifier".equals(typeNode.getType())) {
-                return getNodeText(source, typeNode);
-            }
-        }
-        
-        // Handle array literals: [...]
-        if ("array".equals(exprType)) {
-            return "Array";
-        }
-        
-        // Handle object literals: {...}
-        if ("object".equals(exprType)) {
-            return "Object";
-        }
-        
-        // Handle arrow functions and function expressions
-        if ("arrow_function".equals(exprType) || "function".equals(exprType) || "function_expression".equals(exprType)) {
-            return "Function";
-        }
-        
-        // Handle call expressions - return the function name as a hint
-        if ("call_expression".equals(exprType)) {
-            TSNode callee = expr.getNamedChild(0);
-            if (callee != null && !callee.isNull() && "identifier".equals(callee.getType())) {
-                String funcName = getNodeText(source, callee);
-                return funcName + "Result";
-            }
-        }
-
-        // Primitive literals
+        // JavaScript-specific: Primitive literals use capitalized types
         if ("number".equals(exprType)) return "Number";
         if ("string".equals(exprType)) return "String";
         if ("true".equals(exprType) || "false".equals(exprType)) return "Boolean";
         
-        return null;
+        // Delegate to common inference for shared patterns (new, array, object, function, call)
+        return inferCommonExpressionType(source, expr);
     }
 }

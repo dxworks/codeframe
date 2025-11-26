@@ -5,7 +5,6 @@ import org.treesitter.TSNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -13,6 +12,9 @@ import java.util.Set;
 import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
 
 public class TypeScriptAnalyzer implements LanguageAnalyzer {
+    
+    // Literal types for renderObjectName
+    private static final String[] TS_LITERAL_TYPES = {"array", "object", "string", "number"};
     
     @Override
     public FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
@@ -28,8 +30,11 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         }
         
         // Find all class declarations and identify nested ones
+        // Include both regular and abstract class declarations
         List<TSNode> allClasses = findAllDescendants(rootNode, "class_declaration");
-        Set<Integer> nestedClassIds = identifyNestedClasses(allClasses);
+        allClasses.addAll(findAllDescendants(rootNode, "abstract_class_declaration"));
+        Set<Integer> nestedClassIds = identifyNestedNodes(allClasses, "class_body", 
+                "class_declaration", "abstract_class_declaration");
         
         // Process only top-level classes recursively
         for (TSNode classDecl : allClasses) {
@@ -43,6 +48,20 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         for (TSNode interfaceDecl : interfaceDecls) {
             TypeInfo typeInfo = analyzeInterface(sourceCode, interfaceDecl);
             analysis.types.add(typeInfo);
+        }
+        
+        // Find all enum declarations
+        List<TSNode> enumDecls = findAllDescendants(rootNode, "enum_declaration");
+        for (TSNode enumDecl : enumDecls) {
+            TypeInfo enumInfo = analyzeEnum(sourceCode, enumDecl);
+            analysis.types.add(enumInfo);
+        }
+        
+        // Find all type alias declarations (e.g., type ID = string | number)
+        List<TSNode> typeAliasDecls = findAllDescendants(rootNode, "type_alias_declaration");
+        for (TSNode typeAliasDecl : typeAliasDecls) {
+            TypeInfo typeAliasInfo = analyzeTypeAlias(sourceCode, typeAliasDecl);
+            analysis.types.add(typeAliasInfo);
         }
         
         // Find standalone functions
@@ -99,19 +118,6 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         return analysis;
     }
     
-    private Set<Integer> identifyNestedClasses(List<TSNode> allClasses) {
-        Set<Integer> nestedClassIds = new HashSet<>();
-        for (TSNode classDecl : allClasses) {
-            TSNode classBody = findFirstChild(classDecl, "class_body");
-            if (classBody != null) {
-                List<TSNode> nested = findAllDescendants(classBody, "class_declaration");
-                for (TSNode n : nested) {
-                    nestedClassIds.add(n.getStartByte());
-                }
-            }
-        }
-        return nestedClassIds;
-    }
     
     private void analyzeClassRecursively(String source, TSNode classDecl, FileAnalysis analysis) {
         analyzeClassRecursivelyInto(source, classDecl, analysis.types);
@@ -130,6 +136,10 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         List<FieldInfo> fields = collectFieldsFromBody(source, classBody);
         typeInfo.fields.addAll(fields);
         
+        // Collect constructor parameter properties (e.g., constructor(public x: number))
+        List<FieldInfo> ctorParamFields = collectConstructorParameterProperties(source, classBody);
+        typeInfo.fields.addAll(ctorParamFields);
+        
         // Analyze methods within this class only
         List<TSNode> methods = findAllChildren(classBody, "method_definition");
         for (TSNode method : methods) {
@@ -139,6 +149,7 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         
         // Recursively process nested classes
         List<TSNode> nestedClasses = findAllChildren(classBody, "class_declaration");
+        nestedClasses.addAll(findAllChildren(classBody, "abstract_class_declaration"));
         for (TSNode nested : nestedClasses) {
             analyzeClassRecursivelyInto(source, nested, typeInfo.types);
         }
@@ -198,9 +209,24 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         }
         
         // Interfaces can extend other interfaces
+        // Try multiple node types as different grammar versions may use different names
         TSNode extendsNode = findFirstChild(interfaceDecl, "extends_clause");
+        if (extendsNode == null) {
+            extendsNode = findFirstChild(interfaceDecl, "extends_type_clause");
+        }
+        if (extendsNode == null) {
+            // Some grammars nest extends under a heritage wrapper
+            extendsNode = findFirstDescendant(interfaceDecl, "extends_clause");
+        }
+        if (extendsNode == null) {
+            extendsNode = findFirstDescendant(interfaceDecl, "extends_type_clause");
+        }
         if (extendsNode != null) {
             List<TSNode> typeIds = findAllDescendants(extendsNode, "type_identifier");
+            // Fallback to identifier if type_identifier not found
+            if (typeIds.isEmpty()) {
+                typeIds = findAllDescendants(extendsNode, "identifier");
+            }
             for (TSNode typeId : typeIds) {
                 typeInfo.implementsInterfaces.add(getNodeText(source, typeId));
             }
@@ -285,6 +311,153 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         return typeInfo;
     }
     
+    /**
+     * Analyzes a TypeScript enum declaration.
+     * Supports regular enums, string enums, and const enums.
+     */
+    private TypeInfo analyzeEnum(String source, TSNode enumDecl) {
+        TypeInfo typeInfo = new TypeInfo();
+        typeInfo.kind = "enum";
+        
+        // Extract modifiers (export, const, etc.)
+        extractModifiersAndVisibility(source, enumDecl, typeInfo.modifiers, typeInfo);
+        
+        // Check for 'const' enum by looking at parent or siblings
+        TSNode parent = enumDecl.getParent();
+        if (parent != null && "export_statement".equals(parent.getType())) {
+            // Check if there's a 'const' keyword before the enum
+            String parentText = getNodeText(source, parent);
+            if (parentText != null && parentText.contains("const enum")) {
+                if (!typeInfo.modifiers.contains("const")) {
+                    typeInfo.modifiers.add("const");
+                }
+            }
+        }
+        
+        // Get enum name
+        TSNode nameNode = findFirstChild(enumDecl, "identifier");
+        if (nameNode != null) {
+            typeInfo.name = getNodeText(source, nameNode);
+        }
+        
+        // Get enum body and extract members as fields
+        TSNode enumBody = findFirstChild(enumDecl, "enum_body");
+        if (enumBody != null) {
+            // Find all enum assignments (members)
+            List<TSNode> members = findAllChildren(enumBody, "enum_assignment");
+            // Also try property_identifier for simple members without assignment
+            if (members.isEmpty()) {
+                members = findAllChildren(enumBody, "property_identifier");
+            }
+            
+            for (TSNode member : members) {
+                FieldInfo fieldInfo = new FieldInfo();
+                
+                // Get member name
+                TSNode memberNameNode = findFirstChild(member, "property_identifier");
+                if (memberNameNode == null) {
+                    // Member itself might be the identifier
+                    if ("property_identifier".equals(member.getType())) {
+                        memberNameNode = member;
+                    }
+                }
+                
+                if (memberNameNode != null) {
+                    fieldInfo.name = getNodeText(source, memberNameNode);
+                }
+                
+                // Get member value/type if present
+                // For string enums: Status = 'ACTIVE'
+                // For numeric enums: Priority = 0 or just Priority (auto-incremented)
+                TSNode valueNode = null;
+                int childCount = member.getNamedChildCount();
+                for (int i = 0; i < childCount; i++) {
+                    TSNode child = member.getNamedChild(i);
+                    if (child != null && !"property_identifier".equals(child.getType())) {
+                        valueNode = child;
+                        break;
+                    }
+                }
+                
+                if (valueNode != null) {
+                    String valueType = valueNode.getType();
+                    if ("string".equals(valueType) || valueType.contains("string")) {
+                        fieldInfo.type = "string";
+                    } else if ("number".equals(valueType) || valueType.contains("number")) {
+                        fieldInfo.type = "number";
+                    } else {
+                        // Try to infer from the text
+                        String valueText = getNodeText(source, valueNode);
+                        if (valueText != null) {
+                            if (valueText.startsWith("'") || valueText.startsWith("\"")) {
+                                fieldInfo.type = "string";
+                            } else {
+                                fieldInfo.type = "number";
+                            }
+                        }
+                    }
+                } else {
+                    // Default numeric enum
+                    fieldInfo.type = "number";
+                }
+                
+                // Set the enum name as a type qualifier
+                if (typeInfo.name != null) {
+                    fieldInfo.type = typeInfo.name;
+                }
+                
+                if (fieldInfo.name != null) {
+                    typeInfo.fields.add(fieldInfo);
+                }
+            }
+        }
+        
+        return typeInfo;
+    }
+    
+    /**
+     * Analyzes a TypeScript type alias declaration.
+     * Examples: type ID = string | number;
+     *           type Coordinates = { x: number; y: number };
+     *           type Result<T> = { success: true; data: T } | { success: false; error: string };
+     */
+    private TypeInfo analyzeTypeAlias(String source, TSNode typeAliasDecl) {
+        TypeInfo typeInfo = new TypeInfo();
+        typeInfo.kind = "type";
+        
+        // Extract modifiers (export, etc.)
+        extractModifiersAndVisibility(source, typeAliasDecl, typeInfo.modifiers, typeInfo);
+        
+        // Get type alias name (may include generic type parameters)
+        TSNode nameNode = findFirstChild(typeAliasDecl, "type_identifier");
+        if (nameNode != null) {
+            typeInfo.name = getNodeText(source, nameNode);
+        }
+        
+        // Check for type parameters (generics like <T>)
+        TSNode typeParams = findFirstChild(typeAliasDecl, "type_parameters");
+        if (typeParams != null && typeInfo.name != null) {
+            typeInfo.name = typeInfo.name + getNodeText(source, typeParams);
+        }
+        
+        // Get the aliased type (the right side of the = sign)
+        // This could be a union_type, intersection_type, object_type, etc.
+        // We'll store it in extendsType as a representation of what this type aliases to
+        int childCount = typeAliasDecl.getNamedChildCount();
+        for (int i = 0; i < childCount; i++) {
+            TSNode child = typeAliasDecl.getNamedChild(i);
+            if (child == null) continue;
+            String childType = child.getType();
+            // Skip the name and type parameters, get the actual type definition
+            if (!"type_identifier".equals(childType) && !"type_parameters".equals(childType)) {
+                typeInfo.extendsType = getNodeText(source, child);
+                break;
+            }
+        }
+        
+        return typeInfo;
+    }
+    
     private MethodInfo analyzeMethod(String source, TSNode methodDef, String className) {
         MethodInfo methodInfo = new MethodInfo();
         
@@ -323,6 +496,9 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
     
     private MethodInfo analyzeFunction(String source, TSNode funcDecl) {
         MethodInfo methodInfo = new MethodInfo();
+        
+        // Extract modifiers (export, async, etc.)
+        extractModifiersAndVisibility(source, funcDecl, methodInfo.modifiers, methodInfo);
         
         // Get function name
         TSNode nameNode = findFirstChild(funcDecl, "identifier");
@@ -449,56 +625,9 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
 
             // Handle required and optional parameters uniformly
             if ("required_parameter".equals(type) || "optional_parameter".equals(type)) {
-                TSNode paramName = findFirstChild(param, "identifier");
-                String name = paramName != null ? getNodeText(source, paramName) : null;
-
-                // Get type annotation if present
-                TSNode typeAnnotation = findFirstChild(param, "type_annotation");
-                String annType = null;
-                if (typeAnnotation != null) {
-                    annType = getNodeText(source, typeAnnotation).replaceFirst("^:\\s*", "");
-                }
-
-                if (name != null) {
-                    methodInfo.parameters.add(new Parameter(name, annType));
-                }
+                analyzeRegularParameter(source, param, methodInfo);
             } else if ("rest_parameter".equals(type) || "rest_pattern".equals(type)) {
-                // ...rest: capture name and type; identifier may be nested
-                TSNode nameNode = findFirstChild(param, "identifier");
-                if (nameNode == null) {
-                    nameNode = findFirstDescendant(param, "identifier");
-                }
-                String name = nameNode != null ? ("..." + getNodeText(source, nameNode)) : null;
-                TSNode typeAnnotation = findFirstChild(param, "type_annotation");
-                if (typeAnnotation == null) {
-                    // Type annotation may not be a direct child; search descendants
-                    typeAnnotation = findFirstDescendant(param, "type_annotation");
-                }
-                String annType = null;
-                if (typeAnnotation != null) {
-                    annType = getNodeText(source, typeAnnotation).replaceFirst("^:\\s*", "");
-                } else {
-                    // Fallbacks: look for common type node kinds
-                    TSNode typeNode = findFirstDescendant(param, "array_type");
-                    if (typeNode == null) typeNode = findFirstDescendant(param, "union_type");
-                    if (typeNode == null) typeNode = findFirstDescendant(param, "type_identifier");
-                    if (typeNode == null) typeNode = findFirstDescendant(param, "predefined_type");
-                    if (typeNode != null) {
-                        annType = getNodeText(source, typeNode).replaceFirst("^:\\s*", "");
-                    } else {
-                        // Last resort: parse from raw text after ':'
-                        String raw = getNodeText(source, param);
-                        if (raw != null) {
-                            java.util.regex.Matcher m = java.util.regex.Pattern.compile(":\\s*(.+)$").matcher(raw.trim());
-                            if (m.find()) {
-                                annType = m.group(1).trim();
-                            }
-                        }
-                    }
-                }
-                if (name != null) {
-                    methodInfo.parameters.add(new Parameter(name, annType));
-                }
+                analyzeRestParameter(source, param, methodInfo);
             }
         }
         
@@ -511,39 +640,72 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
                 restParams = findAllDescendants(paramsNode, "rest_pattern");
             }
             if (!restParams.isEmpty()) {
-                TSNode lastRest = restParams.get(restParams.size() - 1);
-                TSNode nameNode = findFirstChild(lastRest, "identifier");
-                if (nameNode == null) nameNode = findFirstDescendant(lastRest, "identifier");
-                String name = nameNode != null ? ("..." + getNodeText(source, nameNode)) : null;
-                String annType = null;
-                TSNode typeAnnotation = findFirstChild(lastRest, "type_annotation");
-                if (typeAnnotation == null) {
-                    typeAnnotation = findFirstDescendant(lastRest, "type_annotation");
-                }
-                if (typeAnnotation != null) {
-                    annType = getNodeText(source, typeAnnotation).replaceFirst("^:\\s*", "");
-                } else {
-                    TSNode typeNode = findFirstDescendant(lastRest, "array_type");
-                    if (typeNode == null) typeNode = findFirstDescendant(lastRest, "union_type");
-                    if (typeNode == null) typeNode = findFirstDescendant(lastRest, "type_identifier");
-                    if (typeNode == null) typeNode = findFirstDescendant(lastRest, "predefined_type");
-                    if (typeNode != null) {
-                        annType = getNodeText(source, typeNode).replaceFirst("^:\\s*", "");
-                    } else {
-                        String raw = getNodeText(source, lastRest);
-                        if (raw != null) {
-                            java.util.regex.Matcher m = java.util.regex.Pattern.compile(":\\s*(.+)$").matcher(raw.trim());
-                            if (m.find()) {
-                                annType = m.group(1).trim();
-                            }
-                        }
-                    }
-                }
-                if (name != null) {
-                    methodInfo.parameters.add(new Parameter(name, annType));
-                }
+                analyzeRestParameter(source, restParams.get(restParams.size() - 1), methodInfo);
             }
         }
+    }
+    
+    private void analyzeRegularParameter(String source, TSNode param, MethodInfo methodInfo) {
+        TSNode paramName = findFirstChild(param, "identifier");
+        String name = paramName != null ? getNodeText(source, paramName) : null;
+
+        // Get type annotation if present
+        TSNode typeAnnotation = findFirstChild(param, "type_annotation");
+        String annType = null;
+        if (typeAnnotation != null) {
+            annType = getNodeText(source, typeAnnotation).replaceFirst("^:\\s*", "");
+        }
+
+        if (name != null) {
+            methodInfo.parameters.add(new Parameter(name, annType));
+        }
+    }
+    
+    private void analyzeRestParameter(String source, TSNode param, MethodInfo methodInfo) {
+        // ...rest: capture name and type; identifier may be nested
+        TSNode nameNode = findFirstChild(param, "identifier");
+        if (nameNode == null) {
+            nameNode = findFirstDescendant(param, "identifier");
+        }
+        String name = nameNode != null ? ("..." + getNodeText(source, nameNode)) : null;
+        String annType = extractRestParameterType(source, param);
+        
+        if (name != null) {
+            methodInfo.parameters.add(new Parameter(name, annType));
+        }
+    }
+    
+    private String extractRestParameterType(String source, TSNode param) {
+        TSNode typeAnnotation = findFirstChild(param, "type_annotation");
+        if (typeAnnotation == null) {
+            // Type annotation may not be a direct child; search descendants
+            typeAnnotation = findFirstDescendant(param, "type_annotation");
+        }
+        
+        if (typeAnnotation != null) {
+            return getNodeText(source, typeAnnotation).replaceFirst("^:\\s*", "");
+        }
+        
+        // Fallbacks: look for common type node kinds
+        TSNode typeNode = findFirstDescendant(param, "array_type");
+        if (typeNode == null) typeNode = findFirstDescendant(param, "union_type");
+        if (typeNode == null) typeNode = findFirstDescendant(param, "type_identifier");
+        if (typeNode == null) typeNode = findFirstDescendant(param, "predefined_type");
+        
+        if (typeNode != null) {
+            return getNodeText(source, typeNode).replaceFirst("^:\\s*", "");
+        }
+        
+        // Last resort: parse from raw text after ':'
+        String raw = getNodeText(source, param);
+        if (raw != null) {
+            java.util.regex.Matcher m = java.util.regex.Pattern.compile(":\\s*(.+)$").matcher(raw.trim());
+            if (m.find()) {
+                return m.group(1).trim();
+            }
+        }
+        
+        return null;
     }
     
     private void analyzeMethodBody(String source, TSNode bodyNode, MethodInfo methodInfo, String className) {
@@ -588,38 +750,30 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
                 
                 if ("member_expression".equals(functionNode.getType())) {
                     // obj.method() or obj.prop.method()
-                    TSNode objNode = findFirstChild(functionNode, "identifier");
                     TSNode propNode = findFirstChild(functionNode, "property_identifier");
                     
                     if (propNode != null) {
                         callText = getNodeText(source, propNode);
                     }
                     
-                    if (objNode != null) {
-                        objectName = getNodeText(source, objNode);
+                    TSNode objectExpr = functionNode.getNamedChild(0);
+                    if (objectExpr != null) {
+                        objectName = renderObjectName(source, objectExpr, TS_LITERAL_TYPES);
                         
-                        // Look up type from local variables
-                        objectType = localTypes.get(objectName);
+                        // Look up type from local variables (use base identifier for lookup)
+                        if ("identifier".equals(objectExpr.getType())) {
+                            objectType = localTypes.get(objectName);
+                        } else {
+                            // For complex expressions, try to get the leftmost identifier for type lookup
+                            TSNode leftmost = getLeftmostIdentifier(objectExpr);
+                            if (leftmost != null) {
+                                objectType = localTypes.get(getNodeText(source, leftmost));
+                            }
+                        }
                         
                         // Check if this is 'this'
                         if ("this".equals(objectName) && className != null) {
                             objectType = className;
-                        }
-                    } else {
-                        // Handle chained calls: a.b.method() - get the base object
-                        TSNode baseExpr = functionNode.getNamedChild(0);
-                        if (baseExpr != null) {
-                            if ("identifier".equals(baseExpr.getType())) {
-                                objectName = getNodeText(source, baseExpr);
-                                objectType = localTypes.get(objectName);
-                            } else if ("member_expression".equals(baseExpr.getType())) {
-                                // Get the leftmost identifier in the chain
-                                TSNode leftmost = getLeftmostIdentifier(baseExpr);
-                                if (leftmost != null) {
-                                    objectName = getNodeText(source, leftmost);
-                                    objectType = localTypes.get(objectName);
-                                }
-                            }
                         }
                     }
                 } else if ("identifier".equals(functionNode.getType())) {
@@ -628,45 +782,13 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
                 }
                 
                 if (callText != null) {
-                    // Check if we already have this call, if so increment count
-                    boolean found = false;
-                    for (MethodCall existingCall : methodInfo.methodCalls) {
-                        if (existingCall.matches(callText, objectType, objectName, null)) {
-                            existingCall.callCount++;
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found) {
-                        methodInfo.methodCalls.add(new MethodCall(callText, objectType, objectName));
-                    }
+                    collectMethodCall(methodInfo, callText, objectType, objectName);
                 }
             }
         }
         
         // Sort method calls alphabetically
-        methodInfo.methodCalls.sort((a, b) -> {
-            int nameCompare = a.methodName.compareTo(b.methodName);
-            if (nameCompare != 0) return nameCompare;
-            
-            if (a.objectType != null && b.objectType != null) {
-                int typeCompare = a.objectType.compareTo(b.objectType);
-                if (typeCompare != 0) return typeCompare;
-            } else if (a.objectType != null) {
-                return 1;
-            } else if (b.objectType != null) {
-                return -1;
-            }
-            
-            if (a.objectName != null && b.objectName != null) {
-                return a.objectName.compareTo(b.objectName);
-            } else if (a.objectName != null) {
-                return 1;
-            } else if (b.objectName != null) {
-                return -1;
-            }
-            return 0;
-        });
+        methodInfo.methodCalls.sort(METHOD_CALL_COMPARATOR);
     }
     
     private List<FieldInfo> collectFieldsFromBody(String source, TSNode classBody) {
@@ -726,18 +848,107 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         return fields;
     }
     
+    /**
+     * Extracts fields from constructor parameter properties.
+     * In TypeScript, constructor parameters with visibility modifiers (public, private, protected)
+     * or readonly are automatically converted to class fields.
+     * Example: constructor(public x: number, private y: string, readonly z: boolean)
+     */
+    private List<FieldInfo> collectConstructorParameterProperties(String source, TSNode classBody) {
+        List<FieldInfo> fields = new ArrayList<>();
+        if (classBody == null) return fields;
+        
+        // Find the constructor method
+        List<TSNode> methods = findAllChildren(classBody, "method_definition");
+        for (TSNode method : methods) {
+            TSNode nameNode = findFirstChild(method, "property_identifier");
+            if (nameNode != null && "constructor".equals(getNodeText(source, nameNode))) {
+                // Found constructor, analyze its parameters
+                TSNode paramsNode = findFirstChild(method, "formal_parameters");
+                if (paramsNode != null) {
+                    int count = paramsNode.getNamedChildCount();
+                    for (int i = 0; i < count; i++) {
+                        TSNode param = paramsNode.getNamedChild(i);
+                        if (param == null) continue;
+                        
+                        String paramType = param.getType();
+                        if (!"required_parameter".equals(paramType) && !"optional_parameter".equals(paramType)) {
+                            continue;
+                        }
+                        
+                        // Check if this parameter has visibility modifier or readonly
+                        String paramText = getNodeText(source, param);
+                        if (paramText == null) continue;
+                        
+                        String trimmed = paramText.trim();
+                        boolean hasPublic = trimmed.startsWith("public ");
+                        boolean hasPrivate = trimmed.startsWith("private ");
+                        boolean hasProtected = trimmed.startsWith("protected ");
+                        boolean hasReadonly = trimmed.contains("readonly ");
+                        
+                        // Only create field if parameter has visibility modifier or readonly
+                        if (hasPublic || hasPrivate || hasProtected || hasReadonly) {
+                            FieldInfo fieldInfo = new FieldInfo();
+                            
+                            // Extract parameter name
+                            TSNode paramNameNode = findFirstChild(param, "identifier");
+                            if (paramNameNode != null) {
+                                fieldInfo.name = getNodeText(source, paramNameNode);
+                            }
+                            
+                            // Extract type annotation
+                            TSNode typeAnnotation = findFirstChild(param, "type_annotation");
+                            if (typeAnnotation != null) {
+                                fieldInfo.type = getNodeText(source, typeAnnotation).replaceFirst("^:\\s*", "");
+                            }
+                            
+                            // Set visibility and modifiers
+                            if (hasPublic) {
+                                fieldInfo.visibility = "public";
+                                fieldInfo.modifiers.add("public");
+                            } else if (hasPrivate) {
+                                fieldInfo.visibility = "private";
+                                fieldInfo.modifiers.add("private");
+                            } else if (hasProtected) {
+                                fieldInfo.visibility = "protected";
+                                fieldInfo.modifiers.add("protected");
+                            }
+                            
+                            if (hasReadonly) {
+                                fieldInfo.modifiers.add("readonly");
+                            }
+                            
+                            if (fieldInfo.name != null) {
+                                fields.add(fieldInfo);
+                            }
+                        }
+                    }
+                }
+                break; // Only one constructor per class
+            }
+        }
+        
+        return fields;
+    }
+    
     private void extractModifiersAndVisibility(String source, TSNode node, List<String> modifiers, Object target) {
         // TypeScript modifiers: public, private, protected, static, readonly, abstract, async, export
-        int childCount = node.getNamedChildCount();
+        // Check ALL children (not just named) since modifiers may be anonymous nodes
+        int childCount = node.getChildCount();
         for (int i = 0; i < childCount; i++) {
-            TSNode child = node.getNamedChild(i);
+            TSNode child = node.getChild(i);
+            if (child == null || child.isNull()) continue;
+            
             String type = child.getType();
             
+            // Check for modifier node types
             if ("accessibility_modifier".equals(type) || "readonly".equals(type) || 
                 "static".equals(type) || "abstract".equals(type) || "async".equals(type) ||
-                "export_statement".equals(type)) {
+                "override".equals(type)) {
                 String modText = getNodeText(source, child);
-                modifiers.add(modText);
+                if (modText != null && !modifiers.contains(modText)) {
+                    modifiers.add(modText);
+                }
                 
                 // Set visibility only when explicitly specified
                 if ("public".equals(modText) || "private".equals(modText) || "protected".equals(modText)) {
@@ -747,6 +958,20 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
                         ((MethodInfo) target).visibility = modText;
                     } else if (target instanceof FieldInfo) {
                         ((FieldInfo) target).visibility = modText;
+                    }
+                }
+            }
+            
+            // Also check for literal keyword matches (some grammars expose them directly)
+            if ("public".equals(type) || "private".equals(type) || "protected".equals(type)) {
+                if (!modifiers.contains(type)) {
+                    modifiers.add(type);
+                    if (target instanceof TypeInfo) {
+                        ((TypeInfo) target).visibility = type;
+                    } else if (target instanceof MethodInfo) {
+                        ((MethodInfo) target).visibility = type;
+                    } else if (target instanceof FieldInfo) {
+                        ((FieldInfo) target).visibility = type;
                     }
                 }
             }
@@ -793,7 +1018,7 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         
         String exprType = expr.getType();
         
-        // Handle 'as' type assertions: (expr as Type)
+        // TypeScript-specific: Handle 'as' type assertions: (expr as Type)
         if ("as_expression".equals(exprType)) {
             TSNode typeNode = findFirstDescendant(expr, "type_identifier");
             if (typeNode != null) {
@@ -801,30 +1026,7 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
             }
         }
         
-        // Handle new expressions: new ClassName()
-        if ("new_expression".equals(exprType)) {
-            TSNode typeNode = expr.getNamedChild(0);
-            if (typeNode != null && "identifier".equals(typeNode.getType())) {
-                return getNodeText(source, typeNode);
-            }
-            // Handle new expressions with type_identifier
-            typeNode = findFirstChild(expr, "type_identifier");
-            if (typeNode != null) {
-                return getNodeText(source, typeNode);
-            }
-        }
-        
-        // Handle array literals: [...]
-        if ("array".equals(exprType)) {
-            return "Array";
-        }
-        
-        // Handle object literals: {...}
-        if ("object".equals(exprType)) {
-            return "Object";
-        }
-        
-        // Primitive literals
+        // TypeScript-specific: Primitive literals use lowercase types
         if ("true".equals(exprType) || "false".equals(exprType)) {
             return "boolean";
         }
@@ -838,12 +1040,7 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
             return "null";
         }
         
-        // Handle arrow functions and function expressions
-        if ("arrow_function".equals(exprType) || "function".equals(exprType) || "function_expression".equals(exprType)) {
-            return "Function";
-        }
-        
-        // Handle call expressions - try to get the function name
+        // TypeScript-specific: React hooks handling for call expressions
         if ("call_expression".equals(exprType)) {
             TSNode callee = expr.getNamedChild(0);
             if (callee != null && "identifier".equals(callee.getType())) {
@@ -853,27 +1050,11 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
                 if ("useRef".equals(funcName)) return "Ref";
                 if ("useMemo".equals(funcName)) return "Memoized";
                 if ("useCallback".equals(funcName)) return "Callback";
-                // Return the function name as a hint
-                return funcName + "Result";
             }
         }
         
-        return null;
+        // Delegate to common inference for shared patterns (new, array, object, function, call)
+        return inferCommonExpressionType(source, expr);
     }
     
-    private TSNode getLeftmostIdentifier(TSNode memberExpr) {
-        if (memberExpr == null) return null;
-        
-        // Traverse left in member_expression chain to find the base identifier
-        TSNode current = memberExpr;
-        while (current != null && "member_expression".equals(current.getType())) {
-            TSNode left = current.getNamedChild(0);
-            if (left != null && "identifier".equals(left.getType())) {
-                return left;
-            }
-            current = left;
-        }
-        
-        return null;
-    }
 }

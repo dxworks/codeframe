@@ -44,7 +44,7 @@
       "name" : "getUser",
       "returnType" : "Promise<User>",
       "visibility" : null,
-      "modifiers" : [ ],
+      "modifiers" : [ "async" ],
       "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
@@ -53,14 +53,14 @@
       "localVariables" : [ "user" ],
       "methodCalls" : [ {
         "methodName" : "fetchFromDb",
-        "objectType" : null,
-        "objectName" : null,
+        "objectType" : "UserService",
+        "objectName" : "this",
         "callCount" : 1,
         "parameterCount" : null
       }, {
         "methodName" : "info",
         "objectType" : null,
-        "objectName" : null,
+        "objectName" : "this.logger",
         "callCount" : 1,
         "parameterCount" : null
       } ]
@@ -68,7 +68,7 @@
       "name" : "fetchFromDb",
       "returnType" : "Promise<User>",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
+      "modifiers" : [ "private", "async" ],
       "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
@@ -148,7 +148,7 @@
     "name" : "calculateTotal",
     "returnType" : "number",
     "visibility" : null,
-    "modifiers" : [ ],
+    "modifiers" : [ "export" ],
     "annotations" : [ ],
     "parameters" : [ {
       "name" : "items",
@@ -156,9 +156,27 @@
     } ],
     "localVariables" : [ ],
     "methodCalls" : [ {
+      "methodName" : "expect",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "parseFloat",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
       "methodName" : "reduce",
       "objectType" : null,
       "objectName" : "items",
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "toBeGreaterThan",
+      "objectType" : null,
+      "objectName" : "expect()",
       "callCount" : 1,
       "parameterCount" : null
     } ]

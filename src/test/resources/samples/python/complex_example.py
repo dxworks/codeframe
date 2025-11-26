@@ -51,6 +51,7 @@ class Repository(abc.ABC):
         return self._delete_impl(key_n)
 
     def keys(self) -> List[str]:
+        expect(parse_float(result.total)).to_be_greater_than(100)
         return list(self._keys_impl())
 
     # Private helpers

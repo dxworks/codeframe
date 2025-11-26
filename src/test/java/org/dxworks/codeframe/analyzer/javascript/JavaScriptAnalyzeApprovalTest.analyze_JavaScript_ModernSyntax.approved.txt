@@ -155,25 +155,25 @@
     }, {
       "methodName" : "replace",
       "objectType" : null,
-      "objectName" : "String(val)",
+      "objectName" : "String()",
       "callCount" : 1,
       "parameterCount" : null
     }, {
       "methodName" : "replace",
       "objectType" : null,
-      "objectName" : "String(val)\n            .replace(/&/g, '&amp;')",
+      "objectName" : "String().replace()",
       "callCount" : 1,
       "parameterCount" : null
     }, {
       "methodName" : "replace",
       "objectType" : null,
-      "objectName" : "String(val)\n            .replace(/&/g, '&amp;')\n            .replace(/</g, '&lt;')",
+      "objectName" : "String().replace().replace()",
       "callCount" : 1,
       "parameterCount" : null
     }, {
       "methodName" : "replace",
       "objectType" : null,
-      "objectName" : "String(val)\n            .replace(/&/g, '&amp;')\n            .replace(/</g, '&lt;')\n            .replace(/>/g, '&gt;')",
+      "objectName" : "String().replace().replace().replace()",
       "callCount" : 1,
       "parameterCount" : null
     } ]
@@ -218,7 +218,7 @@
     }, {
       "methodName" : "trim",
       "objectType" : null,
-      "objectName" : "strings.reduce((result, str, i) => \n        result + str + (sanitized[i] ?? ''), ''\n    )",
+      "objectName" : "strings.reduce()",
       "callCount" : 1,
       "parameterCount" : null
     } ]
@@ -491,7 +491,7 @@
     }, {
       "methodName" : "toUpperCase",
       "objectType" : null,
-      "objectName" : "propertyName.charAt(0)",
+      "objectName" : "propertyName.charAt()",
       "callCount" : 2,
       "parameterCount" : null
     } ]

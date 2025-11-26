@@ -167,6 +167,7 @@ This project uses Tree-sitter and its language grammars, which are licensed unde
 ### General
 
 - Top-level fields/constants are not emitted; focus is on types and methods
+- Top-level function calls (e.g., `describe()`, `test()` in Jest files) are not captured; only calls within function bodies are recorded
 - Parameter modifiers (e.g., `final`, `ref`, `out`) are not captured
 - Constructor calls (`new ...`) are not captured in `methodCalls`
 - Loop header variables are not added to `localVariables`

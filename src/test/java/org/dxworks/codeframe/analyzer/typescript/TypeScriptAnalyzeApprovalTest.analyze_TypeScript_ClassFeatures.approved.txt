@@ -1,0 +1,297 @@
+{
+  "filePath" : "src/test/resources/samples/typescript/ClassFeatures.ts",
+  "language" : "typescript",
+  "packageName" : null,
+  "types" : [ {
+    "kind" : "class",
+    "name" : "Point",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "x",
+      "type" : "number",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "y",
+      "type" : "number",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "label",
+      "type" : "string",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "constructor",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "x",
+        "type" : "number"
+      }, {
+        "name" : "y",
+        "type" : "number"
+      }, {
+        "name" : "label",
+        "type" : "string"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "distanceTo",
+      "returnType" : "number",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "other",
+        "type" : "Point"
+      } ],
+      "localVariables" : [ "dx", "dy" ],
+      "methodCalls" : [ {
+        "methodName" : "sqrt",
+        "objectType" : null,
+        "objectName" : "Math",
+        "callCount" : 1,
+        "parameterCount" : null
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "Counter",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "instanceCount",
+      "type" : "number",
+      "visibility" : "private",
+      "modifiers" : [ "private", "static" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "MAX_VALUE",
+      "type" : "number",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static", "readonly" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "_value",
+      "type" : "number",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "constructor",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "initial",
+        "type" : "number"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "value",
+      "returnType" : "number",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "value",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "newValue",
+        "type" : "number"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getInstanceCount",
+      "returnType" : "number",
+      "visibility" : null,
+      "modifiers" : [ "static" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "resetInstances",
+      "returnType" : "void",
+      "visibility" : null,
+      "modifiers" : [ "static" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "increment",
+      "returnType" : "void",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "amount",
+        "type" : "number"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "Logger",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "prefix",
+      "type" : "string",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "enabled",
+      "type" : "boolean",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "constructor",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "prefix",
+        "type" : "string"
+      }, {
+        "name" : "enabled",
+        "type" : "boolean"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "log",
+      "returnType" : "void",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "message",
+        "type" : "string"
+      }, {
+        "name" : "level",
+        "type" : "string"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "log",
+        "objectType" : null,
+        "objectName" : "console",
+        "callCount" : 1,
+        "parameterCount" : null
+      } ]
+    }, {
+      "name" : "format",
+      "returnType" : "string",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "template",
+        "type" : "string"
+      }, {
+        "name" : "separator",
+        "type" : "string"
+      }, {
+        "name" : "suffix",
+        "type" : "string"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "Configuration",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "version",
+      "type" : "string",
+      "visibility" : null,
+      "modifiers" : [ "readonly" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "settings",
+      "type" : "ReadonlyArray<string>",
+      "visibility" : null,
+      "modifiers" : [ "readonly" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "constructor",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "version",
+        "type" : "string"
+      }, {
+        "name" : "settings",
+        "type" : "string[]"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getVersion",
+      "returnType" : "string",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ ],
+  "imports" : [ ]
+}

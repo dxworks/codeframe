@@ -5,7 +5,6 @@ import org.treesitter.TSNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -53,7 +52,7 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         
         // Find all class declarations and identify nested ones
         List<TSNode> allClasses = findAllDescendants(rootNode, "class_declaration");
-        Set<Integer> nestedClassIds = identifyNestedClasses(allClasses);
+        Set<Integer> nestedClassIds = identifyNestedNodes(allClasses, "class_body", "class_declaration");
         
         // Process only top-level classes recursively (they will add nested classes themselves)
         for (TSNode classDecl : allClasses) {
@@ -86,19 +85,6 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         return analysis;
     }
     
-    private Set<Integer> identifyNestedClasses(List<TSNode> allClasses) {
-        Set<Integer> nestedClassIds = new HashSet<>();
-        for (TSNode classDecl : allClasses) {
-            TSNode classBody = findFirstChild(classDecl, "class_body");
-            if (classBody != null) {
-                List<TSNode> nested = findAllDescendants(classBody, "class_declaration");
-                for (TSNode n : nested) {
-                    nestedClassIds.add(n.getStartByte());
-                }
-            }
-        }
-        return nestedClassIds;
-    }
     
     private void analyzeClassRecursively(String source, TSNode classDecl, FileAnalysis analysis) {
         analyzeClassRecursivelyInto(source, classDecl, analysis.types);

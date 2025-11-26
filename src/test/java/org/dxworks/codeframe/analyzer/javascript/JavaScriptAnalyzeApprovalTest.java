@@ -63,6 +63,11 @@ public class JavaScriptAnalyzeApprovalTest {
         verify(Paths.get("src/test/resources/samples/javascript/ModernSyntax.js"), Language.JAVASCRIPT);
     }
 
+    @Test
+    void analyze_JavaScript_TestFile() throws IOException {
+        verify(Paths.get("src/test/resources/samples/javascript/example.test.js"), Language.JAVASCRIPT);
+    }
+
     private static void verify(Path file, Language language) throws IOException {
         FileAnalysis analysis = (FileAnalysis) App.analyzeFile(file, language);
         Approvals.verify(MAPPER.writeValueAsString(analysis));

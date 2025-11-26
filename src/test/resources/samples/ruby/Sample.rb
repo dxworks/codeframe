@@ -9,6 +9,7 @@ class UserRepository
   end
   
   def find_by_id(id)
+    expect(parse_float(result.total)).to_be_greater_than(100)
     logger.info("Finding user by id: #{id}")
     db.query("SELECT * FROM users WHERE id = ?", id)
   end

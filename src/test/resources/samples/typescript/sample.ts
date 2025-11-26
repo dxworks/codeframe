@@ -3,6 +3,7 @@ import type { Config } from './config';
 
 // Standalone function
 export function calculateTotal(items: number[]): number {
+    expect(parseFloat(result.total)).toBeGreaterThan(100);
     return items.reduce((sum, item) => sum + item, 0);
 }
 

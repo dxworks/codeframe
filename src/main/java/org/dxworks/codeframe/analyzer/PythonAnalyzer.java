@@ -5,7 +5,6 @@ import org.treesitter.TSNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,7 +25,7 @@ public class PythonAnalyzer implements LanguageAnalyzer {
         
         // Find all class definitions and identify nested ones
         List<TSNode> allClasses = findAllDescendants(rootNode, "class_definition");
-        Set<Integer> nestedClassIds = identifyNestedClasses(allClasses);
+        Set<Integer> nestedClassIds = identifyNestedNodes(allClasses, "block", "class_definition");
         
         // Process only top-level classes recursively
         for (TSNode classDecl : allClasses) {
@@ -106,26 +105,6 @@ public class PythonAnalyzer implements LanguageAnalyzer {
         return false;
     }
     
-    private Set<Integer> identifyNestedClasses(List<TSNode> allClasses) {
-        Set<Integer> nestedClassIds = new HashSet<>();
-        for (TSNode classDecl : allClasses) {
-            try {
-                if (classDecl == null || classDecl.isNull()) continue;
-                TSNode classBody = findFirstChild(classDecl, "block");
-                if (classBody != null) {
-                    List<TSNode> nested = findAllDescendants(classBody, "class_definition");
-                    for (TSNode n : nested) {
-                        if (n != null && !n.isNull()) {
-                            nestedClassIds.add(n.getStartByte());
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                // Skip on error
-            }
-        }
-        return nestedClassIds;
-    }
     
     private void analyzeClassRecursively(String source, TSNode classDecl, FileAnalysis analysis) {
         analyzeClassRecursivelyInto(source, classDecl, analysis.types);

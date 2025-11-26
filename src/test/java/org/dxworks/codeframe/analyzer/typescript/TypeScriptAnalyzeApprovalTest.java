@@ -38,6 +38,21 @@ public class TypeScriptAnalyzeApprovalTest {
         verify(Paths.get("src/test/resources/samples/typescript/interface-sample.ts"), Language.TYPESCRIPT);
     }
 
+    @Test
+    void analyze_TypeScript_ClassInheritance() throws IOException {
+        verify(Paths.get("src/test/resources/samples/typescript/ClassInheritance.ts"), Language.TYPESCRIPT);
+    }
+
+    @Test
+    void analyze_TypeScript_TypeScriptTypes() throws IOException {
+        verify(Paths.get("src/test/resources/samples/typescript/TypeScriptTypes.ts"), Language.TYPESCRIPT);
+    }
+
+    @Test
+    void analyze_TypeScript_ClassFeatures() throws IOException {
+        verify(Paths.get("src/test/resources/samples/typescript/ClassFeatures.ts"), Language.TYPESCRIPT);
+    }
+
     private static void verify(Path file, Language language) throws IOException {
         FileAnalysis analysis = (FileAnalysis) App.analyzeFile(file, language);
         Approvals.verify(MAPPER.writeValueAsString(analysis));

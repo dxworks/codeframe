@@ -94,9 +94,27 @@
     } ],
     "localVariables" : [ ],
     "methodCalls" : [ {
+      "methodName" : "expect",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
       "methodName" : "map",
       "objectType" : null,
       "objectName" : "data",
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "parseFloat",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : null
+    }, {
+      "methodName" : "toBeGreaterThan",
+      "objectType" : null,
+      "objectName" : "expect()",
       "callCount" : 1,
       "parameterCount" : null
     } ]

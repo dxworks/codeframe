@@ -1,13 +1,16 @@
 package org.dxworks.codeframe.analyzer;
 
 import org.dxworks.codeframe.model.MethodCall;
+import org.dxworks.codeframe.model.MethodInfo;
 import org.treesitter.TSNode;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Deque;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TreeSitterHelper {
     
@@ -206,5 +209,171 @@ public class TreeSitterHelper {
         if (byType != null && !byType.isNull()) return byType;
         byType = findFirstChild(callLike, "arguments");
         return byType;
+    }
+
+    /**
+     * Infers type from common expression patterns shared across JS/TS analyzers.
+     * Returns null if no common pattern matches, allowing language-specific handling.
+     */
+    public static String inferCommonExpressionType(String source, TSNode expr) {
+        if (expr == null || expr.isNull()) return null;
+        
+        String exprType = expr.getType();
+        
+        // Handle new expressions: new ClassName()
+        if ("new_expression".equals(exprType)) {
+            TSNode typeNode = expr.getNamedChild(0);
+            if (typeNode != null && !typeNode.isNull() && "identifier".equals(typeNode.getType())) {
+                return getNodeText(source, typeNode);
+            }
+            // Handle new expressions with type_identifier
+            typeNode = findFirstChild(expr, "type_identifier");
+            if (typeNode != null) {
+                return getNodeText(source, typeNode);
+            }
+        }
+        
+        // Handle array literals: [...]
+        if ("array".equals(exprType)) {
+            return "Array";
+        }
+        
+        // Handle object literals: {...}
+        if ("object".equals(exprType)) {
+            return "Object";
+        }
+        
+        // Handle arrow functions and function expressions
+        if ("arrow_function".equals(exprType) || "function".equals(exprType) || "function_expression".equals(exprType)) {
+            return "Function";
+        }
+        
+        // Handle call expressions - return the function name as a hint
+        if ("call_expression".equals(exprType)) {
+            TSNode callee = expr.getNamedChild(0);
+            if (callee != null && !callee.isNull() && "identifier".equals(callee.getType())) {
+                return getNodeText(source, callee) + "Result";
+            }
+        }
+        
+        return null;
+    }
+
+    /**
+     * Collects a method call into the methodInfo, incrementing count if already present.
+     * This deduplicates method call tracking logic across analyzers.
+     */
+    public static void collectMethodCall(MethodInfo methodInfo, String methodName, String objectType, String objectName) {
+        for (MethodCall existingCall : methodInfo.methodCalls) {
+            if (existingCall.matches(methodName, objectType, objectName, null)) {
+                existingCall.callCount++;
+                return;
+            }
+        }
+        methodInfo.methodCalls.add(new MethodCall(methodName, objectType, objectName));
+    }
+
+    /**
+     * Identifies nested classes/types within a list of type declarations.
+     * Returns a set of start byte positions for nodes that are nested inside other declarations.
+     *
+     * @param allDeclarations list of all type declarations (classes, etc.)
+     * @param bodyNodeType the node type for the body container (e.g., "class_body", "block")
+     * @param nestedNodeTypes the node types to search for as nested declarations
+     * @return set of start byte positions identifying nested declarations
+     */
+    public static Set<Integer> identifyNestedNodes(List<TSNode> allDeclarations, String bodyNodeType, String... nestedNodeTypes) {
+        Set<Integer> nestedIds = new HashSet<>();
+        for (TSNode decl : allDeclarations) {
+            if (decl == null || decl.isNull()) continue;
+            TSNode body = findFirstChild(decl, bodyNodeType);
+            if (body != null) {
+                for (String nestedType : nestedNodeTypes) {
+                    List<TSNode> nested = findAllDescendants(body, nestedType);
+                    for (TSNode n : nested) {
+                        if (n != null && !n.isNull()) {
+                            nestedIds.add(n.getStartByte());
+                        }
+                    }
+                }
+            }
+        }
+        return nestedIds;
+    }
+
+    /**
+     * Checks if a string is a valid identifier (for JS/TS style identifiers).
+     */
+    public static boolean isValidIdentifier(String name) {
+        return name != null && name.matches("[a-zA-Z_$][a-zA-Z0-9_$]*");
+    }
+
+    /**
+     * Traverses left in a member_expression chain to find the base identifier node.
+     * Useful for getting the root object in chains like a.b.c.method().
+     */
+    public static TSNode getLeftmostIdentifier(TSNode memberExpr) {
+        if (memberExpr == null) return null;
+        
+        TSNode current = memberExpr;
+        while (current != null && "member_expression".equals(current.getType())) {
+            TSNode left = current.getNamedChild(0);
+            if (left != null && "identifier".equals(left.getType())) {
+                return left;
+            }
+            current = left;
+        }
+        
+        return null;
+    }
+
+    /**
+     * Renders a simplified object name for method call tracking.
+     * Handles call expressions, member expressions, and literals to produce clean output.
+     * 
+     * @param source the source code
+     * @param objectExpr the object expression node
+     * @param literalTypes node types to treat as literals (e.g., "array", "object", "string", "number")
+     * @return simplified object name string
+     */
+    public static String renderObjectName(String source, TSNode objectExpr, String... literalTypes) {
+        if (objectExpr == null || objectExpr.isNull()) return null;
+        
+        String objType = objectExpr.getType();
+        
+        // Check for literal types
+        for (String litType : literalTypes) {
+            if (litType.equals(objType)) {
+                return "<literal>";
+            }
+        }
+        
+        // For call expressions, return just the function name rather than the full call text
+        if ("call_expression".equals(objType)) {
+            TSNode callee = objectExpr.getNamedChild(0);
+            if (callee != null) {
+                if ("identifier".equals(callee.getType())) {
+                    return getNodeText(source, callee) + "()";
+                }
+                // For chained calls like foo().bar(), recurse
+                return renderObjectName(source, callee, literalTypes) + "()";
+            }
+            return "<call>";
+        }
+        
+        // For member expressions like obj.prop or call().prop, simplify
+        if ("member_expression".equals(objType)) {
+            TSNode baseObj = objectExpr.getNamedChild(0);
+            TSNode propNode = findFirstChild(objectExpr, "property_identifier");
+            // Also check for private property identifiers (#field)
+            if (propNode == null) {
+                propNode = findFirstChild(objectExpr, "private_property_identifier");
+            }
+            String baseName = baseObj != null ? renderObjectName(source, baseObj, literalTypes) : "<unknown>";
+            String propName = propNode != null ? getNodeText(source, propNode) : "";
+            return baseName + "." + propName;
+        }
+        
+        return getNodeText(source, objectExpr);
     }
 }

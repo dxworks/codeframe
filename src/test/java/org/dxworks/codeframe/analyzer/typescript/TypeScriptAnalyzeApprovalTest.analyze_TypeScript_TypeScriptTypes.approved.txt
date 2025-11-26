@@ -1,0 +1,314 @@
+{
+  "filePath" : "src/test/resources/samples/typescript/TypeScriptTypes.ts",
+  "language" : "typescript",
+  "packageName" : null,
+  "types" : [ {
+    "kind" : "class",
+    "name" : "Task",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "id",
+      "type" : "ID",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "status",
+      "type" : "Status",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "priority",
+      "type" : "Priority",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "constructor",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "ID"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "setStatus",
+      "returnType" : "void",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "status",
+        "type" : "Status"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "setPriority",
+      "returnType" : "void",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "priority",
+        "type" : "Priority"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "interface",
+    "name" : "Named",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ {
+      "name" : "name",
+      "type" : "string",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "accessors" : [ ]
+    } ],
+    "methods" : [ ],
+    "types" : [ ]
+  }, {
+    "kind" : "interface",
+    "name" : "Person",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ "Named" ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ {
+      "name" : "age",
+      "type" : "number",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "accessors" : [ ]
+    } ],
+    "methods" : [ ],
+    "types" : [ ]
+  }, {
+    "kind" : "interface",
+    "name" : "Employee",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ "Named", "Person" ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ {
+      "name" : "employeeId",
+      "type" : "string",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "accessors" : [ ]
+    }, {
+      "name" : "department",
+      "type" : "string",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "accessors" : [ ]
+    } ],
+    "methods" : [ ],
+    "types" : [ ]
+  }, {
+    "kind" : "interface",
+    "name" : "Dictionary",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ ],
+    "types" : [ ]
+  }, {
+    "kind" : "enum",
+    "name" : "Status",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "Active",
+      "type" : "Status",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Inactive",
+      "type" : "Status",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Pending",
+      "type" : "Status",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ ],
+    "types" : [ ]
+  }, {
+    "kind" : "enum",
+    "name" : "Priority",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "Low",
+      "type" : "Priority",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Medium",
+      "type" : "Priority",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    }, {
+      "name" : "High",
+      "type" : "Priority",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Critical",
+      "type" : "Priority",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ ],
+    "types" : [ ]
+  }, {
+    "kind" : "enum",
+    "name" : "Direction",
+    "visibility" : null,
+    "modifiers" : [ "export", "const" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "Up",
+      "type" : "Direction",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Down",
+      "type" : "Direction",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Left",
+      "type" : "Direction",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Right",
+      "type" : "Direction",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ ],
+    "types" : [ ]
+  }, {
+    "kind" : "type",
+    "name" : "ID",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : "string | number",
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ ],
+    "types" : [ ]
+  }, {
+    "kind" : "type",
+    "name" : "Coordinates",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : "{\n    x: number;\n    y: number;\n    z?: number;\n}",
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ ],
+    "types" : [ ]
+  }, {
+    "kind" : "type",
+    "name" : "Result<T>",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : "{ success: true; data: T } | { success: false; error: string }",
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ ],
+    "types" : [ ]
+  } ],
+  "methods" : [ {
+    "name" : "processItem",
+    "returnType" : "Result<string>",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "ID"
+    }, {
+      "name" : "status",
+      "type" : "Status"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  } ],
+  "imports" : [ ]
+}

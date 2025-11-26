@@ -1,0 +1,26 @@
+{
+  "filePath" : "src/test/resources/samples/javascript/example.test.js",
+  "language" : "javascript",
+  "packageName" : null,
+  "types" : [ ],
+  "methods" : [ {
+    "name" : "fetchData",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ],
+    "parameters" : [ ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "failingFetch",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ],
+    "parameters" : [ ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  } ],
+  "imports" : [ ]
+}

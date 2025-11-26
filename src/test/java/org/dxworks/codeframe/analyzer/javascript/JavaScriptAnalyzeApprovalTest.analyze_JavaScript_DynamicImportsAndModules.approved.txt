@@ -466,7 +466,7 @@
       }, {
         "methodName" : "map",
         "objectType" : null,
-        "objectName" : "modulePaths\n            .filter(path => !this.preloaded.has(path))",
+        "objectName" : "modulePaths.filter()",
         "callCount" : 1,
         "parameterCount" : null
       }, {

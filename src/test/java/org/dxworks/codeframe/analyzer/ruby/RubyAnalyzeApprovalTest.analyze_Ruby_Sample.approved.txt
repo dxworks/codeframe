@@ -80,9 +80,21 @@
       } ],
       "localVariables" : [ ],
       "methodCalls" : [ {
+        "methodName" : "expect",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 1
+      }, {
         "methodName" : "info",
         "objectType" : null,
         "objectName" : "logger",
+        "callCount" : 1,
+        "parameterCount" : 1
+      }, {
+        "methodName" : "parse_float",
+        "objectType" : null,
+        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
@@ -91,6 +103,18 @@
         "objectName" : "db",
         "callCount" : 1,
         "parameterCount" : 2
+      }, {
+        "methodName" : "to_be_greater_than",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 1
+      }, {
+        "methodName" : "total",
+        "objectType" : null,
+        "objectName" : "result",
+        "callCount" : 1,
+        "parameterCount" : 0
       } ]
     }, {
       "name" : "find_all",

@@ -164,7 +164,25 @@
         "callCount" : 1,
         "parameterCount" : null
       }, {
+        "methodName" : "expect",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      }, {
         "methodName" : "list",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      }, {
+        "methodName" : "parse_float",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      }, {
+        "methodName" : "to_be_greater_than",
         "objectType" : null,
         "objectName" : null,
         "callCount" : 1,

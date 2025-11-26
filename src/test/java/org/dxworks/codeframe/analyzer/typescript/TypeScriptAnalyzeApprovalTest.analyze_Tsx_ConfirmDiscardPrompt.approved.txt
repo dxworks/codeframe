@@ -101,7 +101,7 @@
     }, {
       "methodName" : "cancelNavigation",
       "objectType" : null,
-      "objectName" : "evt",
+      "objectName" : "evt.detail",
       "callCount" : 1,
       "parameterCount" : null
     }, {

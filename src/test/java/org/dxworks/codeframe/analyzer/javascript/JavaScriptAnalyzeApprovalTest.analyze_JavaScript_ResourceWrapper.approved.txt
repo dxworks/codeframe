@@ -108,7 +108,7 @@
       }, {
         "methodName" : "catch",
         "objectType" : null,
-        "objectName" : "axios\n            .get(this.urlHelper.apiBaseUrl() + '/location?tag=Resource%20Location&v=full')\n            .then(function (resourceLocationsResponse) {\n                const resourceLocationUuidList =\n                    _.map(resourceLocationsResponse.data.results, (location) => location.uuid);\n\n                const resourceLocations = _.reduce(\n                    resourceLocationsResponse.data.results,\n                    (acc, curr) => {\n                        if (_.includes(resourceLocationUuidList, curr.uuid)) {\n                            acc[curr.uuid] = {\n                                uuid: curr.uuid,\n                                name: curr.name,\n                                description: curr.description,\n                                parentResourceLocationUuid:\n                                    curr.parentLocation != null ? curr.parentLocation.uuid : null,\n                                isOpen:\n                                    typeof self.state.resourceLocations[curr.uuid] != 'undefined'\n                                        ? self.state.resourceLocations[curr.uuid].isOpen\n                                        : false,\n                                isHigherLevel:\n                                    curr.parentLocation != null\n                                        ? !_.includes(resourceLocationUuidList, curr.parentLocation.uuid)\n                                        : true\n                            };\n                        }\n\n                        return acc;\n                    },\n                    {}\n                );\n\n                self.setState({resourceLocations: resourceLocations});\n            })",
+        "objectName" : "axios.get().then()",
         "callCount" : 1,
         "parameterCount" : null
       }, {
@@ -156,7 +156,7 @@
       }, {
         "methodName" : "then",
         "objectType" : null,
-        "objectName" : "axios\n            .get(this.urlHelper.apiBaseUrl() + '/location?tag=Resource%20Location&v=full')",
+        "objectName" : "axios.get()",
         "callCount" : 1,
         "parameterCount" : null
       } ]
@@ -180,7 +180,7 @@
       }, {
         "methodName" : "catch",
         "objectType" : null,
-        "objectName" : "axios\n            .get(this.urlHelper.apiBaseUrl() + '/location?tag=Visit%20Location&v=full')\n            .then(function (visitLocationsResponse) {\n                const visitLocationUuidList =\n                    _.map(visitLocationsResponse.data.results, (location) => location.uuid);\n                const visitLocations = _.reduce(\n                    visitLocationsResponse.data.results,\n                    (acc, curr) => {\n                        if (_.includes(visitLocationUuidList, curr.uuid)) {\n                            acc[curr.uuid] = {\n                                uuid: curr.uuid,\n                                name: curr.name,\n                                description: curr.description\n                            };\n                        }\n\n                        return acc;\n                    },\n                    {}\n                );\n                self.setState({visitLocations: visitLocations});\n            })",
+        "objectName" : "axios.get().then()",
         "callCount" : 1,
         "parameterCount" : null
       }, {
@@ -228,7 +228,7 @@
       }, {
         "methodName" : "then",
         "objectType" : null,
-        "objectName" : "axios\n            .get(this.urlHelper.apiBaseUrl() + '/location?tag=Visit%20Location&v=full')",
+        "objectName" : "axios.get()",
         "callCount" : 1,
         "parameterCount" : null
       } ]
@@ -249,7 +249,7 @@
       }, {
         "methodName" : "catch",
         "objectType" : null,
-        "objectName" : "axios\n            .get(this.urlHelper.apiBaseUrl() + '/itemtype', {\n                params: {\n                    v: 'full'\n                }\n            })\n            .then(function (response) {\n                self.setState({\n                    itemTypes: response.data.results\n                });\n            })",
+        "objectName" : "axios.get().then()",
         "callCount" : 1,
         "parameterCount" : null
       }, {
@@ -279,7 +279,7 @@
       }, {
         "methodName" : "then",
         "objectType" : null,
-        "objectName" : "axios\n            .get(this.urlHelper.apiBaseUrl() + '/itemtype', {\n                params: {\n                    v: 'full'\n                }\n            })",
+        "objectName" : "axios.get()",
         "callCount" : 1,
         "parameterCount" : null
       } ]

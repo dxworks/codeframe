@@ -51,6 +51,24 @@
         "objectName" : null,
         "callCount" : 1,
         "parameterCount" : null
+      }, {
+        "methodName" : "expect",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      }, {
+        "methodName" : "parseFloat",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      }, {
+        "methodName" : "toBeGreaterThan",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
       } ]
     }, {
       "name" : "findUser",

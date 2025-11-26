@@ -25,6 +25,7 @@ class UserService
         private LoggerInterface $logger,
         protected CacheInterface $cache
     ) {
+        expect(parseFloat($result->total))->toBeGreaterThan(100);
         $this->repository = new UserRepository();
         $this->apiKey = env('API_KEY');
         self::$instanceCount++;

@@ -38,7 +38,7 @@
     "name" : "f",
     "returnType" : "void",
     "visibility" : null,
-    "modifiers" : [ ],
+    "modifiers" : [ "export" ],
     "annotations" : [ ],
     "parameters" : [ {
       "name" : "a",
