@@ -153,5 +153,7 @@
     "types" : [ ]
   } ],
   "methods" : [ ],
+  "fields" : [ ],
+  "methodCalls" : [ ],
   "imports" : [ ]
 }

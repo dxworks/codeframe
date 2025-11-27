@@ -145,5 +145,7 @@
     "types" : [ ]
   } ],
   "methods" : [ ],
+  "fields" : [ ],
+  "methodCalls" : [ ],
   "imports" : [ "require 'active_record'" ]
 }

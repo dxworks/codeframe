@@ -84,5 +84,7 @@
     "types" : [ ]
   } ],
   "methods" : [ ],
+  "fields" : [ ],
+  "methodCalls" : [ ],
   "imports" : [ "using System;" ]
 }

@@ -137,5 +137,7 @@
       "parameterCount" : null
     } ]
   } ],
+  "fields" : [ ],
+  "methodCalls" : [ ],
   "imports" : [ "import axios from 'axios';", "import { formatDate } from './utils';" ]
 }

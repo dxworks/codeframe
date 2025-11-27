@@ -532,5 +532,7 @@
     } ]
   } ],
   "methods" : [ ],
+  "fields" : [ ],
+  "methodCalls" : [ ],
   "imports" : [ ]
 }

@@ -62,5 +62,7 @@
     "types" : [ ]
   } ],
   "methods" : [ ],
+  "fields" : [ ],
+  "methodCalls" : [ ],
   "imports" : [ "using System;", "using System.Collections.Generic;" ]
 }

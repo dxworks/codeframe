@@ -462,5 +462,7 @@
     "types" : [ ]
   } ],
   "methods" : [ ],
+  "fields" : [ ],
+  "methodCalls" : [ ],
   "imports" : [ "using CSharpFunctionalExtensions;", "using CodeAnalysis.Metrics;", "using Analysis.Plugins.Models;" ]
 }

@@ -310,5 +310,7 @@
     "localVariables" : [ ],
     "methodCalls" : [ ]
   } ],
+  "fields" : [ ],
+  "methodCalls" : [ ],
   "imports" : [ ]
 }

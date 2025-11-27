@@ -196,5 +196,7 @@
     "localVariables" : [ ],
     "methodCalls" : [ ]
   } ],
+  "fields" : [ ],
+  "methodCalls" : [ ],
   "imports" : [ "import { Logger } from './logger';", "import type { Config } from './config';" ]
 }

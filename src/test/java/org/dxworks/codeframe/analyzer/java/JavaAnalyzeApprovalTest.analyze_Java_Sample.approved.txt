@@ -333,5 +333,7 @@
     "types" : [ ]
   } ],
   "methods" : [ ],
+  "fields" : [ ],
+  "methodCalls" : [ ],
   "imports" : [ "import java.util.List;", "import java.util.stream.Collectors;" ]
 }

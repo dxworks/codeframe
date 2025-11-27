@@ -246,5 +246,7 @@
       "parameterCount" : null
     } ]
   } ],
+  "fields" : [ ],
+  "methodCalls" : [ ],
   "imports" : [ ]
 }

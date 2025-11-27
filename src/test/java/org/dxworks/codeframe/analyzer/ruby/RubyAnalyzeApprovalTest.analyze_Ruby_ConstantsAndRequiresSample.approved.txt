@@ -225,5 +225,7 @@
     "types" : [ ]
   } ],
   "methods" : [ ],
+  "fields" : [ ],
+  "methodCalls" : [ ],
   "imports" : [ "require 'bundler/setup'", "Bundler.require(:default)", "require 'json'", "require 'net/http'", "require_relative '../lib/helper'", "require_relative 'config'" ]
 }

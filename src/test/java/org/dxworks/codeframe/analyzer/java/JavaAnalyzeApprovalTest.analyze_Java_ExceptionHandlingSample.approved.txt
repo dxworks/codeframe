@@ -166,5 +166,7 @@
     "types" : [ ]
   } ],
   "methods" : [ ],
+  "fields" : [ ],
+  "methodCalls" : [ ],
   "imports" : [ "import java.io.FileReader;", "import java.io.IOException;" ]
 }
