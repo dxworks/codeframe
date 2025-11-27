@@ -2,6 +2,12 @@
 from functools import wraps
 from typing import Any, Callable, TypeVar
 
+# File-level constants (captured in fields)
+MAX_RETRIES: int = 3
+DEFAULT_TIMEOUT: float = 30.0
+APP_NAME: str = "DecoratorDemo"
+
+# File-level call (captured in methodCalls)
 T = TypeVar("T")
 
 

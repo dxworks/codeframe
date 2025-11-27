@@ -296,6 +296,29 @@ public class PHPAnalyzer implements LanguageAnalyzer {
     }
     
     /**
+     * Check if a TSNode is null or represents a null node.
+     */
+    private boolean isNullNode(TSNode node) {
+        return node == null || node.isNull();
+    }
+    
+    /**
+     * Extract implemented interfaces from a class_interface_clause node.
+     */
+    private void extractImplementedInterfaces(String source, TSNode declaration, TypeInfo typeInfo) {
+        TSNode interfaceClause = findFirstChild(declaration, "class_interface_clause");
+        if (isNullNode(interfaceClause)) return;
+        
+        for (TSNode interfaceName : findAllDescendants(interfaceClause, "name")) {
+            if (isNullNode(interfaceName)) continue;
+            String name = getNodeText(source, interfaceName);
+            if (name != null && !name.isEmpty()) {
+                typeInfo.implementsInterfaces.add(name);
+            }
+        }
+    }
+    
+    /**
      * Extract the name from a node that has a "name" child.
      */
     private String extractName(String source, TSNode node) {
@@ -410,19 +433,18 @@ public class PHPAnalyzer implements LanguageAnalyzer {
     }
     
     private boolean isInsideClass(TSNode node) {
-        if (node == null || node.isNull()) return false;
+        if (isNullNode(node)) return false;
         
         try {
             TSNode parent = node.getParent();
-            while (parent != null && !parent.isNull()) {
+            while (!isNullNode(parent)) {
                 String type = parent.getType();
-                if (type != null && ("class_declaration".equals(type) || "trait_declaration".equals(type) || "enum_declaration".equals(type))) {
+                if ("class_declaration".equals(type) || "trait_declaration".equals(type) || "enum_declaration".equals(type)) {
                     return true;
                 }
                 parent = parent.getParent();
             }
         } catch (Exception e) {
-            // If we can't determine, assume it's not inside a class
             return false;
         }
         return false;
@@ -444,22 +466,17 @@ public class PHPAnalyzer implements LanguageAnalyzer {
         targetList.add(typeInfo);
         
         TSNode classBody = findFirstChild(classDecl, "declaration_list");
-        if (classBody == null) {
+        if (isNullNode(classBody)) {
             return;
         }
         
-        // Extract trait usage, fields, and methods
-        extractTraitUsage(source, classBody, typeInfo);
-        typeInfo.fields.addAll(collectFieldsFromBody(source, classBody));
-        extractMethodsFromBody(source, classBody, typeInfo);
+        extractTypeBodyContents(source, classBody, typeInfo);
         
         // Recursively process nested classes
-        List<TSNode> nestedClasses = findAllChildren(classBody, "class_declaration");
-        for (TSNode nested : nestedClasses) {
+        for (TSNode nested : findAllChildren(classBody, "class_declaration")) {
+            if (isNullNode(nested)) continue;
             try {
-                if (nested != null && !nested.isNull()) {
-                    analyzeClassRecursivelyInto(source, nested, typeInfo.types);
-                }
+                analyzeClassRecursivelyInto(source, nested, typeInfo.types);
             } catch (Exception e) {
                 System.err.println("Warning: Failed to analyze nested class: " + e.getMessage());
             }
@@ -470,74 +487,49 @@ public class PHPAnalyzer implements LanguageAnalyzer {
         TypeInfo typeInfo = new TypeInfo();
         typeInfo.kind = "class";
         
-        // Extract modifiers (abstract, final)
         extractModifiersAndVisibility(source, classDecl, typeInfo);
-        
-        // Get class name
         typeInfo.name = extractName(source, classDecl);
-        
-        // Get base class
-        TSNode baseClause = findFirstChild(classDecl, "base_clause");
-        if (baseClause != null && !baseClause.isNull()) {
-            TSNode baseName = findFirstChild(baseClause, "name");
-            if (baseName != null && !baseName.isNull()) {
-                typeInfo.extendsType = getNodeText(source, baseName);
-            }
-        }
-        
-        // Get implemented interfaces
-        TSNode interfaceClause = findFirstChild(classDecl, "class_interface_clause");
-        if (interfaceClause != null && !interfaceClause.isNull()) {
-            List<TSNode> interfaceNames = findAllDescendants(interfaceClause, "name");
-            for (TSNode interfaceName : interfaceNames) {
-                if (interfaceName != null && !interfaceName.isNull()) {
-                    typeInfo.implementsInterfaces.add(getNodeText(source, interfaceName));
-                }
-            }
-        }
+        typeInfo.extendsType = extractExtendsType(source, classDecl);
+        extractImplementedInterfaces(source, classDecl, typeInfo);
         
         return typeInfo;
+    }
+    
+    /**
+     * Extract the base/extends type from a declaration with a base_clause.
+     */
+    private String extractExtendsType(String source, TSNode declaration) {
+        TSNode baseClause = findFirstChild(declaration, "base_clause");
+        if (isNullNode(baseClause)) return null;
+        
+        TSNode baseName = findFirstChild(baseClause, "name");
+        return isNullNode(baseName) ? null : getNodeText(source, baseName);
     }
     
     private TypeInfo analyzeInterface(String source, TSNode interfaceDecl) {
         TypeInfo typeInfo = new TypeInfo();
         typeInfo.kind = "interface";
         
-        // Extract modifiers and visibility (defaults to public if not specified)
         extractModifiersAndVisibility(source, interfaceDecl, typeInfo);
         typeInfo.name = extractName(source, interfaceDecl);
         
-        // Interfaces can extend other interfaces
-        TSNode baseClause = findFirstChild(interfaceDecl, "base_clause");
-        if (baseClause != null && !baseClause.isNull()) {
-            List<TSNode> baseNames = findAllDescendants(baseClause, "name");
-            for (TSNode baseName : baseNames) {
-                if (baseName != null && !baseName.isNull()) {
-                    typeInfo.implementsInterfaces.add(getNodeText(source, baseName));
-                }
-            }
-        }
+        // Interfaces can extend other interfaces (stored in implementsInterfaces for simplicity)
+        extractExtendedInterfaces(source, interfaceDecl, typeInfo);
         
         // Collect interface methods (implicitly public and abstract)
-        List<TSNode> ifaceMethods = findAllDescendants(interfaceDecl, "method_declaration");
-        for (TSNode m : ifaceMethods) {
-            if (m == null || m.isNull()) continue;
+        for (TSNode m : findAllDescendants(interfaceDecl, "method_declaration")) {
+            if (isNullNode(m)) continue;
+            
             MethodInfo mi = new MethodInfo();
-            
             mi.name = extractName(source, m);
-            
-            // Return type
             mi.returnType = extractReturnType(source, findTypeNode(m));
-            
-            // Parameters
-            TSNode fp = findFirstChild(m, "formal_parameters");
-            if (fp != null && !fp.isNull()) {
-                analyzeParameters(source, fp, mi);
-            }
-            
-            // Interface methods are implicitly public and abstract
             mi.visibility = "public";
             mi.modifiers.add("abstract");
+            
+            TSNode fp = findFirstChild(m, "formal_parameters");
+            if (!isNullNode(fp)) {
+                analyzeParameters(source, fp, mi);
+            }
             
             if (mi.name != null && !mi.name.isEmpty()) {
                 typeInfo.methods.add(mi);
@@ -547,58 +539,58 @@ public class PHPAnalyzer implements LanguageAnalyzer {
         return typeInfo;
     }
     
+    /**
+     * Extract extended interfaces from a base_clause (for interface declarations).
+     */
+    private void extractExtendedInterfaces(String source, TSNode declaration, TypeInfo typeInfo) {
+        TSNode baseClause = findFirstChild(declaration, "base_clause");
+        if (isNullNode(baseClause)) return;
+        
+        for (TSNode baseName : findAllDescendants(baseClause, "name")) {
+            if (isNullNode(baseName)) continue;
+            String name = getNodeText(source, baseName);
+            if (name != null && !name.isEmpty()) {
+                typeInfo.implementsInterfaces.add(name);
+            }
+        }
+    }
+    
     private TypeInfo analyzeTrait(String source, TSNode traitDecl) {
         TypeInfo typeInfo = new TypeInfo();
         typeInfo.kind = "trait";
-        
         typeInfo.name = extractName(source, traitDecl);
         
-        // Get the declaration_list (trait body)
         TSNode traitBody = findFirstChild(traitDecl, "declaration_list");
-        if (traitBody != null && !traitBody.isNull()) {
-            extractTraitUsage(source, traitBody, typeInfo);
-            typeInfo.fields.addAll(collectFieldsFromBody(source, traitBody));
-            extractMethodsFromBody(source, traitBody, typeInfo);
+        if (!isNullNode(traitBody)) {
+            extractTypeBodyContents(source, traitBody, typeInfo);
         }
         
         return typeInfo;
     }
     
     /**
+     * Extract common body contents: trait usage, fields, and methods.
+     * Used by classes, traits, and enums.
+     */
+    private void extractTypeBodyContents(String source, TSNode bodyNode, TypeInfo typeInfo) {
+        extractTraitUsage(source, bodyNode, typeInfo);
+        typeInfo.fields.addAll(collectFieldsFromBody(source, bodyNode));
+        extractMethodsFromBody(source, bodyNode, typeInfo);
+    }
+    
+    /**
      * Analyze a PHP 8.1+ enum declaration.
      * Enums can be unit enums (no backing type) or backed enums (string or int).
-     * They can implement interfaces and use traits.
      */
     private TypeInfo analyzeEnum(String source, TSNode enumDecl) {
         TypeInfo typeInfo = new TypeInfo();
         typeInfo.kind = "enum";
-        
         typeInfo.name = extractName(source, enumDecl);
+        typeInfo.extendsType = extractEnumBackingType(source, enumDecl);
+        extractImplementedInterfaces(source, enumDecl, typeInfo);
         
-        // Get backing type if present (: string or : int)
-        // In tree-sitter PHP, this might be represented as a type node
-        TSNode backingType = findFirstChild(enumDecl, "primitive_type");
-        if (backingType == null || backingType.isNull()) {
-            backingType = findFirstChild(enumDecl, "named_type");
-        }
-        if (backingType != null && !backingType.isNull()) {
-            typeInfo.extendsType = getNodeText(source, backingType);
-        }
-        
-        // Get implemented interfaces
-        TSNode interfaceClause = findFirstChild(enumDecl, "class_interface_clause");
-        if (interfaceClause != null && !interfaceClause.isNull()) {
-            List<TSNode> interfaceNames = findAllDescendants(interfaceClause, "name");
-            for (TSNode interfaceName : interfaceNames) {
-                if (interfaceName != null && !interfaceName.isNull()) {
-                    typeInfo.implementsInterfaces.add(getNodeText(source, interfaceName));
-                }
-            }
-        }
-        
-        // Get the enum body (enum_declaration_list)
         TSNode enumBody = findFirstChild(enumDecl, "enum_declaration_list");
-        if (enumBody != null && !enumBody.isNull()) {
+        if (!isNullNode(enumBody)) {
             extractTraitUsage(source, enumBody, typeInfo);
             extractEnumCases(source, enumBody, typeInfo);
             extractMethodsFromBody(source, enumBody, typeInfo);
@@ -608,56 +600,61 @@ public class PHPAnalyzer implements LanguageAnalyzer {
     }
     
     /**
+     * Extract backing type for PHP 8.1 enums (: string or : int).
+     */
+    private String extractEnumBackingType(String source, TSNode enumDecl) {
+        TSNode backingType = findFirstChild(enumDecl, "primitive_type");
+        if (isNullNode(backingType)) {
+            backingType = findFirstChild(enumDecl, "named_type");
+        }
+        return isNullNode(backingType) ? null : getNodeText(source, backingType);
+    }
+    
+    /**
      * Extract trait usage (use statements) from a class or trait body.
      * In PHP: use TraitName; or use Trait1, Trait2 { ... }
-     * 
-     * We need to be careful to only extract trait names, not method names
-     * from conflict resolution blocks (insteadof, as clauses).
      */
     private void extractTraitUsage(String source, TSNode bodyNode, TypeInfo typeInfo) {
-        if (bodyNode == null || bodyNode.isNull()) return;
+        if (isNullNode(bodyNode)) return;
         
-        // Find use_declaration nodes (PHP's trait usage syntax)
-        List<TSNode> useDecls = findAllChildren(bodyNode, "use_declaration");
-        for (TSNode useDecl : useDecls) {
-            if (useDecl == null || useDecl.isNull()) continue;
+        for (TSNode useDecl : findAllChildren(bodyNode, "use_declaration")) {
+            if (isNullNode(useDecl)) continue;
+            extractTraitNamesFromUseDecl(source, useDecl, typeInfo);
+        }
+    }
+    
+    /**
+     * Extract trait names from a use_declaration node.
+     * Handles both direct names and use_list structures.
+     */
+    private void extractTraitNamesFromUseDecl(String source, TSNode useDecl, TypeInfo typeInfo) {
+        int childCount = useDecl.getNamedChildCount();
+        for (int i = 0; i < childCount; i++) {
+            TSNode child = useDecl.getNamedChild(i);
+            if (isNullNode(child)) continue;
             
-            // Extract trait names from direct children only (not from use_list adaptations)
-            // The structure is: use_declaration -> name | qualified_name | use_list
-            // We want to avoid names inside use_list which contains conflict resolution
-            int childCount = useDecl.getNamedChildCount();
-            for (int i = 0; i < childCount; i++) {
-                TSNode child = useDecl.getNamedChild(i);
-                if (child == null || child.isNull()) continue;
-                
-                String childType = child.getType();
-                
-                // Direct trait name reference
-                if ("name".equals(childType) || "qualified_name".equals(childType)) {
-                    String traitName = getNodeText(source, child);
-                    if (traitName != null && !traitName.isEmpty()) {
-                        typeInfo.mixins.add(traitName);
-                    }
-                }
-                // use_list contains the trait names before the { } block
-                // Structure: use_list -> name, name, ... (comma-separated trait names)
-                else if ("use_list".equals(childType)) {
-                    // Get only direct name/qualified_name children of use_list
-                    int listChildCount = child.getNamedChildCount();
-                    for (int j = 0; j < listChildCount; j++) {
-                        TSNode listChild = child.getNamedChild(j);
-                        if (listChild == null || listChild.isNull()) continue;
-                        
-                        String listChildType = listChild.getType();
-                        if ("name".equals(listChildType) || "qualified_name".equals(listChildType)) {
-                            String traitName = getNodeText(source, listChild);
-                            if (traitName != null && !traitName.isEmpty()) {
-                                typeInfo.mixins.add(traitName);
-                            }
-                        }
+            String childType = child.getType();
+            
+            if ("name".equals(childType) || "qualified_name".equals(childType)) {
+                addTraitName(source, child, typeInfo);
+            } else if ("use_list".equals(childType)) {
+                // Extract trait names from use_list (comma-separated)
+                for (int j = 0; j < child.getNamedChildCount(); j++) {
+                    TSNode listChild = child.getNamedChild(j);
+                    if (isNullNode(listChild)) continue;
+                    String listChildType = listChild.getType();
+                    if ("name".equals(listChildType) || "qualified_name".equals(listChildType)) {
+                        addTraitName(source, listChild, typeInfo);
                     }
                 }
             }
+        }
+    }
+    
+    private void addTraitName(String source, TSNode nameNode, TypeInfo typeInfo) {
+        String traitName = getNodeText(source, nameNode);
+        if (traitName != null && !traitName.isEmpty()) {
+            typeInfo.mixins.add(traitName);
         }
     }
     
@@ -667,14 +664,100 @@ public class PHPAnalyzer implements LanguageAnalyzer {
         // Extract modifiers and visibility (public, private, protected, static, final, abstract)
         extractModifiersAndVisibility(source, methodDecl, methodInfo);
         
+        // Extract PHP 8 attributes (#[...])
+        extractAttributes(source, methodDecl, methodInfo.annotations);
+        
         // Common analysis for name, return type, parameters, and body
         analyzeMethodOrFunction(source, methodDecl, methodInfo);
         
         return methodInfo;
     }
     
+    /**
+     * Extract PHP 8 attributes (#[Attribute], #[Attribute(args)]) from a node.
+     * Tree-sitter PHP structure: attribute_list -> attribute_group -> attribute/name
+     */
+    private void extractAttributes(String source, TSNode node, List<String> annotations) {
+        List<TSNode> attrLists = collectAttributeLists(node);
+        
+        for (TSNode attrList : attrLists) {
+            if (isNullNode(attrList)) continue;
+            
+            // Process attribute_group children
+            for (TSNode attrGroup : findAllChildren(attrList, "attribute_group")) {
+                if (isNullNode(attrGroup)) continue;
+                extractAttributeFromGroup(source, attrGroup, annotations);
+            }
+            
+            // Also check for direct "attribute" children (in case structure varies)
+            for (TSNode attr : findAllChildren(attrList, "attribute")) {
+                addAttributeAnnotation(source, attr, annotations);
+            }
+        }
+    }
+    
+    /**
+     * Collect attribute_list nodes from children and preceding siblings.
+     */
+    private List<TSNode> collectAttributeLists(TSNode node) {
+        List<TSNode> attrLists = new ArrayList<>(findAllChildren(node, "attribute_list"));
+        
+        // Check preceding siblings for attribute_list nodes
+        TSNode prevSibling = node.getPrevNamedSibling();
+        while (!isNullNode(prevSibling) && "attribute_list".equals(prevSibling.getType())) {
+            attrLists.add(0, prevSibling);
+            prevSibling = prevSibling.getPrevNamedSibling();
+        }
+        
+        return attrLists;
+    }
+    
+    /**
+     * Extract attribute from an attribute_group node.
+     */
+    private void extractAttributeFromGroup(String source, TSNode attrGroup, List<String> annotations) {
+        // Try to find "attribute" children first
+        List<TSNode> attrs = findAllChildren(attrGroup, "attribute");
+        if (!attrs.isEmpty()) {
+            for (TSNode attr : attrs) {
+                addAttributeAnnotation(source, attr, annotations);
+            }
+            return;
+        }
+        
+        // Fallback: try "name" child or use the group text directly
+        TSNode nameNode = findFirstChild(attrGroup, "name");
+        if (!isNullNode(nameNode)) {
+            String attrName = getNodeText(source, nameNode);
+            if (attrName != null && !attrName.isEmpty()) {
+                annotations.add("#[" + attrName.trim() + "]");
+            }
+        } else {
+            // Last resort: use the attribute_group text
+            String groupText = getNodeText(source, attrGroup);
+            if (groupText != null && !groupText.isEmpty()) {
+                if (groupText.startsWith("#[") && groupText.endsWith("]")) {
+                    annotations.add(groupText.trim());
+                } else {
+                    annotations.add("#[" + groupText.trim() + "]");
+                }
+            }
+        }
+    }
+    
+    private void addAttributeAnnotation(String source, TSNode attr, List<String> annotations) {
+        if (isNullNode(attr)) return;
+        String attrText = getNodeText(source, attr);
+        if (attrText != null && !attrText.isEmpty()) {
+            annotations.add("#[" + attrText.trim() + "]");
+        }
+    }
+    
     private MethodInfo analyzeFunction(String source, TSNode funcDef) {
         MethodInfo methodInfo = new MethodInfo();
+        
+        // Extract PHP 8 attributes (#[...]) for standalone functions too
+        extractAttributes(source, funcDef, methodInfo.annotations);
         
         // Standalone functions have no modifiers/visibility
         analyzeMethodOrFunction(source, funcDef, methodInfo);
@@ -717,6 +800,20 @@ public class PHPAnalyzer implements LanguageAnalyzer {
                 
                 String name = stripPhpVarPrefix(getNodeText(source, varNameNode));
                 if (!isValidIdentifier(name)) continue;
+                
+                TSNode typeNode = findTypeNode(child);
+                String paramType = (typeNode != null && !typeNode.isNull()) ? getNodeText(source, typeNode) : null;
+                methodInfo.parameters.add(new Parameter(name, paramType));
+            } else if ("variadic_parameter".equals(kind)) {
+                // Handle variadic parameters: ...$param or Type ...$param
+                TSNode varNameNode = findFirstChild(child, "variable_name");
+                if (varNameNode == null || varNameNode.isNull()) continue;
+                
+                String baseName = stripPhpVarPrefix(getNodeText(source, varNameNode));
+                if (!isValidIdentifier(baseName)) continue;
+                
+                // Prefix with ... to indicate variadic
+                String name = "..." + baseName;
                 
                 TSNode typeNode = findTypeNode(child);
                 String paramType = (typeNode != null && !typeNode.isNull()) ? getNodeText(source, typeNode) : null;

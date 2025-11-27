@@ -213,10 +213,13 @@
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
+      "annotations" : [ "#[Deprecated]" ],
       "parameters" : [ {
         "name" : "id",
         "type" : null
+      }, {
+        "name" : "...tags",
+        "type" : "string"
       } ],
       "localVariables" : [ ],
       "methodCalls" : [ ]

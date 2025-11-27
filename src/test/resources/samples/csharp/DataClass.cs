@@ -97,7 +97,7 @@ public class ScatteredDependencies : IDetectMethodCodeIssue
                 new CodeIssue
                 {
                     Name = "Scattered Dependencies",
-                    Severity = CalculateSeverity(m),
+                    Severity = CalculateSeverityScattered(m),
                     SourceFile = m.Entity.FilePath,
                     Metrics = new Dictionary<string, double>
                     {

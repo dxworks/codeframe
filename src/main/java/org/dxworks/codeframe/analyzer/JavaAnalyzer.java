@@ -586,13 +586,23 @@ public class JavaAnalyzer implements LanguageAnalyzer {
             applyVisibilityFallback(target, fullModifiersText, modifiers);
 
             // Add non-visibility modifiers that may not be exposed as named children
+            // Note: "non-sealed" must be checked before "sealed" to avoid false matches
             String[] knownNonVisibility = new String[] {
-                "final", "static", "abstract", "synchronized", "native", "transient", "volatile", "strictfp", "default"
+                "final", "static", "abstract", "synchronized", "native", "transient", "volatile", "strictfp", "default",
+                "non-sealed", "sealed"
             };
             String full = fullModifiersText == null ? "" : fullModifiersText;
             for (String kw : knownNonVisibility) {
-                if (full.contains(kw) && !modifiers.contains(kw)) {
-                    modifiers.add(kw);
+                if (!modifiers.contains(kw)) {
+                    // Use word boundary matching to avoid "sealed" matching inside "non-sealed"
+                    if ("sealed".equals(kw)) {
+                        // Only match "sealed" if not preceded by "non-"
+                        if (full.contains("sealed") && !full.contains("non-sealed")) {
+                            modifiers.add(kw);
+                        }
+                    } else if (full.contains(kw)) {
+                        modifiers.add(kw);
+                    }
                 }
             }
         }

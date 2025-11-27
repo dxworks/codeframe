@@ -29,7 +29,7 @@ public class JavaAnalyzeApprovalTest {
     }
 
     @Test
-    void analyze_Java_InterfaceSample() throws IOException {
+    void analyze_Java_RepositorySample() throws IOException {
         verify(Paths.get("src/test/resources/samples/java/Repository.java"), Language.JAVA);
     }
 

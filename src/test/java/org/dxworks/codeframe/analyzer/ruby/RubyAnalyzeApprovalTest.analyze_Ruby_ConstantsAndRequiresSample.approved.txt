@@ -225,7 +225,43 @@
     "types" : [ ]
   } ],
   "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
+  "fields" : [ {
+    "name" : "APP_VERSION",
+    "type" : "String",
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ]
+  }, {
+    "name" : "MAX_CONNECTIONS",
+    "type" : "Integer",
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ]
+  }, {
+    "name" : "DEBUG_MODE",
+    "type" : "Boolean",
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ]
+  } ],
+  "methodCalls" : [ {
+    "methodName" : "info",
+    "objectType" : null,
+    "objectName" : "Rails.logger",
+    "callCount" : 1,
+    "parameterCount" : 1
+  }, {
+    "methodName" : "logger",
+    "objectType" : null,
+    "objectName" : "Rails",
+    "callCount" : 1,
+    "parameterCount" : 0
+  }, {
+    "methodName" : "puts",
+    "objectType" : null,
+    "objectName" : null,
+    "callCount" : 1,
+    "parameterCount" : 1
+  } ],
   "imports" : [ "require 'bundler/setup'", "Bundler.require(:default)", "require 'json'", "require 'net/http'", "require_relative '../lib/helper'", "require_relative 'config'" ]
 }

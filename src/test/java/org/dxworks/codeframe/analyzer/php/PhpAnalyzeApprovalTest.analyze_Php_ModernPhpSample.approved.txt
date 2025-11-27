@@ -848,7 +848,7 @@
       "returnType" : "array",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
+      "annotations" : [ "#[Route(path: '/products/{id}', method: 'GET')]" ],
       "parameters" : [ {
         "name" : "id",
         "type" : "int"
@@ -860,7 +860,7 @@
       "returnType" : "array",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
+      "annotations" : [ "#[Route(path: '/products', method: 'POST')]" ],
       "parameters" : [ {
         "name" : "name",
         "type" : "string"

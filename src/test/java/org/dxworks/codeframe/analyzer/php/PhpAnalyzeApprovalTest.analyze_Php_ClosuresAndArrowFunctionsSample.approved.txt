@@ -327,6 +327,9 @@
       "parameters" : [ {
         "name" : "event",
         "type" : "string"
+      }, {
+        "name" : "...args",
+        "type" : "mixed"
       } ],
       "localVariables" : [ ],
       "methodCalls" : [ {
@@ -421,7 +424,10 @@
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
       "annotations" : [ ],
-      "parameters" : [ ],
+      "parameters" : [ {
+        "name" : "...functions",
+        "type" : "callable"
+      } ],
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "array_reduce",
@@ -442,7 +448,10 @@
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
       "annotations" : [ ],
-      "parameters" : [ ],
+      "parameters" : [ {
+        "name" : "...functions",
+        "type" : "callable"
+      } ],
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "array_reduce",

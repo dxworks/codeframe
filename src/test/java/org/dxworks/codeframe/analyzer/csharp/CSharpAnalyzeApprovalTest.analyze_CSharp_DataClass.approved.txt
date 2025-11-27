@@ -338,7 +338,7 @@
       } ],
       "localVariables" : [ "shortMemoryCap", "metrics", "cint", "cdisp" ],
       "methodCalls" : [ {
-        "methodName" : "CalculateSeverity",
+        "methodName" : "CalculateSeverityScattered",
         "objectType" : null,
         "objectName" : null,
         "callCount" : 1,
