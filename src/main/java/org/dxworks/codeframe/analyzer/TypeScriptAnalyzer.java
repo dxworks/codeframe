@@ -115,7 +115,230 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
             }
         }
         
+        // Extract prototype and static method assignments (e.g., Person.prototype.greet = function() {})
+        extractPrototypeMethods(sourceCode, rootNode, analysis);
+        
+        // Extract file-level fields (module-level constants/variables)
+        extractFileLevelFields(sourceCode, rootNode, analysis);
+        
+        // Extract file-level method calls (top-level function calls)
+        extractFileLevelMethodCalls(sourceCode, rootNode, analysis);
+        
         return analysis;
+    }
+    
+    /**
+     * Extract prototype and static method assignments.
+     * Patterns: Person.prototype.greet = function() {}
+     *           Person.create = function() {}
+     */
+    private void extractPrototypeMethods(String source, TSNode rootNode, FileAnalysis analysis) {
+        // Find expression_statement nodes at top level that contain assignment_expression
+        int childCount = rootNode.getNamedChildCount();
+        for (int i = 0; i < childCount; i++) {
+            TSNode child = rootNode.getNamedChild(i);
+            if (child == null || child.isNull()) continue;
+            if (!"expression_statement".equals(child.getType())) continue;
+            
+            TSNode expr = child.getNamedChild(0);
+            if (expr == null || !"assignment_expression".equals(expr.getType())) continue;
+            
+            // Left side should be a member_expression (e.g., Person.prototype.greet or Person.create)
+            TSNode left = getChildByFieldName(expr, "left");
+            TSNode right = getChildByFieldName(expr, "right");
+            if (left == null || right == null) continue;
+            if (!"member_expression".equals(left.getType())) continue;
+            
+            // Right side should be a function expression
+            String rightType = right.getType();
+            boolean isFunc = "function".equals(rightType) || "function_expression".equals(rightType) 
+                          || "arrow_function".equals(rightType) || "generator_function".equals(rightType);
+            if (!isFunc) continue;
+            
+            // Extract the full member expression as the method name (e.g., "Person.prototype.greet")
+            String fullName = getNodeText(source, left);
+            if (fullName == null || fullName.isEmpty()) continue;
+            
+            MethodInfo mi = new MethodInfo();
+            mi.name = fullName;
+            mi.visibility = null;
+            
+            // Detect async
+            String rightText = getNodeText(source, right);
+            if (rightText != null && rightText.trim().startsWith("async")) {
+                mi.modifiers.add("async");
+            }
+            
+            // Detect generator
+            if ("generator_function".equals(rightType) || (rightText != null && rightText.contains("function*"))) {
+                mi.modifiers.add("function*");
+            }
+            
+            // Parameters
+            TSNode paramsNode = findFirstChild(right, "formal_parameters");
+            if (paramsNode != null) {
+                analyzeParameters(source, paramsNode, mi);
+            }
+            
+            // Body
+            TSNode bodyNode = findFirstChild(right, "statement_block");
+            if (bodyNode != null) {
+                analyzeMethodBody(source, bodyNode, mi, null);
+            }
+            
+            analysis.methods.add(mi);
+        }
+    }
+    
+    /**
+     * Extract file-level constants and variables (const, let, var declarations at module level).
+     * Excludes function declarations (arrow functions, function expressions).
+     */
+    private void extractFileLevelFields(String source, TSNode rootNode, FileAnalysis analysis) {
+        int childCount = rootNode.getNamedChildCount();
+        for (int i = 0; i < childCount; i++) {
+            TSNode child = rootNode.getNamedChild(i);
+            if (child == null || child.isNull()) continue;
+            
+            String nodeType = child.getType();
+            TSNode declNode = null;
+            boolean isExported = false;
+            
+            // Handle export statements wrapping declarations
+            if ("export_statement".equals(nodeType)) {
+                isExported = true;
+                for (int j = 0; j < child.getNamedChildCount(); j++) {
+                    TSNode exportChild = child.getNamedChild(j);
+                    if (exportChild != null) {
+                        String exportChildType = exportChild.getType();
+                        if ("lexical_declaration".equals(exportChildType) || "variable_declaration".equals(exportChildType)) {
+                            declNode = exportChild;
+                            break;
+                        }
+                    }
+                }
+            } else if ("lexical_declaration".equals(nodeType) || "variable_declaration".equals(nodeType)) {
+                declNode = child;
+            }
+            
+            if (declNode == null) continue;
+            
+            // Process variable declarators within the declaration
+            List<TSNode> declarators = findAllChildren(declNode, "variable_declarator");
+            for (TSNode declarator : declarators) {
+                TSNode nameNode = findFirstChild(declarator, "identifier");
+                if (nameNode == null) continue;
+                
+                // Check if this is a function (arrow function, function expression)
+                TSNode initializer = null;
+                TSNode typeAnnotation = null;
+                for (int j = 0; j < declarator.getNamedChildCount(); j++) {
+                    TSNode declChild = declarator.getNamedChild(j);
+                    if (declChild == null) continue;
+                    String declChildType = declChild.getType();
+                    if ("type_annotation".equals(declChildType)) {
+                        typeAnnotation = declChild;
+                    } else if ("arrow_function".equals(declChildType) || "function".equals(declChildType) ||
+                               "function_expression".equals(declChildType) || "generator_function".equals(declChildType)) {
+                        initializer = declChild;
+                        break;
+                    } else if (!"identifier".equals(declChildType) && !"type_annotation".equals(declChildType)) {
+                        initializer = declChild;
+                    }
+                }
+                
+                // Skip functions - they're already captured as methods
+                if (initializer != null) {
+                    String initType = initializer.getType();
+                    if ("arrow_function".equals(initType) || "function".equals(initType) ||
+                        "function_expression".equals(initType) || "generator_function".equals(initType)) {
+                        continue;
+                    }
+                }
+                
+                FieldInfo field = new FieldInfo();
+                field.name = getNodeText(source, nameNode);
+                
+                // Determine declaration kind (const, let, var)
+                String declText = getNodeText(source, declNode);
+                if (declText != null) {
+                    if (declText.trim().startsWith("const ")) {
+                        field.modifiers.add("const");
+                    } else if (declText.trim().startsWith("let ")) {
+                        field.modifiers.add("let");
+                    } else if (declText.trim().startsWith("var ")) {
+                        field.modifiers.add("var");
+                    }
+                }
+                
+                // Check for export
+                if (isExported) {
+                    field.modifiers.add("export");
+                }
+                
+                // Get type from annotation or infer from initializer
+                if (typeAnnotation != null) {
+                    field.type = getNodeText(source, typeAnnotation).replaceFirst("^:\\s*", "");
+                } else if (initializer != null) {
+                    field.type = inferTypeFromExpression(source, initializer);
+                }
+                
+                if (field.name != null && !field.name.isEmpty()) {
+                    analysis.fields.add(field);
+                }
+            }
+        }
+    }
+    
+    /**
+     * Extract file-level method calls (all function calls at module level, outside any named function or class).
+     * This includes calls inside callbacks passed to top-level calls (e.g., test(), expect() inside describe()).
+     */
+    private void extractFileLevelMethodCalls(String source, TSNode rootNode, FileAnalysis analysis) {
+        int childCount = rootNode.getNamedChildCount();
+        for (int i = 0; i < childCount; i++) {
+            TSNode child = rootNode.getNamedChild(i);
+            if (child == null || child.isNull()) continue;
+            
+            String nodeType = child.getType();
+            
+            // Look for expression_statement - extract ALL calls within it (including nested callbacks)
+            if ("expression_statement".equals(nodeType)) {
+                List<TSNode> allCalls = findAllDescendants(child, "call_expression");
+                for (TSNode callExpr : allCalls) {
+                    extractCallIntoList(source, callExpr, analysis.methodCalls);
+                }
+            }
+        }
+        analysis.methodCalls.sort(METHOD_CALL_COMPARATOR);
+    }
+    
+    /**
+     * Extract a single call expression into a method call list.
+     */
+    private void extractCallIntoList(String source, TSNode callNode, List<MethodCall> calls) {
+        TSNode functionNode = callNode.getNamedChild(0);
+        if (functionNode == null || functionNode.isNull()) return;
+        
+        String methodName = null;
+        String objectName = null;
+        
+        if ("member_expression".equals(functionNode.getType())) {
+            TSNode propNode = findFirstChild(functionNode, "property_identifier");
+            if (propNode != null) {
+                methodName = getNodeText(source, propNode);
+            }
+            TSNode objNode = functionNode.getNamedChild(0);
+            if (objNode != null && !objNode.isNull()) {
+                objectName = renderObjectName(source, objNode, TS_LITERAL_TYPES);
+            }
+        } else if ("identifier".equals(functionNode.getType())) {
+            methodName = getNodeText(source, functionNode);
+        }
+        
+        if (methodName != null && isValidIdentifier(methodName)) {
+            collectMethodCall(calls, methodName, null, objectName);
+        }
     }
     
     
@@ -166,10 +389,7 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         extractDecorators(source, classDecl, typeInfo.annotations);
         
         // Get class name
-        TSNode nameNode = findFirstChild(classDecl, "type_identifier");
-        if (nameNode != null) {
-            typeInfo.name = getNodeText(source, nameNode);
-        }
+        typeInfo.name = extractName(source, classDecl, "type_identifier");
         
         // Get heritage clause (extends/implements)
         TSNode heritageNode = findFirstChild(classDecl, "class_heritage");
@@ -202,11 +422,7 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         // Extract modifiers/visibility and decorators
         extractModifiersAndVisibility(source, interfaceDecl, typeInfo.modifiers, typeInfo);
         extractDecorators(source, interfaceDecl, typeInfo.annotations);
-
-        TSNode nameNode = findFirstChild(interfaceDecl, "type_identifier");
-        if (nameNode != null) {
-            typeInfo.name = getNodeText(source, nameNode);
-        }
+        typeInfo.name = extractName(source, interfaceDecl, "type_identifier");
         
         // Interfaces can extend other interfaces
         // Try multiple node types as different grammar versions may use different names
@@ -335,10 +551,7 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         }
         
         // Get enum name
-        TSNode nameNode = findFirstChild(enumDecl, "identifier");
-        if (nameNode != null) {
-            typeInfo.name = getNodeText(source, nameNode);
-        }
+        typeInfo.name = extractName(source, enumDecl, "identifier");
         
         // Get enum body and extract members as fields
         TSNode enumBody = findFirstChild(enumDecl, "enum_body");
@@ -429,10 +642,7 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         extractModifiersAndVisibility(source, typeAliasDecl, typeInfo.modifiers, typeInfo);
         
         // Get type alias name (may include generic type parameters)
-        TSNode nameNode = findFirstChild(typeAliasDecl, "type_identifier");
-        if (nameNode != null) {
-            typeInfo.name = getNodeText(source, nameNode);
-        }
+        typeInfo.name = extractName(source, typeAliasDecl, "type_identifier");
         
         // Check for type parameters (generics like <T>)
         TSNode typeParams = findFirstChild(typeAliasDecl, "type_parameters");
@@ -468,10 +678,7 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         extractDecorators(source, methodDef, methodInfo.annotations);
         
         // Get method name
-        TSNode nameNode = findFirstChild(methodDef, "property_identifier");
-        if (nameNode != null) {
-            methodInfo.name = getNodeText(source, nameNode);
-        }
+        methodInfo.name = extractName(source, methodDef, "property_identifier");
         
         // Get return type annotation
         TSNode typeAnnotation = findFirstChild(methodDef, "type_annotation");
@@ -501,10 +708,7 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         extractModifiersAndVisibility(source, funcDecl, methodInfo.modifiers, methodInfo);
         
         // Get function name
-        TSNode nameNode = findFirstChild(funcDecl, "identifier");
-        if (nameNode != null) {
-            methodInfo.name = getNodeText(source, nameNode);
-        }
+        methodInfo.name = extractName(source, funcDecl, "identifier");
         
         // Get return type annotation
         TSNode typeAnnotation = findFirstChild(funcDecl, "type_annotation");

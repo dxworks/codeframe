@@ -184,7 +184,13 @@
       "parameterCount" : null
     } ]
   } ],
-  "fields" : [ ],
+  "fields" : [ {
+    "name" : "APP_BASE",
+    "type" : "string",
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ]
+  } ],
   "methodCalls" : [ ],
   "imports" : [ "import type React from 'react';", "import { useCallback, useEffect, useRef, useState } from 'react';", "import { useTranslation } from 'react-i18next';" ]
 }

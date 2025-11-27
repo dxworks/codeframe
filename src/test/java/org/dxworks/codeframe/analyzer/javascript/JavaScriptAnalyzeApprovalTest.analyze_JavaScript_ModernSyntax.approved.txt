@@ -2,7 +2,203 @@
   "filePath" : "src/test/resources/samples/javascript/ModernSyntax.js",
   "language" : "javascript",
   "packageName" : null,
-  "types" : [ ],
+  "types" : [ {
+    "kind" : "class",
+    "name" : "Point",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "constructor",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "x",
+        "type" : null
+      }, {
+        "name" : "y",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "distanceTo",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "other",
+        "type" : null
+      } ],
+      "localVariables" : [ "dx", "dy" ],
+      "methodCalls" : [ {
+        "methodName" : "sqrt",
+        "objectType" : null,
+        "objectName" : "Math",
+        "callCount" : 1,
+        "parameterCount" : null
+      } ]
+    }, {
+      "name" : "toString",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "Rectangle",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "constructor",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "width",
+        "type" : null
+      }, {
+        "name" : "height",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "area",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ "get" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "perimeter",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ "get" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "scale",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "factor",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "Shape",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "constructor",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "describe",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "Circle",
+    "visibility" : null,
+    "modifiers" : [ "export" ],
+    "annotations" : [ ],
+    "extendsType" : "Shape",
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "constructor",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "radius",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "super",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : null
+      } ]
+    }, {
+      "name" : "area",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ "get" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "circumference",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ "get" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  } ],
   "methods" : [ {
     "name" : "getUserCity",
     "returnType" : null,
@@ -520,7 +716,13 @@
     "localVariables" : [ "result" ],
     "methodCalls" : [ ]
   } ],
-  "fields" : [ ],
+  "fields" : [ {
+    "name" : "mathUtils",
+    "type" : "Object",
+    "visibility" : null,
+    "modifiers" : [ "const", "export" ],
+    "annotations" : [ ]
+  } ],
   "methodCalls" : [ ],
   "imports" : [ ]
 }

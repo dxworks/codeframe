@@ -622,9 +622,8 @@ public class JavaAnalyzer implements LanguageAnalyzer {
     
     // Helper: Extract name with optional type parameters
     private String extractNameWithTypeParams(String source, TSNode node) {
-        TSNode nameNode = findFirstChild(node, "identifier");
-        if (nameNode == null) return null;
-        String baseName = getNodeText(source, nameNode);
+        String baseName = extractName(source, node, "identifier");
+        if (baseName == null) return null;
         TSNode typeParams = findFirstChild(node, "type_parameters");
         if (typeParams != null) {
             return baseName + getNodeText(source, typeParams);

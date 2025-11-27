@@ -3,26 +3,122 @@
   "language" : "javascript",
   "packageName" : null,
   "types" : [ ],
-  "methods" : [ {
-    "name" : "fetchData",
-    "returnType" : null,
-    "visibility" : null,
-    "modifiers" : [ "const" ],
-    "annotations" : [ ],
-    "parameters" : [ ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
-  }, {
-    "name" : "failingFetch",
-    "returnType" : null,
-    "visibility" : null,
-    "modifiers" : [ "const" ],
-    "annotations" : [ ],
-    "parameters" : [ ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
-  } ],
+  "methods" : [ ],
   "fields" : [ ],
-  "methodCalls" : [ ],
+  "methodCalls" : [ {
+    "methodName" : "afterEach",
+    "objectType" : null,
+    "objectName" : null,
+    "callCount" : 1,
+    "parameterCount" : null
+  }, {
+    "methodName" : "beforeEach",
+    "objectType" : null,
+    "objectName" : null,
+    "callCount" : 1,
+    "parameterCount" : null
+  }, {
+    "methodName" : "describe",
+    "objectType" : null,
+    "objectName" : null,
+    "callCount" : 7,
+    "parameterCount" : null
+  }, {
+    "methodName" : "expect",
+    "objectType" : null,
+    "objectName" : null,
+    "callCount" : 11,
+    "parameterCount" : null
+  }, {
+    "methodName" : "failingFetch",
+    "objectType" : null,
+    "objectName" : null,
+    "callCount" : 1,
+    "parameterCount" : null
+  }, {
+    "methodName" : "fetchData",
+    "objectType" : null,
+    "objectName" : null,
+    "callCount" : 1,
+    "parameterCount" : null
+  }, {
+    "methodName" : "filter",
+    "objectType" : null,
+    "objectName" : "numbers",
+    "callCount" : 1,
+    "parameterCount" : null
+  }, {
+    "methodName" : "map",
+    "objectType" : null,
+    "objectName" : "items",
+    "callCount" : 1,
+    "parameterCount" : null
+  }, {
+    "methodName" : "parseFloat",
+    "objectType" : null,
+    "objectName" : null,
+    "callCount" : 2,
+    "parameterCount" : null
+  }, {
+    "methodName" : "reject",
+    "objectType" : null,
+    "objectName" : "Promise",
+    "callCount" : 1,
+    "parameterCount" : null
+  }, {
+    "methodName" : "resolve",
+    "objectType" : null,
+    "objectName" : "Promise",
+    "callCount" : 1,
+    "parameterCount" : null
+  }, {
+    "methodName" : "test",
+    "objectType" : null,
+    "objectName" : null,
+    "callCount" : 11,
+    "parameterCount" : null
+  }, {
+    "methodName" : "toBe",
+    "objectType" : null,
+    "objectName" : "expect()",
+    "callCount" : 4,
+    "parameterCount" : null
+  }, {
+    "methodName" : "toBeDefined",
+    "objectType" : null,
+    "objectName" : "expect()",
+    "callCount" : 1,
+    "parameterCount" : null
+  }, {
+    "methodName" : "toBeGreaterThan",
+    "objectType" : null,
+    "objectName" : "expect()",
+    "callCount" : 1,
+    "parameterCount" : null
+  }, {
+    "methodName" : "toBeUndefined",
+    "objectType" : null,
+    "objectName" : "expect()",
+    "callCount" : 1,
+    "parameterCount" : null
+  }, {
+    "methodName" : "toContain",
+    "objectType" : null,
+    "objectName" : "expect()",
+    "callCount" : 2,
+    "parameterCount" : null
+  }, {
+    "methodName" : "toEqual",
+    "objectType" : null,
+    "objectName" : "expect()",
+    "callCount" : 1,
+    "parameterCount" : null
+  }, {
+    "methodName" : "toThrow",
+    "objectType" : null,
+    "objectName" : "expect().rejects",
+    "callCount" : 1,
+    "parameterCount" : null
+  } ],
   "imports" : [ ]
 }

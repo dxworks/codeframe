@@ -1,0 +1,765 @@
+{
+  "filePath" : "src/test/resources/samples/php/TraitsSample.php",
+  "language" : "php",
+  "packageName" : null,
+  "types" : [ {
+    "kind" : "class",
+    "name" : "SimpleLogger",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ "Loggable" ],
+    "fields" : [ {
+      "name" : "name",
+      "type" : "string",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "__construct",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "string"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getName",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "logWithName",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "message",
+        "type" : "string"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "log",
+        "objectType" : null,
+        "objectName" : "this",
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "User",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ "Loggable", "Identifiable", "Countable" ],
+    "fields" : [ {
+      "name" : "id",
+      "type" : "int",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "username",
+      "type" : "string",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "email",
+      "type" : "string",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "__construct",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "int"
+      }, {
+        "name" : "username",
+        "type" : "string"
+      }, {
+        "name" : "email",
+        "type" : "string"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "incrementCount",
+        "objectType" : "self",
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 0
+      }, {
+        "methodName" : "log",
+        "objectType" : null,
+        "objectName" : "this",
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    }, {
+      "name" : "getId",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getUsername",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getEmail",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "__destruct",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "decrementCount",
+        "objectType" : "self",
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 0
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "DataExporter",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ "Serializable", "JsonExportable" ],
+    "fields" : [ {
+      "name" : "name",
+      "type" : "string",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "items",
+      "type" : "array",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "__construct",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "string"
+      }, {
+        "name" : "items",
+        "type" : "array"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getName",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "addItem",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "item",
+        "type" : "mixed"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "exportAsJson",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "jsonSerialize",
+        "objectType" : null,
+        "objectName" : "this",
+        "callCount" : 1,
+        "parameterCount" : 0
+      } ]
+    }, {
+      "name" : "exportAsArray",
+      "returnType" : "array",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "toArray",
+        "objectType" : null,
+        "objectName" : "this",
+        "callCount" : 1,
+        "parameterCount" : 0
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "SecureEntity",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ "Loggable" ],
+    "fields" : [ {
+      "name" : "id",
+      "type" : "int",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "__construct",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "int"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getId",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "logSecure",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "message",
+        "type" : "string"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "privateLog",
+        "objectType" : null,
+        "objectName" : "this",
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "class",
+    "name" : "Product",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ "FullyFeatured", "Countable" ],
+    "fields" : [ {
+      "name" : "id",
+      "type" : "int",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "name",
+      "type" : "string",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "price",
+      "type" : "float",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "__construct",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "int"
+      }, {
+        "name" : "name",
+        "type" : "string"
+      }, {
+        "name" : "price",
+        "type" : "float"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "incrementCount",
+        "objectType" : "self",
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 0
+      } ]
+    }, {
+      "name" : "getId",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getName",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getPrice",
+      "returnType" : "float",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getFormattedPrice",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "number_format",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 2
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "trait",
+    "name" : "Loggable",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "logPrefix",
+      "type" : "string",
+      "visibility" : "protected",
+      "modifiers" : [ "protected" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "log",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "message",
+        "type" : "string"
+      } ],
+      "localVariables" : [ "timestamp" ],
+      "methodCalls" : [ {
+        "methodName" : "date",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    }, {
+      "name" : "logError",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "message",
+        "type" : "string"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "log",
+        "objectType" : null,
+        "objectName" : "this",
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    }, {
+      "name" : "formatLogMessage",
+      "returnType" : "string",
+      "visibility" : "protected",
+      "modifiers" : [ "protected" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "message",
+        "type" : "string"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "trim",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "trait",
+    "name" : "Identifiable",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "getId",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "abstract", "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getIdentifier",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "getId",
+        "objectType" : null,
+        "objectName" : "this",
+        "callCount" : 1,
+        "parameterCount" : 0
+      } ]
+    }, {
+      "name" : "isSameAs",
+      "returnType" : "bool",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "other",
+        "type" : "object"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "getId",
+        "objectType" : null,
+        "objectName" : "other",
+        "callCount" : 1,
+        "parameterCount" : 0
+      }, {
+        "methodName" : "getId",
+        "objectType" : null,
+        "objectName" : "this",
+        "callCount" : 1,
+        "parameterCount" : 0
+      }, {
+        "methodName" : "method_exists",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 2
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "trait",
+    "name" : "Countable",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "instanceCount",
+      "type" : "int",
+      "visibility" : "private",
+      "modifiers" : [ "private", "static" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "getInstanceCount",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "incrementCount",
+      "returnType" : "void",
+      "visibility" : "protected",
+      "modifiers" : [ "protected", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "decrementCount",
+      "returnType" : "void",
+      "visibility" : "protected",
+      "modifiers" : [ "protected", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "trait",
+    "name" : "Serializable",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "serialize",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "json_encode",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 1
+      }, {
+        "methodName" : "toArray",
+        "objectType" : null,
+        "objectName" : "this",
+        "callCount" : 1,
+        "parameterCount" : 0
+      } ]
+    }, {
+      "name" : "toArray",
+      "returnType" : "array",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "get_object_vars",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "trait",
+    "name" : "JsonExportable",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "serialize",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "getData",
+        "objectType" : null,
+        "objectName" : "this",
+        "callCount" : 1,
+        "parameterCount" : 0
+      }, {
+        "methodName" : "json_encode",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 2
+      } ]
+    }, {
+      "name" : "getData",
+      "returnType" : "array",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "get_object_vars",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "trait",
+    "name" : "FullyFeatured",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ "Loggable", "Identifiable" ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "describe",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ "id" ],
+      "methodCalls" : [ {
+        "methodName" : "getIdentifier",
+        "objectType" : null,
+        "objectName" : "this",
+        "callCount" : 1,
+        "parameterCount" : 0
+      }, {
+        "methodName" : "log",
+        "objectType" : null,
+        "objectName" : "this",
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ {
+    "name" : "createUser",
+    "returnType" : "User",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "int"
+    }, {
+      "name" : "username",
+      "type" : "string"
+    }, {
+      "name" : "email",
+      "type" : "string"
+    } ],
+    "localVariables" : [ "user" ],
+    "methodCalls" : [ ]
+  } ],
+  "fields" : [ {
+    "name" : "TRAIT_VERSION",
+    "type" : "string",
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ]
+  } ],
+  "methodCalls" : [ {
+    "methodName" : "error_reporting",
+    "objectType" : null,
+    "objectName" : null,
+    "callCount" : 1,
+    "parameterCount" : 1
+  } ],
+  "imports" : [ "namespace App\\Traits;" ]
+}

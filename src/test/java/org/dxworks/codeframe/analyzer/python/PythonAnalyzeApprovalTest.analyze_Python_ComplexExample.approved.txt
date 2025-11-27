@@ -678,6 +678,12 @@
     "objectName" : "logging",
     "callCount" : 1,
     "parameterCount" : null
+  }, {
+    "methodName" : "getLogger",
+    "objectType" : null,
+    "objectName" : "logging",
+    "callCount" : 1,
+    "parameterCount" : null
   } ],
   "imports" : [ "from __future__ import annotations", "import abc", "import asyncio", "import contextlib", "import logging", "import math", "import re", "from dataclasses import dataclass, field", "from datetime import datetime", "from typing import Any, Dict, Generator, Iterable, List, Optional, Tuple" ]
 }

@@ -246,7 +246,19 @@
       "parameterCount" : null
     } ]
   } ],
-  "fields" : [ ],
+  "fields" : [ {
+    "name" : "UserRole",
+    "type" : null,
+    "visibility" : null,
+    "modifiers" : [ "const", "export" ],
+    "annotations" : [ ]
+  }, {
+    "name" : "HttpStatus",
+    "type" : null,
+    "visibility" : null,
+    "modifiers" : [ "const", "export" ],
+    "annotations" : [ ]
+  } ],
   "methodCalls" : [ ],
   "imports" : [ ]
 }

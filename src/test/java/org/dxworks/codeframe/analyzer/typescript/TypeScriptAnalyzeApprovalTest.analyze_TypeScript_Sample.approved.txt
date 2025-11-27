@@ -196,7 +196,37 @@
     "localVariables" : [ ],
     "methodCalls" : [ ]
   } ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
+  "fields" : [ {
+    "name" : "API_VERSION",
+    "type" : "string",
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ]
+  }, {
+    "name" : "MAX_RETRIES",
+    "type" : "number",
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ]
+  }, {
+    "name" : "currentUser",
+    "type" : "User | null",
+    "visibility" : null,
+    "modifiers" : [ "let" ],
+    "annotations" : [ ]
+  }, {
+    "name" : "DEFAULT_TIMEOUT",
+    "type" : "number",
+    "visibility" : null,
+    "modifiers" : [ "const", "export" ],
+    "annotations" : [ ]
+  } ],
+  "methodCalls" : [ {
+    "methodName" : "log",
+    "objectType" : null,
+    "objectName" : "console",
+    "callCount" : 1,
+    "parameterCount" : null
+  } ],
   "imports" : [ "import { Logger } from './logger';", "import type { Config } from './config';" ]
 }

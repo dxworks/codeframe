@@ -60,6 +60,36 @@ public class PHPAnalyzer implements LanguageAnalyzer {
                 }
             }
             
+            // Find all trait declarations
+            List<TSNode> traitDecls = findAllDescendants(rootNode, "trait_declaration");
+            for (TSNode traitDecl : traitDecls) {
+                try {
+                    if (traitDecl == null || traitDecl.isNull()) continue;
+                    
+                    TypeInfo typeInfo = analyzeTrait(sourceCode, traitDecl);
+                    if (typeInfo.name != null && !typeInfo.name.isEmpty()) {
+                        analysis.types.add(typeInfo);
+                    }
+                } catch (Exception e) {
+                    System.err.println("Warning: Failed to analyze trait in " + filePath + ": " + e.getMessage());
+                }
+            }
+            
+            // Find all enum declarations (PHP 8.1+)
+            List<TSNode> enumDecls = findAllDescendants(rootNode, "enum_declaration");
+            for (TSNode enumDecl : enumDecls) {
+                try {
+                    if (enumDecl == null || enumDecl.isNull()) continue;
+                    
+                    TypeInfo typeInfo = analyzeEnum(sourceCode, enumDecl);
+                    if (typeInfo.name != null && !typeInfo.name.isEmpty()) {
+                        analysis.types.add(typeInfo);
+                    }
+                } catch (Exception e) {
+                    System.err.println("Warning: Failed to analyze enum in " + filePath + ": " + e.getMessage());
+                }
+            }
+            
             // Find standalone functions
             List<TSNode> functionDecls = findAllDescendants(rootNode, "function_definition");
             for (TSNode funcDecl : functionDecls) {
@@ -75,12 +105,281 @@ public class PHPAnalyzer implements LanguageAnalyzer {
                     System.err.println("Warning: Failed to analyze function in " + filePath + ": " + e.getMessage());
                 }
             }
+            
+            // Extract file-level constants and variables
+            extractFileLevelFields(sourceCode, rootNode, analysis);
+            
+            // Extract file-level method calls
+            extractFileLevelMethodCalls(sourceCode, rootNode, analysis);
         } catch (Exception e) {
             System.err.println("Error analyzing PHP file " + filePath + ": " + e.getMessage());
             e.printStackTrace();
         }
         
         return analysis;
+    }
+    
+    /**
+     * Extract file-level constants (define) and global variables.
+     */
+    private void extractFileLevelFields(String source, TSNode rootNode, FileAnalysis analysis) {
+        // Find const declarations at file level
+        List<TSNode> constDecls = findAllDescendants(rootNode, "const_declaration");
+        for (TSNode constDecl : constDecls) {
+            if (constDecl == null || constDecl.isNull()) continue;
+            if (isInsideClass(constDecl)) continue;
+            
+            // Extract const elements
+            for (TSNode elem : findAllChildren(constDecl, "const_element")) {
+                String name = extractName(source, elem);
+                if (name == null) continue;
+                
+                FieldInfo field = new FieldInfo();
+                field.name = name;
+                field.modifiers.add("const");
+                
+                // Try to infer type from value
+                TSNode valueNode = elem.getNamedChildCount() > 1 ? elem.getNamedChild(1) : null;
+                if (valueNode != null) {
+                    field.type = inferTypeFromValue(source, valueNode);
+                }
+                
+                if (field.name != null && !field.name.isEmpty()) {
+                    analysis.fields.add(field);
+                }
+            }
+        }
+        
+        // Find define() calls at file level (treated as constants)
+        // These are captured in methodCalls, but we could also extract them as fields
+    }
+    
+    /**
+     * Extract file-level method calls (outside any class or function).
+     * Reuses extractCallsFromNode for consistency with method body analysis.
+     */
+    private void extractFileLevelMethodCalls(String source, TSNode rootNode, FileAnalysis analysis) {
+        int childCount = rootNode.getNamedChildCount();
+        for (int i = 0; i < childCount; i++) {
+            TSNode child = rootNode.getNamedChild(i);
+            if (child == null || child.isNull()) continue;
+            
+            // Only process expression_statement at top level
+            if ("expression_statement".equals(child.getType())) {
+                extractCallsFromNode(source, child, analysis.methodCalls);
+            }
+        }
+        analysis.methodCalls.sort(METHOD_CALL_COMPARATOR);
+    }
+    
+    /**
+     * Extract all method calls from a node into a list.
+     * Handles function_call_expression, member_call_expression, and scoped_call_expression.
+     */
+    private void extractCallsFromNode(String source, TSNode node, List<MethodCall> calls) {
+        // Function calls: func()
+        for (TSNode callExpr : findAllDescendants(node, "function_call_expression")) {
+            TSNode funcNode = callExpr.getNamedChild(0);
+            if (funcNode != null && "name".equals(funcNode.getType())) {
+                String methodName = getNodeText(source, funcNode);
+                if (isValidIdentifier(methodName)) {
+                    int paramCount = countArguments(callExpr);
+                    collectMethodCall(calls, methodName, null, null, paramCount);
+                }
+            }
+        }
+        
+        // Member calls: $obj->method()
+        for (TSNode callExpr : findAllDescendants(node, "member_call_expression")) {
+            String[] result = extractMemberCallInfo(source, callExpr);
+            if (result[0] != null && isValidIdentifier(result[0])) {
+                int paramCount = countArguments(callExpr);
+                collectMethodCall(calls, result[0], null, result[1], paramCount);
+            }
+        }
+        
+        // Scoped calls: Class::method()
+        for (TSNode callExpr : findAllDescendants(node, "scoped_call_expression")) {
+            String[] result = extractScopedCallInfo(source, callExpr);
+            if (result[0] != null && isValidIdentifier(result[0])) {
+                int paramCount = countArguments(callExpr);
+                collectMethodCall(calls, result[0], result[1], null, paramCount);
+            }
+        }
+    }
+    
+    /** Extract [methodName, objectName] from member_call_expression */
+    private String[] extractMemberCallInfo(String source, TSNode callExpr) {
+        String methodName = null;
+        String objectName = null;
+        
+        TSNode objNode = callExpr.getNamedChild(0);
+        TSNode memberNode = callExpr.getNamedChild(1);
+        
+        if (objNode != null) {
+            if ("variable_name".equals(objNode.getType())) {
+                objectName = stripPhpVarPrefix(getNodeText(source, objNode));
+            } else if ("member_access_expression".equals(objNode.getType())) {
+                TSNode propNode = objNode.getNamedChild(1);
+                if (propNode != null) objectName = getNodeText(source, propNode);
+            }
+        }
+        if (memberNode != null) {
+            methodName = getNodeText(source, memberNode);
+        }
+        
+        return new String[] { methodName, objectName };
+    }
+    
+    /** Extract [methodName, objectType] from scoped_call_expression */
+    private String[] extractScopedCallInfo(String source, TSNode callExpr) {
+        TSNode scopeNode = callExpr.getNamedChild(0);
+        TSNode methodNode = callExpr.getNamedChild(1);
+        
+        String objectType = scopeNode != null ? getNodeText(source, scopeNode) : null;
+        String methodName = methodNode != null ? getNodeText(source, methodNode) : null;
+        
+        return new String[] { methodName, objectType };
+    }
+    
+    /**
+     * Count arguments in a PHP call expression.
+     * Looks for "arguments" child node and counts its named children.
+     */
+    private int countArguments(TSNode callExpr) {
+        TSNode argsNode = findFirstChild(callExpr, "arguments");
+        if (argsNode == null || argsNode.isNull()) return 0;
+        
+        int count = 0;
+        for (int i = 0; i < argsNode.getNamedChildCount(); i++) {
+            TSNode child = argsNode.getNamedChild(i);
+            if (child != null && !child.isNull()) {
+                // Each argument node counts as one argument
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    /**
+     * Find the type node from a method/function declaration.
+     * PHP types can be: optional_type (?Type), named_type, primitive_type, or union_type.
+     */
+    private TSNode findTypeNode(TSNode node) {
+        TSNode typeNode = findFirstChild(node, "optional_type");
+        if (typeNode == null || typeNode.isNull()) typeNode = findFirstChild(node, "named_type");
+        if (typeNode == null || typeNode.isNull()) typeNode = findFirstChild(node, "primitive_type");
+        if (typeNode == null || typeNode.isNull()) typeNode = findFirstChild(node, "union_type");
+        return typeNode;
+    }
+    
+    /**
+     * Extract return type string from a type node, stripping leading colon if present.
+     */
+    private String extractReturnType(String source, TSNode typeNode) {
+        if (typeNode == null || typeNode.isNull()) return null;
+        String typeText = getNodeText(source, typeNode);
+        if (typeText != null) {
+            return typeText.replaceFirst("^:\\s*", "").trim();
+        }
+        return null;
+    }
+    
+    /**
+     * Strip the $ prefix from PHP variable names.
+     */
+    private String stripPhpVarPrefix(String name) {
+        if (name != null && name.startsWith("$")) {
+            return name.substring(1);
+        }
+        return name;
+    }
+    
+    /**
+     * Extract the name from a node that has a "name" child.
+     */
+    private String extractName(String source, TSNode node) {
+        return TreeSitterHelper.extractName(source, node, "name");
+    }
+    
+    /**
+     * Extract methods from a body node (class, trait, or enum body) into a TypeInfo.
+     */
+    private void extractMethodsFromBody(String source, TSNode bodyNode, TypeInfo typeInfo) {
+        for (TSNode method : findAllChildren(bodyNode, "method_declaration")) {
+            if (method == null || method.isNull()) continue;
+            MethodInfo methodInfo = analyzeMethod(source, method, typeInfo.name);
+            if (methodInfo.name != null && !methodInfo.name.isEmpty()) {
+                typeInfo.methods.add(methodInfo);
+            }
+        }
+    }
+    
+    /**
+     * Extract enum cases as fields from an enum body.
+     */
+    private void extractEnumCases(String source, TSNode enumBody, TypeInfo typeInfo) {
+        for (TSNode enumCase : findAllChildren(enumBody, "enum_case")) {
+            if (enumCase == null || enumCase.isNull()) continue;
+            
+            FieldInfo field = new FieldInfo();
+            field.modifiers.add("case");
+            field.name = extractName(source, enumCase);
+            
+            // Get case value type if backed enum (e.g., case Red = 'red')
+            TSNode valueNode = findEnumCaseValue(enumCase);
+            if (valueNode != null) {
+                field.type = inferTypeFromValue(source, valueNode);
+            }
+            
+            if (field.name != null && !field.name.isEmpty()) {
+                typeInfo.fields.add(field);
+            }
+        }
+    }
+    
+    /**
+     * Find the value node in an enum case (string, integer, or encapsed_string).
+     */
+    private TSNode findEnumCaseValue(TSNode enumCase) {
+        for (int i = 0; i < enumCase.getNamedChildCount(); i++) {
+            TSNode child = enumCase.getNamedChild(i);
+            if (child != null && !child.isNull()) {
+                String childType = child.getType();
+                if ("string".equals(childType) || "integer".equals(childType) || 
+                    "encapsed_string".equals(childType)) {
+                    return child;
+                }
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Extract the class name from an object_creation_expression (new ClassName()).
+     */
+    private String extractCreatedTypeName(String source, TSNode objectCreation) {
+        TSNode classType = findFirstChild(objectCreation, "class_type_designator");
+        if (classType == null || classType.isNull()) return null;
+        
+        TSNode typeName = findFirstChild(classType, "qualified_name");
+        if (typeName == null || typeName.isNull()) {
+            typeName = findFirstChild(classType, "name");
+        }
+        return (typeName != null && !typeName.isNull()) ? getNodeText(source, typeName) : null;
+    }
+    
+    private String inferTypeFromValue(String source, TSNode valueNode) {
+        if (valueNode == null) return null;
+        String type = valueNode.getType();
+        switch (type) {
+            case "string": return "string";
+            case "integer": return "int";
+            case "float": return "float";
+            case "boolean": return "bool";
+            case "array_creation_expression": return "array";
+            default: return null;
+        }
     }
     
     private void extractImports(String source, TSNode rootNode, FileAnalysis analysis) {
@@ -117,7 +416,7 @@ public class PHPAnalyzer implements LanguageAnalyzer {
             TSNode parent = node.getParent();
             while (parent != null && !parent.isNull()) {
                 String type = parent.getType();
-                if (type != null && "class_declaration".equals(type)) {
+                if (type != null && ("class_declaration".equals(type) || "trait_declaration".equals(type) || "enum_declaration".equals(type))) {
                     return true;
                 }
                 parent = parent.getParent();
@@ -130,24 +429,7 @@ public class PHPAnalyzer implements LanguageAnalyzer {
     }
     
     private Set<Integer> identifyNestedClasses(List<TSNode> allClasses) {
-        Set<Integer> nestedClassIds = new HashSet<>();
-        for (TSNode classDecl : allClasses) {
-            try {
-                if (classDecl == null || classDecl.isNull()) continue;
-                TSNode classBody = findFirstChild(classDecl, "declaration_list");
-                if (classBody != null) {
-                    List<TSNode> nested = findAllDescendants(classBody, "class_declaration");
-                    for (TSNode n : nested) {
-                        if (n != null && !n.isNull()) {
-                            nestedClassIds.add(n.getStartByte());
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                // Skip on error
-            }
-        }
-        return nestedClassIds;
+        return identifyNestedNodes(allClasses, "declaration_list", "class_declaration");
     }
     
     private void analyzeClassRecursively(String source, TSNode classDecl, FileAnalysis analysis) {
@@ -166,23 +448,10 @@ public class PHPAnalyzer implements LanguageAnalyzer {
             return;
         }
         
-        // Collect fields for this class only
-        List<FieldInfo> fields = collectFieldsFromBody(source, classBody);
-        typeInfo.fields.addAll(fields);
-        
-        // Analyze methods within this class only
-        List<TSNode> methods = findAllChildren(classBody, "method_declaration");
-        for (TSNode method : methods) {
-            try {
-                if (method == null || method.isNull()) continue;
-                MethodInfo methodInfo = analyzeMethod(source, method, typeInfo.name);
-                if (methodInfo.name != null && !methodInfo.name.isEmpty()) {
-                    typeInfo.methods.add(methodInfo);
-                }
-            } catch (Exception e) {
-                System.err.println("Warning: Failed to analyze method: " + e.getMessage());
-            }
-        }
+        // Extract trait usage, fields, and methods
+        extractTraitUsage(source, classBody, typeInfo);
+        typeInfo.fields.addAll(collectFieldsFromBody(source, classBody));
+        extractMethodsFromBody(source, classBody, typeInfo);
         
         // Recursively process nested classes
         List<TSNode> nestedClasses = findAllChildren(classBody, "class_declaration");
@@ -205,10 +474,7 @@ public class PHPAnalyzer implements LanguageAnalyzer {
         extractModifiersAndVisibility(source, classDecl, typeInfo);
         
         // Get class name
-        TSNode nameNode = findFirstChild(classDecl, "name");
-        if (nameNode != null && !nameNode.isNull()) {
-            typeInfo.name = getNodeText(source, nameNode);
-        }
+        typeInfo.name = extractName(source, classDecl);
         
         // Get base class
         TSNode baseClause = findFirstChild(classDecl, "base_clause");
@@ -239,11 +505,7 @@ public class PHPAnalyzer implements LanguageAnalyzer {
         
         // Extract modifiers and visibility (defaults to public if not specified)
         extractModifiersAndVisibility(source, interfaceDecl, typeInfo);
-
-        TSNode nameNode = findFirstChild(interfaceDecl, "name");
-        if (nameNode != null && !nameNode.isNull()) {
-            typeInfo.name = getNodeText(source, nameNode);
-        }
+        typeInfo.name = extractName(source, interfaceDecl);
         
         // Interfaces can extend other interfaces
         TSNode baseClause = findFirstChild(interfaceDecl, "base_clause");
@@ -262,21 +524,10 @@ public class PHPAnalyzer implements LanguageAnalyzer {
             if (m == null || m.isNull()) continue;
             MethodInfo mi = new MethodInfo();
             
-            // Name
-            TSNode mName = findFirstChild(m, "name");
-            if (mName != null && !mName.isNull()) {
-                mi.name = getNodeText(source, mName);
-            }
+            mi.name = extractName(source, m);
             
-            // Return type (optional_type, named_type, primitive_type, union_type)
-            TSNode rt = findFirstChild(m, "optional_type");
-            if (rt == null || rt.isNull()) rt = findFirstChild(m, "named_type");
-            if (rt == null || rt.isNull()) rt = findFirstChild(m, "primitive_type");
-            if (rt == null || rt.isNull()) rt = findFirstChild(m, "union_type");
-            if (rt != null && !rt.isNull()) {
-                String t = getNodeText(source, rt);
-                if (t != null) mi.returnType = t.replaceFirst("^:\\s*", "").trim();
-            }
+            // Return type
+            mi.returnType = extractReturnType(source, findTypeNode(m));
             
             // Parameters
             TSNode fp = findFirstChild(m, "formal_parameters");
@@ -284,11 +535,10 @@ public class PHPAnalyzer implements LanguageAnalyzer {
                 analyzeParameters(source, fp, mi);
             }
             
-            // Visibility and modifiers as per PHP interface method defaults
+            // Interface methods are implicitly public and abstract
             mi.visibility = "public";
             mi.modifiers.add("abstract");
             
-            // No body analysis for interface methods
             if (mi.name != null && !mi.name.isEmpty()) {
                 typeInfo.methods.add(mi);
             }
@@ -297,49 +547,128 @@ public class PHPAnalyzer implements LanguageAnalyzer {
         return typeInfo;
     }
     
+    private TypeInfo analyzeTrait(String source, TSNode traitDecl) {
+        TypeInfo typeInfo = new TypeInfo();
+        typeInfo.kind = "trait";
+        
+        typeInfo.name = extractName(source, traitDecl);
+        
+        // Get the declaration_list (trait body)
+        TSNode traitBody = findFirstChild(traitDecl, "declaration_list");
+        if (traitBody != null && !traitBody.isNull()) {
+            extractTraitUsage(source, traitBody, typeInfo);
+            typeInfo.fields.addAll(collectFieldsFromBody(source, traitBody));
+            extractMethodsFromBody(source, traitBody, typeInfo);
+        }
+        
+        return typeInfo;
+    }
+    
+    /**
+     * Analyze a PHP 8.1+ enum declaration.
+     * Enums can be unit enums (no backing type) or backed enums (string or int).
+     * They can implement interfaces and use traits.
+     */
+    private TypeInfo analyzeEnum(String source, TSNode enumDecl) {
+        TypeInfo typeInfo = new TypeInfo();
+        typeInfo.kind = "enum";
+        
+        typeInfo.name = extractName(source, enumDecl);
+        
+        // Get backing type if present (: string or : int)
+        // In tree-sitter PHP, this might be represented as a type node
+        TSNode backingType = findFirstChild(enumDecl, "primitive_type");
+        if (backingType == null || backingType.isNull()) {
+            backingType = findFirstChild(enumDecl, "named_type");
+        }
+        if (backingType != null && !backingType.isNull()) {
+            typeInfo.extendsType = getNodeText(source, backingType);
+        }
+        
+        // Get implemented interfaces
+        TSNode interfaceClause = findFirstChild(enumDecl, "class_interface_clause");
+        if (interfaceClause != null && !interfaceClause.isNull()) {
+            List<TSNode> interfaceNames = findAllDescendants(interfaceClause, "name");
+            for (TSNode interfaceName : interfaceNames) {
+                if (interfaceName != null && !interfaceName.isNull()) {
+                    typeInfo.implementsInterfaces.add(getNodeText(source, interfaceName));
+                }
+            }
+        }
+        
+        // Get the enum body (enum_declaration_list)
+        TSNode enumBody = findFirstChild(enumDecl, "enum_declaration_list");
+        if (enumBody != null && !enumBody.isNull()) {
+            extractTraitUsage(source, enumBody, typeInfo);
+            extractEnumCases(source, enumBody, typeInfo);
+            extractMethodsFromBody(source, enumBody, typeInfo);
+        }
+        
+        return typeInfo;
+    }
+    
+    /**
+     * Extract trait usage (use statements) from a class or trait body.
+     * In PHP: use TraitName; or use Trait1, Trait2 { ... }
+     * 
+     * We need to be careful to only extract trait names, not method names
+     * from conflict resolution blocks (insteadof, as clauses).
+     */
+    private void extractTraitUsage(String source, TSNode bodyNode, TypeInfo typeInfo) {
+        if (bodyNode == null || bodyNode.isNull()) return;
+        
+        // Find use_declaration nodes (PHP's trait usage syntax)
+        List<TSNode> useDecls = findAllChildren(bodyNode, "use_declaration");
+        for (TSNode useDecl : useDecls) {
+            if (useDecl == null || useDecl.isNull()) continue;
+            
+            // Extract trait names from direct children only (not from use_list adaptations)
+            // The structure is: use_declaration -> name | qualified_name | use_list
+            // We want to avoid names inside use_list which contains conflict resolution
+            int childCount = useDecl.getNamedChildCount();
+            for (int i = 0; i < childCount; i++) {
+                TSNode child = useDecl.getNamedChild(i);
+                if (child == null || child.isNull()) continue;
+                
+                String childType = child.getType();
+                
+                // Direct trait name reference
+                if ("name".equals(childType) || "qualified_name".equals(childType)) {
+                    String traitName = getNodeText(source, child);
+                    if (traitName != null && !traitName.isEmpty()) {
+                        typeInfo.mixins.add(traitName);
+                    }
+                }
+                // use_list contains the trait names before the { } block
+                // Structure: use_list -> name, name, ... (comma-separated trait names)
+                else if ("use_list".equals(childType)) {
+                    // Get only direct name/qualified_name children of use_list
+                    int listChildCount = child.getNamedChildCount();
+                    for (int j = 0; j < listChildCount; j++) {
+                        TSNode listChild = child.getNamedChild(j);
+                        if (listChild == null || listChild.isNull()) continue;
+                        
+                        String listChildType = listChild.getType();
+                        if ("name".equals(listChildType) || "qualified_name".equals(listChildType)) {
+                            String traitName = getNodeText(source, listChild);
+                            if (traitName != null && !traitName.isEmpty()) {
+                                typeInfo.mixins.add(traitName);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     private MethodInfo analyzeMethod(String source, TSNode methodDecl, String className) {
         MethodInfo methodInfo = new MethodInfo();
         
         // Extract modifiers and visibility (public, private, protected, static, final, abstract)
         extractModifiersAndVisibility(source, methodDecl, methodInfo);
         
-        // Get method name
-        TSNode nameNode = findFirstChild(methodDecl, "name");
-        if (nameNode != null && !nameNode.isNull()) {
-            methodInfo.name = getNodeText(source, nameNode);
-        }
-        
-        // Get return type if specified. In tree-sitter PHP, the "return_type" is a field,
-        // and the child node type is one of: optional_type, named_type, primitive_type, union_type.
-        TSNode returnTypeNode = findFirstChild(methodDecl, "optional_type");
-        if (returnTypeNode == null || returnTypeNode.isNull()) {
-            returnTypeNode = findFirstChild(methodDecl, "named_type");
-        }
-        if (returnTypeNode == null || returnTypeNode.isNull()) {
-            returnTypeNode = findFirstChild(methodDecl, "primitive_type");
-        }
-        if (returnTypeNode == null || returnTypeNode.isNull()) {
-            returnTypeNode = findFirstChild(methodDecl, "union_type");
-        }
-        if (returnTypeNode != null && !returnTypeNode.isNull()) {
-            String typeText = getNodeText(source, returnTypeNode);
-            if (typeText != null) {
-                // Strip an eventual leading colon if present, keep nullable marker if any
-                methodInfo.returnType = typeText.replaceFirst("^:\\s*", "").trim();
-            }
-        }
-        
-        // Get parameters
-        TSNode paramsNode = findFirstChild(methodDecl, "formal_parameters");
-        if (paramsNode != null) {
-            analyzeParameters(source, paramsNode, methodInfo);
-        }
-        
-        // Get method body
-        TSNode bodyNode = findFirstChild(methodDecl, "compound_statement");
-        if (bodyNode != null) {
-            analyzeMethodBody(source, bodyNode, methodInfo);
-        }
+        // Common analysis for name, return type, parameters, and body
+        analyzeMethodOrFunction(source, methodDecl, methodInfo);
         
         return methodInfo;
     }
@@ -347,43 +676,31 @@ public class PHPAnalyzer implements LanguageAnalyzer {
     private MethodInfo analyzeFunction(String source, TSNode funcDef) {
         MethodInfo methodInfo = new MethodInfo();
         
-        // Get function name
-        TSNode nameNode = findFirstChild(funcDef, "name");
-        if (nameNode != null && !nameNode.isNull()) {
-            methodInfo.name = getNodeText(source, nameNode);
-        }
+        // Standalone functions have no modifiers/visibility
+        analyzeMethodOrFunction(source, funcDef, methodInfo);
         
-        // Get return type if specified (same logic as for methods)
-        TSNode returnTypeNode = findFirstChild(funcDef, "optional_type");
-        if (returnTypeNode == null || returnTypeNode.isNull()) {
-            returnTypeNode = findFirstChild(funcDef, "named_type");
-        }
-        if (returnTypeNode == null || returnTypeNode.isNull()) {
-            returnTypeNode = findFirstChild(funcDef, "primitive_type");
-        }
-        if (returnTypeNode == null || returnTypeNode.isNull()) {
-            returnTypeNode = findFirstChild(funcDef, "union_type");
-        }
-        if (returnTypeNode != null && !returnTypeNode.isNull()) {
-            String typeText = getNodeText(source, returnTypeNode);
-            if (typeText != null) {
-                methodInfo.returnType = typeText.replaceFirst("^:\\s*", "").trim();
-            }
-        }
+        return methodInfo;
+    }
+    
+    /**
+     * Common analysis for both methods and standalone functions.
+     * Extracts name, return type, parameters, and analyzes body.
+     */
+    private void analyzeMethodOrFunction(String source, TSNode node, MethodInfo methodInfo) {
+        methodInfo.name = extractName(source, node);
+        methodInfo.returnType = extractReturnType(source, findTypeNode(node));
         
         // Get parameters
-        TSNode paramsNode = findFirstChild(funcDef, "formal_parameters");
+        TSNode paramsNode = findFirstChild(node, "formal_parameters");
         if (paramsNode != null) {
             analyzeParameters(source, paramsNode, methodInfo);
         }
         
-        // Get function body
-        TSNode bodyNode = findFirstChild(funcDef, "compound_statement");
+        // Get body
+        TSNode bodyNode = findFirstChild(node, "compound_statement");
         if (bodyNode != null) {
             analyzeMethodBody(source, bodyNode, methodInfo);
         }
-        
-        return methodInfo;
     }
     
     private void analyzeParameters(String source, TSNode paramsNode, MethodInfo methodInfo) {
@@ -395,29 +712,15 @@ public class PHPAnalyzer implements LanguageAnalyzer {
             String kind = child.getType();
 
             if ("simple_parameter".equals(kind) || "property_promotion_parameter".equals(kind)) {
-                TSNode varName = findFirstChild(child, "variable_name");
-                String paramType = null;
-
-                // Get type hint if present (can be named_type, primitive_type, optional_type, union_type)
-                TSNode typeNode = findFirstChild(child, "named_type");
-                if (typeNode == null || typeNode.isNull()) typeNode = findFirstChild(child, "primitive_type");
-                if (typeNode == null || typeNode.isNull()) typeNode = findFirstChild(child, "optional_type");
-                if (typeNode == null || typeNode.isNull()) typeNode = findFirstChild(child, "union_type");
-                if (typeNode != null && !typeNode.isNull()) {
-                    paramType = getNodeText(source, typeNode);
-                }
-
-                if (varName != null && !varName.isNull()) {
-                    String name = getNodeText(source, varName);
-                    // Remove $ prefix from PHP variables
-                    if (name != null && name.startsWith("$")) {
-                        name = name.substring(1);
-                    }
-                    // Validate parameter name
-                    if (name != null && name.matches("[a-zA-Z_][a-zA-Z0-9_]*")) {
-                        methodInfo.parameters.add(new Parameter(name, paramType));
-                    }
-                }
+                TSNode varNameNode = findFirstChild(child, "variable_name");
+                if (varNameNode == null || varNameNode.isNull()) continue;
+                
+                String name = stripPhpVarPrefix(getNodeText(source, varNameNode));
+                if (!isValidIdentifier(name)) continue;
+                
+                TSNode typeNode = findTypeNode(child);
+                String paramType = (typeNode != null && !typeNode.isNull()) ? getNodeText(source, typeNode) : null;
+                methodInfo.parameters.add(new Parameter(name, paramType));
             }
         }
     }
@@ -427,186 +730,70 @@ public class PHPAnalyzer implements LanguageAnalyzer {
         Map<String, String> localTypes = new HashMap<>();
         
         // Find variable assignments (PHP doesn't have explicit declarations)
-        List<TSNode> assignments = findAllDescendants(bodyNode, "assignment_expression");
-        for (TSNode assignment : assignments) {
+        for (TSNode assignment : findAllDescendants(bodyNode, "assignment_expression")) {
             if (assignment == null || assignment.isNull()) continue;
             TSNode leftSide = assignment.getNamedChild(0);
-            if (leftSide != null && !leftSide.isNull() && "variable_name".equals(leftSide.getType())) {
-                String varName = getNodeText(source, leftSide);
-                // Remove $ prefix and avoid $this
-                if (varName != null && varName.startsWith("$") && !"$this".equals(varName)) {
-                    varName = varName.substring(1);
-                    // Validate variable name
-                    if (varName.matches("[a-zA-Z_][a-zA-Z0-9_]*") && !methodInfo.localVariables.contains(varName)) {
-                        methodInfo.localVariables.add(varName);
-                    }
-                    // Minimal type inference: $var = new ClassName(...);
-                    TSNode rightSide = assignment.getNamedChild(1);
-                    if (rightSide != null && !rightSide.isNull() && "object_creation_expression".equals(rightSide.getType())) {
-                        // object_creation_expression -> class_type_designator -> (qualified_name | name)
-                        TSNode classType = findFirstChild(rightSide, "class_type_designator");
-                        if (classType != null && !classType.isNull()) {
-                            TSNode typeName = findFirstChild(classType, "qualified_name");
-                            if (typeName == null || typeName.isNull()) {
-                                typeName = findFirstChild(classType, "name");
-                            }
-                            if (typeName != null && !typeName.isNull()) {
-                                String inferredType = getNodeText(source, typeName);
-                                if (inferredType != null && !inferredType.isBlank()) {
-                                    localTypes.put(varName, inferredType);
-                                }
-                            }
-                        }
-                    }
+            if (leftSide == null || leftSide.isNull() || !"variable_name".equals(leftSide.getType())) continue;
+            
+            String rawName = getNodeText(source, leftSide);
+            if (rawName == null || "$this".equals(rawName)) continue;
+            
+            String varName = stripPhpVarPrefix(rawName);
+            if (isValidIdentifier(varName) && !methodInfo.localVariables.contains(varName)) {
+                methodInfo.localVariables.add(varName);
+            }
+            
+            // Minimal type inference: $var = new ClassName(...);
+            TSNode rightSide = assignment.getNamedChild(1);
+            if (rightSide != null && !rightSide.isNull() && "object_creation_expression".equals(rightSide.getType())) {
+                String inferredType = extractCreatedTypeName(source, rightSide);
+                if (inferredType != null && !inferredType.isBlank()) {
+                    localTypes.put(varName, inferredType);
                 }
             }
         }
         
-        // Find function calls (PHP uses multiple node types)
-        List<TSNode> functionCalls = findAllDescendants(bodyNode, "function_call_expression");
-        List<TSNode> memberCalls = findAllDescendants(bodyNode, "member_call_expression");
-        
-        // Process regular function calls
-        for (TSNode callExpr : functionCalls) {
+        // Process function calls: func()
+        for (TSNode callExpr : findAllDescendants(bodyNode, "function_call_expression")) {
             if (callExpr == null || callExpr.isNull()) continue;
             TSNode functionNode = callExpr.getNamedChild(0);
-            if (functionNode != null && !functionNode.isNull()) {
-                String methodName = null;
-                
-                if ("name".equals(functionNode.getType())) {
-                    // Direct function call
-                    methodName = getNodeText(source, functionNode);
-                }
-                
-                // Validate method name
-                if (methodName != null && methodName.matches("[a-zA-Z_][a-zA-Z0-9_]*")) {
-                    // Check if we already have this call, if so increment count
-                    boolean found = false;
-                    for (MethodCall existingCall : methodInfo.methodCalls) {
-                        if (existingCall.matches(methodName, null, null, null)) {
-                            existingCall.callCount++;
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found) {
-                        methodInfo.methodCalls.add(new MethodCall(methodName, null, null));
-                    }
+            if (functionNode != null && "name".equals(functionNode.getType())) {
+                String methodName = getNodeText(source, functionNode);
+                if (isValidIdentifier(methodName)) {
+                    int paramCount = countArguments(callExpr);
+                    collectMethodCall(methodInfo, methodName, null, null, paramCount);
                 }
             }
         }
         
-        // Process member calls ($obj->method())
-        for (TSNode memberCall : memberCalls) {
+        // Process member calls: $obj->method()
+        for (TSNode memberCall : findAllDescendants(bodyNode, "member_call_expression")) {
             if (memberCall == null || memberCall.isNull()) continue;
             
-            String methodName = null;
-            String objectName = null;
-            String objectType = null;
+            String[] callInfo = extractMemberCallInfo(source, memberCall);
+            String methodName = callInfo[0];
+            String objectName = callInfo[1];
+            String objectType = (objectName != null && !"this".equals(objectName)) ? localTypes.get(objectName) : null;
             
-            // Get the object (left side of ->)
-            TSNode objNode = memberCall.getNamedChild(0);
-            // Method name is the second named child (index 1) of member_call_expression
-            TSNode memberNode = memberCall.getNamedChild(1);
-            
-            if (objNode != null && !objNode.isNull()) {
-                if ("variable_name".equals(objNode.getType())) {
-                    objectName = getNodeText(source, objNode);
-                    if (objectName != null && objectName.startsWith("$")) {
-                        objectName = objectName.substring(1);
-                        // We avoid setting objectType blindly to the enclosing class for $this.
-                        // If we can infer localTypes for variables, use it; otherwise leave null.
-                        if (!"this".equals(objectName)) {
-                            objectType = localTypes.get(objectName);
-                        }
-                    }
-                } else if ("member_access_expression".equals(objNode.getType())) {
-                    // Example: $this->cache->get() => objectName should be the property name 'cache'.
-                    // member_access_expression children: base (0), name (1)
-                    TSNode propNameNode = objNode.getNamedChild(1);
-                    if (propNameNode != null && !propNameNode.isNull() && "name".equals(propNameNode.getType())) {
-                        objectName = getNodeText(source, propNameNode);
-                    }
-                    // Do not assign objectType to enclosing class for $this; leave null unless inferable.
-                }
-            }
-            if (memberNode != null && !memberNode.isNull()) {
-                methodName = getNodeText(source, memberNode);
-            }
-            
-            // Validate method name
-            if (methodName != null && methodName.matches("[a-zA-Z_][a-zA-Z0-9_]*")) {
-                // Check if we already have this call, if so increment count
-                boolean found = false;
-                for (MethodCall existingCall : methodInfo.methodCalls) {
-                    if (existingCall.matches(methodName, objectType, objectName, null)) {
-                        existingCall.callCount++;
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    methodInfo.methodCalls.add(new MethodCall(methodName, objectType, objectName));
-                }
+            if (isValidIdentifier(methodName)) {
+                int paramCount = countArguments(memberCall);
+                collectMethodCall(methodInfo, methodName, objectType, objectName, paramCount);
             }
         }
         
-        // Also check for scoped calls (Class::method())
-        List<TSNode> scopedCalls = findAllDescendants(bodyNode, "scoped_call_expression");
-        for (TSNode scopedCall : scopedCalls) {
+        // Process scoped calls: Class::method()
+        for (TSNode scopedCall : findAllDescendants(bodyNode, "scoped_call_expression")) {
             if (scopedCall == null || scopedCall.isNull()) continue;
-            // Positional: scope at index 0, method name at index 1
-            TSNode scopeNode = scopedCall.getNamedChild(0);
-            TSNode methodNode = scopedCall.getNamedChild(1);
-            String objectType = null;
-            String methodName = null;
-            if (scopeNode != null && !scopeNode.isNull()) {
-                objectType = getNodeText(source, scopeNode);
-            }
-            if (methodNode != null && !methodNode.isNull()) {
-                methodName = getNodeText(source, methodNode);
-            }
             
-            // Validate method name
-            if (methodName != null && methodName.matches("[a-zA-Z_][a-zA-Z0-9_]*")) {
-                // Check if we already have this call, if so increment count
-                boolean found = false;
-                for (MethodCall existingCall : methodInfo.methodCalls) {
-                    if (existingCall.matches(methodName, objectType, null, null)) {
-                        existingCall.callCount++;
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    methodInfo.methodCalls.add(new MethodCall(methodName, objectType, null));
-                }
+            String[] callInfo = extractScopedCallInfo(source, scopedCall);
+            if (isValidIdentifier(callInfo[0])) {
+                int paramCount = countArguments(scopedCall);
+                collectMethodCall(methodInfo, callInfo[0], callInfo[1], null, paramCount);
             }
         }
         
         // Sort method calls alphabetically
-        methodInfo.methodCalls.sort((a, b) -> {
-            int nameCompare = a.methodName.compareTo(b.methodName);
-            if (nameCompare != 0) return nameCompare;
-            
-            if (a.objectType != null && b.objectType != null) {
-                int typeCompare = a.objectType.compareTo(b.objectType);
-                if (typeCompare != 0) return typeCompare;
-            } else if (a.objectType != null) {
-                return 1;
-            } else if (b.objectType != null) {
-                return -1;
-            }
-            
-            if (a.objectName != null && b.objectName != null) {
-                return a.objectName.compareTo(b.objectName);
-            } else if (a.objectName != null) {
-                return 1;
-            } else if (b.objectName != null) {
-                return -1;
-            }
-            return 0;
-        });
+        methodInfo.methodCalls.sort(METHOD_CALL_COMPARATOR);
     }
     
     private List<FieldInfo> collectFieldsFromBody(String source, TSNode classBody) {
@@ -629,44 +816,28 @@ public class PHPAnalyzer implements LanguageAnalyzer {
             TSNode staticNode = findFirstChild(propDecl, "static_modifier");
             boolean isStatic = staticNode != null && !staticNode.isNull();
             
-            // Get type (can be named_type or primitive_type)
-            String typeText = null;
-            TSNode typeNode = findFirstChild(propDecl, "named_type");
-            if (typeNode == null || typeNode.isNull()) {
-                typeNode = findFirstChild(propDecl, "primitive_type");
-            }
-            if (typeNode != null && !typeNode.isNull()) {
-                typeText = getNodeText(source, typeNode);
-            }
+            // Get type using helper
+            TSNode typeNode = findTypeNode(propDecl);
+            String typeText = (typeNode != null && !typeNode.isNull()) ? getNodeText(source, typeNode) : null;
             
             // Each property_declaration can have multiple property_element children
-            List<TSNode> propertyElements = findAllChildren(propDecl, "property_element");
-            for (TSNode propElement : propertyElements) {
+            for (TSNode propElement : findAllChildren(propDecl, "property_element")) {
                 if (propElement == null || propElement.isNull()) continue;
                 
                 FieldInfo fieldInfo = new FieldInfo();
                 fieldInfo.visibility = visibility;
                 fieldInfo.type = typeText;
                 
-                // Add modifiers
-                if (visibility != null) {
-                    fieldInfo.modifiers.add(visibility);
-                }
-                if (isStatic) {
-                    fieldInfo.modifiers.add("static");
-                }
+                if (visibility != null) fieldInfo.modifiers.add(visibility);
+                if (isStatic) fieldInfo.modifiers.add("static");
                 
                 // Get property name (PHP properties start with $)
                 TSNode varNode = findFirstChild(propElement, "variable_name");
                 if (varNode != null && !varNode.isNull()) {
-                    String name = getNodeText(source, varNode);
-                    if (name != null && name.startsWith("$")) {
-                        name = name.substring(1);
-                    }
-                    fieldInfo.name = name;
+                    fieldInfo.name = stripPhpVarPrefix(getNodeText(source, varNode));
                 }
                 
-                if (fieldInfo.name != null && fieldInfo.name.matches("[a-zA-Z_][a-zA-Z0-9_]*")) {
+                if (isValidIdentifier(fieldInfo.name)) {
                     fields.add(fieldInfo);
                 }
             }

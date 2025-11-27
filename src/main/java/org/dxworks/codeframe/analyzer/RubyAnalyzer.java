@@ -60,12 +60,120 @@ public class RubyAnalyzer implements LanguageAnalyzer {
                     }
                 }
             }
+            
+            // Extract file-level constants
+            extractFileLevelFields(sourceCode, rootNode, analysis);
+            
+            // Extract file-level method calls
+            extractFileLevelMethodCalls(sourceCode, rootNode, analysis);
         } catch (Exception e) {
             System.err.println("Error during Ruby analysis: " + e.getMessage());
             e.printStackTrace();
         }
         
         return analysis;
+    }
+    
+    /**
+     * Extract file-level constants (CONSTANT = value at top level, outside classes/modules).
+     */
+    private void extractFileLevelFields(String source, TSNode rootNode, FileAnalysis analysis) {
+        // Find assignment nodes at top level
+        int childCount = rootNode.getNamedChildCount();
+        for (int i = 0; i < childCount; i++) {
+            TSNode child = rootNode.getNamedChild(i);
+            if (child == null || child.isNull()) continue;
+            
+            // Look for assignment (CONSTANT = value)
+            if ("assignment".equals(child.getType())) {
+                TSNode leftNode = child.getNamedChild(0);
+                if (leftNode != null && "constant".equals(leftNode.getType())) {
+                    FieldInfo field = new FieldInfo();
+                    field.name = getNodeText(source, leftNode);
+                    field.modifiers.add("const");
+                    
+                    // Try to infer type from value
+                    TSNode valueNode = child.getNamedChildCount() > 1 ? child.getNamedChild(1) : null;
+                    if (valueNode != null) {
+                        field.type = inferTypeFromValue(source, valueNode);
+                    }
+                    
+                    if (field.name != null && !field.name.isEmpty()) {
+                        analysis.fields.add(field);
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Extract file-level method calls (outside any class, module, or method).
+     */
+    private void extractFileLevelMethodCalls(String source, TSNode rootNode, FileAnalysis analysis) {
+        int childCount = rootNode.getNamedChildCount();
+        for (int i = 0; i < childCount; i++) {
+            TSNode child = rootNode.getNamedChild(i);
+            if (child == null || child.isNull()) continue;
+            
+            String nodeType = child.getType();
+            
+            // Skip class, module, method definitions - we only want top-level calls
+            if ("class".equals(nodeType) || "module".equals(nodeType) || "method".equals(nodeType)) {
+                continue;
+            }
+            
+            // Extract ALL calls within this top-level node (excluding require/require_relative)
+            extractCallsFromNode(source, child, analysis.methodCalls, true);
+        }
+        analysis.methodCalls.sort(METHOD_CALL_COMPARATOR);
+    }
+    
+    /**
+     * Extract all method calls from a node into a list.
+     * @param skipRequires if true, skip require/require_relative calls (they're captured in imports)
+     */
+    private void extractCallsFromNode(String source, TSNode node, List<MethodCall> calls, boolean skipRequires) {
+        for (TSNode callExpr : findAllDescendants(node, "call")) {
+            String methodName = extractMethodName(source, callExpr);
+            if (methodName == null || methodName.isEmpty()) continue;
+            
+            // Skip require/require_relative if requested
+            if (skipRequires && ("require".equals(methodName) || "require_relative".equals(methodName))) {
+                continue;
+            }
+            
+            TSNode receiverNode = extractReceiverNode(callExpr);
+            String objectName = receiverNode != null ? getNodeText(source, receiverNode) : null;
+            
+            // If objectName equals methodName, it's a standalone call (e.g., puts "...")
+            if (methodName.equals(objectName)) {
+                objectName = null;
+            }
+            
+            // Count arguments
+            int parameterCount = 0;
+            TSNode argsNode = findArgsNode(callExpr);
+            if (argsNode != null && !argsNode.isNull()) {
+                parameterCount = countArgumentNodes(argsNode);
+            }
+            
+            collectMethodCall(calls, methodName, null, objectName, parameterCount);
+        }
+    }
+    
+    private String inferTypeFromValue(String source, TSNode valueNode) {
+        if (valueNode == null) return null;
+        String type = valueNode.getType();
+        switch (type) {
+            case "string": return "String";
+            case "integer": return "Integer";
+            case "float": return "Float";
+            case "true":
+            case "false": return "Boolean";
+            case "array": return "Array";
+            case "hash": return "Hash";
+            default: return null;
+        }
     }
     
     private void extractRequires(String source, TSNode rootNode, FileAnalysis analysis) {
@@ -405,12 +513,9 @@ public class RubyAnalyzer implements LanguageAnalyzer {
         }
         
         // Get class name - can be constant or scope_resolution
-        TSNode nameNode = findFirstChild(classNode, "constant");
-        if (nameNode == null) {
-            nameNode = findFirstChild(classNode, "scope_resolution");
-        }
-        if (nameNode != null && !nameNode.isNull()) {
-            typeInfo.name = getNodeText(source, nameNode);
+        typeInfo.name = extractName(source, classNode, "constant");
+        if (typeInfo.name == null) {
+            typeInfo.name = extractName(source, classNode, "scope_resolution");
         }
         
         // Determine visibility - Ruby classes are public by default
@@ -419,12 +524,9 @@ public class RubyAnalyzer implements LanguageAnalyzer {
         // Get superclass
         TSNode superclassNode = findFirstChild(classNode, "superclass");
         if (superclassNode != null && !superclassNode.isNull()) {
-            TSNode superclassName = findFirstChild(superclassNode, "constant");
-            if (superclassName == null) {
-                superclassName = findFirstChild(superclassNode, "scope_resolution");
-            }
-            if (superclassName != null && !superclassName.isNull()) {
-                typeInfo.extendsType = getNodeText(source, superclassName);
+            typeInfo.extendsType = extractName(source, superclassNode, "constant");
+            if (typeInfo.extendsType == null) {
+                typeInfo.extendsType = extractName(source, superclassNode, "scope_resolution");
             }
         }
         
@@ -440,12 +542,9 @@ public class RubyAnalyzer implements LanguageAnalyzer {
         }
         
         // Get module name
-        TSNode nameNode = findFirstChild(moduleNode, "constant");
-        if (nameNode == null) {
-            nameNode = findFirstChild(moduleNode, "scope_resolution");
-        }
-        if (nameNode != null && !nameNode.isNull()) {
-            typeInfo.name = getNodeText(source, nameNode);
+        typeInfo.name = extractName(source, moduleNode, "constant");
+        if (typeInfo.name == null) {
+            typeInfo.name = extractName(source, moduleNode, "scope_resolution");
         }
         
         typeInfo.visibility = "public";
@@ -952,16 +1051,13 @@ public class RubyAnalyzer implements LanguageAnalyzer {
             return methodInfo;
         }
         
-        // Get method name
-        TSNode nameNode = findFirstChild(methodNode, "identifier");
-        if (nameNode == null) {
-            nameNode = findFirstChild(methodNode, "setter");
+        // Get method name - can be identifier, setter, or operator
+        methodInfo.name = extractName(source, methodNode, "identifier");
+        if (methodInfo.name == null) {
+            methodInfo.name = extractName(source, methodNode, "setter");
         }
-        if (nameNode == null) {
-            nameNode = findFirstChild(methodNode, "operator");
-        }
-        if (nameNode != null && !nameNode.isNull()) {
-            methodInfo.name = getNodeText(source, nameNode);
+        if (methodInfo.name == null) {
+            methodInfo.name = extractName(source, methodNode, "operator");
         }
         
         // Determine visibility based on naming convention and context

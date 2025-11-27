@@ -267,13 +267,35 @@ public class TreeSitterHelper {
      * This deduplicates method call tracking logic across analyzers.
      */
     public static void collectMethodCall(MethodInfo methodInfo, String methodName, String objectType, String objectName) {
-        for (MethodCall existingCall : methodInfo.methodCalls) {
-            if (existingCall.matches(methodName, objectType, objectName, null)) {
+        collectMethodCall(methodInfo.methodCalls, methodName, objectType, objectName, null);
+    }
+    
+    /**
+     * Collects a method call into the methodInfo with parameter count, incrementing count if already present.
+     */
+    public static void collectMethodCall(MethodInfo methodInfo, String methodName, String objectType, String objectName, Integer parameterCount) {
+        collectMethodCall(methodInfo.methodCalls, methodName, objectType, objectName, parameterCount);
+    }
+    
+    /**
+     * Collects a method call into a list, incrementing count if already present.
+     * This overload supports file-level method calls.
+     */
+    public static void collectMethodCall(List<MethodCall> calls, String methodName, String objectType, String objectName) {
+        collectMethodCall(calls, methodName, objectType, objectName, null);
+    }
+    
+    /**
+     * Collects a method call into a list with parameter count, incrementing count if already present.
+     */
+    public static void collectMethodCall(List<MethodCall> calls, String methodName, String objectType, String objectName, Integer parameterCount) {
+        for (MethodCall existingCall : calls) {
+            if (existingCall.matches(methodName, objectType, objectName, parameterCount)) {
                 existingCall.callCount++;
                 return;
             }
         }
-        methodInfo.methodCalls.add(new MethodCall(methodName, objectType, objectName));
+        calls.add(new MethodCall(methodName, objectType, objectName, parameterCount));
     }
 
     /**
@@ -309,6 +331,20 @@ public class TreeSitterHelper {
      */
     public static boolean isValidIdentifier(String name) {
         return name != null && name.matches("[a-zA-Z_$][a-zA-Z0-9_$]*");
+    }
+    
+    /**
+     * Extract the name from a node that has a child of the specified type.
+     * Common pattern across analyzers for extracting names from declarations.
+     * 
+     * @param source the source code
+     * @param node the parent node containing the name child
+     * @param childType the type of the name child node (e.g., "name", "identifier")
+     * @return the extracted name text, or null if not found
+     */
+    public static String extractName(String source, TSNode node, String childType) {
+        TSNode nameNode = findFirstChild(node, childType);
+        return (nameNode != null && !nameNode.isNull()) ? getNodeText(source, nameNode) : null;
     }
 
     /**

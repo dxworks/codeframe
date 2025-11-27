@@ -137,7 +137,37 @@
       "parameterCount" : null
     } ]
   } ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
+  "fields" : [ {
+    "name" : "API_VERSION",
+    "type" : "String",
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ]
+  }, {
+    "name" : "MAX_RETRIES",
+    "type" : "Number",
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ]
+  }, {
+    "name" : "currentUser",
+    "type" : null,
+    "visibility" : null,
+    "modifiers" : [ "let" ],
+    "annotations" : [ ]
+  }, {
+    "name" : "DEFAULT_TIMEOUT",
+    "type" : "Number",
+    "visibility" : null,
+    "modifiers" : [ "const", "export" ],
+    "annotations" : [ ]
+  } ],
+  "methodCalls" : [ {
+    "methodName" : "log",
+    "objectType" : null,
+    "objectName" : "console",
+    "callCount" : 1,
+    "parameterCount" : null
+  } ],
   "imports" : [ "import axios from 'axios';", "import { formatDate } from './utils';" ]
 }

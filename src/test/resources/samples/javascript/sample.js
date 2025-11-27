@@ -1,6 +1,15 @@
 import axios from 'axios';
 import { formatDate } from './utils';
 
+// Module-level constants
+const API_VERSION = '2.0';
+const MAX_RETRIES = 3;
+let currentUser = null;
+export const DEFAULT_TIMEOUT = 5000;
+
+// Module-level setup calls
+console.log('Initializing module...');
+
 // Standalone function
 export function processData(data) {
     expect(parseFloat(result.total)).toBeGreaterThan(100);

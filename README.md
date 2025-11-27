@@ -28,6 +28,10 @@ For each supported language, CodeFrame extracts:
   - Local variables
   - Method calls with object context
 
+- **File-Level Elements**
+  - Module/file-level constants and variables
+  - Top-level function calls (outside any class/function)
+
 ## Usage
 
 ### Build the project
@@ -166,18 +170,17 @@ This project uses Tree-sitter and its language grammars, which are licensed unde
 
 ### General
 
-- Top-level fields/constants are not emitted; focus is on types and methods
-- Top-level function calls (e.g., `describe()`, `test()` in Jest files) are not captured; only calls within function bodies are recorded
+- Nested functions (e.g., arrow functions inside other functions, decorator wrappers) are NOT extracted as separate methods. Instead, their calls and local variables are captured in the parent function. This prevents duplicate function names and maintains correct semantic grouping
 - Parameter modifiers (e.g., `final`, `ref`, `out`) are not captured
 - Constructor calls (`new ...`) are not captured in `methodCalls`
 - Loop header variables are not added to `localVariables`
 
 ### Language-Specific
 
-- **JavaScript**: Destructured parameters emit leaf names only; dynamic imports ignored; class expressions (`const X = class {}`) not detected as types; constructor functions appear as methods
+- **JavaScript/TypeScript**: Destructured parameters emit leaf names only; dynamic imports ignored; constructor functions appear as methods; object literal methods (e.g., `const obj = { method() {} }`) are not extracted - only the containing variable is captured as a field; functions inside IIFEs are extracted as top-level methods (their enclosing scope is not tracked)
 - **C#**: Events not handled; see test samples for details
 - **Java**: Local/anonymous classes not extracted as separate types
-- **Python**: Nested functions (e.g., decorator wrappers like `wrapper` inside `log_calls`) are extracted as top-level methods to preserve code information, even though they are technically nested within their parent function. This may result in duplicate function names in the output (e.g., multiple `wrapper` functions from different decorators). Type aliases using `TypeAlias` annotation are captured with `kind: "type_alias"`. PEP 695 style (`type X = ...`) is not yet supported by the tree-sitter-python grammar
+- **Python**: Type aliases using `TypeAlias` annotation are captured with `kind: "type_alias"`. PEP 695 style (`type X = ...`) is not yet supported by the tree-sitter-python grammar
 - **SQL**: See [SQL_ANALYSIS.md](SQL_ANALYSIS.md)
 
 ## Testing

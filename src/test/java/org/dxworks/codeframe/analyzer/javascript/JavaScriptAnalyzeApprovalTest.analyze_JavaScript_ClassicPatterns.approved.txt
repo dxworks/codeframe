@@ -325,31 +325,163 @@
       "parameterCount" : null
     } ]
   }, {
-    "name" : "wrapper",
+    "name" : "Person.prototype.greet",
     "returnType" : null,
     "visibility" : null,
-    "modifiers" : [ "const" ],
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "Person.prototype.haveBirthday",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "Person.create",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ {
-      "name" : "...args",
+      "name" : "name",
+      "type" : null
+    }, {
+      "name" : "age",
+      "type" : null
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "Employee.prototype.getDetails",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
+  }, {
+    "name" : "Employee.prototype.greet",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ ],
+    "localVariables" : [ ],
+    "methodCalls" : [ {
+      "methodName" : "call",
+      "objectType" : null,
+      "objectName" : "Person.prototype.greet",
+      "callCount" : 1,
+      "parameterCount" : null
+    } ]
+  }, {
+    "name" : "DataStore.prototype.set",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "key",
+      "type" : null
+    }, {
+      "name" : "value",
       "type" : null
     } ],
     "localVariables" : [ ],
     "methodCalls" : [ {
-      "methodName" : "callback",
+      "methodName" : "notify",
       "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    }, {
-      "methodName" : "off",
-      "objectType" : null,
-      "objectName" : null,
+      "objectName" : "this",
       "callCount" : 1,
       "parameterCount" : null
     } ]
+  }, {
+    "name" : "DataStore.prototype.get",
+    "returnType" : null,
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "key",
+      "type" : null
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ ]
   } ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
+  "fields" : [ {
+    "name" : "Counter",
+    "type" : null,
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ]
+  }, {
+    "name" : "Logger",
+    "type" : null,
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ]
+  }, {
+    "name" : "Serializable",
+    "type" : "Object",
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ]
+  }, {
+    "name" : "Comparable",
+    "type" : "Object",
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ]
+  }, {
+    "name" : "Observable",
+    "type" : "Object",
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ]
+  }, {
+    "name" : "EventBus",
+    "type" : null,
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ]
+  }, {
+    "name" : "Calculator",
+    "type" : null,
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ]
+  } ],
+  "methodCalls" : [ {
+    "methodName" : "assign",
+    "objectType" : null,
+    "objectName" : "Object",
+    "callCount" : 1,
+    "parameterCount" : null
+  }, {
+    "methodName" : "call",
+    "objectType" : null,
+    "objectName" : "Person.prototype.greet",
+    "callCount" : 1,
+    "parameterCount" : null
+  }, {
+    "methodName" : "create",
+    "objectType" : null,
+    "objectName" : "Object",
+    "callCount" : 1,
+    "parameterCount" : null
+  }, {
+    "methodName" : "notify",
+    "objectType" : null,
+    "objectName" : "this",
+    "callCount" : 1,
+    "parameterCount" : null
+  } ],
   "imports" : [ ]
 }

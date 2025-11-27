@@ -1,0 +1,783 @@
+{
+  "filePath" : "src/test/resources/samples/php/EnumsSample.php",
+  "language" : "php",
+  "packageName" : null,
+  "types" : [ {
+    "kind" : "class",
+    "name" : "Task",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "id",
+      "type" : "int",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "title",
+      "type" : "string",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "status",
+      "type" : "Status",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "priority",
+      "type" : "Priority",
+      "visibility" : "private",
+      "modifiers" : [ "private" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "__construct",
+      "returnType" : null,
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "int"
+      }, {
+        "name" : "title",
+        "type" : "string"
+      }, {
+        "name" : "status",
+        "type" : "Status"
+      }, {
+        "name" : "priority",
+        "type" : "Priority"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getId",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getTitle",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getStatus",
+      "returnType" : "Status",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "setStatus",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "status",
+        "type" : "Status"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getPriority",
+      "returnType" : "Priority",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "setPriority",
+      "returnType" : "void",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "priority",
+        "type" : "Priority"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "isHighPriority",
+      "returnType" : "bool",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "toArray",
+      "returnType" : "array",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "getColor",
+        "objectType" : null,
+        "objectName" : "priority",
+        "callCount" : 1,
+        "parameterCount" : 0
+      }, {
+        "methodName" : "label",
+        "objectType" : null,
+        "objectName" : "status",
+        "callCount" : 1,
+        "parameterCount" : 0
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "interface",
+    "name" : "Describable",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "describe",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "abstract" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "trait",
+    "name" : "EnumHelpers",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "names",
+      "returnType" : "array",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "array_column",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 2
+      }, {
+        "methodName" : "cases",
+        "objectType" : "self",
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 0
+      } ]
+    }, {
+      "name" : "values",
+      "returnType" : "array",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "array_column",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 2
+      }, {
+        "methodName" : "cases",
+        "objectType" : "self",
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 0
+      } ]
+    }, {
+      "name" : "random",
+      "returnType" : "self",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ "cases" ],
+      "methodCalls" : [ {
+        "methodName" : "array_rand",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 1
+      }, {
+        "methodName" : "cases",
+        "objectType" : "self",
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 0
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "enum",
+    "name" : "Status",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "Pending",
+      "type" : null,
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Active",
+      "type" : null,
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Inactive",
+      "type" : null,
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Deleted",
+      "type" : null,
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "label",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "isActive",
+      "returnType" : "bool",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "default",
+      "returnType" : "self",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "enum",
+    "name" : "Color",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : "string",
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "Red",
+      "type" : "string",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Green",
+      "type" : "string",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Blue",
+      "type" : "string",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Yellow",
+      "type" : "string",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Black",
+      "type" : "string",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "White",
+      "type" : "string",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "hex",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "rgb",
+      "returnType" : "array",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ "hex" ],
+      "methodCalls" : [ {
+        "methodName" : "hex",
+        "objectType" : null,
+        "objectName" : "this",
+        "callCount" : 1,
+        "parameterCount" : 0
+      }, {
+        "methodName" : "hexdec",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 3,
+        "parameterCount" : 1
+      }, {
+        "methodName" : "ltrim",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 2
+      }, {
+        "methodName" : "substr",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 3,
+        "parameterCount" : 3
+      } ]
+    }, {
+      "name" : "fromHex",
+      "returnType" : "?self",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "hex",
+        "type" : "string"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "cases",
+        "objectType" : "self",
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 0
+      }, {
+        "methodName" : "hex",
+        "objectType" : null,
+        "objectName" : "case",
+        "callCount" : 1,
+        "parameterCount" : 0
+      }, {
+        "methodName" : "strtoupper",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 2,
+        "parameterCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "enum",
+    "name" : "HttpStatus",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : "int",
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "OK",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Created",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "NoContent",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "BadRequest",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Unauthorized",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Forbidden",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "NotFound",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "InternalServerError",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "ServiceUnavailable",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "message",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "isSuccess",
+      "returnType" : "bool",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "isClientError",
+      "returnType" : "bool",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "isServerError",
+      "returnType" : "bool",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "fromCode",
+      "returnType" : "?self",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "code",
+        "type" : "int"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "tryFrom",
+        "objectType" : "self",
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "enum",
+    "name" : "Priority",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : "int",
+    "implementsInterfaces" : [ "Describable" ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "Low",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Medium",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "High",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Critical",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "describe",
+      "returnType" : "string",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "getColor",
+      "returnType" : "Color",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "highest",
+      "returnType" : "self",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "lowest",
+      "returnType" : "self",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "enum",
+    "name" : "DayOfWeek",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : "int",
+    "implementsInterfaces" : [ ],
+    "mixins" : [ "EnumHelpers" ],
+    "fields" : [ {
+      "name" : "Monday",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Tuesday",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Wednesday",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Thursday",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Friday",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Saturday",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "Sunday",
+      "type" : "int",
+      "visibility" : null,
+      "modifiers" : [ "case" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "isWeekend",
+      "returnType" : "bool",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "isWeekday",
+      "returnType" : "bool",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "isWeekend",
+        "objectType" : null,
+        "objectName" : "this",
+        "callCount" : 1,
+        "parameterCount" : 0
+      } ]
+    }, {
+      "name" : "next",
+      "returnType" : "self",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ "nextValue" ],
+      "methodCalls" : [ {
+        "methodName" : "from",
+        "objectType" : "self",
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    }, {
+      "name" : "previous",
+      "returnType" : "self",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ "prevValue" ],
+      "methodCalls" : [ {
+        "methodName" : "from",
+        "objectType" : "self",
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ {
+    "name" : "getStatusLabel",
+    "returnType" : "string",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "status",
+      "type" : "Status"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ {
+      "methodName" : "label",
+      "objectType" : null,
+      "objectName" : "status",
+      "callCount" : 1,
+      "parameterCount" : 0
+    } ]
+  }, {
+    "name" : "createTask",
+    "returnType" : "Task",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "title",
+      "type" : "string"
+    }, {
+      "name" : "priority",
+      "type" : "Priority"
+    } ],
+    "localVariables" : [ "task" ],
+    "methodCalls" : [ ]
+  } ],
+  "fields" : [ {
+    "name" : "ENUM_VERSION",
+    "type" : "string",
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ]
+  } ],
+  "methodCalls" : [ ],
+  "imports" : [ "namespace App\\Enums;" ]
+}

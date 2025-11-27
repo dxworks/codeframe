@@ -615,15 +615,6 @@
     "localVariables" : [ "count" ],
     "methodCalls" : [ ]
   }, {
-    "name" : "counter",
-    "returnType" : "int",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
-  }, {
     "name" : "make_multiplier",
     "returnType" : "Callable[[int], int]",
     "visibility" : "public",
@@ -631,18 +622,6 @@
     "annotations" : [ ],
     "parameters" : [ {
       "name" : "factor",
-      "type" : "int"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
-  }, {
-    "name" : "multiply",
-    "returnType" : "int",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ {
-      "name" : "x",
       "type" : "int"
     } ],
     "localVariables" : [ ],
@@ -663,72 +642,6 @@
       "parameterCount" : null
     } ]
   }, {
-    "name" : "add",
-    "returnType" : "int",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ {
-      "name" : "a",
-      "type" : "int"
-    }, {
-      "name" : "b",
-      "type" : "int"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
-  }, {
-    "name" : "subtract",
-    "returnType" : "int",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ {
-      "name" : "a",
-      "type" : "int"
-    }, {
-      "name" : "b",
-      "type" : "int"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
-  }, {
-    "name" : "multiply",
-    "returnType" : "int",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ {
-      "name" : "a",
-      "type" : "int"
-    }, {
-      "name" : "b",
-      "type" : "int"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
-  }, {
-    "name" : "divide",
-    "returnType" : "int",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ {
-      "name" : "a",
-      "type" : "int"
-    }, {
-      "name" : "b",
-      "type" : "int"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ {
-      "methodName" : "ValueError",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    } ]
-  }, {
     "name" : "memoize",
     "returnType" : "Callable[..., T]",
     "visibility" : "public",
@@ -739,24 +652,6 @@
       "type" : "Callable[..., T]"
     } ],
     "localVariables" : [ "cache", "key" ],
-    "methodCalls" : [ {
-      "methodName" : "func",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    } ]
-  }, {
-    "name" : "wrapper",
-    "returnType" : "T",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ {
-      "name" : "*args",
-      "type" : "Any"
-    } ],
-    "localVariables" : [ "key" ],
     "methodCalls" : [ {
       "methodName" : "func",
       "objectType" : null,
@@ -839,78 +734,6 @@
       "callCount" : 1,
       "parameterCount" : null
     } ]
-  }, {
-    "name" : "add",
-    "returnType" : "None",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ {
-      "name" : "x",
-      "type" : "int"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ {
-      "methodName" : "do_add",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    } ]
-  }, {
-    "name" : "do_add",
-    "returnType" : "None",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
-  }, {
-    "name" : "subtract",
-    "returnType" : "None",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ {
-      "name" : "x",
-      "type" : "int"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ {
-      "methodName" : "do_subtract",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    } ]
-  }, {
-    "name" : "do_subtract",
-    "returnType" : "None",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
-  }, {
-    "name" : "get_result",
-    "returnType" : "int",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
-  }, {
-    "name" : "reset",
-    "returnType" : "None",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
   } ],
   "fields" : [ {
     "name" : "T",
@@ -919,6 +742,12 @@
     "modifiers" : [ ],
     "annotations" : [ ]
   } ],
-  "methodCalls" : [ ],
+  "methodCalls" : [ {
+    "methodName" : "TypeVar",
+    "objectType" : null,
+    "objectName" : null,
+    "callCount" : 1,
+    "parameterCount" : null
+  } ],
   "imports" : [ "from typing import Any, Callable, TypeVar", "from functools import reduce" ]
 }

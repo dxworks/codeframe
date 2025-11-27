@@ -745,33 +745,6 @@
       "callCount" : 1,
       "parameterCount" : null
     } ]
-  }, {
-    "name" : "wrapper",
-    "returnType" : null,
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ {
-      "name" : "*args",
-      "type" : null
-    }, {
-      "name" : "**kwargs",
-      "type" : null
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ {
-      "methodName" : "ApplicationError",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    }, {
-      "methodName" : "func",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    } ]
   } ],
   "fields" : [ {
     "name" : "logger",
@@ -780,6 +753,12 @@
     "modifiers" : [ ],
     "annotations" : [ ]
   } ],
-  "methodCalls" : [ ],
+  "methodCalls" : [ {
+    "methodName" : "getLogger",
+    "objectType" : null,
+    "objectName" : "logging",
+    "callCount" : 1,
+    "parameterCount" : null
+  } ],
   "imports" : [ "from typing import Any, Optional", "import logging", "import json" ]
 }

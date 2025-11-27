@@ -89,17 +89,7 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
     }
     
     private Set<Integer> identifyNestedClasses(List<TSNode> allClasses) {
-        Set<Integer> nestedClassIds = new HashSet<>();
-        for (TSNode classDecl : allClasses) {
-            TSNode classBody = findFirstChild(classDecl, "declaration_list");
-            if (classBody != null) {
-                List<TSNode> nested = findAllDescendants(classBody, "class_declaration");
-                for (TSNode n : nested) {
-                    nestedClassIds.add(n.getStartByte());
-                }
-            }
-        }
-        return nestedClassIds;
+        return identifyNestedNodes(allClasses, "declaration_list", "class_declaration");
     }
     
     private void analyzeClassRecursively(String source, TSNode classDecl, FileAnalysis analysis) {
@@ -1009,9 +999,8 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
     
     // Helper: Extract name with optional type parameters
     private String extractNameWithTypeParams(String source, TSNode node) {
-        TSNode nameNode = findFirstChild(node, "identifier");
-        if (nameNode == null) return null;
-        String baseName = getNodeText(source, nameNode);
+        String baseName = extractName(source, node, "identifier");
+        if (baseName == null) return null;
         TSNode typeParams = findFirstChild(node, "type_parameter_list");
         if (typeParams != null) {
             return baseName + getNodeText(source, typeParams);

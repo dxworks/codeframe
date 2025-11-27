@@ -6,6 +6,15 @@ use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Log;
 
+// File-level constants (captured in fields)
+const APP_VERSION = '1.0.0';
+const MAX_RETRIES = 3;
+const DEBUG_MODE = false;
+
+// File-level method calls (captured in methodCalls)
+error_reporting(E_ALL);
+date_default_timezone_set('UTC');
+
 /**
  * User service for managing user operations
  */

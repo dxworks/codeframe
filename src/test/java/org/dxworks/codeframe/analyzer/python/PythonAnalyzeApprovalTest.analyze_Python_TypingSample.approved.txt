@@ -1060,6 +1060,12 @@
     "modifiers" : [ ],
     "annotations" : [ ]
   } ],
-  "methodCalls" : [ ],
+  "methodCalls" : [ {
+    "methodName" : "TypeVar",
+    "objectType" : null,
+    "objectName" : null,
+    "callCount" : 6,
+    "parameterCount" : null
+  } ],
   "imports" : [ "from __future__ import annotations", "from abc import abstractmethod", "from collections.abc import Iterable, Iterator, Mapping, Sequence", "from dataclasses import dataclass", "from typing import (\n    Any,\n    Callable,\n    ClassVar,\n    Final,\n    Generic,\n    Literal,\n    NamedTuple,\n    Optional,\n    Protocol,\n    TypeAlias,\n    TypeVar,\n    Union,\n    overload,\n    runtime_checkable,\n)" ]
 }

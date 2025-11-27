@@ -9,6 +9,15 @@ require 'net/http'
 require_relative '../lib/helper'
 require_relative 'config'
 
+# File-level constants (captured in fields)
+APP_VERSION = "1.0.0"
+MAX_CONNECTIONS = 100
+DEBUG_MODE = false
+
+# File-level method calls (captured in methodCalls)
+puts "Loading ConstantsAndRequiresSample..."
+Rails.logger.info("Application starting") if defined?(Rails)
+
 class Configuration
   # Class-level constants
   MAX_RETRIES = 3

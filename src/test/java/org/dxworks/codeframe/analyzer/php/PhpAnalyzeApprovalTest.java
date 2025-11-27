@@ -33,6 +33,41 @@ public class PhpAnalyzeApprovalTest {
         verify(Paths.get("src/test/resources/samples/php/InterfaceSample.php"), Language.PHP);
     }
 
+    @Test
+    void analyze_Php_TraitsSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/php/TraitsSample.php"), Language.PHP);
+    }
+
+    @Test
+    void analyze_Php_EnumsSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/php/EnumsSample.php"), Language.PHP);
+    }
+
+    @Test
+    void analyze_Php_ClosuresAndArrowFunctionsSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/php/ClosuresAndArrowFunctionsSample.php"), Language.PHP);
+    }
+
+    @Test
+    void analyze_Php_InheritanceSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/php/InheritanceSample.php"), Language.PHP);
+    }
+
+    @Test
+    void analyze_Php_ExceptionHandlingSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/php/ExceptionHandlingSample.php"), Language.PHP);
+    }
+
+    @Test
+    void analyze_Php_MagicMethodsSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/php/MagicMethodsSample.php"), Language.PHP);
+    }
+
+    @Test
+    void analyze_Php_ModernPhpSample() throws IOException {
+        verify(Paths.get("src/test/resources/samples/php/ModernPhpSample.php"), Language.PHP);
+    }
+
     private static void verify(Path file, Language language) throws IOException {
         FileAnalysis analysis = (FileAnalysis) App.analyzeFile(file, language);
         Approvals.verify(MAPPER.writeValueAsString(analysis));

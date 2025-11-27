@@ -50,25 +50,25 @@
         "objectType" : null,
         "objectName" : null,
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "expect",
         "objectType" : null,
         "objectName" : null,
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "parseFloat",
         "objectType" : null,
         "objectName" : null,
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "toBeGreaterThan",
         "objectType" : null,
         "objectName" : null,
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       } ]
     }, {
       "name" : "findUser",
@@ -86,25 +86,25 @@
         "objectType" : null,
         "objectName" : "repository",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "get",
         "objectType" : null,
         "objectName" : "cache",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "info",
         "objectType" : null,
         "objectName" : "logger",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 2
       }, {
         "methodName" : "set",
         "objectType" : null,
         "objectName" : "cache",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 2
       } ]
     }, {
       "name" : "validateUser",
@@ -122,19 +122,19 @@
         "objectType" : null,
         "objectName" : "user",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       }, {
         "methodName" : "isActive",
         "objectType" : null,
         "objectName" : "user",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 0
       }, {
         "methodName" : "warning",
         "objectType" : "Log",
         "objectName" : null,
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 2
       } ]
     }, {
       "name" : "sendNotification",
@@ -155,13 +155,13 @@
         "objectType" : null,
         "objectName" : "logger",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "send",
         "objectType" : null,
         "objectName" : "notifier",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 2
       } ]
     }, {
       "name" : "getInstanceCount",
@@ -188,25 +188,25 @@
         "objectType" : null,
         "objectName" : "cache",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "delete",
         "objectType" : null,
         "objectName" : "repository",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "findUser",
         "objectType" : null,
         "objectName" : "this",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       }, {
         "methodName" : "validateUser",
         "objectType" : null,
         "objectName" : "this",
         "callCount" : 1,
-        "parameterCount" : null
+        "parameterCount" : 1
       } ]
     }, {
       "name" : "processUser",
@@ -337,16 +337,46 @@
       "objectType" : null,
       "objectName" : null,
       "callCount" : 1,
-      "parameterCount" : null
+      "parameterCount" : 1
     }, {
       "methodName" : "ucwords",
       "objectType" : null,
       "objectName" : null,
       "callCount" : 1,
-      "parameterCount" : null
+      "parameterCount" : 1
     } ]
   } ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
+  "fields" : [ {
+    "name" : "APP_VERSION",
+    "type" : "string",
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ]
+  }, {
+    "name" : "MAX_RETRIES",
+    "type" : "int",
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ]
+  }, {
+    "name" : "DEBUG_MODE",
+    "type" : "bool",
+    "visibility" : null,
+    "modifiers" : [ "const" ],
+    "annotations" : [ ]
+  } ],
+  "methodCalls" : [ {
+    "methodName" : "date_default_timezone_set",
+    "objectType" : null,
+    "objectName" : null,
+    "callCount" : 1,
+    "parameterCount" : 1
+  }, {
+    "methodName" : "error_reporting",
+    "objectType" : null,
+    "objectName" : null,
+    "callCount" : 1,
+    "parameterCount" : 1
+  } ],
   "imports" : [ "namespace App\\Services;", "use App\\Models\\User;", "use App\\Repositories\\UserRepository;", "use Illuminate\\Support\\Facades\\Log;" ]
 }

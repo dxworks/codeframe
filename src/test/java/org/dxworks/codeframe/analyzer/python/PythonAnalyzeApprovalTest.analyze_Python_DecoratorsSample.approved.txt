@@ -312,33 +312,6 @@
       "parameterCount" : null
     } ]
   }, {
-    "name" : "wrapper",
-    "returnType" : "T",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ "@wraps(func)" ],
-    "parameters" : [ {
-      "name" : "*args",
-      "type" : "Any"
-    }, {
-      "name" : "**kwargs",
-      "type" : "Any"
-    } ],
-    "localVariables" : [ "result" ],
-    "methodCalls" : [ {
-      "methodName" : "func",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    }, {
-      "methodName" : "print",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 2,
-      "parameterCount" : null
-    } ]
-  }, {
     "name" : "retry",
     "returnType" : null,
     "visibility" : "public",
@@ -381,87 +354,6 @@
       "parameterCount" : null
     } ]
   }, {
-    "name" : "decorator",
-    "returnType" : "Callable[..., T]",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ {
-      "name" : "func",
-      "type" : "Callable[..., T]"
-    } ],
-    "localVariables" : [ "last_error" ],
-    "methodCalls" : [ {
-      "methodName" : "RuntimeError",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    }, {
-      "methodName" : "func",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    }, {
-      "methodName" : "print",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    }, {
-      "methodName" : "range",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    }, {
-      "methodName" : "wraps",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    } ]
-  }, {
-    "name" : "wrapper",
-    "returnType" : "T",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ "@wraps(func)" ],
-    "parameters" : [ {
-      "name" : "*args",
-      "type" : "Any"
-    }, {
-      "name" : "**kwargs",
-      "type" : "Any"
-    } ],
-    "localVariables" : [ "last_error" ],
-    "methodCalls" : [ {
-      "methodName" : "RuntimeError",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    }, {
-      "methodName" : "func",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    }, {
-      "methodName" : "print",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    }, {
-      "methodName" : "range",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    } ]
-  }, {
     "name" : "validate_args",
     "returnType" : null,
     "visibility" : "public",
@@ -498,99 +390,6 @@
       "parameterCount" : null
     }, {
       "methodName" : "wraps",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    }, {
-      "methodName" : "zip",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    } ]
-  }, {
-    "name" : "decorator",
-    "returnType" : "Callable[..., T]",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ {
-      "name" : "func",
-      "type" : "Callable[..., T]"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ {
-      "methodName" : "ValueError",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    }, {
-      "methodName" : "enumerate",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    }, {
-      "methodName" : "func",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    }, {
-      "methodName" : "validator",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    }, {
-      "methodName" : "wraps",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    }, {
-      "methodName" : "zip",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    } ]
-  }, {
-    "name" : "wrapper",
-    "returnType" : "T",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ "@wraps(func)" ],
-    "parameters" : [ {
-      "name" : "*args",
-      "type" : "Any"
-    }, {
-      "name" : "**kwargs",
-      "type" : "Any"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ {
-      "methodName" : "ValueError",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    }, {
-      "methodName" : "enumerate",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    }, {
-      "methodName" : "func",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
-    }, {
-      "methodName" : "validator",
       "objectType" : null,
       "objectName" : null,
       "callCount" : 1,
@@ -649,12 +448,36 @@
     "methodCalls" : [ ]
   } ],
   "fields" : [ {
+    "name" : "MAX_RETRIES",
+    "type" : "int",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ]
+  }, {
+    "name" : "DEFAULT_TIMEOUT",
+    "type" : "float",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ]
+  }, {
+    "name" : "APP_NAME",
+    "type" : "str",
+    "visibility" : "public",
+    "modifiers" : [ ],
+    "annotations" : [ ]
+  }, {
     "name" : "T",
     "type" : null,
     "visibility" : "public",
     "modifiers" : [ ],
     "annotations" : [ ]
   } ],
-  "methodCalls" : [ ],
+  "methodCalls" : [ {
+    "methodName" : "TypeVar",
+    "objectType" : null,
+    "objectName" : null,
+    "callCount" : 1,
+    "parameterCount" : null
+  } ],
   "imports" : [ "from functools import wraps", "from typing import Any, Callable, TypeVar" ]
 }

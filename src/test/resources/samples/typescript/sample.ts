@@ -1,6 +1,15 @@
 import { Logger } from './logger';
 import type { Config } from './config';
 
+// Module-level constants
+const API_VERSION: string = '2.0';
+const MAX_RETRIES = 3;
+let currentUser: User | null = null;
+export const DEFAULT_TIMEOUT: number = 5000;
+
+// Module-level setup calls
+console.log('Initializing module...');
+
 // Standalone function
 export function calculateTotal(items: number[]): number {
     expect(parseFloat(result.total)).toBeGreaterThan(100);

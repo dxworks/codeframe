@@ -61,17 +61,17 @@ public class PythonAnalyzer implements LanguageAnalyzer {
         extractFileLevelFields(sourceCode, rootNode, analysis);
         extractFileLevelMethodCalls(sourceCode, rootNode, analysis);
         
-        // Find standalone functions (not inside classes)
-        // Note: Nested functions (like decorator wrappers) are included as top-level methods
-        // to preserve code information, even though they're technically nested
+        // Find standalone functions (not inside classes or other functions)
+        // Nested functions are NOT extracted as separate methods - their calls/variables
+        // are captured in the parent function via findAllDescendants in analyzeMethodBody
         List<TSNode> allFunctions = findAllDescendants(rootNode, "function_definition");
         for (TSNode funcDecl : allFunctions) {
             if (funcDecl == null || funcDecl.isNull()) {
                 continue;
             }
             
-            // Check if this function is not inside a class
-            if (!isInsideClass(funcDecl)) {
+            // Check if this function is not inside a class and not nested in another function
+            if (!isInsideClass(funcDecl) && !isNestedFunction(funcDecl)) {
                 // Check if function is wrapped in decorated_definition
                 TSNode funcParent = funcDecl.getParent();
                 TSNode funcNodeToAnalyze = funcDecl;
@@ -163,7 +163,8 @@ public class PythonAnalyzer implements LanguageAnalyzer {
     }
     
     /**
-     * Extract file-level method calls (outside any function or class).
+     * Extract file-level method calls (all function calls at module level, outside any named function or class).
+     * This includes calls inside callbacks passed to top-level calls.
      */
     private void extractFileLevelMethodCalls(String source, TSNode rootNode, FileAnalysis analysis) {
         for (int i = 0; i < rootNode.getNamedChildCount(); i++) {
@@ -171,9 +172,10 @@ public class PythonAnalyzer implements LanguageAnalyzer {
             if (child == null || child.isNull()) continue;
             if (!"expression_statement".equals(child.getType())) continue;
             
-            TSNode expr = child.getNamedChild(0);
-            if (expr != null && "call".equals(expr.getType())) {
-                extractCallIntoList(source, expr, analysis.methodCalls);
+            // Extract ALL calls within the expression statement (including nested callbacks)
+            List<TSNode> allCalls = findAllDescendants(child, "call");
+            for (TSNode callExpr : allCalls) {
+                extractCallIntoList(source, callExpr, analysis.methodCalls);
             }
         }
         analysis.methodCalls.sort(TreeSitterHelper.METHOD_CALL_COMPARATOR);
@@ -273,13 +275,7 @@ public class PythonAnalyzer implements LanguageAnalyzer {
         }
         
         if (methodName != null && isValidPythonIdentifier(methodName)) {
-            for (MethodCall existing : calls) {
-                if (existing.matches(methodName, null, objectName, null)) {
-                    existing.callCount++;
-                    return;
-                }
-            }
-            calls.add(new MethodCall(methodName, null, objectName));
+            collectMethodCall(calls, methodName, null, objectName);
         }
     }
     
@@ -301,6 +297,40 @@ public class PythonAnalyzer implements LanguageAnalyzer {
             if ("module".equals(parentType)) {
                 return false;
             }
+            parent = parent.getParent();
+        }
+        return false;
+    }
+    
+    /**
+     * Check if a function is nested inside another function.
+     * Nested functions are not extracted as separate methods - their calls/variables
+     * are captured in the parent function.
+     */
+    private boolean isNestedFunction(TSNode funcNode) {
+        if (funcNode == null || funcNode.isNull()) {
+            return false;
+        }
+        
+        TSNode parent = funcNode.getParent();
+        // Skip decorated_definition wrapper if present
+        if (parent != null && "decorated_definition".equals(parent.getType())) {
+            parent = parent.getParent();
+        }
+        
+        while (parent != null && !parent.isNull()) {
+            String parentType = parent.getType();
+            
+            // If we hit another function_definition, this is nested
+            if ("function_definition".equals(parentType)) {
+                return true;
+            }
+            
+            // If we hit module (root), we're at the top level
+            if ("module".equals(parentType)) {
+                return false;
+            }
+            
             parent = parent.getParent();
         }
         return false;
@@ -394,10 +424,7 @@ public class PythonAnalyzer implements LanguageAnalyzer {
         extractDecorators(source, decoratedNode, typeInfo.annotations);
         
         // Get class name
-        TSNode nameNode = findFirstChild(classDefNode, "identifier");
-        if (nameNode != null && !nameNode.isNull()) {
-            typeInfo.name = getNodeText(source, nameNode);
-        }
+        typeInfo.name = extractName(source, classDefNode, "identifier");
         typeInfo.visibility = determineVisibility(typeInfo.name);
         
         // Get base classes (Python supports multiple inheritance)
@@ -587,10 +614,7 @@ public class PythonAnalyzer implements LanguageAnalyzer {
         extractDecorators(source, decoratedNode, methodInfo.annotations);
         
         // Get function name
-        TSNode nameNode = findFirstChild(funcDef, "identifier");
-        if (nameNode != null && !nameNode.isNull()) {
-            methodInfo.name = getNodeText(source, nameNode);
-        }
+        methodInfo.name = extractName(source, funcDef, "identifier");
         methodInfo.visibility = determineVisibility(methodInfo.name);
         
         // Check if function is async by looking for the async keyword before the function
