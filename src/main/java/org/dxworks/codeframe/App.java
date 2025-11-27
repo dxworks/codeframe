@@ -76,7 +76,7 @@ public class App {
         
         int maxFileLines = CodeframeConfig.load().getMaxFileLines();
         List<Path> files = collectSourceFiles(input, maxFileLines);
-        System.out.println("Found " + files.size() + " source files");
+        System.out.println("Found " + files.size() + " source files with at most " + maxFileLines + " lines");
         
         Instant startTime = Instant.now();
         AtomicInteger successCount = new AtomicInteger(0);
