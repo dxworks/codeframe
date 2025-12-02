@@ -100,6 +100,26 @@ public class SQLAnalyzeApprovalTest {
         verify(Paths.get("src/test/resources/samples/sql/plsql_packages.sql"), Language.SQL);
     }
 
+    @Test
+    void analyze_SQL_TriggersTSQL() throws Exception {
+        verify(Paths.get("src/test/resources/samples/sql/triggers_tsql.sql"), Language.SQL);
+    }
+
+    @Test
+    void analyze_SQL_TriggersPLSQL() throws Exception {
+        verify(Paths.get("src/test/resources/samples/sql/triggers_plsql.sql"), Language.SQL);
+    }
+
+    @Test
+    void analyze_SQL_TriggersPostgreSQL() throws Exception {
+        verify(Paths.get("src/test/resources/samples/sql/triggers_postgresql.sql"), Language.SQL);
+    }
+
+    @Test
+    void analyze_SQL_TriggersMySQL() throws Exception {
+        verify(Paths.get("src/test/resources/samples/sql/triggers_mysql.sql"), Language.SQL);
+    }
+
     private static void verify(java.nio.file.Path file, Language language) throws Exception {
         Analysis analysis = App.analyzeFile(file, language);
         Approvals.verify(MAPPER.writeValueAsString(analysis));

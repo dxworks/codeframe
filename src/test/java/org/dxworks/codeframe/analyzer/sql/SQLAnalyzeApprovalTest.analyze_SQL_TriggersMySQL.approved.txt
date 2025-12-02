@@ -1,0 +1,92 @@
+{
+  "filePath" : "src/test/resources/samples/sql/triggers_mysql.sql",
+  "language" : "sql",
+  "topLevelReferences" : {
+    "relations" : [ ]
+  },
+  "topLevelCalls" : {
+    "functions" : [ ],
+    "procedures" : [ ]
+  },
+  "createTables" : [ ],
+  "alterTables" : [ ],
+  "createViews" : [ ],
+  "createIndexes" : [ ],
+  "createProcedures" : [ ],
+  "createFunctions" : [ ],
+  "createTriggers" : [ {
+    "triggerName" : "trg_users_before_insert",
+    "tableName" : "users",
+    "schema" : null,
+    "orReplace" : false,
+    "timing" : "BEFORE",
+    "events" : [ "INSERT" ],
+    "references" : {
+      "relations" : [ "audit_log" ]
+    },
+    "calls" : {
+      "functions" : [ "NOW" ],
+      "procedures" : [ ]
+    }
+  }, {
+    "triggerName" : "trg_orders_after_update",
+    "tableName" : "orders",
+    "schema" : null,
+    "orReplace" : false,
+    "timing" : "AFTER",
+    "events" : [ "UPDATE" ],
+    "references" : {
+      "relations" : [ "order_history" ]
+    },
+    "calls" : {
+      "functions" : [ "NOW" ],
+      "procedures" : [ "notify_order_status_change" ]
+    }
+  }, {
+    "triggerName" : "trg_products_before_delete",
+    "tableName" : "products",
+    "schema" : null,
+    "orReplace" : false,
+    "timing" : "BEFORE",
+    "events" : [ "DELETE" ],
+    "references" : {
+      "relations" : [ "deleted_products" ]
+    },
+    "calls" : {
+      "functions" : [ "CURRENT_USER", "NOW" ],
+      "procedures" : [ ]
+    }
+  }, {
+    "triggerName" : "trg_order_items_after_insert",
+    "tableName" : "order_items",
+    "schema" : null,
+    "orReplace" : false,
+    "timing" : "AFTER",
+    "events" : [ "INSERT" ],
+    "references" : {
+      "relations" : [ "orders" ]
+    },
+    "calls" : {
+      "functions" : [ "calculate_order_total", "NOW" ],
+      "procedures" : [ ]
+    }
+  }, {
+    "triggerName" : "trg_simple_audit",
+    "tableName" : "simple_table",
+    "schema" : null,
+    "orReplace" : false,
+    "timing" : "AFTER",
+    "events" : [ "INSERT" ],
+    "references" : {
+      "relations" : [ "simple_audit" ]
+    },
+    "calls" : {
+      "functions" : [ "NOW" ],
+      "procedures" : [ ]
+    }
+  } ],
+  "alterViews" : [ ],
+  "alterFunctions" : [ ],
+  "alterProcedures" : [ ],
+  "dropOperations" : [ ]
+}

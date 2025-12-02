@@ -1,0 +1,120 @@
+{
+  "filePath" : "src/test/resources/samples/sql/triggers_postgresql.sql",
+  "language" : "sql",
+  "topLevelReferences" : {
+    "relations" : [ ]
+  },
+  "topLevelCalls" : {
+    "functions" : [ ],
+    "procedures" : [ ]
+  },
+  "createTables" : [ ],
+  "alterTables" : [ ],
+  "createViews" : [ ],
+  "createIndexes" : [ ],
+  "createProcedures" : [ ],
+  "createFunctions" : [ ],
+  "createTriggers" : [ {
+    "triggerName" : "trg_users_created_at",
+    "tableName" : "public.users",
+    "schema" : null,
+    "orReplace" : false,
+    "timing" : "BEFORE",
+    "events" : [ "INSERT" ],
+    "references" : {
+      "relations" : [ ]
+    },
+    "calls" : {
+      "functions" : [ "public.set_created_timestamp" ],
+      "procedures" : [ ]
+    }
+  }, {
+    "triggerName" : "trg_orders_audit",
+    "tableName" : "sales.orders",
+    "schema" : null,
+    "orReplace" : false,
+    "timing" : "AFTER",
+    "events" : [ "UPDATE" ],
+    "references" : {
+      "relations" : [ ]
+    },
+    "calls" : {
+      "functions" : [ "sales.log_order_changes" ],
+      "procedures" : [ ]
+    }
+  }, {
+    "triggerName" : "trg_products_history",
+    "tableName" : "inventory.products",
+    "schema" : null,
+    "orReplace" : false,
+    "timing" : "AFTER",
+    "events" : [ "INSERT", "UPDATE", "DELETE" ],
+    "references" : {
+      "relations" : [ ]
+    },
+    "calls" : {
+      "functions" : [ "inventory.track_product_changes" ],
+      "procedures" : [ ]
+    }
+  }, {
+    "triggerName" : "trg_v_customer_orders",
+    "tableName" : "sales.v_customer_orders",
+    "schema" : null,
+    "orReplace" : false,
+    "timing" : "INSTEAD OF",
+    "events" : [ "INSERT" ],
+    "references" : {
+      "relations" : [ ]
+    },
+    "calls" : {
+      "functions" : [ "sales.insert_customer_order" ],
+      "procedures" : [ ]
+    }
+  }, {
+    "triggerName" : "trg_employees_salary",
+    "tableName" : "hr.employees",
+    "schema" : null,
+    "orReplace" : true,
+    "timing" : "BEFORE",
+    "events" : [ "UPDATE" ],
+    "references" : {
+      "relations" : [ ]
+    },
+    "calls" : {
+      "functions" : [ "hr.validate_salary_change" ],
+      "procedures" : [ ]
+    }
+  }, {
+    "triggerName" : "trg_audit_log",
+    "tableName" : "audit.events",
+    "schema" : null,
+    "orReplace" : false,
+    "timing" : "AFTER",
+    "events" : [ "INSERT" ],
+    "references" : {
+      "relations" : [ ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ "audit.process_event" ]
+    }
+  }, {
+    "triggerName" : "trg_table_modified",
+    "tableName" : "config.settings",
+    "schema" : null,
+    "orReplace" : false,
+    "timing" : "AFTER",
+    "events" : [ "INSERT" ],
+    "references" : {
+      "relations" : [ ]
+    },
+    "calls" : {
+      "functions" : [ "config.notify_settings_change" ],
+      "procedures" : [ ]
+    }
+  } ],
+  "alterViews" : [ ],
+  "alterFunctions" : [ ],
+  "alterProcedures" : [ ],
+  "dropOperations" : [ ]
+}

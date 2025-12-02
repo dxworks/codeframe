@@ -2,27 +2,21 @@ package org.dxworks.codeframe.analyzer.sql;
 
 import org.dxworks.codeframe.analyzer.sql.generated.PlSqlParser;
 import org.dxworks.codeframe.analyzer.sql.generated.PlSqlParserBaseVisitor;
-import org.dxworks.codeframe.model.sql.CreateFunctionOperation;
-import org.dxworks.codeframe.model.sql.CreateProcedureOperation;
-import org.dxworks.codeframe.model.sql.ParameterDefinition;
-import org.dxworks.codeframe.model.sql.SqlInvocations;
-import org.dxworks.codeframe.model.sql.SqlReferences;
+import org.dxworks.codeframe.model.sql.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlSqlDefinitionExtractor extends PlSqlParserBaseVisitor<Void> {
 
-    private final String source;
-    private final RoutineBodyAnalyzer bodyAnalyzer = new PlSqlRoutineBodyAnalyzer();
     private final List<CreateProcedureOperation> procedures = new ArrayList<>();
     private final List<CreateFunctionOperation> functions = new ArrayList<>();
+    private final List<CreateTriggerOperation> triggers = new ArrayList<>();
 
     private String currentPackageSchema;
     private String currentPackageName;
 
-    public PlSqlDefinitionExtractor(String source) {
-        this.source = source == null ? "" : source;
+    public PlSqlDefinitionExtractor() {
     }
 
     public List<CreateProcedureOperation> getProcedures() {
@@ -31,6 +25,10 @@ public class PlSqlDefinitionExtractor extends PlSqlParserBaseVisitor<Void> {
 
     public List<CreateFunctionOperation> getFunctions() {
         return functions;
+    }
+
+    public List<CreateTriggerOperation> getTriggers() {
+        return triggers;
     }
 
     @Override
@@ -154,16 +152,14 @@ public class PlSqlDefinitionExtractor extends PlSqlParserBaseVisitor<Void> {
         return super.visitFunction_body(ctx);
     }
 
-    private void analyzeBody(PlSqlParser.BodyContext bodyCtx, SqlReferences references,
+    private void analyzeBody(org.antlr.v4.runtime.tree.ParseTree ctx, SqlReferences references,
                              SqlInvocations calls) {
-        if (bodyCtx == null || references == null || calls == null) return;
-        String text = slice(bodyCtx);
-        if (text == null || text.isEmpty()) return;
-        RoutineBodyAnalyzer.Result result = bodyAnalyzer.analyze(text, "plpgsql");
-        if (result == null) return;
-        references.relations.addAll(result.relations);
-        calls.functions.addAll(result.functionCalls);
-        calls.procedures.addAll(result.procedureCalls);
+        if (ctx == null || references == null || calls == null) return;
+        PlSqlReferenceExtractor extractor = new PlSqlReferenceExtractor();
+        extractor.visit(ctx);
+        references.relations.addAll(extractor.getTableReferences());
+        calls.functions.addAll(extractor.getFunctionCalls());
+        calls.procedures.addAll(extractor.getProcedureCalls());
     }
 
     private ParameterDefinition extractParameter(PlSqlParser.ParameterContext ctx) {
@@ -186,12 +182,106 @@ public class PlSqlDefinitionExtractor extends PlSqlParserBaseVisitor<Void> {
         return pd;
     }
 
-    private String slice(org.antlr.v4.runtime.ParserRuleContext ctx) {
-        if (ctx == null || ctx.getStart() == null || ctx.getStop() == null) return null;
-        int start = ctx.getStart().getStartIndex();
-        int stop = ctx.getStop().getStopIndex();
-        if (start < 0 || stop < start || stop >= source.length()) return null;
-        return source.substring(start, stop + 1);
+    // ---- Trigger extraction ----
+
+    @Override
+    public Void visitCreate_trigger(PlSqlParser.Create_triggerContext ctx) {
+        CreateTriggerOperation op = new CreateTriggerOperation();
+        op.orReplace = ctx.OR() != null && ctx.REPLACE() != null;
+
+        // Extract trigger name
+        if (ctx.trigger_name() != null) {
+            String[] schemaName = RoutineSqlUtils.splitSchemaAndName(ctx.trigger_name().getText());
+            op.schema = schemaName[0];
+            op.triggerName = schemaName[1];
+        }
+
+        // Handle simple DML trigger (BEFORE/AFTER/INSTEAD OF on table)
+        if (ctx.simple_dml_trigger() != null) {
+            PlSqlParser.Simple_dml_triggerContext dml = ctx.simple_dml_trigger();
+            
+            // Extract timing
+            if (dml.BEFORE() != null) {
+                op.timing = "BEFORE";
+            } else if (dml.AFTER() != null) {
+                op.timing = "AFTER";
+            } else if (dml.INSTEAD() != null) {
+                op.timing = "INSTEAD OF";
+            }
+
+            // Extract events and table from dml_event_clause
+            if (dml.dml_event_clause() != null) {
+                extractDmlEventClause(dml.dml_event_clause(), op);
+            }
+        }
+        // Handle compound DML trigger (FOR on table)
+        else if (ctx.compound_dml_trigger() != null) {
+            PlSqlParser.Compound_dml_triggerContext compound = ctx.compound_dml_trigger();
+            op.timing = "COMPOUND";
+            
+            if (compound.dml_event_clause() != null) {
+                extractDmlEventClause(compound.dml_event_clause(), op);
+            }
+        }
+        // Handle non-DML trigger (DDL events on DATABASE/SCHEMA)
+        else if (ctx.non_dml_trigger() != null) {
+            PlSqlParser.Non_dml_triggerContext nonDml = ctx.non_dml_trigger();
+            
+            // Extract timing
+            if (nonDml.BEFORE() != null) {
+                op.timing = "BEFORE";
+            } else if (nonDml.AFTER() != null) {
+                op.timing = "AFTER";
+            }
+
+            // Extract DDL events
+            List<PlSqlParser.Non_dml_eventContext> events = nonDml.non_dml_event();
+            if (events != null) {
+                for (PlSqlParser.Non_dml_eventContext event : events) {
+                    op.events.add(event.getText().toUpperCase());
+                }
+            }
+
+            // Table is DATABASE or SCHEMA for non-DML triggers
+            if (nonDml.DATABASE() != null) {
+                op.tableName = "DATABASE";
+            } else if (nonDml.SCHEMA() != null) {
+                // Check for schema_name prefix (e.g., ON hr.SCHEMA)
+                if (nonDml.schema_name() != null) {
+                    op.tableName = nonDml.schema_name().getText() + ".SCHEMA";
+                } else {
+                    op.tableName = "SCHEMA";
+                }
+            }
+        }
+
+        // Analyze trigger body for references/calls
+        analyzeBody(ctx.trigger_body(), op.references, op.calls);
+
+        triggers.add(op);
+        return super.visitCreate_trigger(ctx);
+    }
+
+    private void extractDmlEventClause(PlSqlParser.Dml_event_clauseContext ctx, CreateTriggerOperation op) {
+        // Extract events (INSERT, UPDATE, DELETE)
+        List<PlSqlParser.Dml_event_elementContext> elements = ctx.dml_event_element();
+        if (elements != null) {
+            for (PlSqlParser.Dml_event_elementContext elem : elements) {
+                if (elem.INSERT() != null) op.events.add("INSERT");
+                if (elem.UPDATE() != null) op.events.add("UPDATE");
+                if (elem.DELETE() != null) op.events.add("DELETE");
+            }
+        }
+
+        // Extract table name
+        if (ctx.tableview_name() != null) {
+            String[] schemaTable = RoutineSqlUtils.splitSchemaAndName(ctx.tableview_name().getText());
+            if (schemaTable[0] != null) {
+                op.tableName = schemaTable[0] + "." + schemaTable[1];
+            } else {
+                op.tableName = schemaTable[1];
+            }
+        }
     }
 
 }

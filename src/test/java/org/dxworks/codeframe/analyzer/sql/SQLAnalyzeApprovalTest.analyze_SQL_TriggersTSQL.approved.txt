@@ -1,0 +1,92 @@
+{
+  "filePath" : "src/test/resources/samples/sql/triggers_tsql.sql",
+  "language" : "sql",
+  "topLevelReferences" : {
+    "relations" : [ ]
+  },
+  "topLevelCalls" : {
+    "functions" : [ ],
+    "procedures" : [ ]
+  },
+  "createTables" : [ ],
+  "alterTables" : [ ],
+  "createViews" : [ ],
+  "createIndexes" : [ ],
+  "createProcedures" : [ ],
+  "createFunctions" : [ ],
+  "createTriggers" : [ {
+    "triggerName" : "tr_orders_insert",
+    "tableName" : "dbo.orders",
+    "schema" : "dbo",
+    "orReplace" : false,
+    "timing" : "AFTER",
+    "events" : [ "INSERT" ],
+    "references" : {
+      "relations" : [ "inserted", "dbo.audit_log" ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ ]
+    }
+  }, {
+    "triggerName" : "tr_customers_audit",
+    "tableName" : "dbo.customers",
+    "schema" : "dbo",
+    "orReplace" : true,
+    "timing" : "AFTER",
+    "events" : [ "UPDATE", "DELETE" ],
+    "references" : {
+      "relations" : [ "dbo.customer_history", "deleted", "inserted" ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ ]
+    }
+  }, {
+    "triggerName" : "tr_v_order_summary_insert",
+    "tableName" : "sales.v_order_summary",
+    "schema" : "sales",
+    "orReplace" : false,
+    "timing" : "INSTEAD OF",
+    "events" : [ "INSERT" ],
+    "references" : {
+      "relations" : [ "sales.orders", "inserted" ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ "dbo.usp_notify_new_order" ]
+    }
+  }, {
+    "triggerName" : "tr_ddl_audit",
+    "tableName" : "DATABASE",
+    "schema" : null,
+    "orReplace" : false,
+    "timing" : "AFTER",
+    "events" : [ "CREATE_TABLE", "ALTER_TABLE", "DROP_TABLE" ],
+    "references" : {
+      "relations" : [ "dbo.ddl_audit_log" ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ ]
+    }
+  }, {
+    "triggerName" : "tr_employees_salary_check",
+    "tableName" : "hr.employees",
+    "schema" : "hr",
+    "orReplace" : false,
+    "timing" : "AFTER",
+    "events" : [ "INSERT", "UPDATE" ],
+    "references" : {
+      "relations" : [ "inserted" ]
+    },
+    "calls" : {
+      "functions" : [ "hr.fn_get_max_salary" ],
+      "procedures" : [ ]
+    }
+  } ],
+  "alterViews" : [ ],
+  "alterFunctions" : [ ],
+  "alterProcedures" : [ ],
+  "dropOperations" : [ ]
+}

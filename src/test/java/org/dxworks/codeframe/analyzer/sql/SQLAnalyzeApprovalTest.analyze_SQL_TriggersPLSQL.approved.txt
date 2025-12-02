@@ -1,0 +1,106 @@
+{
+  "filePath" : "src/test/resources/samples/sql/triggers_plsql.sql",
+  "language" : "sql",
+  "topLevelReferences" : {
+    "relations" : [ ]
+  },
+  "topLevelCalls" : {
+    "functions" : [ ],
+    "procedures" : [ ]
+  },
+  "createTables" : [ ],
+  "alterTables" : [ ],
+  "createViews" : [ ],
+  "createIndexes" : [ ],
+  "createProcedures" : [ ],
+  "createFunctions" : [ ],
+  "createTriggers" : [ {
+    "triggerName" : "trg_employees_bi",
+    "tableName" : "hr.employees",
+    "schema" : "hr",
+    "orReplace" : true,
+    "timing" : "BEFORE",
+    "events" : [ "INSERT" ],
+    "references" : {
+      "relations" : [ "hr.audit_log" ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ ]
+    }
+  }, {
+    "triggerName" : "trg_employees_salary_au",
+    "tableName" : "hr.employees",
+    "schema" : "hr",
+    "orReplace" : false,
+    "timing" : "AFTER",
+    "events" : [ "UPDATE" ],
+    "references" : {
+      "relations" : [ "hr.salary_history" ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ "hr.pkg_notifications.send_update_alert" ]
+    }
+  }, {
+    "triggerName" : "trg_v_orders_ioi",
+    "tableName" : "sales.v_order_details",
+    "schema" : "sales",
+    "orReplace" : true,
+    "timing" : "INSTEAD OF",
+    "events" : [ "INSERT" ],
+    "references" : {
+      "relations" : [ "sales.order_items", "sales.orders" ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ ]
+    }
+  }, {
+    "triggerName" : "trg_employees_compound",
+    "tableName" : "hr.employees",
+    "schema" : "hr",
+    "orReplace" : true,
+    "timing" : "COMPOUND",
+    "events" : [ "INSERT", "UPDATE", "DELETE" ],
+    "references" : {
+      "relations" : [ ]
+    },
+    "calls" : {
+      "functions" : [ "t_emp_ids", "g_emp_ids" ],
+      "procedures" : [ "hr.process_employee_change" ]
+    }
+  }, {
+    "triggerName" : "trg_schema_ddl",
+    "tableName" : "hr.SCHEMA",
+    "schema" : null,
+    "orReplace" : true,
+    "timing" : "AFTER",
+    "events" : [ "CREATE", "ALTER", "DROP" ],
+    "references" : {
+      "relations" : [ "hr.ddl_log" ]
+    },
+    "calls" : {
+      "functions" : [ ],
+      "procedures" : [ ]
+    }
+  }, {
+    "triggerName" : "trg_orders_total",
+    "tableName" : "sales.order_items",
+    "schema" : "sales",
+    "orReplace" : false,
+    "timing" : "AFTER",
+    "events" : [ "INSERT" ],
+    "references" : {
+      "relations" : [ "sales.orders" ]
+    },
+    "calls" : {
+      "functions" : [ "sales.fn_calculate_order_total" ],
+      "procedures" : [ ]
+    }
+  } ],
+  "alterViews" : [ ],
+  "alterFunctions" : [ ],
+  "alterProcedures" : [ ],
+  "dropOperations" : [ ]
+}

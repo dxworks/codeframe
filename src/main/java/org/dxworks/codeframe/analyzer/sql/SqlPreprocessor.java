@@ -1,104 +1,119 @@
 package org.dxworks.codeframe.analyzer.sql;
 
+import java.util.Locale;
+
 /**
  * Preprocesses SQL source code to make it more compatible with JSqlParser.
- * Handles dialect-specific constructs that JSqlParser doesn't understand natively.
+ * Handles dialect-specific constructs that JSqlParser doesn't understand natively:
+ * - Removes T-SQL GO batch separators
+ * - Removes MySQL DELIMITER directives
+ * - Skips MySQL routine/trigger bodies (analyzed separately by SqlRoutineBodyAnalyzer)
  */
 public final class SqlPreprocessor {
 
-    private SqlPreprocessor() {
-        // utility class
-    }
+    private static final String NL = System.lineSeparator();
 
-    /**
-     * Preprocess SQL to make it more compatible with JSqlParser.
-     * - Removes T-SQL GO batch separators
-     * - Removes MySQL DELIMITER directives
-     * - Truncates MySQL routine bodies (they're analyzed separately)
-     */
+    private SqlPreprocessor() {}
+
     public static String preprocess(String sql) {
         if (sql == null) return null;
 
-        String dialect = DialectHeuristics.detectDialectFromSource(sql);
-        boolean isMySql = "mysql".equalsIgnoreCase(dialect);
-
+        boolean isMySql = "mysql".equalsIgnoreCase(DialectHeuristics.detectDialectFromSource(sql));
         String[] lines = sql.split("\r?\n");
         StringBuilder sb = new StringBuilder(sql.length());
 
-        // MySQL routine body tracking
-        boolean inMySqlRoutine = false;
-        boolean skippingMySqlBody = false;
+        MySqlState state = new MySqlState();
 
         for (String line : lines) {
             if (line == null) continue;
             String trimmed = line.trim();
+            String upper = trimmed.toUpperCase(Locale.ROOT);
+
             if (trimmed.isEmpty()) {
-                sb.append(line).append(System.lineSeparator());
+                sb.append(line).append(NL);
                 continue;
             }
 
-            String upper = trimmed.toUpperCase();
-
             // Remove T-SQL GO batch separators
-            if (upper.equals("GO")) continue;
+            if ("GO".equals(upper)) continue;
 
             // Remove MySQL DELIMITER directives
             if (upper.startsWith("DELIMITER")) continue;
 
-            // MySQL-specific: Skip routine bodies (analyzed separately by SqlRoutineBodyAnalyzer)
-            if (isMySql) {
-                if (skippingMySqlBody) {
-                    // Skip everything until we hit the routine terminator
-                    if (upper.equals("END$$") || upper.equals("END $$")) {
-                        skippingMySqlBody = false;
-                        inMySqlRoutine = false;
-                        sb.append("END;").append(System.lineSeparator());
-                    }
-                    continue;
-                }
+            // MySQL-specific processing
+            if (isMySql && processMySqlLine(upper, sb, state)) continue;
 
-                // Track routine start
-                if (upper.startsWith("CREATE FUNCTION") || upper.startsWith("CREATE PROCEDURE")) {
-                    inMySqlRoutine = true;
-                }
-
-                // When we hit BEGIN, start skipping the body
-                if (inMySqlRoutine && upper.startsWith("BEGIN")) {
-                    ensurePreviousLineEndsWithSemicolon(sb);
-                    skippingMySqlBody = true;
-                    continue;
-                }
-                
-                // Normalize standalone END$$ to END; (for non-routine contexts)
-                if (upper.equals("END$$") || upper.equals("END $$")) {
-                    sb.append("END;").append(System.lineSeparator());
-                    continue;
-                }
-            }
-
-            sb.append(line).append(System.lineSeparator());
+            sb.append(line).append(NL);
         }
 
         return sb.toString();
     }
 
     /**
-     * Ensures the last non-empty line in the StringBuilder ends with a semicolon.
-     * Used to properly terminate MySQL routine signatures before skipping the body.
+     * Processes MySQL-specific line handling.
+     * @return true if line was consumed (should skip normal append), false otherwise
      */
-    private static void ensurePreviousLineEndsWithSemicolon(StringBuilder sb) {
-        int len = sb.length();
-        if (len > 0) {
-            String nl = System.lineSeparator();
-            int lastNl = sb.lastIndexOf(nl);
-            if (lastNl < 0) lastNl = len;
-            int prevEnd = lastNl;
-            int prevStart = sb.lastIndexOf(nl, prevEnd - 1);
-            if (prevStart < 0) prevStart = 0; else prevStart += nl.length();
-            int posBeforeNl = prevEnd - 1;
-            if (posBeforeNl >= prevStart && sb.charAt(posBeforeNl) != ';') {
-                sb.insert(prevEnd, ";");
+    private static boolean processMySqlLine(String upper, StringBuilder sb, MySqlState state) {
+        // When skipping routine body, wait for END$$
+        if (state.skippingBody) {
+            if (isEndDollar(upper)) {
+                state.reset();
+                sb.append("END;").append(NL);
             }
+            return true;
+        }
+
+        // Track routine/trigger start
+        if (upper.startsWith("CREATE FUNCTION") || upper.startsWith("CREATE PROCEDURE") 
+                || upper.startsWith("CREATE TRIGGER")) {
+            state.inRoutine = true;
+        }
+
+        // When we hit BEGIN inside a routine, start skipping the body
+        if (state.inRoutine && upper.startsWith("BEGIN")) {
+            appendSemicolonIfNeeded(sb);
+            state.skippingBody = true;
+            return true;
+        }
+
+        // Normalize standalone END$$ to END;
+        if (isEndDollar(upper)) {
+            sb.append("END;").append(NL);
+            return true;
+        }
+
+        return false;
+    }
+
+    private static boolean isEndDollar(String upper) {
+        return "END$$".equals(upper) || "END $$".equals(upper);
+    }
+
+    /**
+     * Appends a semicolon before the last newline if the previous line doesn't end with one.
+     */
+    private static void appendSemicolonIfNeeded(StringBuilder sb) {
+        int len = sb.length();
+        if (len == 0) return;
+
+        // Find the last non-newline character
+        int pos = len - 1;
+        while (pos >= 0 && (sb.charAt(pos) == '\n' || sb.charAt(pos) == '\r')) {
+            pos--;
+        }
+        if (pos >= 0 && sb.charAt(pos) != ';') {
+            sb.insert(pos + 1, ';');
+        }
+    }
+
+    /** Tracks MySQL routine body parsing state */
+    private static class MySqlState {
+        boolean inRoutine = false;
+        boolean skippingBody = false;
+
+        void reset() {
+            inRoutine = false;
+            skippingBody = false;
         }
     }
 }
