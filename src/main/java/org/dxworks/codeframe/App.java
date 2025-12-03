@@ -79,6 +79,8 @@ public class App {
 
         CodeframeConfig config = CodeframeConfig.load();
         int maxFileLines = config.getMaxFileLines();
+        System.out.println("Configuration: maxFileLines=" + maxFileLines
+                + ", hideSqlTableColumns=" + config.isHideSqlTableColumns());
         List<Path> files = collectSourceFiles(input, maxFileLines);
         System.out.println("Found " + files.size() + " source files with at most " + maxFileLines + " lines");
         
