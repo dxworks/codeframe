@@ -117,10 +117,12 @@ CodeFrame supports optional configuration via a `codeframe-config.yml` file in t
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `maxFileLines` | integer | 20000 | Maximum number of lines a file can have. Files exceeding this limit are skipped during analysis. |
+| `hideSqlTableColumns` | boolean | false | When true, SQL analysis output omits table column definitions for CREATE/ALTER TABLE operations. |
 
 **Example configuration:**
 ```yaml
 maxFileLines: 20000
+hideSqlTableColumns: false
 ```
 
 **Behavior:**

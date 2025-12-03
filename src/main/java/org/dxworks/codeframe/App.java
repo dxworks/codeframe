@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.dxworks.codeframe.analyzer.*;
 import org.dxworks.codeframe.analyzer.sql.SQLAnalyzer;
 import org.dxworks.codeframe.model.Analysis;
+import org.dxworks.codeframe.model.sql.SQLFileAnalysis;
+import org.dxworks.codeframe.model.sql.CreateTableOperation;
+import org.dxworks.codeframe.model.sql.AlterTableOperation;
 import org.treesitter.*;
 
 import java.io.BufferedWriter;
@@ -73,8 +76,9 @@ public class App {
 
         System.out.println("Starting code analysis...");
         System.out.println("Input: " + input.toAbsolutePath());
-        
-        int maxFileLines = CodeframeConfig.load().getMaxFileLines();
+
+        CodeframeConfig config = CodeframeConfig.load();
+        int maxFileLines = config.getMaxFileLines();
         List<Path> files = collectSourceFiles(input, maxFileLines);
         System.out.println("Found " + files.size() + " source files with at most " + maxFileLines + " lines");
         
@@ -109,7 +113,7 @@ public class App {
                 }
                 
                 try {
-                    Analysis analysis = analyzeFile(file, language);
+                    Analysis analysis = analyzeFile(file, language, config);
                     
                     // Write result immediately (synchronized to avoid concurrent writes)
                     synchronized (writer) {
@@ -198,34 +202,64 @@ public class App {
     }
     
     public static Analysis analyzeFile(Path filePath, Language language) throws IOException {
+        CodeframeConfig config = CodeframeConfig.load();
+        return analyzeFile(filePath, language, config);
+    }
+
+    public static Analysis analyzeFile(Path filePath, Language language, CodeframeConfig config) throws IOException {
         String sourceCode = Files.readString(filePath, StandardCharsets.UTF_8);
-        
+
         // Remove BOM if present (common in C# files)
         if (sourceCode.startsWith("\uFEFF")) {
             sourceCode = sourceCode.substring(1);
         }
-        
+
         LanguageAnalyzer analyzer = ANALYZERS.get(language);
         if (analyzer == null) {
             throw new IllegalArgumentException("No analyzer available for: " + language);
         }
 
-        // SQL is handled via JSqlParserAnalyzer and does not use Tree-sitter
+        Analysis analysis;
+
         if (language == Language.SQL) {
-            return analyzer.analyze(filePath.toString(), sourceCode, null);
+            analysis = analyzer.analyze(filePath.toString(), sourceCode, null);
+        } else {
+            TSLanguage tsLanguage = TREE_SITTER_LANGUAGES.get(language);
+            if (tsLanguage == null) {
+                throw new IllegalArgumentException("No Tree-sitter language available for: " + language);
+            }
+
+            TSParser parser = new TSParser();
+            parser.setLanguage(tsLanguage);
+
+            TSTree tree = parser.parseString(null, sourceCode);
+            TSNode rootNode = tree.getRootNode();
+
+            analysis = analyzer.analyze(filePath.toString(), sourceCode, rootNode);
         }
 
-        TSLanguage tsLanguage = TREE_SITTER_LANGUAGES.get(language);
-        if (tsLanguage == null) {
-            throw new IllegalArgumentException("No Tree-sitter language available for: " + language);
+        filterSqlColumnsIfNeeded(analysis, config);
+
+        return analysis;
+    }
+
+    private static void filterSqlColumnsIfNeeded(Analysis analysis, CodeframeConfig config) {
+        if (!(analysis instanceof SQLFileAnalysis)) {
+            return;
         }
-        
-        TSParser parser = new TSParser();
-        parser.setLanguage(tsLanguage);
-        
-        TSTree tree = parser.parseString(null, sourceCode);
-        TSNode rootNode = tree.getRootNode();
-        
-        return analyzer.analyze(filePath.toString(), sourceCode, rootNode);
+
+        if (!config.isHideSqlTableColumns()) {
+            return;
+        }
+
+        SQLFileAnalysis sqlAnalysis = (SQLFileAnalysis) analysis;
+
+        for (CreateTableOperation op : sqlAnalysis.createTables) {
+            op.columns.clear();
+        }
+
+        for (AlterTableOperation op : sqlAnalysis.alterTables) {
+            op.addedColumns.clear();
+        }
     }
 }

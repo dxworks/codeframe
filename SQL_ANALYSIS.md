@@ -6,8 +6,8 @@ CodeFrame provides multi-dialect SQL parsing to extract structural metadata from
 
 | Dialect | Parser | Routines Support |
 |---------|--------|------------------|
-| **PostgreSQL** | JSqlParser | ✅ Full (dollar-quoted bodies) |
-| **MySQL** | JSqlParser | ⚠️ Partial (header only for BEGIN...END) |
+| **PostgreSQL** | JSqlParser | ✅ Full (dollar-quoted bodies; triggers via regex fallback) |
+| **MySQL** | JSqlParser | ⚠️ Partial (bodies analyzed via preprocessing; triggers via regex fallback) |
 | **T-SQL (MSSQL)** | ANTLR | ✅ Full |
 | **PL/SQL (Oracle)** | ANTLR | ✅ Full |
 
@@ -243,12 +243,53 @@ This hybrid approach maximizes compatibility without requiring user configuratio
 
 **Extracted metadata:**
 - **Name** and **Schema**
-- **Table**: The table the trigger is attached to
-- **Timing**: BEFORE, AFTER, INSTEAD OF
-- **Events**: INSERT, UPDATE, DELETE
-- **referencedTables**: Tables accessed in the trigger body
+- **Table**: The table the trigger is attached to (or `DATABASE`/`SCHEMA` for DDL triggers)
+- **Timing**: BEFORE, AFTER, INSTEAD OF, COMPOUND (PL/SQL)
+- **Events**: INSERT, UPDATE, DELETE (can be multiple); DDL events for DDL triggers
+- **orReplace**: Whether `CREATE OR REPLACE` was used
+- **References**: Tables/views accessed in the trigger body
+- **Calls**: Functions and procedures invoked in the trigger body
 
-> ⚠️ **Status**: Trigger extraction is planned but not yet implemented. The model exists but no extractors populate it.
+**Example output** (from `triggers_tsql.sql`):
+```json
+{
+  "createTriggers": [{
+    "triggerName": "tr_orders_insert",
+    "tableName": "dbo.orders",
+    "schema": "dbo",
+    "orReplace": false,
+    "timing": "AFTER",
+    "events": ["INSERT"],
+    "references": {
+      "relations": ["dbo.audit_log"]
+    },
+    "calls": {
+      "functions": ["GETDATE"],
+      "procedures": []
+    }
+  }, {
+    "triggerName": "tr_customers_audit",
+    "tableName": "dbo.customers",
+    "schema": "dbo",
+    "orReplace": true,
+    "timing": "AFTER",
+    "events": ["UPDATE", "DELETE"],
+    "references": {
+      "relations": ["dbo.customer_history"]
+    },
+    "calls": {
+      "functions": ["GETDATE"],
+      "procedures": []
+    }
+  }]
+}
+```
+
+**Dialect support:**
+- **T-SQL**: ✅ Full (ANTLR). DML triggers (`ON table`) and DDL triggers (`ON DATABASE`/`ON ALL SERVER`). `FOR` is treated as `AFTER`.
+- **PL/SQL**: ✅ Full (ANTLR). Simple DML triggers, compound triggers, and DDL triggers (`ON SCHEMA`/`ON DATABASE`).
+- **PostgreSQL**: ⚠️ Partial (regex fallback). Triggers with `EXECUTE FUNCTION`/`PROCEDURE` syntax are extracted.
+- **MySQL**: ⚠️ Partial (regex fallback). Inline trigger bodies (`BEGIN...END`, including `DELIMITER $$` blocks) and single-statement triggers are analyzed for references and calls.
 
 ### Drop Operations
 
@@ -449,7 +490,8 @@ PL/SQL packages (specification and body) are partially supported:
 ### MySQL
 
 - **DELIMITER**: Custom delimiters (`DELIMITER $$`) are recognized for parsing multi-statement routines
-- **Routine bodies**: Header extraction works; body analysis is limited due to grammar constraints
+- **Routine bodies**: Bodies are preprocessed to strip control-flow and normalize assignments so that DML statements and calls can be analyzed; complex procedural logic may still be partially ignored.
+- **Triggers**: DML triggers on tables are extracted via regex (including `DELIMITER $$` blocks and single-statement triggers), and their bodies are analyzed for table references and function/procedure calls.
 - **DETERMINISTIC/READS SQL DATA**: Routine characteristics are captured where possible
 
 ---
@@ -479,10 +521,6 @@ PL/SQL packages (specification and body) are partially supported:
 - **Standalone top-level SELECT**: A bare `SELECT ... FROM ...` statement (outside an anonymous block) is not analyzed. Wrap in `BEGIN...END` if analysis is needed.
 - **`REPLACE FUNCTION/PROCEDURE`** (without `CREATE`): Not supported. The grammar requires `CREATE` or `CREATE OR REPLACE`. Standalone `REPLACE` is a rare Oracle syntax variant.
 - **Package private routines**: Routines declared only in the package body (not in spec) are captured during body analysis.
-
-### Triggers
-
-- **Not yet implemented**: Trigger extraction is planned but not currently available.
 
 ### Not Extracted
 
@@ -554,4 +592,8 @@ src/test/resources/samples/sql/
 | `top_level_plsql.sql` | PL/SQL anonymous blocks, EXECUTE statement |
 | `top_level_mysql.sql` | MySQL CALL and top-level SELECT |
 | `drop_statements.sql` | DROP TABLE/VIEW/INDEX with IF EXISTS |
+| `triggers_tsql.sql` | T-SQL DML and DDL triggers, INSTEAD OF triggers |
+| `triggers_plsql.sql` | PL/SQL DML triggers, compound triggers, DDL triggers |
+| `triggers_postgresql.sql` | PostgreSQL triggers with EXECUTE FUNCTION/PROCEDURE |
+| `triggers_mysql.sql` | MySQL triggers with inline BEGIN...END bodies |
 

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.dxworks.codeframe.App;
 import org.dxworks.codeframe.Language;
+import org.dxworks.codeframe.CodeframeConfig;
 import org.dxworks.codeframe.model.Analysis;
 import org.junit.jupiter.api.Test;
 
@@ -118,6 +119,16 @@ public class SQLAnalyzeApprovalTest {
     @Test
     void analyze_SQL_TriggersMySQL() throws Exception {
         verify(Paths.get("src/test/resources/samples/sql/triggers_mysql.sql"), Language.SQL);
+    }
+
+    @Test
+    void analyze_SQL_Sample_hideColumns() throws Exception {
+        CodeframeConfig config = CodeframeConfig.with(20000, true);
+        Analysis analysis = App.analyzeFile(
+                Paths.get("src/test/resources/samples/sql/sample.sql"),
+                Language.SQL,
+                config);
+        Approvals.verify(MAPPER.writeValueAsString(analysis));
     }
 
     private static void verify(java.nio.file.Path file, Language language) throws Exception {
