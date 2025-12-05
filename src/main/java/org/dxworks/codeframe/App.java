@@ -10,6 +10,7 @@ import org.dxworks.codeframe.model.sql.AlterTableOperation;
 import org.treesitter.*;
 
 import java.io.BufferedWriter;
+import java.io.InputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -179,14 +180,14 @@ public class App {
             try (Stream<Path> stream = Files.walk(input)) {
                 stream.filter(Files::isRegularFile)
                       .filter(p -> ignorer.accepts(p.toAbsolutePath().toString()))
-                      .filter(p -> withinMaxLines(p, maxFileLines))
                       .filter(p -> LanguageDetector.detectLanguage(p).isPresent())
+                      .filter(p -> withinMaxLines(p, maxFileLines))
                       .forEach(files::add);
             }
         } else if (Files.isRegularFile(input)) {
             if (ignorer.accepts(input.toAbsolutePath().toString())
-                    && withinMaxLines(input, maxFileLines)
-                    && LanguageDetector.detectLanguage(input).isPresent()) {
+                    && LanguageDetector.detectLanguage(input).isPresent()
+                    && withinMaxLines(input, maxFileLines)) {
                 files.add(input);
             }
         }
@@ -195,9 +196,18 @@ public class App {
     }
     
     private static boolean withinMaxLines(Path path, int maxFileLines) {
-        try (Stream<String> lines = Files.lines(path)) {
-            long count = lines.limit((long) maxFileLines + 1L).count();
-            return count <= maxFileLines;
+        try (InputStream in = Files.newInputStream(path)) {
+            int count = 0;
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = in.read(buffer)) != -1) {
+                for (int i = 0; i < bytesRead; i++) {
+                    if (buffer[i] == '\n' && ++count > maxFileLines) {
+                        return false;
+                    }
+                }
+            }
+            return true;
         } catch (IOException e) {
             return true;
         }
