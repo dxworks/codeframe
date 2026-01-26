@@ -8,7 +8,8 @@ public enum Language {
     CSHARP("csharp"),
     PHP("php"),
     SQL("sql"),
-    RUBY("ruby");
+    RUBY("ruby"),
+    RUST("rust");
 
     private final String name;
 

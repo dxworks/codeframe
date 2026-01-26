@@ -1,0 +1,290 @@
+{
+  "filePath" : "src/test/resources/samples/rust/TraitsAndGenerics.rs",
+  "language" : "rust",
+  "packageName" : null,
+  "types" : [ {
+    "kind" : "struct",
+    "name" : "Circle<T>",
+    "visibility" : "pub",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "center_x",
+      "type" : "T",
+      "visibility" : "pub",
+      "modifiers" : [ "pub" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "center_y",
+      "type" : "T",
+      "visibility" : "pub",
+      "modifiers" : [ "pub" ],
+      "annotations" : [ ]
+    }, {
+      "name" : "radius",
+      "type" : "T",
+      "visibility" : "pub",
+      "modifiers" : [ "pub" ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ ],
+    "types" : [ ]
+  }, {
+    "kind" : "struct",
+    "name" : "Container<T: Drawable>",
+    "visibility" : "pub",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ {
+      "name" : "items",
+      "type" : "Vec<T>",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ]
+    } ],
+    "properties" : [ ],
+    "methods" : [ ],
+    "types" : [ ]
+  }, {
+    "kind" : "trait",
+    "name" : "Drawable",
+    "visibility" : "pub",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "draw",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "self",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    }, {
+      "name" : "bounds",
+      "returnType" : "(f64, f64, f64, f64)",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "self",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "trait",
+    "name" : "Resizable",
+    "visibility" : "pub",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "resize",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "self",
+        "type" : null
+      }, {
+        "name" : "scale",
+        "type" : "f64"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "impl",
+    "name" : "Circle<T>",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "new",
+      "returnType" : "Self",
+      "visibility" : "pub",
+      "modifiers" : [ "pub" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "center_x",
+        "type" : "T"
+      }, {
+        "name" : "center_y",
+        "type" : "T"
+      }, {
+        "name" : "radius",
+        "type" : "T"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "impl",
+    "name" : "Circle<T>",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ "Drawable" ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "draw",
+      "returnType" : null,
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "self",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "println!",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 3
+      } ]
+    }, {
+      "name" : "bounds",
+      "returnType" : "(f64, f64, f64, f64)",
+      "visibility" : null,
+      "modifiers" : [ ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "self",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "impl",
+    "name" : "Container<T>",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "new",
+      "returnType" : "Self",
+      "visibility" : "pub",
+      "modifiers" : [ "pub" ],
+      "annotations" : [ ],
+      "parameters" : [ ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "new",
+        "objectType" : "Vec",
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 0
+      } ]
+    }, {
+      "name" : "add",
+      "returnType" : null,
+      "visibility" : "pub",
+      "modifiers" : [ "pub" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "self",
+        "type" : null
+      }, {
+        "name" : "item",
+        "type" : "T"
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "push",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    }, {
+      "name" : "draw_all",
+      "returnType" : null,
+      "visibility" : "pub",
+      "modifiers" : [ "pub" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "self",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "draw",
+        "objectType" : null,
+        "objectName" : "item",
+        "callCount" : 1,
+        "parameterCount" : 0
+      } ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ {
+    "name" : "process",
+    "returnType" : null,
+    "visibility" : "pub",
+    "modifiers" : [ "pub" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "item",
+      "type" : "&mut T"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ {
+      "methodName" : "draw",
+      "objectType" : null,
+      "objectName" : "item",
+      "callCount" : 1,
+      "parameterCount" : 0
+    }, {
+      "methodName" : "resize",
+      "objectType" : null,
+      "objectName" : "item",
+      "callCount" : 1,
+      "parameterCount" : 1
+    } ]
+  } ],
+  "fields" : [ ],
+  "methodCalls" : [ ],
+  "imports" : [ "use std::fmt::Display;" ]
+}

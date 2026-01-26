@@ -39,6 +39,7 @@ public class App {
             TREE_SITTER_LANGUAGES.put(Language.CSHARP, (TSLanguage) Class.forName("org.treesitter.TreeSitterCSharp").getDeclaredConstructor().newInstance());
             TREE_SITTER_LANGUAGES.put(Language.PHP, (TSLanguage) Class.forName("org.treesitter.TreeSitterPhp").getDeclaredConstructor().newInstance());
             TREE_SITTER_LANGUAGES.put(Language.RUBY, (TSLanguage) Class.forName("org.treesitter.TreeSitterRuby").getDeclaredConstructor().newInstance());
+            TREE_SITTER_LANGUAGES.put(Language.RUST, (TSLanguage) Class.forName("org.treesitter.TreeSitterRust").getDeclaredConstructor().newInstance());
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize Tree-sitter languages", e);
         }
@@ -52,6 +53,7 @@ public class App {
         ANALYZERS.put(Language.PHP, new PHPAnalyzer());
         ANALYZERS.put(Language.SQL, new SQLAnalyzer());
         ANALYZERS.put(Language.RUBY, new RubyAnalyzer());
+        ANALYZERS.put(Language.RUST, new RustAnalyzer());
     }
 
     public static void main(String[] args) throws Exception {
@@ -59,7 +61,7 @@ public class App {
             System.err.println("Usage: java -jar codeframe.jar <input-folder> <output-file>");
             System.err.println("  <input-folder>: Path to source code directory or file");
             System.err.println("  <output-file>:  Path to output JSONL file");
-            System.err.println("Supported languages: Java, JavaScript, TypeScript, Python, C#, PHP, SQL, Ruby");
+            System.err.println("Supported languages: Java, JavaScript, TypeScript, Python, C#, PHP, SQL, Ruby, Rust");
             System.exit(2);
         }
         

@@ -24,6 +24,8 @@ public class LanguageDetector {
             return Optional.of(Language.SQL);
         } else if (fileName.endsWith(".rb")) {
             return Optional.of(Language.RUBY);
+        } else if (fileName.endsWith(".rs")) {
+            return Optional.of(Language.RUST);
         }
         
         return Optional.empty();

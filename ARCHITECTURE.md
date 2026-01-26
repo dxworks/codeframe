@@ -20,6 +20,7 @@ Each language has a dedicated analyzer:
 | C# | `CSharpAnalyzer` | Tree-sitter |
 | PHP | `PHPAnalyzer` | Tree-sitter |
 | Ruby | `RubyAnalyzer` | Tree-sitter |
+| Rust | `RustAnalyzer` | Tree-sitter |
 | SQL | `SQLAnalyzer` | JSqlParser + ANTLR |
 
 ## Design Decisions

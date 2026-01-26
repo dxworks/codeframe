@@ -1,0 +1,182 @@
+{
+  "filePath" : "src/test/resources/samples/rust/EnumsAndPatterns.rs",
+  "language" : "rust",
+  "packageName" : null,
+  "types" : [ {
+    "kind" : "enum",
+    "name" : "Message",
+    "visibility" : "pub",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ ],
+    "types" : [ ]
+  }, {
+    "kind" : "enum",
+    "name" : "Result<T, E>",
+    "visibility" : "pub",
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ ],
+    "types" : [ ]
+  }, {
+    "kind" : "impl",
+    "name" : "Message",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "call",
+      "returnType" : null,
+      "visibility" : "pub",
+      "modifiers" : [ "pub" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "self",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "println!",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 1
+      }, {
+        "methodName" : "println!",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 3
+      }, {
+        "methodName" : "println!",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 2
+      }, {
+        "methodName" : "println!",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 4
+      } ]
+    } ],
+    "types" : [ ]
+  }, {
+    "kind" : "impl",
+    "name" : "Result<T, E>",
+    "visibility" : null,
+    "modifiers" : [ ],
+    "annotations" : [ ],
+    "extendsType" : null,
+    "implementsInterfaces" : [ ],
+    "mixins" : [ ],
+    "fields" : [ ],
+    "properties" : [ ],
+    "methods" : [ {
+      "name" : "is_ok",
+      "returnType" : "bool",
+      "visibility" : "pub",
+      "modifiers" : [ "pub" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "self",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "matches!",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 2
+      } ]
+    }, {
+      "name" : "is_err",
+      "returnType" : "bool",
+      "visibility" : "pub",
+      "modifiers" : [ "pub" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "self",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "matches!",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 2
+      } ]
+    }, {
+      "name" : "unwrap",
+      "returnType" : "T",
+      "visibility" : "pub",
+      "modifiers" : [ "pub" ],
+      "annotations" : [ ],
+      "parameters" : [ {
+        "name" : "self",
+        "type" : null
+      } ],
+      "localVariables" : [ ],
+      "methodCalls" : [ {
+        "methodName" : "panic!",
+        "objectType" : null,
+        "objectName" : null,
+        "callCount" : 1,
+        "parameterCount" : 2
+      } ]
+    } ],
+    "types" : [ ]
+  } ],
+  "methods" : [ {
+    "name" : "process_message",
+    "returnType" : "String",
+    "visibility" : "pub",
+    "modifiers" : [ "pub" ],
+    "annotations" : [ ],
+    "parameters" : [ {
+      "name" : "msg",
+      "type" : "Message"
+    } ],
+    "localVariables" : [ ],
+    "methodCalls" : [ {
+      "methodName" : "format!",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 2,
+      "parameterCount" : 3
+    }, {
+      "methodName" : "format!",
+      "objectType" : null,
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : 4
+    }, {
+      "methodName" : "from",
+      "objectType" : "String",
+      "objectName" : null,
+      "callCount" : 1,
+      "parameterCount" : 1
+    } ]
+  } ],
+  "fields" : [ ],
+  "methodCalls" : [ ],
+  "imports" : [ ]
+}

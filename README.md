@@ -11,6 +11,7 @@ A Tree-sitter-based code parser that extracts structural information from source
 - **C#** (.cs)
 - **PHP** (.php)
 - **Ruby** (.rb)
+- **Rust** (.rs)
 - **SQL** (.sql)
 
 ## Features
