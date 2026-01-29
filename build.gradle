@@ -1,16 +1,15 @@
 plugins {
     id 'java'
     id 'application'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'com.gradleup.shadow' version '9.3.1'
     id 'antlr'
 }
 
 java {
     toolchain { languageVersion = JavaLanguageVersion.of(11) }
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
-
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
 
 group = 'org.dxworks'
 version = '1.0-SNAPSHOT'
@@ -22,7 +21,7 @@ repositories {
 
 dependencies {
     // Core binding (bundles natives for Win/Linux/macOS)
-    implementation 'io.github.bonede:tree-sitter:0.25.3'
+    implementation 'io.github.bonede:tree-sitter:0.26.3'
   
     // Language grammars
     implementation 'io.github.bonede:tree-sitter-java:0.23.4'
@@ -34,17 +33,17 @@ dependencies {
     implementation 'io.github.bonede:tree-sitter-ruby:0.23.1'
     implementation 'io.github.bonede:tree-sitter-rust:0.23.1'
 
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.17.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.21.0'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.21.0'
     implementation 'com.github.jsqlparser:jsqlparser:5.3'
-    implementation 'org.antlr:antlr4-runtime:4.13.1'
-    antlr 'org.antlr:antlr4:4.13.1'
+    implementation 'org.antlr:antlr4-runtime:4.13.2'
+    antlr 'org.antlr:antlr4:4.13.2'
     // DXWorks ignore library (loads .ignore patterns)
     implementation 'org.dxworks:dx-ignore:1.1.0-SNAPSHOT'
     
     // Testing
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
-    testImplementation 'com.approvaltests:approvaltests:22.3.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter:6.0.2'
+    testImplementation 'com.approvaltests:approvaltests:26.6.0'
 }
 
 application {
