@@ -44,7 +44,7 @@ public class PlSqlDefinitionExtractor extends PlSqlParserBaseVisitor<Void> {
                 if (pd != null) op.parameters.add(pd);
             }
         }
-        analyzeBody(ctx.body(), op.references, op.calls);
+        analyzeBody(ctx.body(), op);
         procedures.add(op);
         return super.visitCreate_procedure_body(ctx);
     }
@@ -63,7 +63,7 @@ public class PlSqlDefinitionExtractor extends PlSqlParserBaseVisitor<Void> {
             }
         }
         if (ctx.type_spec() != null) op.returnType = ctx.type_spec().getText();
-        analyzeBody(ctx.body(), op.references, op.calls);
+        analyzeBody(ctx.body(), op);
         functions.add(op);
         return super.visitCreate_function_body(ctx);
     }
@@ -116,7 +116,7 @@ public class PlSqlDefinitionExtractor extends PlSqlParserBaseVisitor<Void> {
             }
         }
 
-        analyzeBody(ctx.body(), op.references, op.calls);
+        analyzeBody(ctx.body(), op);
         procedures.add(op);
 
         return super.visitProcedure_body(ctx);
@@ -146,20 +146,19 @@ public class PlSqlDefinitionExtractor extends PlSqlParserBaseVisitor<Void> {
 
         if (ctx.type_spec() != null) op.returnType = ctx.type_spec().getText();
 
-        analyzeBody(ctx.body(), op.references, op.calls);
+        analyzeBody(ctx.body(), op);
         functions.add(op);
 
         return super.visitFunction_body(ctx);
     }
 
-    private void analyzeBody(org.antlr.v4.runtime.tree.ParseTree ctx, SqlReferences references,
-                             SqlInvocations calls) {
-        if (ctx == null || references == null || calls == null) return;
+    private void analyzeBody(org.antlr.v4.runtime.tree.ParseTree ctx, HasReferencesAndCalls op) {
+        if (ctx == null || op == null) return;
         PlSqlReferenceExtractor extractor = new PlSqlReferenceExtractor();
         extractor.visit(ctx);
-        references.relations.addAll(extractor.getTableReferences());
-        calls.functions.addAll(extractor.getFunctionCalls());
-        calls.procedures.addAll(extractor.getProcedureCalls());
+        op.getReferences().relations.addAll(extractor.getTableReferences());
+        op.getCalls().functions.addAll(extractor.getFunctionCalls());
+        op.getCalls().procedures.addAll(extractor.getProcedureCalls());
     }
 
     private ParameterDefinition extractParameter(PlSqlParser.ParameterContext ctx) {
@@ -256,7 +255,7 @@ public class PlSqlDefinitionExtractor extends PlSqlParserBaseVisitor<Void> {
         }
 
         // Analyze trigger body for references/calls
-        analyzeBody(ctx.trigger_body(), op.references, op.calls);
+        analyzeBody(ctx.trigger_body(), op);
 
         triggers.add(op);
         return super.visitCreate_trigger(ctx);
