@@ -17,7 +17,7 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
-    maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+    mavenLocal()
 }
 
 dependencies {
@@ -40,7 +40,7 @@ dependencies {
     implementation 'org.antlr:antlr4-runtime:4.13.1'
     antlr 'org.antlr:antlr4:4.13.1'
     // DXWorks ignore library (loads .ignore patterns)
-    implementation 'org.dxworks:dx-ignore:1.1.0-SNAPSHOT'
+    implementation 'org.dxworks.utils:dx-ignore:1.1.0'
     
     // Testing
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'

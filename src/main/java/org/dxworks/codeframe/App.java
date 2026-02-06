@@ -18,8 +18,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.*;
-import org.dxworks.ignorerLibrary.Ignorer;
-import org.dxworks.ignorerLibrary.IgnorerBuilder;
+import org.dxworks.utils.ignorer.Ignorer;
+import org.dxworks.utils.ignorer.IgnorerBuilder;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
