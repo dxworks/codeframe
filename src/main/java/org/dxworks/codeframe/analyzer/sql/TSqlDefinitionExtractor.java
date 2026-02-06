@@ -17,7 +17,7 @@ public class TSqlDefinitionExtractor extends TSqlParserBaseVisitor<Void> {
     private final List<CreateProcedureOperation> procedures = new ArrayList<>();
     private final List<CreateFunctionOperation> functions = new ArrayList<>();
     private final List<CreateTriggerOperation> triggers = new ArrayList<>();
-    private final TSqlRoutineBodyAnalyzer bodyAnalyzer = new TSqlRoutineBodyAnalyzer();
+    private final RoutineBodyAnalyzer bodyAnalyzer = AntlrRoutineBodyAnalyzer.forTSql();
 
     public TSqlDefinitionExtractor(String sourceCode, org.antlr.v4.runtime.CommonTokenStream tokens) {
         this.sourceCode = sourceCode;
@@ -149,31 +149,13 @@ public class TSqlDefinitionExtractor extends TSqlParserBaseVisitor<Void> {
         return pd;
     }
 
-    private void analyzeBody(String body, CreateProcedureOperation op) {
+    private void analyzeBody(String body, HasReferencesAndCalls op) {
         if (body == null || body.isEmpty()) return;
         RoutineBodyAnalyzer.Result result = bodyAnalyzer.analyze(body, "tsql");
         if (result == null) return;
-        if (result.relations != null) op.references.relations.addAll(result.relations);
-        if (result.functionCalls != null) op.calls.functions.addAll(result.functionCalls);
-        if (result.procedureCalls != null) op.calls.procedures.addAll(result.procedureCalls);
-    }
-
-    private void analyzeBody(String body, CreateFunctionOperation op) {
-        if (body == null || body.isEmpty()) return;
-        RoutineBodyAnalyzer.Result result = bodyAnalyzer.analyze(body, "tsql");
-        if (result == null) return;
-        if (result.relations != null) op.references.relations.addAll(result.relations);
-        if (result.functionCalls != null) op.calls.functions.addAll(result.functionCalls);
-        if (result.procedureCalls != null) op.calls.procedures.addAll(result.procedureCalls);
-    }
-
-    private void analyzeBody(String body, CreateTriggerOperation op) {
-        if (body == null || body.isEmpty()) return;
-        RoutineBodyAnalyzer.Result result = bodyAnalyzer.analyze(body, "tsql");
-        if (result == null) return;
-        if (result.relations != null) op.references.relations.addAll(result.relations);
-        if (result.functionCalls != null) op.calls.functions.addAll(result.functionCalls);
-        if (result.procedureCalls != null) op.calls.procedures.addAll(result.procedureCalls);
+        if (result.relations != null) op.getReferences().relations.addAll(result.relations);
+        if (result.functionCalls != null) op.getCalls().functions.addAll(result.functionCalls);
+        if (result.procedureCalls != null) op.getCalls().procedures.addAll(result.procedureCalls);
     }
 
     private String extractProcedureBody(TSqlParser.Create_or_alter_procedureContext ctx) {

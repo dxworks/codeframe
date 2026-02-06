@@ -4,10 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Base class for ANTLR-based reference extractors.
- * Provides shared state for collecting table references and routine calls.
+ * Collects table references and routine calls extracted by ANTLR-based visitors.
  */
-public abstract class BaseReferenceExtractor {
+public class ReferenceCollector {
 
     protected final Set<String> tableReferences = new HashSet<>();
     protected final Set<String> procedureCalls = new HashSet<>();

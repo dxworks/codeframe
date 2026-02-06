@@ -3,6 +3,30 @@ package org.dxworks.codeframe.analyzer.sql;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Heuristic detection of SQL dialects from source text.
+ *
+ * <h3>Dialect detection priority ({@link #detectDialectFromSource}):</h3>
+ * <ol>
+ *   <li><b>tsql</b> — {@code CREATE OR ALTER PROCEDURE/FUNCTION} (T-SQL specific syntax)</li>
+ *   <li><b>tsql</b> — standalone {@code GO} batch separator on its own line</li>
+ *   <li><b>mysql</b> — {@code DELIMITER $$} or {@code ENGINE=InnoDB}</li>
+ *   <li><b>plsql</b> — {@code CREATE OR REPLACE} without PL/pgSQL or MySQL markers</li>
+ *   <li><b>plsql</b> — {@code BEGIN} with trailing {@code /} line (Oracle convention)</li>
+ *   <li><b>plpgsql</b> — {@code LANGUAGE plpgsql} or non-MySQL {@code $$} quoting</li>
+ *   <li><b>unknown</b> — fallback</li>
+ * </ol>
+ *
+ * <h3>Body dialect hint priority ({@link #detectDialectHint}):</h3>
+ * <ol>
+ *   <li><b>plpgsql</b> — {@code LANGUAGE plpgsql}</li>
+ *   <li><b>mysql</b> — MySQL keywords ({@code DETERMINISTIC}, {@code READS SQL DATA}, etc.)</li>
+ *   <li><b>plpgsql</b> — {@code $$} quoting</li>
+ *   <li><b>tsql</b> — {@code AS BEGIN}, {@code EXEC}, {@code EXECUTE}, {@code GO}</li>
+ *   <li><b>mysql</b> — {@code BEGIN} without T-SQL markers</li>
+ *   <li><b>unknown</b> — fallback</li>
+ * </ol>
+ */
 public final class DialectHeuristics {
 
     private DialectHeuristics() {

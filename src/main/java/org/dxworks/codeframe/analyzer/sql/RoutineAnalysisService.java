@@ -6,12 +6,9 @@ import org.dxworks.codeframe.model.sql.AlterFunctionOperation;
 import org.dxworks.codeframe.model.sql.AlterProcedureOperation;
 import org.dxworks.codeframe.model.sql.CreateFunctionOperation;
 import org.dxworks.codeframe.model.sql.CreateProcedureOperation;
-import org.dxworks.codeframe.model.sql.ParameterDefinition;
 import org.dxworks.codeframe.model.sql.SQLFileAnalysis;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class RoutineAnalysisService {
 
@@ -31,7 +28,7 @@ public class RoutineAnalysisService {
         CreateFunctionOperation op = new CreateFunctionOperation();
 
         String decl = cf.toString();
-        RoutineSignature sig = parseRoutineSignature(decl, true);
+        RoutineSignatureParser.RoutineSignature sig = RoutineSignatureParser.parse(decl, true);
         if (sig != null) {
             op.functionName = sig.name;
             op.schema = sig.schema;
@@ -68,7 +65,7 @@ public class RoutineAnalysisService {
         CreateProcedureOperation op = new CreateProcedureOperation();
 
         String decl = cp.toString();
-        RoutineSignature sig = parseRoutineSignature(decl, false);
+        RoutineSignatureParser.RoutineSignature sig = RoutineSignatureParser.parse(decl, false);
         if (sig != null) {
             op.procedureName = sig.name;
             op.schema = sig.schema;
@@ -131,68 +128,4 @@ public class RoutineAnalysisService {
         return noopAnalyzer;
     }
 
-    private RoutineSignature parseRoutineSignature(String decl, boolean isFunction) {
-        if (decl == null) return null;
-        String s = decl.trim();
-
-        Pattern headPat = Pattern.compile("(?is)\\bcreate\\b\\s+(?:or\\s+replace\\s+)?"
-                + (isFunction ? "function" : "procedure")
-                + "\\s+([\\[\\]`\"\\w\\.]+)");
-        Matcher m = headPat.matcher(s);
-        if (!m.find()) return null;
-
-        RoutineSignature sig = new RoutineSignature();
-
-        String ident = m.group(1);
-        String[] sn = RoutineSqlUtils.splitSchemaAndName(ident);
-        sig.schema = sn[0];
-        sig.name = sn[1];
-
-        int startParams = s.indexOf('(', m.end());
-        if (startParams >= 0) {
-            int endParams = SqlRoutineTextUtils.findMatchingParen(s, startParams);
-            if (endParams > startParams) {
-                String paramsText = s.substring(startParams + 1, endParams).trim();
-                if (!paramsText.isEmpty()) {
-                    for (String p : SqlRoutineTextUtils.splitTopLevel(paramsText, ',')) {
-                        String pt = p.trim();
-                        if (pt.isEmpty()) continue;
-                        ParameterDefinition pd = new ParameterDefinition();
-
-                        String lower = pt.toLowerCase();
-                        if (lower.startsWith("out ")) { pd.direction = "OUT"; pt = pt.substring(4).trim(); }
-                        else if (lower.startsWith("inout ")) { pd.direction = "INOUT"; pt = pt.substring(6).trim(); }
-                        else if (lower.startsWith("in out ")) { pd.direction = "INOUT"; pt = pt.substring(6).trim(); }
-                        else if (lower.startsWith("in ")) { pd.direction = "IN"; pt = pt.substring(3).trim(); }
-
-                        String[] toks = pt.split("\\s+", 2);
-                        if (toks.length >= 1) pd.name = RoutineSqlUtils.stripQuotes(toks[0]);
-                        if (toks.length >= 2) pd.type = RoutineSqlUtils.normalizeTypeFormat(toks[1].trim());
-                        sig.parameters.add(pd);
-                    }
-                }
-            }
-        }
-
-        if (isFunction) {
-            Pattern retPat = Pattern.compile("(?is)\\breturns\\b\\s+([^\\s]+(?:\\s*\\([^\\)]*\\))?)");
-            Matcher rm = retPat.matcher(s);
-            if (rm.find()) {
-                sig.returnType = RoutineSqlUtils.normalizeTypeFormat(rm.group(1).trim());
-            } else {
-                Pattern ret2 = Pattern.compile("(?is)\\breturn\\b\\s+([^\\s]+(?:\\s*\\([^\\)]*\\))?)");
-                Matcher rm2 = ret2.matcher(s);
-                if (rm2.find()) sig.returnType = RoutineSqlUtils.normalizeTypeFormat(rm2.group(1).trim());
-            }
-        }
-
-        return sig;
-    }
-
-    private static class RoutineSignature {
-        String schema;
-        String name;
-        java.util.List<ParameterDefinition> parameters = new java.util.ArrayList<>();
-        String returnType;
-    }
 }
