@@ -1,0 +1,24 @@
+{
+  "filePath" : "src/test/resources/samples/cobol/basic-program.cbl",
+  "language" : "cobol",
+  "programId" : "HELLO-WORLD",
+  "fileControls" : [ ],
+  "dataItems" : [ {
+    "name" : "WS-NAME",
+    "level" : 1,
+    "picture" : "X(20)",
+    "section" : "WORKING-STORAGE",
+    "usage" : null,
+    "redefines" : null,
+    "occurs" : null,
+    "children" : [ ]
+  } ],
+  "fileDefinitions" : [ ],
+  "copyStatements" : [ ],
+  "procedureParameters" : [ ],
+  "sections" : [ ],
+  "paragraphs" : [ ],
+  "hasExecSql" : false,
+  "hasExecCics" : false,
+  "hasExecSqlIms" : false
+}

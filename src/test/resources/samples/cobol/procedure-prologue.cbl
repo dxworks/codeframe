@@ -1,0 +1,13 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID.    PROLOGUE-DEMO.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01  WS-NAME             PIC X(8).
+
+       PROCEDURE DIVISION.
+           CALL 'SUBPROG' USING WS-NAME.
+           MOVE 'ABC' TO WS-NAME.
+
+       MAIN-PARA.
+           GOBACK.

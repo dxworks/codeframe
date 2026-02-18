@@ -13,6 +13,14 @@
 
 Follow these conventions to ensure consistency across all analyzers.
 
+### Extraction Contract (All Parsers)
+
+- Extract facts only. Do not infer capabilities or intent.
+- Keep output deterministic.
+- Do not write files as side effects.
+- On parse errors, return partial results when possible.
+- Keep analyzers simple and fast; enrichment belongs to post-processing tools.
+
 ### Using TreeSitterHelper
 
 `TreeSitterHelper` provides shared utilities that all analyzers should use:

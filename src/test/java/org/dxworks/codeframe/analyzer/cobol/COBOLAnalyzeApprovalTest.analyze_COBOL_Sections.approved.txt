@@ -1,0 +1,146 @@
+{
+  "filePath" : "src/test/resources/samples/cobol/sections.cbl",
+  "language" : "cobol",
+  "programId" : "LINKAGE-TEST",
+  "fileControls" : [ ],
+  "dataItems" : [ {
+    "name" : "WS-INPUT",
+    "level" : 1,
+    "picture" : "X(10)",
+    "section" : "WORKING-STORAGE",
+    "usage" : null,
+    "redefines" : null,
+    "occurs" : null,
+    "children" : [ ]
+  }, {
+    "name" : "WS-PROGRAM-NAME",
+    "level" : 1,
+    "picture" : "X(8)",
+    "section" : "WORKING-STORAGE",
+    "usage" : null,
+    "redefines" : null,
+    "occurs" : null,
+    "children" : [ ]
+  }, {
+    "name" : "WS-COUNT",
+    "level" : 1,
+    "picture" : "9(5)",
+    "section" : "WORKING-STORAGE",
+    "usage" : null,
+    "redefines" : null,
+    "occurs" : null,
+    "children" : [ ]
+  }, {
+    "name" : "WS-IMS-STATUS",
+    "level" : 1,
+    "picture" : "S9(4)",
+    "section" : "WORKING-STORAGE",
+    "usage" : "COMP",
+    "redefines" : null,
+    "occurs" : null,
+    "children" : [ ]
+  }, {
+    "name" : "LS-PARAMETERS",
+    "level" : 1,
+    "picture" : null,
+    "section" : "LINKAGE",
+    "usage" : null,
+    "redefines" : null,
+    "occurs" : null,
+    "children" : [ {
+      "name" : "LS-INPUT-REC",
+      "level" : 5,
+      "picture" : "X(10)",
+      "section" : "LINKAGE",
+      "usage" : null,
+      "redefines" : null,
+      "occurs" : null,
+      "children" : [ ]
+    }, {
+      "name" : "LS-OUTPUT-REC",
+      "level" : 5,
+      "picture" : "X(10)",
+      "section" : "LINKAGE",
+      "usage" : null,
+      "redefines" : null,
+      "occurs" : null,
+      "children" : [ ]
+    } ]
+  }, {
+    "name" : "LS-COUNTER",
+    "level" : 1,
+    "picture" : "99",
+    "section" : "LOCAL-STORAGE",
+    "usage" : null,
+    "redefines" : null,
+    "occurs" : null,
+    "children" : [ ]
+  } ],
+  "fileDefinitions" : [ {
+    "name" : "INPUT-FILE",
+    "records" : [ {
+      "name" : "INPUT-RECORD",
+      "level" : 1,
+      "picture" : "X(80)",
+      "section" : "FILE SECTION",
+      "usage" : null,
+      "redefines" : null,
+      "occurs" : null,
+      "children" : [ ]
+    } ]
+  } ],
+  "copyStatements" : [ ],
+  "procedureParameters" : [ "LS-PARAMETERS" ],
+  "sections" : [ ],
+  "paragraphs" : [ {
+    "name" : "MAIN-LOGIC",
+    "performCalls" : [ {
+      "targetParagraph" : "INITIALIZATION",
+      "thruParagraph" : null
+    }, {
+      "targetParagraph" : "PROCESS-DATA",
+      "thruParagraph" : null
+    }, {
+      "targetParagraph" : "CLEANUP",
+      "thruParagraph" : null
+    } ],
+    "externalCalls" : [ ],
+    "fileOperations" : [ ],
+    "dataReferences" : [ ]
+  }, {
+    "name" : "INITIALIZATION",
+    "performCalls" : [ ],
+    "externalCalls" : [ ],
+    "fileOperations" : [ ],
+    "dataReferences" : [ "WS-INPUT", "WS-PROGRAM-NAME", "WS-COUNT" ]
+  }, {
+    "name" : "PROCESS-DATA",
+    "performCalls" : [ ],
+    "externalCalls" : [ ],
+    "fileOperations" : [ ],
+    "dataReferences" : [ "WS-COUNT", "LS-INPUT-REC", "WS-INPUT" ]
+  }, {
+    "name" : "CLEANUP",
+    "performCalls" : [ ],
+    "externalCalls" : [ {
+      "programName" : "SUBPROG",
+      "isDynamic" : false,
+      "parameterCount" : 2
+    }, {
+      "programName" : "WS-PROGRAM-NAME",
+      "isDynamic" : true,
+      "parameterCount" : 1
+    } ],
+    "fileOperations" : [ {
+      "verb" : "READ",
+      "fileName" : "INPUT-FILE"
+    }, {
+      "verb" : "WRITE",
+      "fileName" : "INPUT-RECORD"
+    } ],
+    "dataReferences" : [ "WS-INPUT", "LS-PARAMETERS", "WS-IMS-STATUS", "WS-COUNT" ]
+  } ],
+  "hasExecSql" : true,
+  "hasExecCics" : true,
+  "hasExecSqlIms" : true
+}

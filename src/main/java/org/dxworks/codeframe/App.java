@@ -2,6 +2,7 @@ package org.dxworks.codeframe;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.dxworks.codeframe.analyzer.*;
+import org.dxworks.codeframe.analyzer.cobol.COBOLAnalyzer;
 import org.dxworks.codeframe.analyzer.sql.SQLAnalyzer;
 import org.dxworks.codeframe.model.Analysis;
 import org.dxworks.codeframe.model.sql.SQLFileAnalysis;
@@ -52,6 +53,7 @@ public class App {
         ANALYZERS.put(Language.CSHARP, new CSharpAnalyzer());
         ANALYZERS.put(Language.PHP, new PHPAnalyzer());
         ANALYZERS.put(Language.SQL, new SQLAnalyzer());
+        ANALYZERS.put(Language.COBOL, new COBOLAnalyzer());
         ANALYZERS.put(Language.RUBY, new RubyAnalyzer());
         ANALYZERS.put(Language.RUST, new RustAnalyzer());
     }
@@ -61,7 +63,7 @@ public class App {
             System.err.println("Usage: java -jar codeframe.jar <input-folder> <output-file>");
             System.err.println("  <input-folder>: Path to source code directory or file");
             System.err.println("  <output-file>:  Path to output JSONL file");
-            System.err.println("Supported languages: Java, JavaScript, TypeScript, Python, C#, PHP, SQL, Ruby, Rust");
+            System.err.println("Supported languages: Java, JavaScript, TypeScript, Python, C#, PHP, SQL, COBOL, Ruby, Rust");
             System.exit(2);
         }
         
@@ -235,7 +237,7 @@ public class App {
 
         Analysis analysis;
 
-        if (language == Language.SQL) {
+        if (language == Language.SQL || language == Language.COBOL) {
             analysis = analyzer.analyze(filePath.toString(), sourceCode, null);
         } else {
             TSLanguage tsLanguage = TREE_SITTER_LANGUAGES.get(language);

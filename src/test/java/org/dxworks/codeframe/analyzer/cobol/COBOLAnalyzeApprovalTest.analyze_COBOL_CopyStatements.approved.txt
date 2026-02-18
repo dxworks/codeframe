@@ -1,0 +1,15 @@
+{
+  "filePath" : "src/test/resources/samples/cobol/copy-statements.cbl",
+  "language" : "cobol",
+  "programId" : "COPYSAMPLE",
+  "fileControls" : [ ],
+  "dataItems" : [ ],
+  "fileDefinitions" : [ ],
+  "copyStatements" : [ "CUSTCOPY", "ACCTLAY" ],
+  "procedureParameters" : [ ],
+  "sections" : [ ],
+  "paragraphs" : [ ],
+  "hasExecSql" : false,
+  "hasExecCics" : false,
+  "hasExecSqlIms" : false
+}

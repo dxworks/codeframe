@@ -149,15 +149,15 @@ Each line has a `kind` field:
 
 SQL file analysis uses a hybrid JSqlParser + ANTLR approach to support multiple dialects (PostgreSQL, MySQL, T-SQL, PL/SQL) without configuration.
 
-For complete documentation on SQL support, see **[SQL_ANALYSIS.md](SQL_ANALYSIS.md)**.
+For complete documentation on SQL support, see **[SQL_ANALYSIS.md](docs/SQL_ANALYSIS.md)**.
 
 ## Architecture
 
-See **[ARCHITECTURE.md](ARCHITECTURE.md)** for details on core components and design decisions.
+See **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** for details on core components and design decisions.
 
 ## Contributing
 
-See **[CONTRIBUTING.md](CONTRIBUTING.md)** for guidelines on adding new languages and analyzer conventions.
+See **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** for guidelines on adding new languages and analyzer conventions.
 
 ## Requirements
 
@@ -184,7 +184,7 @@ This project uses Tree-sitter and its language grammars, which are licensed unde
 - **C#**: Events not handled; see test samples for details
 - **Java**: Local/anonymous classes not extracted as separate types
 - **Python**: Type aliases using `TypeAlias` annotation are captured with `kind: "type_alias"`. PEP 695 style (`type X = ...`) is not yet supported by the tree-sitter-python grammar
-- **SQL**: See [SQL_ANALYSIS.md](SQL_ANALYSIS.md)
+- **SQL**: See [SQL_ANALYSIS.md](docs/SQL_ANALYSIS.md)
 
 ## Testing
 
@@ -192,4 +192,4 @@ This project uses Tree-sitter and its language grammars, which are licensed unde
 ./gradlew test
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for testing workflow and conventions.
+See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for testing workflow and conventions.
