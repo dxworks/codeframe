@@ -1,9 +1,6 @@
 {
   "filePath" : "src/test/resources/samples/javascript/example.test.js",
   "language" : "javascript",
-  "types" : [ ],
-  "methods" : [ ],
-  "fields" : [ ],
   "methodCalls" : [ {
     "methodName" : "afterEach",
     "callCount" : 1
@@ -72,6 +69,5 @@
     "methodName" : "toThrow",
     "objectName" : "expect().rejects",
     "callCount" : 1
-  } ],
-  "imports" : [ ]
+  } ]
 }

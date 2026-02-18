@@ -1,33 +1,22 @@
 {
   "filePath" : "src/test/resources/samples/javascript/ClassicPatterns.js",
   "language" : "javascript",
-  "types" : [ ],
   "methods" : [ {
     "name" : "formatMessage",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "level"
     }, {
       "name" : "message"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "Person",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "name"
     }, {
       "name" : "age"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "Employee",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "name"
     }, {
@@ -35,7 +24,6 @@
     }, {
       "name" : "department"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "call",
       "objectName" : "Person",
@@ -43,12 +31,9 @@
     } ]
   }, {
     "name" : "DataStore",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "initialData"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "initObservable",
       "objectName" : "this",
@@ -56,14 +41,11 @@
     } ]
   }, {
     "name" : "on",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "event"
     }, {
       "name" : "callback"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "push",
       "objectName" : "events[event]",
@@ -71,14 +53,11 @@
     } ]
   }, {
     "name" : "off",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "event"
     }, {
       "name" : "callback"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "filter",
       "objectName" : "events[event]",
@@ -86,14 +65,11 @@
     } ]
   }, {
     "name" : "emit",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "event"
     }, {
       "name" : "...args"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "callback",
       "callCount" : 1
@@ -104,8 +80,6 @@
     } ]
   }, {
     "name" : "once",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "event"
     }, {
@@ -124,8 +98,6 @@
     } ]
   }, {
     "name" : "createValidator",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "rules"
     } ],
@@ -152,62 +124,34 @@
     } ]
   }, {
     "name" : "add",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "value"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "subtract",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "value"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "multiply",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "value"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "divide",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "value"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
-    "name" : "getResult",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    "name" : "getResult"
   }, {
-    "name" : "reset",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    "name" : "reset"
   }, {
     "name" : "factorial",
     "modifiers" : [ "const" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "n"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "calculateFactorial",
       "callCount" : 1
@@ -215,55 +159,30 @@
   }, {
     "name" : "fibonacci",
     "modifiers" : [ "const" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "n"
     }, {
       "name" : "memo"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "fib",
       "callCount" : 2
     } ]
   }, {
-    "name" : "Person.prototype.greet",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    "name" : "Person.prototype.greet"
   }, {
-    "name" : "Person.prototype.haveBirthday",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    "name" : "Person.prototype.haveBirthday"
   }, {
     "name" : "Person.create",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "name"
     }, {
       "name" : "age"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
-    "name" : "Employee.prototype.getDetails",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    "name" : "Employee.prototype.getDetails"
   }, {
     "name" : "Employee.prototype.greet",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "parameters" : [ ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "call",
       "objectName" : "Person.prototype.greet",
@@ -271,14 +190,11 @@
     } ]
   }, {
     "name" : "DataStore.prototype.set",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "key"
     }, {
       "name" : "value"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "notify",
       "objectName" : "this",
@@ -286,45 +202,34 @@
     } ]
   }, {
     "name" : "DataStore.prototype.get",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "key"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   } ],
   "fields" : [ {
     "name" : "Counter",
-    "modifiers" : [ "const" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const" ]
   }, {
     "name" : "Logger",
-    "modifiers" : [ "const" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const" ]
   }, {
     "name" : "Serializable",
     "type" : "Object",
-    "modifiers" : [ "const" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const" ]
   }, {
     "name" : "Comparable",
     "type" : "Object",
-    "modifiers" : [ "const" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const" ]
   }, {
     "name" : "Observable",
     "type" : "Object",
-    "modifiers" : [ "const" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const" ]
   }, {
     "name" : "EventBus",
-    "modifiers" : [ "const" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const" ]
   }, {
     "name" : "Calculator",
-    "modifiers" : [ "const" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const" ]
   } ],
   "methodCalls" : [ {
     "methodName" : "assign",
@@ -342,6 +247,5 @@
     "methodName" : "notify",
     "objectName" : "this",
     "callCount" : 1
-  } ],
-  "imports" : [ ]
+  } ]
 }

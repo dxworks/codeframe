@@ -5,26 +5,15 @@
     "kind" : "class",
     "name" : "Point",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "x"
       }, {
         "name" : "y"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "distanceTo",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "other"
       } ],
@@ -35,151 +24,82 @@
         "callCount" : 1
       } ]
     }, {
-      "name" : "toString",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "name" : "toString"
+    } ]
   }, {
     "kind" : "class",
     "name" : "Rectangle",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "width"
       }, {
         "name" : "height"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "area",
-      "modifiers" : [ "get" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "get" ]
     }, {
       "name" : "perimeter",
-      "modifiers" : [ "get" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "get" ]
     }, {
       "name" : "scale",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "factor"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Shape",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "name"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
-      "name" : "describe",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "name" : "describe"
+    } ]
   }, {
     "kind" : "class",
     "name" : "Circle",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "extendsType" : "Shape",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "radius"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "super",
         "callCount" : 1
       } ]
     }, {
       "name" : "area",
-      "modifiers" : [ "get" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "get" ]
     }, {
       "name" : "circumference",
-      "modifiers" : [ "get" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "modifiers" : [ "get" ]
+    } ]
   } ],
   "methods" : [ {
     "name" : "getUserCity",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "user"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "getFirstItemName",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "order"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "safelyCallMethod",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "obj"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "process",
       "objectName" : "obj",
@@ -188,7 +108,6 @@
   }, {
     "name" : "getNestedValue",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "data"
     } ],
@@ -200,31 +119,24 @@
   }, {
     "name" : "getConfigValue",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "config"
     }, {
       "name" : "key"
     }, {
       "name" : "defaultValue"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "mergeSettings",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "userSettings"
     }, {
       "name" : "defaults"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "getSafeValue",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "obj"
     }, {
@@ -241,7 +153,6 @@
   }, {
     "name" : "html",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "strings"
     }, {
@@ -279,7 +190,6 @@
   }, {
     "name" : "sql",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "strings"
     }, {
@@ -309,13 +219,11 @@
   }, {
     "name" : "css",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "strings"
     }, {
       "name" : "...values"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "reduce",
       "objectName" : "strings",
@@ -324,7 +232,6 @@
   }, {
     "name" : "renderUserCard",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "user"
     } ],
@@ -336,7 +243,6 @@
   }, {
     "name" : "buildQuery",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "tableName"
     }, {
@@ -350,7 +256,6 @@
   }, {
     "name" : "parseJSON",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "jsonString"
     } ],
@@ -373,17 +278,12 @@
     } ]
   }, {
     "name" : "validateStructure",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "obj"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "fetchWithRetry",
     "modifiers" : [ "async", "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "url"
     }, {
@@ -412,7 +312,6 @@
   }, {
     "name" : "processFile",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "fileContent"
     } ],
@@ -440,28 +339,21 @@
     } ]
   }, {
     "name" : "parseLine",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "line"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "createPerson",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "initialName"
     }, {
       "name" : "initialAge"
     } ],
-    "localVariables" : [ "_name", "_age" ],
-    "methodCalls" : [ ]
+    "localVariables" : [ "_name", "_age" ]
   }, {
     "name" : "createDynamicObject",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "keyPrefix"
     }, {
@@ -476,7 +368,6 @@
   }, {
     "name" : "createAccessors",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "propertyName"
     } ],
@@ -497,28 +388,20 @@
   }, {
     "name" : "updateConfig",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "config"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "initializeDefaults",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "options"
     } ],
-    "localVariables" : [ "result" ],
-    "methodCalls" : [ ]
+    "localVariables" : [ "result" ]
   } ],
   "fields" : [ {
     "name" : "mathUtils",
     "type" : "Object",
-    "modifiers" : [ "const", "export" ],
-    "annotations" : [ ]
-  } ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+    "modifiers" : [ "const", "export" ]
+  } ]
 }

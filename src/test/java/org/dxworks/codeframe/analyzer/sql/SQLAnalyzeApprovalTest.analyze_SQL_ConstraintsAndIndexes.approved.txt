@@ -1,13 +1,8 @@
 {
   "filePath" : "src/test/resources/samples/sql/constraints_and_indexes.sql",
   "language" : "sql",
-  "topLevelReferences" : {
-    "relations" : [ ]
-  },
-  "topLevelCalls" : {
-    "functions" : [ ],
-    "procedures" : [ ]
-  },
+  "topLevelReferences" : { },
+  "topLevelCalls" : { },
   "createTables" : [ {
     "tableName" : "users",
     "schema" : "public",
@@ -28,8 +23,7 @@
       "nullable" : false,
       "constraints" : [ "NOT NULL" ]
     } ],
-    "primaryKeys" : [ "id" ],
-    "foreignKeys" : [ ]
+    "primaryKeys" : [ "id" ]
   }, {
     "tableName" : "orders",
     "schema" : "sales",
@@ -47,13 +41,11 @@
     }, {
       "name" : "order_date",
       "type" : "DATE",
-      "nullable" : true,
-      "constraints" : [ ]
+      "nullable" : true
     }, {
       "name" : "total_amount",
       "type" : "DECIMAL(12,2)",
-      "nullable" : true,
-      "constraints" : [ ]
+      "nullable" : true
     } ],
     "primaryKeys" : [ "order_id", "user_id" ],
     "foreignKeys" : [ {
@@ -63,7 +55,6 @@
       "referencedColumns" : [ "id" ]
     } ]
   } ],
-  "alterTables" : [ ],
   "createViews" : [ {
     "viewName" : "v_orders",
     "schema" : "sales",
@@ -84,12 +75,5 @@
     "schema" : "public",
     "unique" : true,
     "columns" : [ "email" ]
-  } ],
-  "createProcedures" : [ ],
-  "createFunctions" : [ ],
-  "createTriggers" : [ ],
-  "alterViews" : [ ],
-  "alterFunctions" : [ ],
-  "alterProcedures" : [ ],
-  "dropOperations" : [ ]
+  } ]
 }

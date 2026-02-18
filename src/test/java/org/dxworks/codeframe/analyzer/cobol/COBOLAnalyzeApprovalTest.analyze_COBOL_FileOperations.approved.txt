@@ -22,81 +22,66 @@
     "name" : "WS-EOF-FLAG",
     "level" : 1,
     "picture" : "X",
-    "section" : "WORKING-STORAGE",
-    "children" : [ ]
+    "section" : "WORKING-STORAGE"
   }, {
     "name" : "WS-RECORD-COUNT",
     "level" : 1,
     "picture" : "9(5)",
-    "section" : "WORKING-STORAGE",
-    "children" : [ ]
+    "section" : "WORKING-STORAGE"
   }, {
     "name" : "WS-COUNT",
     "level" : 1,
     "picture" : "9(5)",
-    "section" : "WORKING-STORAGE",
-    "children" : [ ]
+    "section" : "WORKING-STORAGE"
   }, {
     "name" : "WS-INPUT",
     "level" : 1,
     "picture" : "X(10)",
-    "section" : "WORKING-STORAGE",
-    "children" : [ ]
+    "section" : "WORKING-STORAGE"
   }, {
     "name" : "WS-OUTPUT",
     "level" : 1,
     "picture" : "X(10)",
-    "section" : "WORKING-STORAGE",
-    "children" : [ ]
+    "section" : "WORKING-STORAGE"
   } ],
   "fileDefinitions" : [ {
     "name" : "CUSTOMER-FILE",
     "records" : [ {
       "name" : "CUSTOMER-HEADER-RECORD",
       "level" : 1,
-      "section" : "FILE SECTION",
-      "children" : [ ]
+      "section" : "FILE SECTION"
     }, {
       "name" : "CUSTOMER-DETAIL-RECORD",
       "level" : 1,
-      "section" : "FILE SECTION",
-      "children" : [ ]
+      "section" : "FILE SECTION"
     }, {
       "name" : "CUSTOMER-TRAILER-RECORD",
       "level" : 1,
-      "section" : "FILE SECTION",
-      "children" : [ ]
+      "section" : "FILE SECTION"
     } ]
   }, {
     "name" : "TRANSACTION-FILE",
     "records" : [ {
       "name" : "TRANSACTION-RECORD",
       "level" : 1,
-      "section" : "FILE SECTION",
-      "children" : [ ]
+      "section" : "FILE SECTION"
     }, {
       "name" : "TRANSACTION-HEADER-RECORD",
       "level" : 1,
-      "section" : "FILE SECTION",
-      "children" : [ ]
+      "section" : "FILE SECTION"
     } ]
   }, {
     "name" : "REPORT-FILE",
     "records" : [ {
       "name" : "REPORT-HEADER-RECORD",
       "level" : 1,
-      "section" : "FILE SECTION",
-      "children" : [ ]
+      "section" : "FILE SECTION"
     }, {
       "name" : "REPORT-DETAIL-RECORD",
       "level" : 1,
-      "section" : "FILE SECTION",
-      "children" : [ ]
+      "section" : "FILE SECTION"
     } ]
   } ],
-  "copyStatements" : [ ],
-  "procedureParameters" : [ ],
-  "sections" : [ ],
   "paragraphs" : [ {
     "name" : "1000-MAINLINE",
     "performCalls" : [ {
@@ -106,16 +91,11 @@
     }, {
       "targetParagraph" : "9000-CLOSE-FILES"
     } ],
-    "externalCalls" : [ ],
-    "fileOperations" : [ ],
     "controlFlowStatements" : [ {
       "type" : "STOP_RUN"
-    } ],
-    "dataReferences" : [ ]
+    } ]
   }, {
     "name" : "2000-OPEN-FILES",
-    "performCalls" : [ ],
-    "externalCalls" : [ ],
     "fileOperations" : [ {
       "verb" : "OPEN",
       "fileName" : "CUSTOMER-FILE"
@@ -125,9 +105,7 @@
     }, {
       "verb" : "OPEN",
       "fileName" : "REPORT-FILE"
-    } ],
-    "controlFlowStatements" : [ ],
-    "dataReferences" : [ ]
+    } ]
   }, {
     "name" : "3000-PROCESS-FILES",
     "performCalls" : [ {
@@ -142,76 +120,49 @@
       "targetParagraph" : "3500-WRITE-REPORTS"
     }, {
       "targetParagraph" : "3600-DATA-REFERENCES"
-    } ],
-    "externalCalls" : [ ],
-    "fileOperations" : [ ],
-    "controlFlowStatements" : [ ],
-    "dataReferences" : [ ]
+    } ]
   }, {
     "name" : "3100-READ-CUSTOMER",
-    "performCalls" : [ ],
-    "externalCalls" : [ ],
     "fileOperations" : [ {
       "verb" : "READ",
       "fileName" : "CUSTOMER-FILE"
     } ],
-    "controlFlowStatements" : [ ],
     "dataReferences" : [ "WS-EOF-FLAG" ]
   }, {
     "name" : "3200-UPDATE-TRANSACTIONS",
-    "performCalls" : [ ],
-    "externalCalls" : [ ],
     "fileOperations" : [ {
       "verb" : "REWRITE",
       "fileName" : "TRANSACTION-RECORD"
-    } ],
-    "controlFlowStatements" : [ ],
-    "dataReferences" : [ ]
+    } ]
   }, {
     "name" : "3300-DELETE-OLD-RECORDS",
-    "performCalls" : [ ],
-    "externalCalls" : [ ],
     "fileOperations" : [ {
       "verb" : "DELETE",
       "fileName" : "TRANSACTION-FILE"
-    } ],
-    "controlFlowStatements" : [ ],
-    "dataReferences" : [ ]
+    } ]
   }, {
     "name" : "3400-START-AT-KEY",
-    "performCalls" : [ ],
-    "externalCalls" : [ ],
     "fileOperations" : [ {
       "verb" : "START",
       "fileName" : "TRANSACTION-FILE"
-    } ],
-    "controlFlowStatements" : [ ],
-    "dataReferences" : [ ]
+    } ]
   }, {
     "name" : "3500-WRITE-REPORTS",
-    "performCalls" : [ ],
-    "externalCalls" : [ ],
     "fileOperations" : [ {
       "verb" : "WRITE",
       "fileName" : "REPORT-RECORD"
     } ],
-    "controlFlowStatements" : [ ],
     "dataReferences" : [ "WS-RECORD-COUNT" ]
   }, {
     "name" : "3600-DATA-REFERENCES",
-    "performCalls" : [ ],
     "externalCalls" : [ {
       "programName" : "SUBPROGRAM",
       "isDynamic" : false,
       "parameterCount" : 2
     } ],
-    "fileOperations" : [ ],
-    "controlFlowStatements" : [ ],
     "dataReferences" : [ "WS-RECORD-COUNT", "END-OF-FILE", "WS-COUNT" ]
   }, {
     "name" : "9000-CLOSE-FILES",
-    "performCalls" : [ ],
-    "externalCalls" : [ ],
     "fileOperations" : [ {
       "verb" : "CLOSE",
       "fileName" : "CUSTOMER-FILE"
@@ -221,9 +172,7 @@
     }, {
       "verb" : "CLOSE",
       "fileName" : "REPORT-FILE"
-    } ],
-    "controlFlowStatements" : [ ],
-    "dataReferences" : [ ]
+    } ]
   } ],
   "hasExecSql" : false,
   "hasExecCics" : false,

@@ -2,27 +2,17 @@
   "filePath" : "src/test/resources/samples/cobol/basic-program.cbl",
   "language" : "cobol",
   "programId" : "HELLO-WORLD",
-  "fileControls" : [ ],
   "dataItems" : [ {
     "name" : "WS-NAME",
     "level" : 1,
     "picture" : "X(20)",
-    "section" : "WORKING-STORAGE",
-    "children" : [ ]
+    "section" : "WORKING-STORAGE"
   } ],
-  "fileDefinitions" : [ ],
-  "copyStatements" : [ ],
-  "procedureParameters" : [ ],
-  "sections" : [ ],
   "paragraphs" : [ {
     "name" : "__PROCEDURE_DIVISION_PROLOGUE__",
-    "performCalls" : [ ],
-    "externalCalls" : [ ],
-    "fileOperations" : [ ],
     "controlFlowStatements" : [ {
       "type" : "STOP_RUN"
-    } ],
-    "dataReferences" : [ ]
+    } ]
   } ],
   "hasExecSql" : false,
   "hasExecCics" : false,

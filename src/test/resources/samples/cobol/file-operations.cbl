@@ -1,6 +1,6 @@
        IDENTIFICATION DIVISION.
        PROGRAM-ID. FILEOPS-DEMO.
-       AUTHOR.        AWS.
+       AUTHOR.        JOHNDOE.
       ******************************************************************
       * Program     : FILEOPS-DEMO.CBL
       * Function    : Demonstrate all COBOL file operation verbs

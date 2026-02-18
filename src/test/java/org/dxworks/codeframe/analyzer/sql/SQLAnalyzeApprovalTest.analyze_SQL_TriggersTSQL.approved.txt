@@ -1,19 +1,8 @@
 {
   "filePath" : "src/test/resources/samples/sql/triggers_tsql.sql",
   "language" : "sql",
-  "topLevelReferences" : {
-    "relations" : [ ]
-  },
-  "topLevelCalls" : {
-    "functions" : [ ],
-    "procedures" : [ ]
-  },
-  "createTables" : [ ],
-  "alterTables" : [ ],
-  "createViews" : [ ],
-  "createIndexes" : [ ],
-  "createProcedures" : [ ],
-  "createFunctions" : [ ],
+  "topLevelReferences" : { },
+  "topLevelCalls" : { },
   "createTriggers" : [ {
     "triggerName" : "tr_orders_insert",
     "tableName" : "dbo.orders",
@@ -24,10 +13,7 @@
     "references" : {
       "relations" : [ "inserted", "dbo.audit_log" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
+    "calls" : { }
   }, {
     "triggerName" : "tr_customers_audit",
     "tableName" : "dbo.customers",
@@ -38,10 +24,7 @@
     "references" : {
       "relations" : [ "dbo.customer_history", "deleted", "inserted" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
+    "calls" : { }
   }, {
     "triggerName" : "tr_v_order_summary_insert",
     "tableName" : "sales.v_order_summary",
@@ -53,7 +36,6 @@
       "relations" : [ "sales.orders", "inserted" ]
     },
     "calls" : {
-      "functions" : [ ],
       "procedures" : [ "dbo.usp_notify_new_order" ]
     }
   }, {
@@ -65,10 +47,7 @@
     "references" : {
       "relations" : [ "dbo.ddl_audit_log" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
+    "calls" : { }
   }, {
     "triggerName" : "tr_employees_salary_check",
     "tableName" : "hr.employees",
@@ -80,12 +59,7 @@
       "relations" : [ "inserted" ]
     },
     "calls" : {
-      "functions" : [ "hr.fn_get_max_salary" ],
-      "procedures" : [ ]
+      "functions" : [ "hr.fn_get_max_salary" ]
     }
-  } ],
-  "alterViews" : [ ],
-  "alterFunctions" : [ ],
-  "alterProcedures" : [ ],
-  "dropOperations" : [ ]
+  } ]
 }

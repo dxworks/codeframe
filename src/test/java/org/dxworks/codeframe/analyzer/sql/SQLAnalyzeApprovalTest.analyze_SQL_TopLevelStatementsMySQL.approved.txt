@@ -7,16 +7,5 @@
   "topLevelCalls" : {
     "functions" : [ "fn_net_amount" ],
     "procedures" : [ "purchasing.process_purchase_order" ]
-  },
-  "createTables" : [ ],
-  "alterTables" : [ ],
-  "createViews" : [ ],
-  "createIndexes" : [ ],
-  "createProcedures" : [ ],
-  "createFunctions" : [ ],
-  "createTriggers" : [ ],
-  "alterViews" : [ ],
-  "alterFunctions" : [ ],
-  "alterProcedures" : [ ],
-  "dropOperations" : [ ]
+  }
 }

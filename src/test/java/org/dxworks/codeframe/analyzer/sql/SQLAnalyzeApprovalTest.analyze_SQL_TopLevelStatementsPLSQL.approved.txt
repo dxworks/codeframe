@@ -7,16 +7,5 @@
   "topLevelCalls" : {
     "functions" : [ "HR.TOTAL_AMOUNT" ],
     "procedures" : [ "GET_ORDERS_BY_CUSTOMER", "HR.GET_ORDERS_BY_CUSTOMER", "HR.REPORT_CUSTOMER_ORDERS" ]
-  },
-  "createTables" : [ ],
-  "alterTables" : [ ],
-  "createViews" : [ ],
-  "createIndexes" : [ ],
-  "createProcedures" : [ ],
-  "createFunctions" : [ ],
-  "createTriggers" : [ ],
-  "alterViews" : [ ],
-  "alterFunctions" : [ ],
-  "alterProcedures" : [ ],
-  "dropOperations" : [ ]
+  }
 }

@@ -1,17 +1,10 @@
 {
   "filePath" : "src/test/resources/samples/sql/plsql_packages.sql",
   "language" : "sql",
-  "topLevelReferences" : {
-    "relations" : [ ]
-  },
+  "topLevelReferences" : { },
   "topLevelCalls" : {
-    "functions" : [ ],
     "procedures" : [ "ORDER_PKG.PROCESS", "HR.ORDER_PKG.PROCESS" ]
   },
-  "createTables" : [ ],
-  "alterTables" : [ ],
-  "createViews" : [ ],
-  "createIndexes" : [ ],
   "createProcedures" : [ {
     "procedureName" : "ORDER_PKG.LOG_ORDER",
     "schema" : "HR",
@@ -28,10 +21,7 @@
     "references" : {
       "relations" : [ "HR.ORDER_LOG" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
+    "calls" : { }
   }, {
     "procedureName" : "ORDER_PKG.PROCESS",
     "schema" : "HR",
@@ -41,9 +31,7 @@
       "type" : "NUMBER",
       "direction" : "IN"
     } ],
-    "references" : {
-      "relations" : [ ]
-    },
+    "references" : { },
     "calls" : {
       "functions" : [ "HR.ORDER_PKG.GET_TOTAL" ],
       "procedures" : [ "LOG_ORDER" ]
@@ -61,11 +49,8 @@
       "type" : "VARCHAR2",
       "direction" : "IN"
     } ],
-    "references" : {
-      "relations" : [ ]
-    },
+    "references" : { },
     "calls" : {
-      "functions" : [ ],
       "procedures" : [ "PROCESS", "HR.ORDER_PKG.LOG_ORDER" ]
     }
   } ],
@@ -82,14 +67,6 @@
     "references" : {
       "relations" : [ "HR.ORDER_ITEMS" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
-  } ],
-  "createTriggers" : [ ],
-  "alterViews" : [ ],
-  "alterFunctions" : [ ],
-  "alterProcedures" : [ ],
-  "dropOperations" : [ ]
+    "calls" : { }
+  } ]
 }

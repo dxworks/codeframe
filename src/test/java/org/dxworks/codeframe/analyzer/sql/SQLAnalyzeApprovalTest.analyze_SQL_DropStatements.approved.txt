@@ -1,23 +1,8 @@
 {
   "filePath" : "src/test/resources/samples/sql/drop_statements.sql",
   "language" : "sql",
-  "topLevelReferences" : {
-    "relations" : [ ]
-  },
-  "topLevelCalls" : {
-    "functions" : [ ],
-    "procedures" : [ ]
-  },
-  "createTables" : [ ],
-  "alterTables" : [ ],
-  "createViews" : [ ],
-  "createIndexes" : [ ],
-  "createProcedures" : [ ],
-  "createFunctions" : [ ],
-  "createTriggers" : [ ],
-  "alterViews" : [ ],
-  "alterFunctions" : [ ],
-  "alterProcedures" : [ ],
+  "topLevelReferences" : { },
+  "topLevelCalls" : { },
   "dropOperations" : [ {
     "objectType" : "TABLE",
     "objectName" : "legacy_users",

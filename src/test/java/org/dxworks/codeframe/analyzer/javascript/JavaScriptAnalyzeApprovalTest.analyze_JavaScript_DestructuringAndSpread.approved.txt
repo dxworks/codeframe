@@ -1,11 +1,9 @@
 {
   "filePath" : "src/test/resources/samples/javascript/DestructuringAndSpread.js",
   "language" : "javascript",
-  "types" : [ ],
   "methods" : [ {
     "name" : "createUser",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "name"
     }, {
@@ -14,63 +12,48 @@
       "name" : "age"
     }, {
       "name" : "role"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "getFirstAndLast",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "items"
     } ],
-    "localVariables" : [ "items", "last" ],
-    "methodCalls" : [ ]
+    "localVariables" : [ "items", "last" ]
   }, {
     "name" : "processApiResponse",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "user"
     }, {
       "name" : "settings"
     }, {
       "name" : "timestamp"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "mergeUserData",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "baseUser"
     }, {
       "name" : "updates"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "combineArrays",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "arr1"
     }, {
       "name" : "arr2"
     }, {
       "name" : "arr3"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "sum",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "...numbers"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "reduce",
       "objectName" : "numbers",
@@ -79,13 +62,11 @@
   }, {
     "name" : "logWithPrefix",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "prefix"
     }, {
       "name" : "...messages"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "forEach",
       "objectName" : "messages",
@@ -98,7 +79,6 @@
   }, {
     "name" : "extractUserInfo",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "userName"
     }, {
@@ -111,13 +91,10 @@
       "name" : "theme"
     }, {
       "name" : "language"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "processUsers",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "users"
     } ],
@@ -131,7 +108,6 @@
   }, {
     "name" : "createConfig",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "env"
     }, {
@@ -148,7 +124,6 @@
   }, {
     "name" : "parseOptions",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "otherOptions"
     }, {
@@ -157,13 +132,10 @@
       "name" : "retries"
     }, {
       "name" : "headers"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "getOddIndexed",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "items"
     } ],
@@ -176,33 +148,20 @@
   }, {
     "name" : "swapValues",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "a"
     }, {
       "name" : "b"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "getDimensions",
-    "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "parameters" : [ ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    "modifiers" : [ "export" ]
   }, {
     "name" : "useDimensions",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "parameters" : [ ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "getDimensions",
       "callCount" : 1
     } ]
-  } ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+  } ]
 }

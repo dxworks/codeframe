@@ -5,97 +5,58 @@
     "kind" : "class",
     "name" : "BaseEntity",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "#id",
-      "visibility" : "private",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "private"
     }, {
       "name" : "#createdAt",
-      "visibility" : "private",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "private"
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "id",
-      "modifiers" : [ "get" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "get" ]
     }, {
       "name" : "createdAt",
-      "modifiers" : [ "get" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "get" ]
     }, {
       "name" : "toJSON",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "toISOString",
         "objectName" : "this.#createdAt",
         "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "User",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "extendsType" : "BaseEntity",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "#instanceCount",
       "type" : "Number",
       "visibility" : "private",
-      "modifiers" : [ "static" ],
-      "annotations" : [ ]
+      "modifiers" : [ "static" ]
     }, {
       "name" : "MAX_NAME_LENGTH",
       "type" : "Number",
-      "modifiers" : [ "static" ],
-      "annotations" : [ ]
+      "modifiers" : [ "static" ]
     }, {
       "name" : "#name",
-      "visibility" : "private",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "private"
     }, {
       "name" : "#email",
-      "visibility" : "private",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "private"
     }, {
       "name" : "#role",
-      "visibility" : "private",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "private"
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id"
       }, {
@@ -105,42 +66,28 @@
       }, {
         "name" : "role"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "super",
         "callCount" : 1
       } ]
     }, {
       "name" : "name",
-      "modifiers" : [ "get" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "get" ]
     }, {
       "name" : "name",
       "modifiers" : [ "set" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "value"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "email",
-      "modifiers" : [ "get" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "get" ]
     }, {
       "name" : "email",
       "modifiers" : [ "set" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "value"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "includes",
         "objectName" : "value",
@@ -148,30 +95,16 @@
       } ]
     }, {
       "name" : "role",
-      "modifiers" : [ "get" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "get" ]
     }, {
       "name" : "getInstanceCount",
-      "modifiers" : [ "static" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "static" ]
     }, {
       "name" : "resetCount",
-      "modifiers" : [ "static" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "static" ]
     }, {
       "name" : "#validatePermission",
       "visibility" : "private",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "action"
       } ],
@@ -183,45 +116,28 @@
       } ]
     }, {
       "name" : "canPerform",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "action"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "toJSON",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "toJSON",
         "objectName" : "super",
         "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "AdminUser",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "extendsType" : "User",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "#permissions",
-      "visibility" : "private",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "private"
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id"
       }, {
@@ -229,7 +145,6 @@
       }, {
         "name" : "email"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "super",
         "callCount" : 1
@@ -237,9 +152,6 @@
     }, {
       "name" : "permissions",
       "modifiers" : [ "get" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "from",
         "objectName" : "Array",
@@ -247,12 +159,9 @@
       } ]
     }, {
       "name" : "addPermission",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "permission"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "add",
         "objectName" : "this.#permissions",
@@ -260,12 +169,9 @@
       } ]
     }, {
       "name" : "removePermission",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "permission"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "delete",
         "objectName" : "this.#permissions",
@@ -273,22 +179,14 @@
       } ]
     }, {
       "name" : "hasPermission",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "permission"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "has",
         "objectName" : "this.#permissions",
         "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
-  } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+    } ]
+  } ]
 }

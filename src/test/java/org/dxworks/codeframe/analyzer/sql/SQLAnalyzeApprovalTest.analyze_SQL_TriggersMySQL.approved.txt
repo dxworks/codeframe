@@ -1,19 +1,8 @@
 {
   "filePath" : "src/test/resources/samples/sql/triggers_mysql.sql",
   "language" : "sql",
-  "topLevelReferences" : {
-    "relations" : [ ]
-  },
-  "topLevelCalls" : {
-    "functions" : [ ],
-    "procedures" : [ ]
-  },
-  "createTables" : [ ],
-  "alterTables" : [ ],
-  "createViews" : [ ],
-  "createIndexes" : [ ],
-  "createProcedures" : [ ],
-  "createFunctions" : [ ],
+  "topLevelReferences" : { },
+  "topLevelCalls" : { },
   "createTriggers" : [ {
     "triggerName" : "trg_users_before_insert",
     "tableName" : "users",
@@ -24,8 +13,7 @@
       "relations" : [ "audit_log" ]
     },
     "calls" : {
-      "functions" : [ "NOW" ],
-      "procedures" : [ ]
+      "functions" : [ "NOW" ]
     }
   }, {
     "triggerName" : "trg_orders_after_update",
@@ -50,8 +38,7 @@
       "relations" : [ "deleted_products" ]
     },
     "calls" : {
-      "functions" : [ "CURRENT_USER", "NOW" ],
-      "procedures" : [ ]
+      "functions" : [ "CURRENT_USER", "NOW" ]
     }
   }, {
     "triggerName" : "trg_order_items_after_insert",
@@ -63,8 +50,7 @@
       "relations" : [ "orders" ]
     },
     "calls" : {
-      "functions" : [ "calculate_order_total", "NOW" ],
-      "procedures" : [ ]
+      "functions" : [ "calculate_order_total", "NOW" ]
     }
   }, {
     "triggerName" : "trg_simple_audit",
@@ -76,12 +62,7 @@
       "relations" : [ "simple_audit" ]
     },
     "calls" : {
-      "functions" : [ "NOW" ],
-      "procedures" : [ ]
+      "functions" : [ "NOW" ]
     }
-  } ],
-  "alterViews" : [ ],
-  "alterFunctions" : [ ],
-  "alterProcedures" : [ ],
-  "dropOperations" : [ ]
+  } ]
 }

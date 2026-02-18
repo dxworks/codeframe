@@ -7,22 +7,15 @@
     "name" : "MultipleClasses",
     "visibility" : "public",
     "modifiers" : [ "public" ],
-    "annotations" : [ ],
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "greet",
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "name",
         "type" : "String"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "println",
         "objectName" : "System.out",
@@ -34,7 +27,6 @@
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "name",
         "type" : "String"
@@ -61,56 +53,33 @@
       "name" : "InnerHelper",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "implementsInterfaces" : [ ],
-      "mixins" : [ ],
-      "fields" : [ ],
-      "properties" : [ ],
       "methods" : [ {
         "name" : "assist",
         "returnType" : "void",
         "visibility" : "public",
         "modifiers" : [ "public" ],
-        "annotations" : [ ],
-        "parameters" : [ ],
-        "localVariables" : [ ],
         "methodCalls" : [ {
           "methodName" : "println",
           "objectName" : "System.out",
           "callCount" : 1,
           "parameterCount" : 1
         } ]
-      } ],
-      "types" : [ ]
+      } ]
     } ]
   }, {
     "kind" : "class",
     "name" : "ExtraClass",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "doWork",
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "println",
         "objectName" : "System.out",
         "callCount" : 1,
         "parameterCount" : 1
       } ]
-    } ],
-    "types" : [ ]
-  } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+    } ]
+  } ]
 }

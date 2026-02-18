@@ -5,22 +5,11 @@
     "kind" : "class",
     "name" : "ModuleLoader",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
-      "name" : "constructor",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "name" : "constructor"
     }, {
       "name" : "load",
       "modifiers" : [ "async" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "moduleName"
       } ],
@@ -41,7 +30,6 @@
     }, {
       "name" : "loadMultiple",
       "modifiers" : [ "async" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "moduleNames"
       } ],
@@ -62,10 +50,6 @@
       } ]
     }, {
       "name" : "clearCache",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "clear",
         "objectName" : "this.cache",
@@ -73,39 +57,24 @@
       } ]
     }, {
       "name" : "has",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "moduleName"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "has",
         "objectName" : "this.cache",
         "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "PluginManager",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
-      "name" : "constructor",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "name" : "constructor"
     }, {
       "name" : "register",
       "modifiers" : [ "async" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "pluginName"
       }, {
@@ -128,7 +97,6 @@
     }, {
       "name" : "execute",
       "modifiers" : [ "async" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "pluginName"
       }, {
@@ -144,12 +112,9 @@
       } ]
     }, {
       "name" : "getPlugin",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "pluginName"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "get",
         "objectName" : "this.plugins",
@@ -157,10 +122,6 @@
       } ]
     }, {
       "name" : "listPlugins",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "from",
         "objectName" : "Array",
@@ -170,28 +131,16 @@
         "objectName" : "this.plugins",
         "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "FeatureFlags",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
-      "name" : "constructor",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "name" : "constructor"
     }, {
       "name" : "enableFeature",
       "modifiers" : [ "async" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "featureName"
       } ],
@@ -215,12 +164,9 @@
       } ]
     }, {
       "name" : "isEnabled",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "featureName"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "has",
         "objectName" : "this.features",
@@ -229,7 +175,6 @@
     }, {
       "name" : "disableFeature",
       "modifiers" : [ "async" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "featureName"
       } ],
@@ -247,34 +192,20 @@
         "objectName" : "feature",
         "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Router",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
-      "name" : "constructor",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "name" : "constructor"
     }, {
       "name" : "register",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "path"
       }, {
         "name" : "importFn"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "set",
         "objectName" : "this.routes",
@@ -283,7 +214,6 @@
     }, {
       "name" : "navigate",
       "modifiers" : [ "async" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "path"
       } ],
@@ -296,28 +226,16 @@
         "methodName" : "importFn",
         "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "PreloadManager",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
-      "name" : "constructor",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "name" : "constructor"
     }, {
       "name" : "preload",
       "modifiers" : [ "async" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "modulePaths"
       } ],
@@ -349,42 +267,33 @@
       } ]
     }, {
       "name" : "isPreloaded",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "modulePath"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "has",
         "objectName" : "this.preloaded",
         "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   } ],
   "methods" : [ {
     "name" : "loadUserModule",
     "modifiers" : [ "async", "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "userId"
     } ],
-    "localVariables" : [ "userModule" ],
-    "methodCalls" : [ ]
+    "localVariables" : [ "userModule" ]
   }, {
     "name" : "loadAnalytics",
     "modifiers" : [ "async", "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "environment"
     } ],
-    "localVariables" : [ "analytics" ],
-    "methodCalls" : [ ]
+    "localVariables" : [ "analytics" ]
   }, {
     "name" : "safeImport",
     "modifiers" : [ "async", "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "modulePath"
     } ],
@@ -397,8 +306,6 @@
   }, {
     "name" : "setupRouter",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "parameters" : [ ],
     "localVariables" : [ "router" ],
     "methodCalls" : [ {
       "methodName" : "register",
@@ -406,8 +313,5 @@
       "objectName" : "router",
       "callCount" : 3
     } ]
-  } ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+  } ]
 }

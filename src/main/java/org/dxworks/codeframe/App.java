@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 
 public class App {
     private static final ObjectMapper MAPPER = new ObjectMapper()
-            .setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
+            .setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY);
     
     private static final Map<Language, TSLanguage> TREE_SITTER_LANGUAGES = new HashMap<>();
     private static final Map<Language, LanguageAnalyzer> ANALYZERS = new HashMap<>();

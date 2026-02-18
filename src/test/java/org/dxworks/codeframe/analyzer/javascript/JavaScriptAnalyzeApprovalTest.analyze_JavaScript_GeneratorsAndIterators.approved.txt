@@ -5,92 +5,55 @@
     "kind" : "class",
     "name" : "Range",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "start"
       }, {
         "name" : "end"
       }, {
         "name" : "step"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "reverse",
       "modifiers" : [ "*" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ "i" ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "localVariables" : [ "i" ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "PaginatedData",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "items"
       }, {
         "name" : "pageSize"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "pages",
       "modifiers" : [ "*" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
       "localVariables" : [ "i" ],
       "methodCalls" : [ {
         "methodName" : "slice",
         "objectName" : "this.items",
         "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "TreeNode",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "value"
       }, {
         "name" : "children"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "preOrder",
       "modifiers" : [ "*" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "preOrder",
         "objectName" : "child",
@@ -99,9 +62,6 @@
     }, {
       "name" : "postOrder",
       "modifiers" : [ "*" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "postOrder",
         "objectName" : "child",
@@ -110,8 +70,6 @@
     }, {
       "name" : "breadthFirst",
       "modifiers" : [ "*" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
       "localVariables" : [ "queue", "node" ],
       "methodCalls" : [ {
         "methodName" : "push",
@@ -124,13 +82,11 @@
         "objectName" : "queue",
         "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   } ],
   "methods" : [ {
     "name" : "processAsyncStream",
     "modifiers" : [ "async", "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "asyncIterable"
     } ],
@@ -144,22 +100,18 @@
   }, {
     "name" : "numberGenerator",
     "modifiers" : [ "export", "function*" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "start"
     }, {
       "name" : "end"
     } ],
-    "localVariables" : [ "i" ],
-    "methodCalls" : [ ]
+    "localVariables" : [ "i" ]
   }, {
     "name" : "flattenArray",
     "modifiers" : [ "export", "function*" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "arr"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "flattenArray",
       "callCount" : 1
@@ -170,22 +122,14 @@
     } ]
   }, {
     "name" : "fibonacci",
-    "modifiers" : [ "export", "function*" ],
-    "annotations" : [ ],
-    "parameters" : [ ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    "modifiers" : [ "export", "function*" ]
   }, {
     "name" : "dataProcessor",
     "modifiers" : [ "export", "function*" ],
-    "annotations" : [ ],
-    "parameters" : [ ],
-    "localVariables" : [ "value" ],
-    "methodCalls" : [ ]
+    "localVariables" : [ "value" ]
   }, {
     "name" : "fetchPages",
     "modifiers" : [ "async", "export", "function*" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "baseUrl"
     }, {
@@ -203,7 +147,6 @@
   }, {
     "name" : "streamData",
     "modifiers" : [ "async", "export", "function*" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "source"
     } ],
@@ -220,13 +163,11 @@
   }, {
     "name" : "map",
     "modifiers" : [ "export", "function*" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "iterable"
     }, {
       "name" : "fn"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "fn",
       "callCount" : 1
@@ -234,13 +175,11 @@
   }, {
     "name" : "filter",
     "modifiers" : [ "export", "function*" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "iterable"
     }, {
       "name" : "predicate"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "predicate",
       "callCount" : 1
@@ -248,16 +187,11 @@
   }, {
     "name" : "take",
     "modifiers" : [ "export", "function*" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "iterable"
     }, {
       "name" : "n"
     } ],
-    "localVariables" : [ "count" ],
-    "methodCalls" : [ ]
-  } ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+    "localVariables" : [ "count" ]
+  } ]
 }

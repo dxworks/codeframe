@@ -1,23 +1,15 @@
 {
   "filePath" : "src/test/resources/samples/sql/sample.sql",
   "language" : "sql",
-  "topLevelReferences" : {
-    "relations" : [ ]
-  },
-  "topLevelCalls" : {
-    "functions" : [ ],
-    "procedures" : [ ]
-  },
+  "topLevelReferences" : { },
+  "topLevelCalls" : { },
   "createTables" : [ {
     "tableName" : "users",
     "ifNotExists" : false,
-    "columns" : [ ],
-    "primaryKeys" : [ "id" ],
-    "foreignKeys" : [ ]
+    "primaryKeys" : [ "id" ]
   }, {
     "tableName" : "orders",
     "ifNotExists" : false,
-    "columns" : [ ],
     "primaryKeys" : [ "order_id" ],
     "foreignKeys" : [ {
       "columns" : [ "user_id" ],
@@ -25,7 +17,6 @@
       "referencedColumns" : [ "id" ]
     } ]
   } ],
-  "alterTables" : [ ],
   "createViews" : [ {
     "viewName" : "active_users",
     "orReplace" : false,
@@ -50,10 +41,7 @@
     "references" : {
       "relations" : [ "users" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
+    "calls" : { }
   } ],
   "createFunctions" : [ {
     "functionName" : "CalculateTotal",
@@ -66,14 +54,6 @@
     "references" : {
       "relations" : [ "orders" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
-  } ],
-  "createTriggers" : [ ],
-  "alterViews" : [ ],
-  "alterFunctions" : [ ],
-  "alterProcedures" : [ ],
-  "dropOperations" : [ ]
+    "calls" : { }
+  } ]
 }

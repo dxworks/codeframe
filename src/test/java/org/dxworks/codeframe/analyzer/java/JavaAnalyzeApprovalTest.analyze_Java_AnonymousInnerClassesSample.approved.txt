@@ -7,28 +7,21 @@
     "name" : "AnonymousInnerClassesSample",
     "visibility" : "public",
     "modifiers" : [ "public" ],
-    "annotations" : [ ],
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "logger",
       "type" : "Logger",
       "visibility" : "private",
-      "modifiers" : [ "private", "final" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private", "final" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "createTask",
       "returnType" : "Runnable",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "name",
         "type" : "String"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "info",
         "objectType" : "Logger",
@@ -45,12 +38,10 @@
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "callback",
         "type" : "Callback"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "onComplete",
         "objectType" : "Callback",
@@ -63,8 +54,6 @@
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
       "localVariables" : [ "processor" ],
       "methodCalls" : [ {
         "methodName" : "info",
@@ -85,102 +74,59 @@
       "name" : "InnerHelper",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "implementsInterfaces" : [ ],
-      "mixins" : [ ],
-      "fields" : [ ],
-      "properties" : [ ],
       "methods" : [ {
         "name" : "assist",
         "returnType" : "void",
         "visibility" : "public",
         "modifiers" : [ "public" ],
-        "annotations" : [ ],
-        "parameters" : [ ],
-        "localVariables" : [ ],
         "methodCalls" : [ {
           "methodName" : "info",
           "objectName" : "logger",
           "callCount" : 1,
           "parameterCount" : 1
         } ]
-      } ],
-      "types" : [ ]
+      } ]
     }, {
       "kind" : "class",
       "name" : "StaticHelper",
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
-      "annotations" : [ ],
-      "implementsInterfaces" : [ ],
-      "mixins" : [ ],
-      "fields" : [ ],
-      "properties" : [ ],
       "methods" : [ {
         "name" : "help",
         "returnType" : "void",
         "visibility" : "public",
         "modifiers" : [ "public" ],
-        "annotations" : [ ],
-        "parameters" : [ ],
-        "localVariables" : [ ],
         "methodCalls" : [ {
           "methodName" : "println",
           "objectName" : "System.out",
           "callCount" : 1,
           "parameterCount" : 1
         } ]
-      } ],
-      "types" : [ ]
+      } ]
     } ]
   }, {
     "kind" : "class",
     "name" : "Logger",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "info",
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "s",
         "type" : "String"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   }, {
     "kind" : "interface",
     "name" : "Callback",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "onComplete",
       "returnType" : "void",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "result",
         "type" : "String"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
-  } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+      } ]
+    } ]
+  } ]
 }

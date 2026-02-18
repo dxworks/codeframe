@@ -5,24 +5,14 @@
     "kind" : "class",
     "name" : "DataManager",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "apiUrl"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "getData",
       "modifiers" : [ "async" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "key"
       } ],
@@ -48,7 +38,6 @@
     }, {
       "name" : "fetchData",
       "modifiers" : [ "async" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "key"
       } ],
@@ -58,17 +47,14 @@
         "objectName" : "axios",
         "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   } ],
   "methods" : [ {
     "name" : "processData",
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "data"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "expect",
       "callCount" : 1
@@ -87,7 +73,6 @@
   }, {
     "name" : "fetchUser",
     "modifiers" : [ "async", "const", "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "userId"
     } ],
@@ -101,22 +86,18 @@
   "fields" : [ {
     "name" : "API_VERSION",
     "type" : "String",
-    "modifiers" : [ "const" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const" ]
   }, {
     "name" : "MAX_RETRIES",
     "type" : "Number",
-    "modifiers" : [ "const" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const" ]
   }, {
     "name" : "currentUser",
-    "modifiers" : [ "let" ],
-    "annotations" : [ ]
+    "modifiers" : [ "let" ]
   }, {
     "name" : "DEFAULT_TIMEOUT",
     "type" : "Number",
-    "modifiers" : [ "const", "export" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const", "export" ]
   } ],
   "methodCalls" : [ {
     "methodName" : "log",

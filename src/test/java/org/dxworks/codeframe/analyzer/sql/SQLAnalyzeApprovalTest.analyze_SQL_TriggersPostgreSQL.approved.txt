@@ -1,31 +1,17 @@
 {
   "filePath" : "src/test/resources/samples/sql/triggers_postgresql.sql",
   "language" : "sql",
-  "topLevelReferences" : {
-    "relations" : [ ]
-  },
-  "topLevelCalls" : {
-    "functions" : [ ],
-    "procedures" : [ ]
-  },
-  "createTables" : [ ],
-  "alterTables" : [ ],
-  "createViews" : [ ],
-  "createIndexes" : [ ],
-  "createProcedures" : [ ],
-  "createFunctions" : [ ],
+  "topLevelReferences" : { },
+  "topLevelCalls" : { },
   "createTriggers" : [ {
     "triggerName" : "trg_users_created_at",
     "tableName" : "public.users",
     "orReplace" : false,
     "timing" : "BEFORE",
     "events" : [ "INSERT" ],
-    "references" : {
-      "relations" : [ ]
-    },
+    "references" : { },
     "calls" : {
-      "functions" : [ "public.set_created_timestamp" ],
-      "procedures" : [ ]
+      "functions" : [ "public.set_created_timestamp" ]
     }
   }, {
     "triggerName" : "trg_orders_audit",
@@ -33,12 +19,9 @@
     "orReplace" : false,
     "timing" : "AFTER",
     "events" : [ "UPDATE" ],
-    "references" : {
-      "relations" : [ ]
-    },
+    "references" : { },
     "calls" : {
-      "functions" : [ "sales.log_order_changes" ],
-      "procedures" : [ ]
+      "functions" : [ "sales.log_order_changes" ]
     }
   }, {
     "triggerName" : "trg_products_history",
@@ -46,12 +29,9 @@
     "orReplace" : false,
     "timing" : "AFTER",
     "events" : [ "INSERT", "UPDATE", "DELETE" ],
-    "references" : {
-      "relations" : [ ]
-    },
+    "references" : { },
     "calls" : {
-      "functions" : [ "inventory.track_product_changes" ],
-      "procedures" : [ ]
+      "functions" : [ "inventory.track_product_changes" ]
     }
   }, {
     "triggerName" : "trg_v_customer_orders",
@@ -59,12 +39,9 @@
     "orReplace" : false,
     "timing" : "INSTEAD OF",
     "events" : [ "INSERT" ],
-    "references" : {
-      "relations" : [ ]
-    },
+    "references" : { },
     "calls" : {
-      "functions" : [ "sales.insert_customer_order" ],
-      "procedures" : [ ]
+      "functions" : [ "sales.insert_customer_order" ]
     }
   }, {
     "triggerName" : "trg_employees_salary",
@@ -72,12 +49,9 @@
     "orReplace" : true,
     "timing" : "BEFORE",
     "events" : [ "UPDATE" ],
-    "references" : {
-      "relations" : [ ]
-    },
+    "references" : { },
     "calls" : {
-      "functions" : [ "hr.validate_salary_change" ],
-      "procedures" : [ ]
+      "functions" : [ "hr.validate_salary_change" ]
     }
   }, {
     "triggerName" : "trg_audit_log",
@@ -85,11 +59,8 @@
     "orReplace" : false,
     "timing" : "AFTER",
     "events" : [ "INSERT" ],
-    "references" : {
-      "relations" : [ ]
-    },
+    "references" : { },
     "calls" : {
-      "functions" : [ ],
       "procedures" : [ "audit.process_event" ]
     }
   }, {
@@ -98,16 +69,9 @@
     "orReplace" : false,
     "timing" : "AFTER",
     "events" : [ "INSERT" ],
-    "references" : {
-      "relations" : [ ]
-    },
+    "references" : { },
     "calls" : {
-      "functions" : [ "config.notify_settings_change" ],
-      "procedures" : [ ]
+      "functions" : [ "config.notify_settings_change" ]
     }
-  } ],
-  "alterViews" : [ ],
-  "alterFunctions" : [ ],
-  "alterProcedures" : [ ],
-  "dropOperations" : [ ]
+  } ]
 }

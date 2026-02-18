@@ -5,32 +5,21 @@
     "kind" : "class",
     "name" : "ResourceLocationWrapper",
     "modifiers" : [ "export", "default" ],
-    "annotations" : [ ],
     "extendsType" : "React.Component",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "resourceLocationFunctions",
-      "type" : "Object",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "type" : "Object"
     }, {
       "name" : "style",
-      "type" : "Object",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "type" : "Object"
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "props"
       }, {
         "name" : "context"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "bind",
         "objectName" : "this.fetchAllResourceLocations",
@@ -68,8 +57,6 @@
       } ]
     }, {
       "name" : "fetchAllResourceLocations",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "self"
       } ],
@@ -117,8 +104,6 @@
       } ]
     }, {
       "name" : "fetchAllVisitLocations",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "self"
       } ],
@@ -166,9 +151,6 @@
       } ]
     }, {
       "name" : "fetchItemTypes",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
       "localVariables" : [ "self", "error" ],
       "methodCalls" : [ {
         "methodName" : "apiBaseUrl",
@@ -200,29 +182,16 @@
         "callCount" : 1
       } ]
     }, {
-      "name" : "getBody",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "name" : "getBody"
     }, {
       "name" : "render",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "getBody",
         "objectType" : "ResourceLocationWrapper",
         "objectName" : "this",
         "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
   "imports" : [ "import React from 'react';", "import PropTypes from 'prop-types';", "import axios from 'axios';", "import _ from 'lodash';", "import Header from 'components/header';", "import ItemHierarchy from 'components/resourceLocation/leftPanel/itemHierarchy';", "import ResourceLocationList from 'components/resourceLocation/rightPanel/resourceLocationList';", "import AddEditResourceLocation\n    from 'components/resourceLocation/rightPanel/resourceLocationForm/addEditResourceLocation';", "import SetItemLayout from 'components/resourceLocation/rightPanel/resourceLocationForm/setItemLayout';", "import AddEditItem from 'components/resourceLocation/rightPanel/resourceLocationForm/addEditItem';", "import ResourceLocationHelper from 'utilities/resourceLocationHelper';", "import UrlHelper from 'utilities/urlHelper';", "import ReactNotify from 'react-notify';" ]
 }

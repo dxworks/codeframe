@@ -1,17 +1,8 @@
 {
   "filePath" : "src/test/resources/samples/sql/alter_routines_mysql.sql",
   "language" : "sql",
-  "topLevelReferences" : {
-    "relations" : [ ]
-  },
-  "topLevelCalls" : {
-    "functions" : [ ],
-    "procedures" : [ ]
-  },
-  "createTables" : [ ],
-  "alterTables" : [ ],
-  "createViews" : [ ],
-  "createIndexes" : [ ],
+  "topLevelReferences" : { },
+  "topLevelCalls" : { },
   "createProcedures" : [ {
     "procedureName" : "recalc_order_total",
     "schema" : "sales",
@@ -63,10 +54,7 @@
     "references" : {
       "relations" : [ "active_discounts_view", "tax_rates" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
+    "calls" : { }
   }, {
     "functionName" : "fn_get_stock_value",
     "schema" : "inventory",
@@ -80,13 +68,7 @@
       "relations" : [ "inventory.stock", "inventory.current_prices_view", "inventory.products" ]
     },
     "calls" : {
-      "functions" : [ "IFNULL", "SUM" ],
-      "procedures" : [ ]
+      "functions" : [ "IFNULL", "SUM" ]
     }
-  } ],
-  "createTriggers" : [ ],
-  "alterViews" : [ ],
-  "alterFunctions" : [ ],
-  "alterProcedures" : [ ],
-  "dropOperations" : [ ]
+  } ]
 }

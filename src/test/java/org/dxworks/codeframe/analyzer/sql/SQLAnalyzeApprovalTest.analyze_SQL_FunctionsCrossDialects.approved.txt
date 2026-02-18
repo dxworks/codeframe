@@ -1,18 +1,8 @@
 {
   "filePath" : "src/test/resources/samples/sql/functions_crossdialects.sql",
   "language" : "sql",
-  "topLevelReferences" : {
-    "relations" : [ ]
-  },
-  "topLevelCalls" : {
-    "functions" : [ ],
-    "procedures" : [ ]
-  },
-  "createTables" : [ ],
-  "alterTables" : [ ],
-  "createViews" : [ ],
-  "createIndexes" : [ ],
-  "createProcedures" : [ ],
+  "topLevelReferences" : { },
+  "topLevelCalls" : { },
   "createFunctions" : [ {
     "functionName" : "calc_tax",
     "orReplace" : false,
@@ -24,14 +14,6 @@
     "references" : {
       "relations" : [ "shop.tax_rates" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
-  } ],
-  "createTriggers" : [ ],
-  "alterViews" : [ ],
-  "alterFunctions" : [ ],
-  "alterProcedures" : [ ],
-  "dropOperations" : [ ]
+    "calls" : { }
+  } ]
 }

@@ -1,17 +1,11 @@
 {
   "filePath" : "src/test/resources/samples/sql/plsql_routine_bodies.sql",
   "language" : "sql",
-  "topLevelReferences" : {
-    "relations" : [ ]
-  },
+  "topLevelReferences" : { },
   "topLevelCalls" : {
     "functions" : [ "HR.CALC_DISCOUNT" ],
     "procedures" : [ "HR.GET_ORDER_INFO" ]
   },
-  "createTables" : [ ],
-  "alterTables" : [ ],
-  "createViews" : [ ],
-  "createIndexes" : [ ],
   "createProcedures" : [ {
     "procedureName" : "GET_ORDERS_BY_CUSTOMER",
     "schema" : "HR",
@@ -64,10 +58,7 @@
     "references" : {
       "relations" : [ "HR.ORDERS" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
+    "calls" : { }
   } ],
   "createFunctions" : [ {
     "functionName" : "TOTAL_AMOUNT",
@@ -82,10 +73,7 @@
     "references" : {
       "relations" : [ "HR.ORDER_ITEMS" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
+    "calls" : { }
   }, {
     "functionName" : "ORDER_HAS_ITEM",
     "schema" : "HR",
@@ -103,10 +91,7 @@
     "references" : {
       "relations" : [ "HR.ORDER_ITEMS", "DUAL" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
+    "calls" : { }
   }, {
     "functionName" : "CALC_DISCOUNT",
     "schema" : "HR",
@@ -121,17 +106,7 @@
       "direction" : "IN"
     } ],
     "returnType" : "NUMBER",
-    "references" : {
-      "relations" : [ ]
-    },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
-  } ],
-  "createTriggers" : [ ],
-  "alterViews" : [ ],
-  "alterFunctions" : [ ],
-  "alterProcedures" : [ ],
-  "dropOperations" : [ ]
+    "references" : { },
+    "calls" : { }
+  } ]
 }
