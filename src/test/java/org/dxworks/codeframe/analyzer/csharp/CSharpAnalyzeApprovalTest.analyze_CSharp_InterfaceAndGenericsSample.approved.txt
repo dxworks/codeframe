@@ -7,18 +7,11 @@
     "name" : "Demo<T>",
     "visibility" : "public",
     "modifiers" : [ "public" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "greet<T>",
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "name",
         "type" : "T"
@@ -35,7 +28,6 @@
         "parameterCount" : 0
       }, {
         "methodName" : "WriteLine",
-        "objectType" : null,
         "objectName" : "Console",
         "callCount" : 1,
         "parameterCount" : 1
@@ -45,7 +37,6 @@
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "name",
         "type" : "T"
@@ -65,75 +56,41 @@
         "parameterCount" : 0
       }, {
         "methodName" : "WriteLine",
-        "objectType" : null,
         "objectName" : "Console",
         "callCount" : 1,
         "parameterCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "interface",
     "name" : "IRepository<T, ID>",
     "visibility" : "public",
     "modifiers" : [ "public" ],
     "annotations" : [ "[Obsolete]" ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "FindById",
       "returnType" : "T",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
         "type" : "ID"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "Save",
       "returnType" : "void",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "entity",
         "type" : "T"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   }, {
     "kind" : "interface",
     "name" : "INamed",
     "visibility" : "public",
     "modifiers" : [ "public" ],
     "annotations" : [ "[Obsolete]" ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "GetName",
-      "returnType" : "string",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
-  } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+      "returnType" : "string"
+    } ]
+  } ]
 }

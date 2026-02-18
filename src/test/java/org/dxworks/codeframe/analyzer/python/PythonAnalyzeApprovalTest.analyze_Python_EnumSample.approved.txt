@@ -1,91 +1,56 @@
 {
   "filePath" : "src/test/resources/samples/python/enum_sample.py",
   "language" : "python",
-  "packageName" : null,
   "types" : [ {
     "kind" : "class",
     "name" : "Color",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "Enum",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "RED",
       "type" : "int",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "GREEN",
       "type" : "int",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "BLUE",
       "type" : "int",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "describe",
       "returnType" : "str",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "visibility" : "public"
+    } ]
   }, {
     "kind" : "class",
     "name" : "Status",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "str",
     "implementsInterfaces" : [ "Enum" ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "PENDING",
       "type" : "str",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "ACTIVE",
       "type" : "str",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "COMPLETED",
       "type" : "str",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "CANCELLED",
       "type" : "str",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "is_terminal",
       "returnType" : "bool",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "from_string",
       "returnType" : "\"Status\"",
@@ -96,334 +61,199 @@
         "name" : "value",
         "type" : "str"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "ValueError",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "lower",
-        "objectType" : null,
         "objectName" : "value",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Priority",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "IntEnum",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "LOW",
       "type" : "int",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "MEDIUM",
       "type" : "int",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "HIGH",
       "type" : "int",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "CRITICAL",
       "type" : "int",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__str__",
       "returnType" : "str",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "is_urgent",
       "returnType" : "bool",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "visibility" : "public"
+    } ]
   }, {
     "kind" : "class",
     "name" : "ErrorCode",
     "visibility" : "public",
-    "modifiers" : [ ],
     "annotations" : [ "@unique" ],
     "extendsType" : "IntEnum",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "SUCCESS",
       "type" : "int",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "NOT_FOUND",
       "type" : "int",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "SERVER_ERROR",
       "type" : "int",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "UNAUTHORIZED",
       "type" : "int",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "FORBIDDEN",
       "type" : "int",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "is_error",
       "returnType" : "bool",
       "visibility" : "public",
       "modifiers" : [ "property" ],
-      "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "annotations" : [ "@property" ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Permission",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "Flag",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "NONE",
       "type" : "int",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "READ",
-      "type" : null,
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "WRITE",
-      "type" : null,
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "EXECUTE",
-      "type" : null,
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "DELETE",
-      "type" : null,
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "READ_WRITE",
-      "type" : null,
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "ALL",
-      "type" : null,
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "can_read",
       "returnType" : "bool",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "can_write",
       "returnType" : "bool",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "visibility" : "public"
+    } ]
   }, {
     "kind" : "class",
     "name" : "Direction",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "Enum",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "NORTH",
-      "type" : null,
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "SOUTH",
-      "type" : null,
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "EAST",
-      "type" : null,
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "WEST",
-      "type" : null,
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "opposite",
       "returnType" : "\"Direction\"",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ "opposites" ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "localVariables" : [ "opposites" ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Planet",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "Enum",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "MERCURY",
       "type" : "tuple",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "VENUS",
       "type" : "tuple",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "EARTH",
       "type" : "tuple",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "MARS",
       "type" : "tuple",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "mass",
         "type" : "float"
       }, {
         "name" : "radius",
         "type" : "float"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "mass",
       "returnType" : "float",
       "visibility" : "public",
       "modifiers" : [ "property" ],
-      "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "annotations" : [ "@property" ]
     }, {
       "name" : "radius",
       "returnType" : "float",
       "visibility" : "public",
       "modifiers" : [ "property" ],
-      "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "annotations" : [ "@property" ]
     }, {
       "name" : "surface_gravity",
       "returnType" : "float",
       "visibility" : "public",
       "modifiers" : [ "property" ],
       "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ "G" ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "localVariables" : [ "G" ]
+    } ]
   } ],
   "methods" : [ {
     "name" : "get_status_label",
     "returnType" : "str",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "status",
       "type" : "Status"
@@ -433,35 +263,25 @@
       "methodName" : "get",
       "objectType" : "dict",
       "objectName" : "labels",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "combine_permissions",
     "returnType" : "Permission",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "perms",
       "type" : "list[Permission]"
     } ],
-    "localVariables" : [ "result" ],
-    "methodCalls" : [ ]
+    "localVariables" : [ "result" ]
   }, {
     "name" : "find_planet_by_mass",
     "returnType" : "Optional[Planet]",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "min_mass",
       "type" : "float"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   } ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
   "imports" : [ "from enum import Enum, IntEnum, Flag, auto, unique", "from typing import Optional" ]
 }

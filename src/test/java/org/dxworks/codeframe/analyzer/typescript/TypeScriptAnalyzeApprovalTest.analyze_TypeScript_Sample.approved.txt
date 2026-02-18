@@ -1,51 +1,34 @@
 {
   "filePath" : "src/test/resources/samples/typescript/sample.ts",
   "language" : "typescript",
-  "packageName" : null,
   "types" : [ {
     "kind" : "class",
     "name" : "UserService",
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "logger",
       "type" : "Logger",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     }, {
       "name" : "config",
       "type" : "Config",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "logger",
         "type" : "Logger"
       }, {
         "name" : "config",
         "type" : "Config"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "getUser",
       "returnType" : "Promise<User>",
-      "visibility" : null,
       "modifiers" : [ "async" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
         "type" : "string"
@@ -55,178 +38,106 @@
         "methodName" : "fetchFromDb",
         "objectType" : "UserService",
         "objectName" : "this",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "info",
-        "objectType" : null,
         "objectName" : "this.logger",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "fetchFromDb",
       "returnType" : "Promise<User>",
       "visibility" : "private",
       "modifiers" : [ "private", "async" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
         "type" : "string"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "addTags",
       "returnType" : "void",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "...tags",
-        "type" : null
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+        "name" : "...tags"
+      } ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "SavePatientTransactionManager",
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "patientSaved",
-      "type" : "boolean",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ]
-    } ],
-    "properties" : [ ],
-    "methods" : [ ],
-    "types" : [ ]
+      "type" : "boolean"
+    } ]
   }, {
     "kind" : "interface",
     "name" : "User",
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
     "properties" : [ {
       "name" : "id",
-      "type" : "string",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "accessors" : [ ]
+      "type" : "string"
     }, {
       "name" : "name",
-      "type" : "string",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "accessors" : [ ]
+      "type" : "string"
     }, {
       "name" : "email",
-      "type" : "string",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "accessors" : [ ]
-    } ],
-    "methods" : [ ],
-    "types" : [ ]
+      "type" : "string"
+    } ]
   } ],
   "methods" : [ {
     "name" : "calculateTotal",
     "returnType" : "number",
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "items",
       "type" : "number[]"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "expect",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     }, {
       "methodName" : "parseFloat",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     }, {
       "methodName" : "reduce",
-      "objectType" : null,
       "objectName" : "items",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     }, {
       "methodName" : "toBeGreaterThan",
-      "objectType" : null,
       "objectName" : "expect()",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "formatMessage",
     "returnType" : "string",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "name",
       "type" : "string"
     }, {
       "name" : "age",
       "type" : "number"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   } ],
   "fields" : [ {
     "name" : "API_VERSION",
     "type" : "string",
-    "visibility" : null,
-    "modifiers" : [ "const" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const" ]
   }, {
     "name" : "MAX_RETRIES",
     "type" : "number",
-    "visibility" : null,
-    "modifiers" : [ "const" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const" ]
   }, {
     "name" : "currentUser",
     "type" : "User | null",
-    "visibility" : null,
-    "modifiers" : [ "let" ],
-    "annotations" : [ ]
+    "modifiers" : [ "let" ]
   }, {
     "name" : "DEFAULT_TIMEOUT",
     "type" : "number",
-    "visibility" : null,
-    "modifiers" : [ "const", "export" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const", "export" ]
   } ],
   "methodCalls" : [ {
     "methodName" : "log",
-    "objectType" : null,
     "objectName" : "console",
-    "callCount" : 1,
-    "parameterCount" : null
+    "callCount" : 1
   } ],
   "imports" : [ "import { Logger } from './logger';", "import type { Config } from './config';" ]
 }

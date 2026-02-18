@@ -1,355 +1,205 @@
 {
   "filePath" : "src/test/resources/samples/ruby/Sample.rb",
   "language" : "ruby",
-  "packageName" : null,
   "types" : [ {
     "kind" : "class",
     "name" : "UserRepository",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "@db",
-      "type" : null,
-      "visibility" : "private",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "private"
     }, {
       "name" : "@logger",
-      "type" : null,
-      "visibility" : "private",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "private"
     } ],
     "properties" : [ {
       "name" : "db",
-      "type" : null,
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "accessors" : [ {
-        "kind" : "get",
-        "visibility" : null,
-        "modifiers" : [ ],
-        "annotations" : [ ],
-        "localVariables" : [ ],
-        "methodCalls" : [ ]
+        "kind" : "get"
       } ]
     }, {
       "name" : "logger",
-      "type" : null,
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "accessors" : [ {
-        "kind" : "get",
-        "visibility" : null,
-        "modifiers" : [ ],
-        "annotations" : [ ],
-        "localVariables" : [ ],
-        "methodCalls" : [ ]
+        "kind" : "get"
       } ]
     } ],
     "methods" : [ {
       "name" : "initialize",
-      "returnType" : null,
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "db",
-        "type" : null
+        "name" : "db"
       }, {
-        "name" : "logger",
-        "type" : null
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+        "name" : "logger"
+      } ]
     }, {
       "name" : "find_by_id",
-      "returnType" : null,
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "id",
-        "type" : null
+        "name" : "id"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "expect",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "info",
-        "objectType" : null,
         "objectName" : "logger",
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "parse_float",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "query",
-        "objectType" : null,
         "objectName" : "db",
         "callCount" : 1,
         "parameterCount" : 2
       }, {
         "methodName" : "to_be_greater_than",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "total",
-        "objectType" : null,
         "objectName" : "result",
         "callCount" : 1,
         "parameterCount" : 0
       } ]
     }, {
       "name" : "find_all",
-      "returnType" : null,
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "query_list",
-        "objectType" : null,
         "objectName" : "db",
         "callCount" : 1,
         "parameterCount" : 1
       } ]
     }, {
       "name" : "save",
-      "returnType" : null,
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "user",
-        "type" : null
+        "name" : "user"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "id",
-        "objectType" : null,
         "objectName" : "user",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "insert",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "nil?",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "update",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
     }, {
       "name" : "insert",
-      "returnType" : null,
       "visibility" : "private",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "user",
-        "type" : null
+        "name" : "user"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "email",
-        "objectType" : null,
         "objectName" : "user",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "execute",
-        "objectType" : null,
         "objectName" : "db",
         "callCount" : 1,
         "parameterCount" : 3
       }, {
         "methodName" : "name",
-        "objectType" : null,
         "objectName" : "user",
         "callCount" : 1,
         "parameterCount" : 0
       } ]
     }, {
       "name" : "update",
-      "returnType" : null,
       "visibility" : "private",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "user",
-        "type" : null
+        "name" : "user"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "email",
-        "objectType" : null,
         "objectName" : "user",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "execute",
-        "objectType" : null,
         "objectName" : "db",
         "callCount" : 1,
         "parameterCount" : 4
       }, {
         "methodName" : "id",
-        "objectType" : null,
         "objectName" : "user",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "name",
-        "objectType" : null,
         "objectName" : "user",
         "callCount" : 1,
         "parameterCount" : 0
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "User",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "@id",
-      "type" : null,
-      "visibility" : "private",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "private"
     }, {
       "name" : "@name",
-      "type" : null,
-      "visibility" : "private",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "private"
     }, {
       "name" : "@email",
-      "type" : null,
-      "visibility" : "private",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "private"
     } ],
     "properties" : [ {
       "name" : "id",
-      "type" : null,
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "accessors" : [ {
-        "kind" : "get",
-        "visibility" : null,
-        "modifiers" : [ ],
-        "annotations" : [ ],
-        "localVariables" : [ ],
-        "methodCalls" : [ ]
+        "kind" : "get"
       }, {
-        "kind" : "set",
-        "visibility" : null,
-        "modifiers" : [ ],
-        "annotations" : [ ],
-        "localVariables" : [ ],
-        "methodCalls" : [ ]
+        "kind" : "set"
       } ]
     }, {
       "name" : "name",
-      "type" : null,
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "accessors" : [ {
-        "kind" : "get",
-        "visibility" : null,
-        "modifiers" : [ ],
-        "annotations" : [ ],
-        "localVariables" : [ ],
-        "methodCalls" : [ ]
+        "kind" : "get"
       }, {
-        "kind" : "set",
-        "visibility" : null,
-        "modifiers" : [ ],
-        "annotations" : [ ],
-        "localVariables" : [ ],
-        "methodCalls" : [ ]
+        "kind" : "set"
       } ]
     }, {
       "name" : "email",
-      "type" : null,
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "accessors" : [ {
-        "kind" : "get",
-        "visibility" : null,
-        "modifiers" : [ ],
-        "annotations" : [ ],
-        "localVariables" : [ ],
-        "methodCalls" : [ ]
+        "kind" : "get"
       }, {
-        "kind" : "set",
-        "visibility" : null,
-        "modifiers" : [ ],
-        "annotations" : [ ],
-        "localVariables" : [ ],
-        "methodCalls" : [ ]
+        "kind" : "set"
       } ]
     } ],
     "methods" : [ {
       "name" : "initialize",
-      "returnType" : null,
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "id",
-        "type" : null
+        "name" : "id"
       }, {
-        "name" : "name",
-        "type" : null
+        "name" : "name"
       }, {
-        "name" : "email",
-        "type" : null
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+        "name" : "email"
+      } ]
+    } ]
   } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
   "imports" : [ "require 'logger'" ]
 }

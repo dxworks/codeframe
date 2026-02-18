@@ -49,37 +49,124 @@
     "records" : [ {
       "name" : "CUSTOMER-HEADER-RECORD",
       "level" : 1,
-      "section" : "FILE SECTION"
+      "section" : "FILE SECTION",
+      "children" : [ {
+        "name" : "RECORD-TYPE",
+        "level" : 5,
+        "picture" : "X(1)"
+      }, {
+        "name" : "HEADER-DATE",
+        "level" : 5,
+        "picture" : "X(8)"
+      }, {
+        "name" : "RECORD-COUNT",
+        "level" : 5,
+        "picture" : "9(5)"
+      } ]
     }, {
       "name" : "CUSTOMER-DETAIL-RECORD",
       "level" : 1,
-      "section" : "FILE SECTION"
+      "section" : "FILE SECTION",
+      "children" : [ {
+        "name" : "RECORD-TYPE",
+        "level" : 5,
+        "picture" : "X(1)"
+      }, {
+        "name" : "CUST-ID",
+        "level" : 5,
+        "picture" : "X(10)"
+      }, {
+        "name" : "CUST-NAME",
+        "level" : 5,
+        "picture" : "X(50)"
+      }, {
+        "name" : "CUST-ADDRESS",
+        "level" : 5,
+        "picture" : "X(100)"
+      } ]
     }, {
       "name" : "CUSTOMER-TRAILER-RECORD",
       "level" : 1,
-      "section" : "FILE SECTION"
+      "section" : "FILE SECTION",
+      "children" : [ {
+        "name" : "RECORD-TYPE",
+        "level" : 5,
+        "picture" : "X(1)"
+      }, {
+        "name" : "TRAILER-COUNT",
+        "level" : 5,
+        "picture" : "9(5)"
+      } ]
     } ]
   }, {
     "name" : "TRANSACTION-FILE",
     "records" : [ {
       "name" : "TRANSACTION-RECORD",
       "level" : 1,
-      "section" : "FILE SECTION"
+      "section" : "FILE SECTION",
+      "children" : [ {
+        "name" : "TRNX-ID",
+        "level" : 5,
+        "picture" : "X(15)"
+      }, {
+        "name" : "TRNX-AMOUNT",
+        "level" : 5,
+        "picture" : "9(9)V99"
+      }, {
+        "name" : "TRNX-DATE",
+        "level" : 5,
+        "picture" : "X(8)"
+      } ]
     }, {
       "name" : "TRANSACTION-HEADER-RECORD",
       "level" : 1,
-      "section" : "FILE SECTION"
+      "section" : "FILE SECTION",
+      "children" : [ {
+        "name" : "RECORD-TYPE",
+        "level" : 5,
+        "picture" : "X(1)"
+      }, {
+        "name" : "BATCH-NUMBER",
+        "level" : 5,
+        "picture" : "9(5)"
+      }, {
+        "name" : "BATCH-DATE",
+        "level" : 5,
+        "picture" : "X(8)"
+      } ]
     } ]
   }, {
     "name" : "REPORT-FILE",
     "records" : [ {
       "name" : "REPORT-HEADER-RECORD",
       "level" : 1,
-      "section" : "FILE SECTION"
+      "section" : "FILE SECTION",
+      "children" : [ {
+        "name" : "REPORT-TITLE",
+        "level" : 5,
+        "picture" : "X(50)"
+      }, {
+        "name" : "REPORT-DATE",
+        "level" : 5,
+        "picture" : "X(8)"
+      }, {
+        "name" : "PAGE-NUMBER",
+        "level" : 5,
+        "picture" : "9(5)"
+      } ]
     }, {
       "name" : "REPORT-DETAIL-RECORD",
       "level" : 1,
-      "section" : "FILE SECTION"
+      "section" : "FILE SECTION",
+      "children" : [ {
+        "name" : "LINE-TYPE",
+        "level" : 5,
+        "picture" : "X(1)"
+      }, {
+        "name" : "LINE-TEXT",
+        "level" : 5,
+        "picture" : "X(132)"
+      } ]
     } ]
   } ],
   "paragraphs" : [ {
@@ -160,7 +247,7 @@
       "isDynamic" : false,
       "parameterCount" : 2
     } ],
-    "dataReferences" : [ "WS-RECORD-COUNT", "END-OF-FILE", "WS-COUNT" ]
+    "dataReferences" : [ "WS-RECORD-COUNT", "END-OF-FILE", "WS-COUNT", "WS-RECORD-COUNT-ADD", "WS-RECORD-COUNT-SUB", "WS-RECORD-COUNT-MUL", "WS-RECORD-COUNT-DIV" ]
   }, {
     "name" : "9000-CLOSE-FILES",
     "fileOperations" : [ {

@@ -7,18 +7,11 @@
     "name" : "Utils",
     "visibility" : "public",
     "modifiers" : [ "public", "static" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "SumAndCount",
       "returnType" : "(int sum, int count)",
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "data",
         "type" : "ReadOnlySpan<int>"
@@ -28,41 +21,30 @@
         "methodName" : "get_Length",
         "objectType" : "ReadOnlySpan<int>",
         "objectName" : "data",
-        "callCount" : 2,
-        "parameterCount" : null
+        "callCount" : 2
       } ]
     }, {
       "name" : "Tail",
       "returnType" : "int[]",
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "xs",
         "type" : "int[]"
       } ],
-      "localVariables" : [ "tail" ],
-      "methodCalls" : [ ]
+      "localVariables" : [ "tail" ]
     }, {
       "name" : "Demo",
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
       "localVariables" : [ "dict", "list", "arr", "last" ],
       "methodCalls" : [ {
         "methodName" : "SumAndCount",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
   "imports" : [ "using System;", "using System.Collections.Generic;" ]
 }

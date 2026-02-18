@@ -1,108 +1,61 @@
 {
   "filePath" : "src/test/resources/samples/rust/Sample.rs",
   "language" : "rust",
-  "packageName" : null,
   "types" : [ {
     "kind" : "struct",
     "name" : "UserRepository",
     "visibility" : "pub",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "db",
-      "type" : "Database",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "type" : "Database"
     }, {
       "name" : "cache",
-      "type" : "HashMap<u32, User>",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ]
-    } ],
-    "properties" : [ ],
-    "methods" : [ ],
-    "types" : [ ]
+      "type" : "HashMap<u32, User>"
+    } ]
   }, {
     "kind" : "struct",
     "name" : "User",
     "visibility" : "pub",
-    "modifiers" : [ ],
     "annotations" : [ "#[derive(Clone, Debug)]" ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "id",
       "type" : "u32",
       "visibility" : "pub",
-      "modifiers" : [ "pub" ],
-      "annotations" : [ ]
+      "modifiers" : [ "pub" ]
     }, {
       "name" : "name",
       "type" : "String",
       "visibility" : "pub",
-      "modifiers" : [ "pub" ],
-      "annotations" : [ ]
+      "modifiers" : [ "pub" ]
     }, {
       "name" : "email",
       "type" : "String",
       "visibility" : "pub",
-      "modifiers" : [ "pub" ],
-      "annotations" : [ ]
-    } ],
-    "properties" : [ ],
-    "methods" : [ ],
-    "types" : [ ]
+      "modifiers" : [ "pub" ]
+    } ]
   }, {
     "kind" : "struct",
     "name" : "Database",
     "visibility" : "pub",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "connection",
-      "type" : "String",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ]
-    } ],
-    "properties" : [ ],
-    "methods" : [ ],
-    "types" : [ ]
+      "type" : "String"
+    } ]
   }, {
     "kind" : "impl",
     "name" : "UserRepository",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "new",
       "returnType" : "Self",
       "visibility" : "pub",
       "modifiers" : [ "pub" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "db",
         "type" : "Database"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "new",
         "objectType" : "HashMap",
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 0
       } ]
@@ -111,10 +64,8 @@
       "returnType" : "Option<User>",
       "visibility" : "pub",
       "modifiers" : [ "pub" ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "self",
-        "type" : null
+        "name" : "self"
       }, {
         "name" : "id",
         "type" : "u32"
@@ -122,32 +73,23 @@
       "localVariables" : [ "user" ],
       "methodCalls" : [ {
         "methodName" : "Some",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 2,
         "parameterCount" : 1
       }, {
         "methodName" : "clone",
-        "objectType" : null,
         "objectName" : "user",
         "callCount" : 2,
         "parameterCount" : 0
       }, {
         "methodName" : "get",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "insert",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 2
       }, {
         "methodName" : "query_user",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
@@ -156,71 +98,44 @@
       "returnType" : "Result<(), String>",
       "visibility" : "pub",
       "modifiers" : [ "pub" ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "self",
-        "type" : null
+        "name" : "self"
       }, {
         "name" : "user",
         "type" : "User"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "Ok",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "execute_update",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "insert",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 2
       } ]
     }, {
       "name" : "clear_cache",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "self",
-        "type" : null
+        "name" : "self"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "clear",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 0
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "impl",
     "name" : "User",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "new",
       "returnType" : "Self",
       "visibility" : "pub",
       "modifiers" : [ "pub" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
         "type" : "u32"
@@ -230,58 +145,37 @@
       }, {
         "name" : "email",
         "type" : "String"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "display_name",
       "returnType" : "String",
       "visibility" : "pub",
       "modifiers" : [ "pub" ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "self",
-        "type" : null
+        "name" : "self"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "format!",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 3
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "impl",
     "name" : "Database",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "query_user",
       "returnType" : "Option<User>",
       "visibility" : "pub",
       "modifiers" : [ "pub" ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "self",
-        "type" : null
+        "name" : "self"
       }, {
         "name" : "id",
         "type" : "u32"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "println!",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 2
       } ]
@@ -290,54 +184,39 @@
       "returnType" : "Result<(), String>",
       "visibility" : "pub",
       "modifiers" : [ "pub" ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "self",
-        "type" : null
+        "name" : "self"
       }, {
         "name" : "user",
         "type" : "&User"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "Ok",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "println!",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 2
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   } ],
   "methods" : [ {
     "name" : "create_default_user",
     "returnType" : "User",
     "visibility" : "pub",
     "modifiers" : [ "pub" ],
-    "annotations" : [ ],
-    "parameters" : [ ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "from",
       "objectType" : "String",
-      "objectName" : null,
       "callCount" : 2,
       "parameterCount" : 1
     }, {
       "methodName" : "new",
       "objectType" : "User",
-      "objectName" : null,
       "callCount" : 1,
       "parameterCount" : 3
     } ]
   } ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
   "imports" : [ "use std::collections::HashMap;", "use std::fmt::Display;" ]
 }

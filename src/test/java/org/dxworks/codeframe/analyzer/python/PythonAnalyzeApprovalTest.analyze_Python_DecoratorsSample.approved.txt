@@ -1,92 +1,61 @@
 {
   "filePath" : "src/test/resources/samples/python/decorators_sample.py",
   "language" : "python",
-  "packageName" : null,
   "types" : [ {
     "kind" : "class",
     "name" : "Calculator",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "_instances",
       "type" : "int",
-      "visibility" : "protected",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "protected"
     }, {
       "name" : "_precision",
       "type" : "int",
-      "visibility" : "protected",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "protected"
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "name",
         "type" : "str"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "name",
       "returnType" : "str",
       "visibility" : "public",
       "modifiers" : [ "property" ],
-      "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "annotations" : [ "@property" ]
     }, {
       "name" : "name",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
       "annotations" : [ "@name.setter" ],
       "parameters" : [ {
         "name" : "value",
         "type" : "str"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "ValueError",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "name",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ "@name.deleter" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "annotations" : [ "@name.deleter" ]
     }, {
       "name" : "history",
       "returnType" : "list[str]",
       "visibility" : "public",
       "modifiers" : [ "property" ],
       "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "copy",
-        "objectType" : null,
         "objectName" : "self._history",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "add",
@@ -100,9 +69,7 @@
       }, {
         "name" : "b",
         "type" : "float"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "subtract",
       "returnType" : "float",
@@ -115,18 +82,13 @@
       }, {
         "name" : "b",
         "type" : "float"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "get_instance_count",
       "returnType" : "int",
       "visibility" : "public",
       "modifiers" : [ "classmethod" ],
-      "annotations" : [ "@classmethod" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "annotations" : [ "@classmethod" ]
     }, {
       "name" : "set_precision",
       "returnType" : "None",
@@ -137,13 +99,9 @@
         "name" : "precision",
         "type" : "int"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "ValueError",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "from_string",
@@ -158,22 +116,16 @@
       "localVariables" : [ "name" ],
       "methodCalls" : [ {
         "methodName" : "cls",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "split",
-        "objectType" : null,
         "objectName" : "config",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "multiply",
       "returnType" : "float",
       "visibility" : "public",
-      "modifiers" : [ ],
       "annotations" : [ "@log_calls" ],
       "parameters" : [ {
         "name" : "a",
@@ -185,22 +137,16 @@
       "localVariables" : [ "result" ],
       "methodCalls" : [ {
         "methodName" : "append",
-        "objectType" : null,
         "objectName" : "self._history",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "round",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "divide",
       "returnType" : "float",
       "visibility" : "public",
-      "modifiers" : [ ],
       "annotations" : [ "@retry(times=2)" ],
       "parameters" : [ {
         "name" : "a",
@@ -212,36 +158,20 @@
       "localVariables" : [ "result" ],
       "methodCalls" : [ {
         "methodName" : "ZeroDivisionError",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "append",
-        "objectType" : null,
         "objectName" : "self._history",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "round",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "MathUtils",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "power",
       "returnType" : "float",
@@ -254,9 +184,7 @@
       }, {
         "name" : "exp",
         "type" : "float"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "parse_and_add",
       "returnType" : "float",
@@ -270,23 +198,16 @@
         "name" : "b_str",
         "type" : "str"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "float",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 2,
-        "parameterCount" : null
+        "callCount" : 2
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   } ],
   "methods" : [ {
     "name" : "log_calls",
     "returnType" : "Callable[..., T]",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "func",
       "type" : "Callable[..., T]"
@@ -294,29 +215,17 @@
     "localVariables" : [ "result" ],
     "methodCalls" : [ {
       "methodName" : "func",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     }, {
       "methodName" : "print",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 2,
-      "parameterCount" : null
+      "callCount" : 2
     }, {
       "methodName" : "wraps",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "retry",
-    "returnType" : null,
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "times",
       "type" : "int"
@@ -324,118 +233,72 @@
     "localVariables" : [ "last_error" ],
     "methodCalls" : [ {
       "methodName" : "RuntimeError",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     }, {
       "methodName" : "func",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     }, {
       "methodName" : "print",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     }, {
       "methodName" : "range",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     }, {
       "methodName" : "wraps",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "validate_args",
-    "returnType" : null,
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "*validators",
       "type" : "Callable[[Any], bool]"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "ValueError",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     }, {
       "methodName" : "enumerate",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     }, {
       "methodName" : "func",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     }, {
       "methodName" : "validator",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     }, {
       "methodName" : "wraps",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     }, {
       "methodName" : "zip",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "greet",
     "returnType" : "str",
     "visibility" : "public",
-    "modifiers" : [ ],
     "annotations" : [ "@log_calls" ],
     "parameters" : [ {
       "name" : "name",
       "type" : "str"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "fetch_data",
     "returnType" : "dict[str, Any]",
     "visibility" : "public",
-    "modifiers" : [ ],
     "annotations" : [ "@retry(times=5)" ],
     "parameters" : [ {
       "name" : "url",
       "type" : "str"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "ConnectionError",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "safe_divide",
     "returnType" : "float",
     "visibility" : "public",
-    "modifiers" : [ ],
     "annotations" : [ "@validate_args(lambda x: x > 0, lambda x: x > 0)" ],
     "parameters" : [ {
       "name" : "a",
@@ -443,41 +306,27 @@
     }, {
       "name" : "b",
       "type" : "float"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   } ],
   "fields" : [ {
     "name" : "MAX_RETRIES",
     "type" : "int",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ]
+    "visibility" : "public"
   }, {
     "name" : "DEFAULT_TIMEOUT",
     "type" : "float",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ]
+    "visibility" : "public"
   }, {
     "name" : "APP_NAME",
     "type" : "str",
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ]
+    "visibility" : "public"
   }, {
     "name" : "T",
-    "type" : null,
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ]
+    "visibility" : "public"
   } ],
   "methodCalls" : [ {
     "methodName" : "TypeVar",
-    "objectType" : null,
-    "objectName" : null,
-    "callCount" : 1,
-    "parameterCount" : null
+    "callCount" : 1
   } ],
   "imports" : [ "from functools import wraps", "from typing import Any, Callable, TypeVar" ]
 }

@@ -7,24 +7,18 @@
     "name" : "DataContainer",
     "visibility" : "public",
     "modifiers" : [ "public" ],
-    "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ "IDetectTypeCodeIssue" ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "Few",
       "type" : "int",
       "visibility" : "private",
-      "modifiers" : [ "private", "const" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private", "const" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "Detect",
       "returnType" : "Maybe<CodeIssue>",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "t",
         "type" : "ClassModel"
@@ -38,20 +32,15 @@
         "parameterCount" : 0
       }, {
         "methodName" : "CalculateSeverity",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 3
       }, {
         "methodName" : "For",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "From",
         "objectType" : "Maybe<CodeIssue>",
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
@@ -62,59 +51,47 @@
         "parameterCount" : 0
       }, {
         "methodName" : "ToList",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 2,
         "parameterCount" : 0
       }, {
         "methodName" : "get_Count",
         "objectType" : "IList<FieldModel>",
         "objectName" : "publicAttributes",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "get_Count",
         "objectType" : "IList<PropertyModel>",
         "objectName" : "accessors",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "get_FilePath",
         "objectType" : "ClassModel",
         "objectName" : "t",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "get_None",
         "objectType" : "Maybe<CodeIssue>",
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "get_OneThird",
-        "objectType" : null,
         "objectName" : "CommonFractionThreshold",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "get_WeightOfAClass",
         "objectType" : "var",
         "objectName" : "metrics",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "get_WeightedMethodCount",
         "objectType" : "var",
         "objectName" : "metrics",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "CalculateSeverity",
       "returnType" : "double",
       "visibility" : "private",
       "modifiers" : [ "private", "static" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "publicAttributes",
         "type" : "IList<FieldModel>"
@@ -128,14 +105,10 @@
       "localVariables" : [ "severityExploit", "severityExposure" ],
       "methodCalls" : [ {
         "methodName" : "SeverityExploit",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 3
       }, {
         "methodName" : "SeverityExposure",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 2
       } ]
@@ -144,7 +117,6 @@
       "returnType" : "double",
       "visibility" : "private",
       "modifiers" : [ "private", "static" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "publicAttributes",
         "type" : "IList<FieldModel>"
@@ -152,16 +124,12 @@
         "name" : "accessors",
         "type" : "IList<PropertyModel>"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "ValueFor",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "WithMeasurementRange",
-        "objectType" : null,
         "objectName" : "LinearNormalization",
         "callCount" : 1,
         "parameterCount" : 2
@@ -169,21 +137,18 @@
         "methodName" : "get_Count",
         "objectType" : "IList<FieldModel>",
         "objectName" : "publicAttributes",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "get_Count",
         "objectType" : "IList<PropertyModel>",
         "objectName" : "accessors",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "SeverityExploit",
       "returnType" : "double",
       "visibility" : "private",
       "modifiers" : [ "private", "static" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "publicAttributes",
         "type" : "IList<FieldModel>"
@@ -233,40 +198,28 @@
         "parameterCount" : 1
       }, {
         "methodName" : "ToHashSet",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 3,
         "parameterCount" : 0
       }, {
         "methodName" : "ValueFor",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "WithMeasurementRange",
-        "objectType" : null,
         "objectName" : "LinearNormalization",
         "callCount" : 1,
         "parameterCount" : 2
       }, {
         "methodName" : "get_Accesses",
-        "objectType" : null,
         "objectName" : "pa",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "get_Count",
         "objectType" : "var",
         "objectName" : "classesUsingPublicData",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
   "imports" : [ "using CSharpFunctionalExtensions;", "using CodeAnalysis.Metrics;", "using Analysis.Plugins.Models;" ]
 }

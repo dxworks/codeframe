@@ -1,44 +1,31 @@
 {
   "filePath" : "src/test/resources/samples/php/ClosuresAndArrowFunctionsSample.php",
   "language" : "php",
-  "packageName" : null,
   "types" : [ {
     "kind" : "class",
     "name" : "Calculator",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "operations",
       "type" : "array",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     }, {
       "name" : "logger",
       "type" : "?callable",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__construct",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "logger",
         "type" : "?callable"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "initializeOperations",
-        "objectType" : null,
         "objectName" : "this",
         "callCount" : 1,
         "parameterCount" : 0
@@ -47,32 +34,24 @@
       "name" : "initializeOperations",
       "returnType" : "void",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "private" ]
     }, {
       "name" : "registerOperation",
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "name",
         "type" : "string"
       }, {
         "name" : "operation",
         "type" : "callable"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "execute",
       "returnType" : "float",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "operation",
         "type" : "string"
@@ -86,8 +65,6 @@
       "localVariables" : [ "result" ],
       "methodCalls" : [ {
         "methodName" : "isset",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
@@ -96,65 +73,44 @@
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "logger",
         "type" : "callable"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "getOperationNames",
       "returnType" : "array",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "array_keys",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Collection",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "items",
       "type" : "array",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__construct",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "items",
         "type" : "array"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "map",
       "returnType" : "self",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "callback",
         "type" : "callable"
@@ -162,8 +118,6 @@
       "localVariables" : [ "mapped" ],
       "methodCalls" : [ {
         "methodName" : "array_map",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 2
       } ]
@@ -172,7 +126,6 @@
       "returnType" : "self",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "predicate",
         "type" : "callable"
@@ -180,14 +133,10 @@
       "localVariables" : [ "filtered" ],
       "methodCalls" : [ {
         "methodName" : "array_filter",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 2
       }, {
         "methodName" : "array_values",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
@@ -196,7 +145,6 @@
       "returnType" : "mixed",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "callback",
         "type" : "callable"
@@ -204,11 +152,8 @@
         "name" : "initial",
         "type" : "mixed"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "array_reduce",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 3
       } ]
@@ -217,31 +162,24 @@
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "callback",
         "type" : "callable"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "find",
       "returnType" : "mixed",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "predicate",
         "type" : "callable"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "sort",
       "returnType" : "self",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "comparator",
         "type" : "callable"
@@ -249,8 +187,6 @@
       "localVariables" : [ "sorted" ],
       "methodCalls" : [ {
         "methodName" : "usort",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 2
       } ]
@@ -258,51 +194,33 @@
       "name" : "toArray",
       "returnType" : "array",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "count",
       "returnType" : "int",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "count",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "EventEmitter",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "listeners",
       "type" : "array",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "on",
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "event",
         "type" : "string"
@@ -310,11 +228,8 @@
         "name" : "listener",
         "type" : "callable"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "isset",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
@@ -323,7 +238,6 @@
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "event",
         "type" : "string"
@@ -331,11 +245,8 @@
         "name" : "...args",
         "type" : "mixed"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "isset",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
@@ -344,7 +255,6 @@
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "event",
         "type" : "string"
@@ -355,13 +265,11 @@
       "localVariables" : [ "wrapper" ],
       "methodCalls" : [ {
         "methodName" : "off",
-        "objectType" : null,
         "objectName" : "this",
         "callCount" : 1,
         "parameterCount" : 2
       }, {
         "methodName" : "on",
-        "objectType" : null,
         "objectName" : "this",
         "callCount" : 1,
         "parameterCount" : 2
@@ -371,7 +279,6 @@
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "event",
         "type" : "string"
@@ -379,17 +286,12 @@
         "name" : "listener",
         "type" : "callable"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "array_filter",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 2
       }, {
         "methodName" : "isset",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
@@ -398,47 +300,30 @@
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "event",
         "type" : "string"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "FunctionUtils",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "compose",
       "returnType" : "callable",
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "...functions",
         "type" : "callable"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "array_reduce",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 3
       }, {
         "methodName" : "array_reverse",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
@@ -447,16 +332,12 @@
       "returnType" : "callable",
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "...functions",
         "type" : "callable"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "array_reduce",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 3
       } ]
@@ -465,7 +346,6 @@
       "returnType" : "callable",
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "fn",
         "type" : "callable"
@@ -473,17 +353,13 @@
         "name" : "arity",
         "type" : "int"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "count",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 2,
         "parameterCount" : 1
       }, {
         "methodName" : "curry",
         "objectType" : "self",
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 2
       } ]
@@ -492,7 +368,6 @@
       "returnType" : "callable",
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "fn",
         "type" : "callable"
@@ -500,14 +375,10 @@
       "localVariables" : [ "cache", "key" ],
       "methodCalls" : [ {
         "methodName" : "isset",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "serialize",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
@@ -516,7 +387,6 @@
       "returnType" : "callable",
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "fn",
         "type" : "callable"
@@ -527,47 +397,32 @@
       "localVariables" : [ "lastCall", "now" ],
       "methodCalls" : [ {
         "methodName" : "microtime",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   } ],
   "methods" : [ {
     "name" : "createCounter",
     "returnType" : "callable",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "start",
       "type" : "int"
     } ],
-    "localVariables" : [ "count" ],
-    "methodCalls" : [ ]
+    "localVariables" : [ "count" ]
   }, {
     "name" : "createFormatter",
     "returnType" : "callable",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "prefix",
       "type" : "string"
     }, {
       "name" : "suffix",
       "type" : "string"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "applyToAll",
     "returnType" : "array",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "items",
       "type" : "array"
@@ -575,20 +430,14 @@
       "name" : "fn",
       "type" : "callable"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "array_map",
-      "objectType" : null,
-      "objectName" : null,
       "callCount" : 1,
       "parameterCount" : 2
     } ]
   }, {
     "name" : "filterBy",
     "returnType" : "array",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "items",
       "type" : "array"
@@ -596,17 +445,12 @@
       "name" : "predicate",
       "type" : "callable"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "array_filter",
-      "objectType" : null,
-      "objectName" : null,
       "callCount" : 1,
       "parameterCount" : 2
     }, {
       "methodName" : "array_values",
-      "objectType" : null,
-      "objectName" : null,
       "callCount" : 1,
       "parameterCount" : 1
     } ]
@@ -614,26 +458,18 @@
   "fields" : [ {
     "name" : "MULTIPLIER",
     "type" : "int",
-    "visibility" : null,
-    "modifiers" : [ "const" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const" ]
   }, {
     "name" : "DEFAULT_PREFIX",
     "type" : "string",
-    "visibility" : null,
-    "modifiers" : [ "const" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const" ]
   } ],
   "methodCalls" : [ {
     "methodName" : "error_log",
-    "objectType" : null,
-    "objectName" : null,
     "callCount" : 1,
     "parameterCount" : 1
   }, {
     "methodName" : "set_error_handler",
-    "objectType" : null,
-    "objectName" : null,
     "callCount" : 1,
     "parameterCount" : 1
   } ],

@@ -7,111 +7,64 @@
     "name" : "Animal",
     "visibility" : "public",
     "modifiers" : [ "public", "abstract" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
     "properties" : [ {
       "name" : "Name",
       "type" : "string",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "accessors" : [ {
-        "kind" : "get",
-        "visibility" : null,
-        "modifiers" : [ ],
-        "annotations" : [ ],
-        "localVariables" : [ ],
-        "methodCalls" : [ ]
+        "kind" : "get"
       } ]
     } ],
     "methods" : [ {
       "name" : "Speak",
       "returnType" : "string",
       "visibility" : "public",
-      "modifiers" : [ "public", "virtual" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public", "virtual" ]
     }, {
       "name" : "Animal",
-      "returnType" : null,
       "visibility" : "protected",
       "modifiers" : [ "protected" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "name",
         "type" : "string"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Dog",
     "visibility" : "public",
     "modifiers" : [ "public" ],
-    "annotations" : [ ],
     "extendsType" : "Animal",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "Speak",
       "returnType" : "string",
       "visibility" : "public",
-      "modifiers" : [ "public", "sealed", "override" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public", "sealed", "override" ]
     }, {
       "name" : "Dog",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "name",
         "type" : "string"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "LoudDog",
     "visibility" : "public",
     "modifiers" : [ "public" ],
-    "annotations" : [ ],
     "extendsType" : "Dog",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "LoudDog",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "name",
         "type" : "string"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
   "imports" : [ "using System;" ]
 }

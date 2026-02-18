@@ -397,28 +397,49 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
         
         // Helper method to process children of a record data item
         private void processChildrenForRecord(Cobol85Parser.DataDescriptionEntryFormat1Context ctx, COBOLDataItem parentRecord) {
-            // Build hierarchy for this record to extract children
-            Deque<COBOLDataItem> localHierarchy = new ArrayDeque<>();
-            localHierarchy.push(parentRecord);
+            // Find the index of this record in the FD's data description entries
+            if (currentFdContext == null) return;
             
-            // Visit all data description entries under this FD to find children
-            if (currentFdContext != null) {
-                for (Cobol85Parser.DataDescriptionEntryContext dataDescCtx : currentFdContext.dataDescriptionEntry()) {
-                    if (dataDescCtx.dataDescriptionEntryFormat1() != null) {
-                        COBOLDataItem dataItem = toDataItem(dataDescCtx.dataDescriptionEntryFormat1());
-                        if (dataItem != null) {
-                            // Maintain hierarchy based on levels
-                            while (!localHierarchy.isEmpty() && dataItem.level <= localHierarchy.peek().level) {
-                                localHierarchy.pop();
-                            }
-                            
-                            // Add as child if we have a parent and this is not the record itself
-                            if (!localHierarchy.isEmpty() && dataItem.name != null && !dataItem.name.equals(parentRecord.name)) {
-                                localHierarchy.peek().children.add(dataItem);
-                                localHierarchy.push(dataItem);
-                            } else if (dataItem.name != null && !dataItem.name.equals(parentRecord.name)) {
-                                localHierarchy.push(dataItem);
-                            }
+            List<Cobol85Parser.DataDescriptionEntryContext> dataEntries = currentFdContext.dataDescriptionEntry();
+            int parentIndex = -1;
+            
+            // Find the parent record's position
+            for (int i = 0; i < dataEntries.size(); i++) {
+                Cobol85Parser.DataDescriptionEntryContext dataDescCtx = dataEntries.get(i);
+                if (dataDescCtx.dataDescriptionEntryFormat1() != null) {
+                    COBOLDataItem dataItem = toDataItem(dataDescCtx.dataDescriptionEntryFormat1());
+                    if (dataItem != null && dataItem.name != null && dataItem.name.equals(parentRecord.name)) {
+                        parentIndex = i;
+                        break;
+                    }
+                }
+            }
+            
+            if (parentIndex == -1) return; // Parent not found
+            
+            // Process subsequent entries as children until we hit another level 1 record or end of FD
+            Deque<COBOLDataItem> hierarchy = new ArrayDeque<>();
+            hierarchy.push(parentRecord);
+            
+            for (int i = parentIndex + 1; i < dataEntries.size(); i++) {
+                Cobol85Parser.DataDescriptionEntryContext dataDescCtx = dataEntries.get(i);
+                if (dataDescCtx.dataDescriptionEntryFormat1() != null) {
+                    COBOLDataItem dataItem = toDataItem(dataDescCtx.dataDescriptionEntryFormat1());
+                    if (dataItem != null && dataItem.name != null) {
+                        // Stop if we hit another level 1 record (different record)
+                        if (dataItem.level <= 1) {
+                            break;
+                        }
+                        
+                        // Maintain hierarchy based on levels
+                        while (!hierarchy.isEmpty() && dataItem.level <= hierarchy.peek().level) {
+                            hierarchy.pop();
+                        }
+                        
+                        // Add as child if we have a parent
+                        if (!hierarchy.isEmpty()) {
+                            hierarchy.peek().children.add(dataItem);
+                            hierarchy.push(dataItem);
                         }
                     }
                 }

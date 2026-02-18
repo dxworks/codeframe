@@ -1,24 +1,14 @@
 {
   "filePath" : "src/test/resources/samples/php/OrderParams.php",
   "language" : "php",
-  "packageName" : null,
   "types" : [ {
     "kind" : "class",
     "name" : "Svc",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__construct",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
         "type" : "int"
@@ -28,15 +18,11 @@
       }, {
         "name" : "logger",
         "type" : "Logger"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "m",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "a",
         "type" : "string"
@@ -44,20 +30,12 @@
         "name" : "b",
         "type" : "int"
       }, {
-        "name" : "c",
-        "type" : null
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+        "name" : "c"
+      } ]
+    } ]
   } ],
   "methods" : [ {
     "name" : "f",
-    "returnType" : null,
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "x",
       "type" : "int"
@@ -67,11 +45,6 @@
     }, {
       "name" : "z",
       "type" : "bool"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
-  } ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+    } ]
+  } ]
 }

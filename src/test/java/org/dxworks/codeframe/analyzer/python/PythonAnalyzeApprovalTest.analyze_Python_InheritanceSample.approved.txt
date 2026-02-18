@@ -1,103 +1,62 @@
 {
   "filePath" : "src/test/resources/samples/python/inheritance_sample.py",
   "language" : "python",
-  "packageName" : null,
   "types" : [ {
     "kind" : "class",
     "name" : "Animal",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "ABC",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "name",
         "type" : "str"
       }, {
         "name" : "age",
         "type" : "int"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "describe",
       "returnType" : "str",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "type",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "name",
       "returnType" : "str",
       "visibility" : "public",
       "modifiers" : [ "property" ],
-      "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "annotations" : [ "@property" ]
     }, {
       "name" : "age",
       "returnType" : "int",
       "visibility" : "public",
       "modifiers" : [ "property" ],
-      "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "annotations" : [ "@property" ]
     }, {
       "name" : "speak",
       "returnType" : "str",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ "@abstractmethod" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "annotations" : [ "@abstractmethod" ]
     }, {
       "name" : "move",
       "returnType" : "str",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ "@abstractmethod" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "annotations" : [ "@abstractmethod" ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Dog",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "Animal",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "name",
         "type" : "str"
@@ -108,78 +67,45 @@
         "name" : "breed",
         "type" : "str"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "__init__",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "super",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "speak",
       "returnType" : "str",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "move",
       "returnType" : "str",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "fetch",
       "returnType" : "str",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "item",
         "type" : "str"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "breed",
       "returnType" : "str",
       "visibility" : "public",
       "modifiers" : [ "property" ],
-      "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "annotations" : [ "@property" ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Cat",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "Animal",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "name",
         "type" : "str"
@@ -190,101 +116,56 @@
         "name" : "indoor",
         "type" : "bool"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "__init__",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "super",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "speak",
       "returnType" : "str",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "move",
       "returnType" : "str",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "purr",
       "returnType" : "str",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "indoor",
       "returnType" : "bool",
       "visibility" : "public",
       "modifiers" : [ "property" ],
-      "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "annotations" : [ "@property" ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "SerializableMixin",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "to_dict",
       "returnType" : "dict[str, Any]",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
       "localVariables" : [ "result", "clean_key" ],
       "methodCalls" : [ {
         "methodName" : "isinstance",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "isoformat",
-        "objectType" : null,
         "objectName" : "value",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "items",
-        "objectType" : null,
         "objectName" : "self.__dict__",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "lstrip",
-        "objectType" : null,
         "objectName" : "key",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "from_dict",
@@ -296,142 +177,87 @@
         "name" : "data",
         "type" : "dict[str, Any]"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "cls",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "ComparableMixin",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__eq__",
       "returnType" : "bool",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "other",
         "type" : "object"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "isinstance",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "__lt__",
       "returnType" : "bool",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "other",
         "type" : "object"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "isinstance",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "str",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 2,
-        "parameterCount" : null
+        "callCount" : 2
       } ]
     }, {
       "name" : "__le__",
       "returnType" : "bool",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "other",
         "type" : "object"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "__gt__",
       "returnType" : "bool",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "other",
         "type" : "object"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "isinstance",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "str",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 2,
-        "parameterCount" : null
+        "callCount" : 2
       } ]
     }, {
       "name" : "__ge__",
       "returnType" : "bool",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "other",
         "type" : "object"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "LoggableMixin",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "_log",
       "type" : "list[str]",
-      "visibility" : "protected",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "protected"
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "log",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "message",
         "type" : "str"
@@ -439,133 +265,80 @@
       "localVariables" : [ "timestamp", "entry" ],
       "methodCalls" : [ {
         "methodName" : "append",
-        "objectType" : null,
         "objectName" : "self._log",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "isoformat",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "now",
-        "objectType" : null,
         "objectName" : "datetime",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "type",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "get_logs",
       "returnType" : "list[str]",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "copy",
-        "objectType" : null,
         "objectName" : "self._log",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "clear_logs",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "clear",
-        "objectType" : null,
         "objectName" : "self._log",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "ValidatableMixin",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "validate",
       "returnType" : "list[str]",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
       "localVariables" : [ "errors" ],
       "methodCalls" : [ {
         "methodName" : "append",
-        "objectType" : null,
         "objectName" : "errors",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "items",
-        "objectType" : null,
         "objectName" : "self.__dict__",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "is_valid",
       "returnType" : "bool",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "len",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "validate",
         "objectType" : "ValidatableMixin",
         "objectName" : "self",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Entity",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "SerializableMixin",
     "implementsInterfaces" : [ "ComparableMixin", "ValidatableMixin" ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
         "type" : "int"
@@ -573,66 +346,42 @@
         "name" : "created_at",
         "type" : "Optional[datetime]"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "now",
-        "objectType" : null,
         "objectName" : "datetime",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "__str__",
       "returnType" : "str",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "type",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "id",
       "returnType" : "int",
       "visibility" : "public",
       "modifiers" : [ "property" ],
-      "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "annotations" : [ "@property" ]
     }, {
       "name" : "created_at",
       "returnType" : "datetime",
       "visibility" : "public",
       "modifiers" : [ "property" ],
-      "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "annotations" : [ "@property" ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "User",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "Entity",
     "implementsInterfaces" : [ "LoggableMixin" ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
         "type" : "int"
@@ -646,26 +395,17 @@
         "name" : "created_at",
         "type" : "Optional[datetime]"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "__init__",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "super",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "change_email",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "new_email",
         "type" : "str"
@@ -675,79 +415,49 @@
         "methodName" : "log",
         "objectType" : "User",
         "objectName" : "self",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "validate",
       "returnType" : "list[str]",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
       "localVariables" : [ "errors" ],
       "methodCalls" : [ {
         "methodName" : "append",
-        "objectType" : null,
         "objectName" : "errors",
-        "callCount" : 2,
-        "parameterCount" : null
+        "callCount" : 2
       }, {
         "methodName" : "len",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "super",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "validate",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "username",
       "returnType" : "str",
       "visibility" : "public",
       "modifiers" : [ "property" ],
-      "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "annotations" : [ "@property" ]
     }, {
       "name" : "email",
       "returnType" : "str",
       "visibility" : "public",
       "modifiers" : [ "property" ],
-      "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "annotations" : [ "@property" ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Product",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "Entity",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
         "type" : "int"
@@ -761,308 +471,170 @@
         "name" : "created_at",
         "type" : "Optional[datetime]"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "__init__",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "super",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "validate",
       "returnType" : "list[str]",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
       "localVariables" : [ "errors" ],
       "methodCalls" : [ {
         "methodName" : "append",
-        "objectType" : null,
         "objectName" : "errors",
-        "callCount" : 2,
-        "parameterCount" : null
+        "callCount" : 2
       }, {
         "methodName" : "super",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "validate",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "name",
       "returnType" : "str",
       "visibility" : "public",
       "modifiers" : [ "property" ],
-      "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "annotations" : [ "@property" ]
     }, {
       "name" : "price",
       "returnType" : "float",
       "visibility" : "public",
       "modifiers" : [ "property" ],
-      "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "annotations" : [ "@property" ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "A",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "method",
       "returnType" : "str",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "greet",
       "returnType" : "str",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "visibility" : "public"
+    } ]
   }, {
     "kind" : "class",
     "name" : "B",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "A",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "method",
       "returnType" : "str",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "method",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "super",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "greet",
       "returnType" : "str",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "visibility" : "public"
+    } ]
   }, {
     "kind" : "class",
     "name" : "C",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "A",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "method",
       "returnType" : "str",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "method",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "super",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "greet",
       "returnType" : "str",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "visibility" : "public"
+    } ]
   }, {
     "kind" : "class",
     "name" : "D",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "B",
     "implementsInterfaces" : [ "C" ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "method",
       "returnType" : "str",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "method",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "super",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "show_mro",
       "returnType" : "list[str]",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "type",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "SlottedBase",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "__slots__",
       "type" : "tuple",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "x",
         "type" : "int"
       }, {
         "name" : "y",
         "type" : "int"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "x",
       "returnType" : "int",
       "visibility" : "public",
       "modifiers" : [ "property" ],
-      "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "annotations" : [ "@property" ]
     }, {
       "name" : "y",
       "returnType" : "int",
       "visibility" : "public",
       "modifiers" : [ "property" ],
-      "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "annotations" : [ "@property" ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "SlottedChild",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "SlottedBase",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "__slots__",
       "type" : "tuple",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "x",
         "type" : "int"
@@ -1073,43 +645,24 @@
         "name" : "z",
         "type" : "int"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "__init__",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "super",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "coordinates",
       "returnType" : "tuple[int, int, int]",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "z",
       "returnType" : "int",
       "visibility" : "public",
       "modifiers" : [ "property" ],
-      "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "annotations" : [ "@property" ]
+    } ]
   } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
   "imports" : [ "from abc import ABC, abstractmethod", "from datetime import datetime", "from typing import Any, Optional" ]
 }

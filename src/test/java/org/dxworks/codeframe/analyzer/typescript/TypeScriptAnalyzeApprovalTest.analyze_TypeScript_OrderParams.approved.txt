@@ -1,24 +1,13 @@
 {
   "filePath" : "src/test/resources/samples/typescript/order-params.ts",
   "language" : "typescript",
-  "packageName" : null,
   "types" : [ {
     "kind" : "class",
     "name" : "C",
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "m",
       "returnType" : "void",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "x",
         "type" : "string"
@@ -26,20 +15,14 @@
         "name" : "y",
         "type" : "number"
       }, {
-        "name" : "...z",
-        "type" : null
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+        "name" : "...z"
+      } ]
+    } ]
   } ],
   "methods" : [ {
     "name" : "f",
     "returnType" : "void",
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "a",
       "type" : "number"
@@ -47,13 +30,7 @@
       "name" : "b",
       "type" : "string"
     }, {
-      "name" : "...rest",
-      "type" : null
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
-  } ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+      "name" : "...rest"
+    } ]
+  } ]
 }

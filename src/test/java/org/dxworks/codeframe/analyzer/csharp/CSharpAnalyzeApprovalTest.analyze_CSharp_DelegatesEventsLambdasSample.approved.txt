@@ -7,80 +7,52 @@
     "name" : "ValueChangedEventArgs",
     "visibility" : "public",
     "modifiers" : [ "public" ],
-    "annotations" : [ ],
     "extendsType" : "EventArgs",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
     "properties" : [ {
       "name" : "OldValue",
       "type" : "int",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "accessors" : [ {
-        "kind" : "get",
-        "visibility" : null,
-        "modifiers" : [ ],
-        "annotations" : [ ],
-        "localVariables" : [ ],
-        "methodCalls" : [ ]
+        "kind" : "get"
       } ]
     }, {
       "name" : "NewValue",
       "type" : "int",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "accessors" : [ {
-        "kind" : "get",
-        "visibility" : null,
-        "modifiers" : [ ],
-        "annotations" : [ ],
-        "localVariables" : [ ],
-        "methodCalls" : [ ]
+        "kind" : "get"
       } ]
     } ],
     "methods" : [ {
       "name" : "ValueChangedEventArgs",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "oldValue",
         "type" : "int"
       }, {
         "name" : "newValue",
         "type" : "int"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Counter",
     "visibility" : "public",
     "modifiers" : [ "public" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "_value",
       "type" : "int",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "Increment",
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "step",
         "type" : "Func<int, int>"
@@ -88,31 +60,20 @@
       "localVariables" : [ "oldV" ],
       "methodCalls" : [ {
         "methodName" : "step",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Demo",
     "visibility" : "public",
     "modifiers" : [ "public", "static" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "WireUp",
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
       "localVariables" : [ "c", "onChanged" ],
       "methodCalls" : [ {
         "methodName" : "Increment",
@@ -122,28 +83,19 @@
         "parameterCount" : 1
       }, {
         "methodName" : "WriteLine",
-        "objectType" : null,
         "objectName" : "Console",
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "get_NewValue",
-        "objectType" : null,
         "objectName" : "e",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "onChanged",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 2
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
   "imports" : [ "using System;" ]
 }

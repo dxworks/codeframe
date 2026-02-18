@@ -1,92 +1,53 @@
 {
   "filePath" : "src/test/resources/samples/rust/StructsAndImpls.rs",
   "language" : "rust",
-  "packageName" : null,
   "types" : [ {
     "kind" : "struct",
     "name" : "Point",
     "visibility" : "pub",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "x",
       "type" : "f64",
       "visibility" : "pub",
-      "modifiers" : [ "pub" ],
-      "annotations" : [ ]
+      "modifiers" : [ "pub" ]
     }, {
       "name" : "y",
       "type" : "f64",
       "visibility" : "pub",
-      "modifiers" : [ "pub" ],
-      "annotations" : [ ]
-    } ],
-    "properties" : [ ],
-    "methods" : [ ],
-    "types" : [ ]
+      "modifiers" : [ "pub" ]
+    } ]
   }, {
     "kind" : "struct",
     "name" : "Rectangle",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "top_left",
-      "type" : "Point",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "type" : "Point"
     }, {
       "name" : "bottom_right",
-      "type" : "Point",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ]
-    } ],
-    "properties" : [ ],
-    "methods" : [ ],
-    "types" : [ ]
+      "type" : "Point"
+    } ]
   }, {
     "kind" : "impl",
     "name" : "Point",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "new",
       "returnType" : "Self",
       "visibility" : "pub",
       "modifiers" : [ "pub" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "x",
         "type" : "f64"
       }, {
         "name" : "y",
         "type" : "f64"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "distance",
       "returnType" : "f64",
       "visibility" : "pub",
       "modifiers" : [ "pub" ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "self",
-        "type" : null
+        "name" : "self"
       }, {
         "name" : "other",
         "type" : "&Point"
@@ -94,129 +55,76 @@
       "localVariables" : [ "dx", "dy" ],
       "methodCalls" : [ {
         "methodName" : "sqrt",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 0
       } ]
     }, {
       "name" : "translate",
-      "returnType" : null,
       "visibility" : "pub",
       "modifiers" : [ "pub" ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "self",
-        "type" : null
+        "name" : "self"
       }, {
         "name" : "dx",
         "type" : "f64"
       }, {
         "name" : "dy",
         "type" : "f64"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   }, {
     "kind" : "impl",
     "name" : "Point",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ "Default" ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "default",
-      "returnType" : "Self",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "returnType" : "Self"
+    } ]
   }, {
     "kind" : "impl",
     "name" : "Rectangle",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "new",
       "returnType" : "Self",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "top_left",
         "type" : "Point"
       }, {
         "name" : "bottom_right",
         "type" : "Point"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "area",
       "returnType" : "f64",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "self",
-        "type" : null
+        "name" : "self"
       } ],
       "localVariables" : [ "width", "height" ],
       "methodCalls" : [ {
         "methodName" : "abs",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 2,
         "parameterCount" : 0
       } ]
     }, {
       "name" : "contains",
       "returnType" : "bool",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "self",
-        "type" : null
+        "name" : "self"
       }, {
         "name" : "point",
         "type" : "&Point"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   } ],
-  "methods" : [ ],
   "fields" : [ {
     "name" : "MAX_POINTS",
     "type" : "usize",
     "visibility" : "pub",
-    "modifiers" : [ "const", "pub" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const", "pub" ]
   }, {
     "name" : "POINT_COUNT",
     "type" : "usize",
     "visibility" : "pub",
-    "modifiers" : [ "static", "mut", "pub" ],
-    "annotations" : [ ]
-  } ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+    "modifiers" : [ "static", "mut", "pub" ]
+  } ]
 }
