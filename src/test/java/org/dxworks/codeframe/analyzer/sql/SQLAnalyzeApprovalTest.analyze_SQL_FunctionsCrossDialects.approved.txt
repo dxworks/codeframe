@@ -15,12 +15,10 @@
   "createProcedures" : [ ],
   "createFunctions" : [ {
     "functionName" : "calc_tax",
-    "schema" : null,
     "orReplace" : false,
     "parameters" : [ {
       "name" : "amount",
-      "type" : "DECIMAL(10,2)",
-      "direction" : null
+      "type" : "DECIMAL(10,2)"
     } ],
     "returnType" : "DECIMAL(10,2)",
     "references" : {

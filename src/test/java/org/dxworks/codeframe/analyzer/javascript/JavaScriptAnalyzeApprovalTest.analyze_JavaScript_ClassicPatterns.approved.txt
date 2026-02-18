@@ -1,276 +1,193 @@
 {
   "filePath" : "src/test/resources/samples/javascript/ClassicPatterns.js",
   "language" : "javascript",
-  "packageName" : null,
   "types" : [ ],
   "methods" : [ {
     "name" : "formatMessage",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ {
-      "name" : "level",
-      "type" : null
+      "name" : "level"
     }, {
-      "name" : "message",
-      "type" : null
+      "name" : "message"
     } ],
     "localVariables" : [ ],
     "methodCalls" : [ ]
   }, {
     "name" : "Person",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ {
-      "name" : "name",
-      "type" : null
+      "name" : "name"
     }, {
-      "name" : "age",
-      "type" : null
+      "name" : "age"
     } ],
     "localVariables" : [ ],
     "methodCalls" : [ ]
   }, {
     "name" : "Employee",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ {
-      "name" : "name",
-      "type" : null
+      "name" : "name"
     }, {
-      "name" : "age",
-      "type" : null
+      "name" : "age"
     }, {
-      "name" : "department",
-      "type" : null
+      "name" : "department"
     } ],
     "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "call",
-      "objectType" : null,
       "objectName" : "Person",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "DataStore",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ {
-      "name" : "initialData",
-      "type" : null
+      "name" : "initialData"
     } ],
     "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "initObservable",
-      "objectType" : null,
       "objectName" : "this",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "on",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ {
-      "name" : "event",
-      "type" : null
+      "name" : "event"
     }, {
-      "name" : "callback",
-      "type" : null
+      "name" : "callback"
     } ],
     "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "push",
-      "objectType" : null,
       "objectName" : "events[event]",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "off",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ {
-      "name" : "event",
-      "type" : null
+      "name" : "event"
     }, {
-      "name" : "callback",
-      "type" : null
+      "name" : "callback"
     } ],
     "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "filter",
-      "objectType" : null,
       "objectName" : "events[event]",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "emit",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ {
-      "name" : "event",
-      "type" : null
+      "name" : "event"
     }, {
-      "name" : "...args",
-      "type" : null
+      "name" : "...args"
     } ],
     "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "callback",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     }, {
       "methodName" : "forEach",
-      "objectType" : null,
       "objectName" : "events[event]",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "once",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ {
-      "name" : "event",
-      "type" : null
+      "name" : "event"
     }, {
-      "name" : "callback",
-      "type" : null
+      "name" : "callback"
     } ],
     "localVariables" : [ "wrapper" ],
     "methodCalls" : [ {
       "methodName" : "callback",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     }, {
       "methodName" : "off",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     }, {
       "methodName" : "on",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "createValidator",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ {
-      "name" : "rules",
-      "type" : null
+      "name" : "rules"
     } ],
     "localVariables" : [ "validators", "errors", "validator" ],
     "methodCalls" : [ {
       "methodName" : "String",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 3,
-      "parameterCount" : null
+      "callCount" : 3
     }, {
       "methodName" : "entries",
-      "objectType" : null,
       "objectName" : "Object",
-      "callCount" : 2,
-      "parameterCount" : null
+      "callCount" : 2
     }, {
       "methodName" : "push",
       "objectType" : "Array",
       "objectName" : "errors",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     }, {
       "methodName" : "test",
-      "objectType" : null,
       "objectName" : "regex",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     }, {
       "methodName" : "validator",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "add",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ {
-      "name" : "value",
-      "type" : null
+      "name" : "value"
     } ],
     "localVariables" : [ ],
     "methodCalls" : [ ]
   }, {
     "name" : "subtract",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ {
-      "name" : "value",
-      "type" : null
+      "name" : "value"
     } ],
     "localVariables" : [ ],
     "methodCalls" : [ ]
   }, {
     "name" : "multiply",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ {
-      "name" : "value",
-      "type" : null
+      "name" : "value"
     } ],
     "localVariables" : [ ],
     "methodCalls" : [ ]
   }, {
     "name" : "divide",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ {
-      "name" : "value",
-      "type" : null
+      "name" : "value"
     } ],
     "localVariables" : [ ],
     "methodCalls" : [ ]
   }, {
     "name" : "getResult",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ ],
@@ -278,8 +195,6 @@
     "methodCalls" : [ ]
   }, {
     "name" : "reset",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ ],
@@ -287,47 +202,32 @@
     "methodCalls" : [ ]
   }, {
     "name" : "factorial",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "const" ],
     "annotations" : [ ],
     "parameters" : [ {
-      "name" : "n",
-      "type" : null
+      "name" : "n"
     } ],
     "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "calculateFactorial",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "fibonacci",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "const" ],
     "annotations" : [ ],
     "parameters" : [ {
-      "name" : "n",
-      "type" : null
+      "name" : "n"
     }, {
-      "name" : "memo",
-      "type" : null
+      "name" : "memo"
     } ],
     "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "fib",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 2,
-      "parameterCount" : null
+      "callCount" : 2
     } ]
   }, {
     "name" : "Person.prototype.greet",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ ],
@@ -335,8 +235,6 @@
     "methodCalls" : [ ]
   }, {
     "name" : "Person.prototype.haveBirthday",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ ],
@@ -344,23 +242,17 @@
     "methodCalls" : [ ]
   }, {
     "name" : "Person.create",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ {
-      "name" : "name",
-      "type" : null
+      "name" : "name"
     }, {
-      "name" : "age",
-      "type" : null
+      "name" : "age"
     } ],
     "localVariables" : [ ],
     "methodCalls" : [ ]
   }, {
     "name" : "Employee.prototype.getDetails",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ ],
@@ -368,120 +260,88 @@
     "methodCalls" : [ ]
   }, {
     "name" : "Employee.prototype.greet",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ ],
     "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "call",
-      "objectType" : null,
       "objectName" : "Person.prototype.greet",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "DataStore.prototype.set",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ {
-      "name" : "key",
-      "type" : null
+      "name" : "key"
     }, {
-      "name" : "value",
-      "type" : null
+      "name" : "value"
     } ],
     "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "notify",
-      "objectType" : null,
       "objectName" : "this",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "DataStore.prototype.get",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
     "parameters" : [ {
-      "name" : "key",
-      "type" : null
+      "name" : "key"
     } ],
     "localVariables" : [ ],
     "methodCalls" : [ ]
   } ],
   "fields" : [ {
     "name" : "Counter",
-    "type" : null,
-    "visibility" : null,
     "modifiers" : [ "const" ],
     "annotations" : [ ]
   }, {
     "name" : "Logger",
-    "type" : null,
-    "visibility" : null,
     "modifiers" : [ "const" ],
     "annotations" : [ ]
   }, {
     "name" : "Serializable",
     "type" : "Object",
-    "visibility" : null,
     "modifiers" : [ "const" ],
     "annotations" : [ ]
   }, {
     "name" : "Comparable",
     "type" : "Object",
-    "visibility" : null,
     "modifiers" : [ "const" ],
     "annotations" : [ ]
   }, {
     "name" : "Observable",
     "type" : "Object",
-    "visibility" : null,
     "modifiers" : [ "const" ],
     "annotations" : [ ]
   }, {
     "name" : "EventBus",
-    "type" : null,
-    "visibility" : null,
     "modifiers" : [ "const" ],
     "annotations" : [ ]
   }, {
     "name" : "Calculator",
-    "type" : null,
-    "visibility" : null,
     "modifiers" : [ "const" ],
     "annotations" : [ ]
   } ],
   "methodCalls" : [ {
     "methodName" : "assign",
-    "objectType" : null,
     "objectName" : "Object",
-    "callCount" : 1,
-    "parameterCount" : null
+    "callCount" : 1
   }, {
     "methodName" : "call",
-    "objectType" : null,
     "objectName" : "Person.prototype.greet",
-    "callCount" : 1,
-    "parameterCount" : null
+    "callCount" : 1
   }, {
     "methodName" : "create",
-    "objectType" : null,
     "objectName" : "Object",
-    "callCount" : 1,
-    "parameterCount" : null
+    "callCount" : 1
   }, {
     "methodName" : "notify",
-    "objectType" : null,
     "objectName" : "this",
-    "callCount" : 1,
-    "parameterCount" : null
+    "callCount" : 1
   } ],
   "imports" : [ ]
 }

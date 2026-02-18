@@ -8,7 +8,6 @@
     "visibility" : "public",
     "modifiers" : [ "public" ],
     "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ ],
     "mixins" : [ ],
     "fields" : [ {
@@ -38,8 +37,6 @@
         "parameterCount" : 1
       }, {
         "methodName" : "process",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 0
       } ]
@@ -89,7 +86,6 @@
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "annotations" : [ ],
-      "extendsType" : null,
       "implementsInterfaces" : [ ],
       "mixins" : [ ],
       "fields" : [ ],
@@ -104,7 +100,6 @@
         "localVariables" : [ ],
         "methodCalls" : [ {
           "methodName" : "info",
-          "objectType" : null,
           "objectName" : "logger",
           "callCount" : 1,
           "parameterCount" : 1
@@ -117,7 +112,6 @@
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
       "annotations" : [ ],
-      "extendsType" : null,
       "implementsInterfaces" : [ ],
       "mixins" : [ ],
       "fields" : [ ],
@@ -132,7 +126,6 @@
         "localVariables" : [ ],
         "methodCalls" : [ {
           "methodName" : "println",
-          "objectType" : null,
           "objectName" : "System.out",
           "callCount" : 1,
           "parameterCount" : 1
@@ -143,10 +136,8 @@
   }, {
     "kind" : "class",
     "name" : "Logger",
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ ],
     "mixins" : [ ],
     "fields" : [ ],
@@ -168,10 +159,8 @@
   }, {
     "kind" : "interface",
     "name" : "Callback",
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ ],
     "mixins" : [ ],
     "fields" : [ ],
@@ -179,7 +168,6 @@
     "methods" : [ {
       "name" : "onComplete",
       "returnType" : "void",
-      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ {

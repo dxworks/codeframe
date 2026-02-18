@@ -58,8 +58,7 @@
     "orReplace" : false,
     "parameters" : [ {
       "name" : "order_id",
-      "type" : "INT",
-      "direction" : null
+      "type" : "INT"
     } ],
     "returnType" : "DECIMAL(12,2)",
     "references" : {
@@ -71,12 +70,10 @@
     }
   }, {
     "functionName" : "total_for_user",
-    "schema" : null,
     "orReplace" : false,
     "parameters" : [ {
       "name" : "uid",
-      "type" : "INT",
-      "direction" : null
+      "type" : "INT"
     } ],
     "returnType" : "DECIMAL(12,2)",
     "references" : {
@@ -88,12 +85,10 @@
     }
   }, {
     "functionName" : "total_for_user_v2",
-    "schema" : null,
     "orReplace" : false,
     "parameters" : [ {
       "name" : "uid",
-      "type" : "INT",
-      "direction" : null
+      "type" : "INT"
     } ],
     "returnType" : "DECIMAL(12,2)",
     "references" : {

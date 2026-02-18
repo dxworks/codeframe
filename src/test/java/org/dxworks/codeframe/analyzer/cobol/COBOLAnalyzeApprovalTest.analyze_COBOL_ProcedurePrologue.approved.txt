@@ -8,9 +8,6 @@
     "level" : 1,
     "picture" : "X(8)",
     "section" : "WORKING-STORAGE",
-    "usage" : null,
-    "redefines" : null,
-    "occurs" : null,
     "children" : [ ]
   } ],
   "fileDefinitions" : [ ],
@@ -26,12 +23,16 @@
       "parameterCount" : 1
     } ],
     "fileOperations" : [ ],
+    "controlFlowStatements" : [ ],
     "dataReferences" : [ "WS-NAME" ]
   }, {
     "name" : "MAIN-PARA",
     "performCalls" : [ ],
     "externalCalls" : [ ],
     "fileOperations" : [ ],
+    "controlFlowStatements" : [ {
+      "type" : "GOBACK"
+    } ],
     "dataReferences" : [ ]
   } ],
   "hasExecSql" : false,

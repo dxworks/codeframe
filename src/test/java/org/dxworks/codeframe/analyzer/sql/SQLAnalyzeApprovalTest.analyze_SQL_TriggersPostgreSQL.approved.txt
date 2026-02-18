@@ -17,7 +17,6 @@
   "createTriggers" : [ {
     "triggerName" : "trg_users_created_at",
     "tableName" : "public.users",
-    "schema" : null,
     "orReplace" : false,
     "timing" : "BEFORE",
     "events" : [ "INSERT" ],
@@ -31,7 +30,6 @@
   }, {
     "triggerName" : "trg_orders_audit",
     "tableName" : "sales.orders",
-    "schema" : null,
     "orReplace" : false,
     "timing" : "AFTER",
     "events" : [ "UPDATE" ],
@@ -45,7 +43,6 @@
   }, {
     "triggerName" : "trg_products_history",
     "tableName" : "inventory.products",
-    "schema" : null,
     "orReplace" : false,
     "timing" : "AFTER",
     "events" : [ "INSERT", "UPDATE", "DELETE" ],
@@ -59,7 +56,6 @@
   }, {
     "triggerName" : "trg_v_customer_orders",
     "tableName" : "sales.v_customer_orders",
-    "schema" : null,
     "orReplace" : false,
     "timing" : "INSTEAD OF",
     "events" : [ "INSERT" ],
@@ -73,7 +69,6 @@
   }, {
     "triggerName" : "trg_employees_salary",
     "tableName" : "hr.employees",
-    "schema" : null,
     "orReplace" : true,
     "timing" : "BEFORE",
     "events" : [ "UPDATE" ],
@@ -87,7 +82,6 @@
   }, {
     "triggerName" : "trg_audit_log",
     "tableName" : "audit.events",
-    "schema" : null,
     "orReplace" : false,
     "timing" : "AFTER",
     "events" : [ "INSERT" ],
@@ -101,7 +95,6 @@
   }, {
     "triggerName" : "trg_table_modified",
     "tableName" : "config.settings",
-    "schema" : null,
     "orReplace" : false,
     "timing" : "AFTER",
     "events" : [ "INSERT" ],

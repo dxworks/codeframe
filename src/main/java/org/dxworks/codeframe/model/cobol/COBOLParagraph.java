@@ -10,5 +10,6 @@ public class COBOLParagraph {
     public List<COBOLPerformCall> performCalls = new ArrayList<>();
     public List<COBOLExternalCall> externalCalls = new ArrayList<>();
     public List<COBOLFileOperation> fileOperations = new ArrayList<>();
+    public List<COBOLControlFlowStatement> controlFlowStatements = new ArrayList<>();
     public Set<String> dataReferences = new LinkedHashSet<>();
 }

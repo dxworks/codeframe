@@ -1,10 +1,9 @@
 package org.dxworks.codeframe.analyzer.sql;
 
 import org.approvaltests.Approvals;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.dxworks.codeframe.App;
 import org.dxworks.codeframe.Language;
+import org.dxworks.codeframe.TestUtils;
 import org.dxworks.codeframe.CodeframeConfig;
 import org.dxworks.codeframe.model.Analysis;
 import org.junit.jupiter.api.Test;
@@ -12,10 +11,6 @@ import org.junit.jupiter.api.Test;
 import java.nio.file.Paths;
 
 public class SQLAnalyzeApprovalTest {
-    private static final ObjectMapper MAPPER = new ObjectMapper()
-            .enable(SerializationFeature.INDENT_OUTPUT)
-            .enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
-
     @Test
     void analyze_SQL_Sample() throws Exception {
         verify(Paths.get("src/test/resources/samples/sql/sample.sql"), Language.SQL);
@@ -128,11 +123,11 @@ public class SQLAnalyzeApprovalTest {
                 Paths.get("src/test/resources/samples/sql/sample.sql"),
                 Language.SQL,
                 config);
-        Approvals.verify(MAPPER.writeValueAsString(analysis));
+        Approvals.verify(TestUtils.APPROVAL_MAPPER.writeValueAsString(analysis));
     }
 
     private static void verify(java.nio.file.Path file, Language language) throws Exception {
         Analysis analysis = App.analyzeFile(file, language);
-        Approvals.verify(MAPPER.writeValueAsString(analysis));
+        Approvals.verify(TestUtils.APPROVAL_MAPPER.writeValueAsString(analysis));
     }
 }

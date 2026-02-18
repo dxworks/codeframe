@@ -8,7 +8,6 @@
     "visibility" : "public",
     "modifiers" : [ "public" ],
     "annotations" : [ "@Resource(name = RestConstants.VERSION_1 + \"/user\", supportedClass = Sample.class, supportedVersions = { \"1.0.* - 2.0.*\" })" ],
-    "extendsType" : null,
     "implementsInterfaces" : [ ],
     "mixins" : [ ],
     "fields" : [ {
@@ -44,8 +43,6 @@
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "debug",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 0
       }, {
@@ -56,14 +53,10 @@
         "parameterCount" : 1
       }, {
         "methodName" : "output",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "printoTo",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
@@ -143,14 +136,10 @@
         "parameterCount" : 0
       }, {
         "methodName" : "insert",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "update",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
@@ -222,7 +211,6 @@
       } ]
     }, {
       "name" : "Sample",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "annotations" : [ ],
@@ -240,10 +228,8 @@
   }, {
     "kind" : "class",
     "name" : "User",
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ ],
     "mixins" : [ ],
     "fields" : [ {

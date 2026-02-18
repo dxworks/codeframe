@@ -8,7 +8,6 @@
     "visibility" : "public",
     "modifiers" : [ "public" ],
     "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ ],
     "mixins" : [ ],
     "fields" : [ ],
@@ -26,7 +25,6 @@
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "println",
-        "objectType" : null,
         "objectName" : "System.out",
         "callCount" : 1,
         "parameterCount" : 1
@@ -53,7 +51,6 @@
         "parameterCount" : 0
       }, {
         "methodName" : "println",
-        "objectType" : null,
         "objectName" : "System.out",
         "callCount" : 1,
         "parameterCount" : 1
@@ -65,7 +62,6 @@
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "annotations" : [ ],
-      "extendsType" : null,
       "implementsInterfaces" : [ ],
       "mixins" : [ ],
       "fields" : [ ],
@@ -80,7 +76,6 @@
         "localVariables" : [ ],
         "methodCalls" : [ {
           "methodName" : "println",
-          "objectType" : null,
           "objectName" : "System.out",
           "callCount" : 1,
           "parameterCount" : 1
@@ -91,10 +86,8 @@
   }, {
     "kind" : "class",
     "name" : "ExtraClass",
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ ],
     "mixins" : [ ],
     "fields" : [ ],
@@ -109,7 +102,6 @@
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "println",
-        "objectType" : null,
         "objectName" : "System.out",
         "callCount" : 1,
         "parameterCount" : 1

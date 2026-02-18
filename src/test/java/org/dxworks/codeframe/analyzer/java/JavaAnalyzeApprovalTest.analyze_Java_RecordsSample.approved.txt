@@ -8,7 +8,6 @@
     "visibility" : "public",
     "modifiers" : [ "public" ],
     "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ ],
     "mixins" : [ ],
     "fields" : [ ],
@@ -23,7 +22,6 @@
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "sqrt",
-        "objectType" : null,
         "objectName" : "Math",
         "callCount" : 1,
         "parameterCount" : 1
@@ -39,7 +37,6 @@
       "methodCalls" : [ ]
     }, {
       "name" : "Point",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "annotations" : [ ],
@@ -51,7 +48,6 @@
       "methodCalls" : [ ]
     }, {
       "name" : "Point",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "annotations" : [ ],
@@ -63,10 +59,8 @@
   }, {
     "kind" : "record",
     "name" : "Person",
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ ],
     "mixins" : [ ],
     "fields" : [ ],
@@ -82,7 +76,6 @@
       "methodCalls" : [ ]
     }, {
       "name" : "Person",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "annotations" : [ ],

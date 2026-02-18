@@ -1,25 +1,20 @@
 {
   "filePath" : "src/test/resources/samples/javascript/ModernClassFeatures.js",
   "language" : "javascript",
-  "packageName" : null,
   "types" : [ {
     "kind" : "class",
     "name" : "BaseEntity",
-    "visibility" : null,
     "modifiers" : [ "export" ],
     "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ ],
     "mixins" : [ ],
     "fields" : [ {
       "name" : "#id",
-      "type" : null,
       "visibility" : "private",
       "modifiers" : [ ],
       "annotations" : [ ]
     }, {
       "name" : "#createdAt",
-      "type" : null,
       "visibility" : "private",
       "modifiers" : [ ],
       "annotations" : [ ]
@@ -27,20 +22,15 @@
     "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ {
-        "name" : "id",
-        "type" : null
+        "name" : "id"
       } ],
       "localVariables" : [ ],
       "methodCalls" : [ ]
     }, {
       "name" : "id",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ "get" ],
       "annotations" : [ ],
       "parameters" : [ ],
@@ -48,8 +38,6 @@
       "methodCalls" : [ ]
     }, {
       "name" : "createdAt",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ "get" ],
       "annotations" : [ ],
       "parameters" : [ ],
@@ -57,25 +45,20 @@
       "methodCalls" : [ ]
     }, {
       "name" : "toJSON",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ ],
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "toISOString",
-        "objectType" : null,
         "objectName" : "this.#createdAt",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     } ],
     "types" : [ ]
   }, {
     "kind" : "class",
     "name" : "User",
-    "visibility" : null,
     "modifiers" : [ "export" ],
     "annotations" : [ ],
     "extendsType" : "BaseEntity",
@@ -90,24 +73,20 @@
     }, {
       "name" : "MAX_NAME_LENGTH",
       "type" : "Number",
-      "visibility" : null,
       "modifiers" : [ "static" ],
       "annotations" : [ ]
     }, {
       "name" : "#name",
-      "type" : null,
       "visibility" : "private",
       "modifiers" : [ ],
       "annotations" : [ ]
     }, {
       "name" : "#email",
-      "type" : null,
       "visibility" : "private",
       "modifiers" : [ ],
       "annotations" : [ ]
     }, {
       "name" : "#role",
-      "type" : null,
       "visibility" : "private",
       "modifiers" : [ ],
       "annotations" : [ ]
@@ -115,35 +94,24 @@
     "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ {
-        "name" : "id",
-        "type" : null
+        "name" : "id"
       }, {
-        "name" : "name",
-        "type" : null
+        "name" : "name"
       }, {
-        "name" : "email",
-        "type" : null
+        "name" : "email"
       }, {
-        "name" : "role",
-        "type" : null
+        "name" : "role"
       } ],
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "super",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "name",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ "get" ],
       "annotations" : [ ],
       "parameters" : [ ],
@@ -151,20 +119,15 @@
       "methodCalls" : [ ]
     }, {
       "name" : "name",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ "set" ],
       "annotations" : [ ],
       "parameters" : [ {
-        "name" : "value",
-        "type" : null
+        "name" : "value"
       } ],
       "localVariables" : [ ],
       "methodCalls" : [ ]
     }, {
       "name" : "email",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ "get" ],
       "annotations" : [ ],
       "parameters" : [ ],
@@ -172,26 +135,19 @@
       "methodCalls" : [ ]
     }, {
       "name" : "email",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ "set" ],
       "annotations" : [ ],
       "parameters" : [ {
-        "name" : "value",
-        "type" : null
+        "name" : "value"
       } ],
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "includes",
-        "objectType" : null,
         "objectName" : "value",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "role",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ "get" ],
       "annotations" : [ ],
       "parameters" : [ ],
@@ -199,8 +155,6 @@
       "methodCalls" : [ ]
     }, {
       "name" : "getInstanceCount",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ "static" ],
       "annotations" : [ ],
       "parameters" : [ ],
@@ -208,8 +162,6 @@
       "methodCalls" : [ ]
     }, {
       "name" : "resetCount",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ "static" ],
       "annotations" : [ ],
       "parameters" : [ ],
@@ -217,55 +169,43 @@
       "methodCalls" : [ ]
     }, {
       "name" : "#validatePermission",
-      "returnType" : null,
       "visibility" : "private",
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ {
-        "name" : "action",
-        "type" : null
+        "name" : "action"
       } ],
       "localVariables" : [ "permissions" ],
       "methodCalls" : [ {
         "methodName" : "includes",
-        "objectType" : null,
         "objectName" : "permissions[this.#role]",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "canPerform",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ {
-        "name" : "action",
-        "type" : null
+        "name" : "action"
       } ],
       "localVariables" : [ ],
       "methodCalls" : [ ]
     }, {
       "name" : "toJSON",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ ],
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "toJSON",
-        "objectType" : null,
         "objectName" : "super",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     } ],
     "types" : [ ]
   }, {
     "kind" : "class",
     "name" : "AdminUser",
-    "visibility" : null,
     "modifiers" : [ "export" ],
     "annotations" : [ ],
     "extendsType" : "User",
@@ -273,7 +213,6 @@
     "mixins" : [ ],
     "fields" : [ {
       "name" : "#permissions",
-      "type" : null,
       "visibility" : "private",
       "modifiers" : [ ],
       "annotations" : [ ]
@@ -281,96 +220,69 @@
     "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ {
-        "name" : "id",
-        "type" : null
+        "name" : "id"
       }, {
-        "name" : "name",
-        "type" : null
+        "name" : "name"
       }, {
-        "name" : "email",
-        "type" : null
+        "name" : "email"
       } ],
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "super",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "permissions",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ "get" ],
       "annotations" : [ ],
       "parameters" : [ ],
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "from",
-        "objectType" : null,
         "objectName" : "Array",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "addPermission",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ {
-        "name" : "permission",
-        "type" : null
+        "name" : "permission"
       } ],
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "add",
-        "objectType" : null,
         "objectName" : "this.#permissions",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "removePermission",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ {
-        "name" : "permission",
-        "type" : null
+        "name" : "permission"
       } ],
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "delete",
-        "objectType" : null,
         "objectName" : "this.#permissions",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "hasPermission",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ {
-        "name" : "permission",
-        "type" : null
+        "name" : "permission"
       } ],
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "has",
-        "objectType" : null,
         "objectName" : "this.#permissions",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     } ],
     "types" : [ ]

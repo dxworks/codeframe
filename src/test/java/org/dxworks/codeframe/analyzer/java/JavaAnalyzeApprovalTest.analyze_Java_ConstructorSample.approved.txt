@@ -8,7 +8,6 @@
     "visibility" : "public",
     "modifiers" : [ "public" ],
     "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ ],
     "mixins" : [ ],
     "fields" : [ {
@@ -36,7 +35,6 @@
       "methodCalls" : [ ]
     }, {
       "name" : "ConstructorSample",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "annotations" : [ ],
@@ -60,10 +58,8 @@
   }, {
     "kind" : "class",
     "name" : "Dependency",
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ ],
     "mixins" : [ ],
     "fields" : [ ],

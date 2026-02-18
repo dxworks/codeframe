@@ -14,6 +14,7 @@ import org.dxworks.codeframe.analyzer.cobol.generated.Cobol85Parser;
 import org.dxworks.codeframe.analyzer.cobol.preprocessor.impl.CobolPreprocessorImpl;
 import org.dxworks.codeframe.analyzer.LanguageAnalyzer;
 import org.dxworks.codeframe.model.Analysis;
+import org.dxworks.codeframe.model.cobol.COBOLControlFlowStatement;
 import org.dxworks.codeframe.model.cobol.COBOLDataItem;
 import org.dxworks.codeframe.model.cobol.COBOLExternalCall;
 import org.dxworks.codeframe.model.cobol.COBOLFileAnalysis;
@@ -246,6 +247,7 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
             return !paragraph.performCalls.isEmpty()
                     || !paragraph.externalCalls.isEmpty()
                     || !paragraph.fileOperations.isEmpty()
+                    || !paragraph.controlFlowStatements.isEmpty()
                     || !paragraph.dataReferences.isEmpty();
         }
 
@@ -911,6 +913,70 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
                 }
             }
             return super.visitSetStatement(ctx);
+        }
+
+        // Extract control-flow statements (GOBACK, STOP RUN, EXIT PROGRAM, RETURN).
+        @Override
+        public Void visitGobackStatement(Cobol85Parser.GobackStatementContext ctx) {
+            COBOLParagraph paragraph = targetParagraph();
+            if (paragraph != null) {
+                COBOLControlFlowStatement controlFlow = new COBOLControlFlowStatement();
+                controlFlow.type = "GOBACK";
+                controlFlow.target = null; // GOBACK doesn't take a target
+                paragraph.controlFlowStatements.add(controlFlow);
+            }
+            return super.visitGobackStatement(ctx);
+        }
+
+        @Override
+        public Void visitStopStatement(Cobol85Parser.StopStatementContext ctx) {
+            COBOLParagraph paragraph = targetParagraph();
+            if (paragraph != null) {
+                COBOLControlFlowStatement controlFlow = new COBOLControlFlowStatement();
+                if (ctx.RUN() != null) {
+                    controlFlow.type = "STOP_RUN";
+                } else if (ctx.literal() != null) {
+                    controlFlow.type = "STOP_LITERAL";
+                    controlFlow.target = normalizeName(ctx.literal().getText());
+                } else {
+                    controlFlow.type = "STOP";
+                }
+                paragraph.controlFlowStatements.add(controlFlow);
+            }
+            return super.visitStopStatement(ctx);
+        }
+
+        @Override
+        public Void visitExitStatement(Cobol85Parser.ExitStatementContext ctx) {
+            COBOLParagraph paragraph = targetParagraph();
+            if (paragraph != null) {
+                COBOLControlFlowStatement controlFlow = new COBOLControlFlowStatement();
+                if (ctx.PROGRAM() != null) {
+                    controlFlow.type = "EXIT_PROGRAM";
+                } else {
+                    controlFlow.type = "EXIT";
+                }
+                controlFlow.target = null; // EXIT doesn't take a target
+                paragraph.controlFlowStatements.add(controlFlow);
+            }
+            return super.visitExitStatement(ctx);
+        }
+
+        @Override
+        public Void visitReturnStatement(Cobol85Parser.ReturnStatementContext ctx) {
+            COBOLParagraph paragraph = targetParagraph();
+            if (paragraph != null) {
+                COBOLControlFlowStatement controlFlow = new COBOLControlFlowStatement();
+                controlFlow.type = "RETURN";
+                // RETURN works with fileName, not identifier
+                if (ctx.fileName() != null) {
+                    controlFlow.target = normalizeName(ctx.fileName().getText());
+                } else {
+                    controlFlow.target = null;
+                }
+                paragraph.controlFlowStatements.add(controlFlow);
+            }
+            return super.visitReturnStatement(ctx);
         }
 
         private void addIdentifierReference(COBOLParagraph paragraph, Cobol85Parser.IdentifierContext identifier) {

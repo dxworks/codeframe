@@ -8,27 +8,18 @@
     "level" : 1,
     "picture" : "X(10)",
     "section" : "WORKING-STORAGE",
-    "usage" : null,
-    "redefines" : null,
-    "occurs" : null,
     "children" : [ ]
   }, {
     "name" : "WS-PROGRAM-NAME",
     "level" : 1,
     "picture" : "X(8)",
     "section" : "WORKING-STORAGE",
-    "usage" : null,
-    "redefines" : null,
-    "occurs" : null,
     "children" : [ ]
   }, {
     "name" : "WS-COUNT",
     "level" : 1,
     "picture" : "9(5)",
     "section" : "WORKING-STORAGE",
-    "usage" : null,
-    "redefines" : null,
-    "occurs" : null,
     "children" : [ ]
   }, {
     "name" : "WS-IMS-STATUS",
@@ -36,34 +27,22 @@
     "picture" : "S9(4)",
     "section" : "WORKING-STORAGE",
     "usage" : "COMP",
-    "redefines" : null,
-    "occurs" : null,
     "children" : [ ]
   }, {
     "name" : "LS-PARAMETERS",
     "level" : 1,
-    "picture" : null,
     "section" : "LINKAGE",
-    "usage" : null,
-    "redefines" : null,
-    "occurs" : null,
     "children" : [ {
       "name" : "LS-INPUT-REC",
       "level" : 5,
       "picture" : "X(10)",
       "section" : "LINKAGE",
-      "usage" : null,
-      "redefines" : null,
-      "occurs" : null,
       "children" : [ ]
     }, {
       "name" : "LS-OUTPUT-REC",
       "level" : 5,
       "picture" : "X(10)",
       "section" : "LINKAGE",
-      "usage" : null,
-      "redefines" : null,
-      "occurs" : null,
       "children" : [ ]
     } ]
   }, {
@@ -71,9 +50,6 @@
     "level" : 1,
     "picture" : "99",
     "section" : "LOCAL-STORAGE",
-    "usage" : null,
-    "redefines" : null,
-    "occurs" : null,
     "children" : [ ]
   } ],
   "fileDefinitions" : [ {
@@ -83,41 +59,40 @@
       "level" : 1,
       "picture" : "X(80)",
       "section" : "FILE SECTION",
-      "usage" : null,
-      "redefines" : null,
-      "occurs" : null,
       "children" : [ ]
     } ]
   } ],
-  "copyStatements" : [ ],
+  "copyStatements" : [ "CUSTCOPY", "ACCTLAY" ],
   "procedureParameters" : [ "LS-PARAMETERS" ],
   "sections" : [ ],
   "paragraphs" : [ {
     "name" : "MAIN-LOGIC",
     "performCalls" : [ {
-      "targetParagraph" : "INITIALIZATION",
-      "thruParagraph" : null
+      "targetParagraph" : "INITIALIZATION"
     }, {
-      "targetParagraph" : "PROCESS-DATA",
-      "thruParagraph" : null
+      "targetParagraph" : "PROCESS-DATA"
     }, {
-      "targetParagraph" : "CLEANUP",
-      "thruParagraph" : null
+      "targetParagraph" : "CLEANUP"
     } ],
     "externalCalls" : [ ],
     "fileOperations" : [ ],
+    "controlFlowStatements" : [ {
+      "type" : "GOBACK"
+    } ],
     "dataReferences" : [ ]
   }, {
     "name" : "INITIALIZATION",
     "performCalls" : [ ],
     "externalCalls" : [ ],
     "fileOperations" : [ ],
+    "controlFlowStatements" : [ ],
     "dataReferences" : [ "WS-INPUT", "WS-PROGRAM-NAME", "WS-COUNT" ]
   }, {
     "name" : "PROCESS-DATA",
     "performCalls" : [ ],
     "externalCalls" : [ ],
     "fileOperations" : [ ],
+    "controlFlowStatements" : [ ],
     "dataReferences" : [ "WS-COUNT", "LS-INPUT-REC", "WS-INPUT" ]
   }, {
     "name" : "CLEANUP",
@@ -137,6 +112,14 @@
     }, {
       "verb" : "WRITE",
       "fileName" : "INPUT-RECORD"
+    } ],
+    "controlFlowStatements" : [ {
+      "type" : "STOP_RUN"
+    }, {
+      "type" : "EXIT_PROGRAM"
+    }, {
+      "type" : "RETURN",
+      "target" : "INPUT-FILE"
     } ],
     "dataReferences" : [ "WS-INPUT", "LS-PARAMETERS", "WS-IMS-STATUS", "WS-COUNT" ]
   } ],

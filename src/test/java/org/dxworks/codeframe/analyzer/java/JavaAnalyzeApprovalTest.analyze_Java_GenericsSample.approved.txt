@@ -8,7 +8,6 @@
     "visibility" : "public",
     "modifiers" : [ "public" ],
     "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ ],
     "mixins" : [ ],
     "fields" : [ ],
@@ -26,14 +25,10 @@
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "max",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "orElse",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
@@ -56,7 +51,6 @@
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "empty",
-        "objectType" : null,
         "objectName" : "Optional",
         "callCount" : 1,
         "parameterCount" : 0
@@ -74,7 +68,6 @@
         "parameterCount" : 0
       }, {
         "methodName" : "of",
-        "objectType" : null,
         "objectName" : "Optional",
         "callCount" : 1,
         "parameterCount" : 1
@@ -92,13 +85,11 @@
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "doubleValue",
-        "objectType" : null,
         "objectName" : "n",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "println",
-        "objectType" : null,
         "objectName" : "System.out",
         "callCount" : 1,
         "parameterCount" : 1
@@ -132,10 +123,8 @@
   }, {
     "kind" : "class",
     "name" : "GenericContainer<K, V>",
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ ],
     "mixins" : [ ],
     "fields" : [ {

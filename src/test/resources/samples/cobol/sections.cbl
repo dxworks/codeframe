@@ -7,6 +7,8 @@
        01 WS-PROGRAM-NAME PIC X(8).
        01 WS-COUNT PIC 9(5).
        01 WS-IMS-STATUS PIC S9(4) COMP.
+       COPY CUSTCOPY.
+       COPY ACCTLAY REPLACING ==:TAG:== BY ==WS-==.
 
        LINKAGE SECTION.
        01 LS-PARAMETERS.
@@ -55,3 +57,6 @@
                GET DIAGNOSTICS
            END-EXEC.
            CONTINUE.
+           STOP RUN.
+           EXIT PROGRAM.
+           RETURN INPUT-FILE.

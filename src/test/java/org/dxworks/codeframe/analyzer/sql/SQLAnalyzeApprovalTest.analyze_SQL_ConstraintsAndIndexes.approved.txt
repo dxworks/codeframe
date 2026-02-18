@@ -77,15 +77,13 @@
     "tableName" : "orders",
     "schema" : "sales",
     "unique" : false,
-    "columns" : [ "order_date", "total_amount" ],
-    "indexType" : null
+    "columns" : [ "order_date", "total_amount" ]
   }, {
     "indexName" : "ux_users_email",
     "tableName" : "users",
     "schema" : "public",
     "unique" : true,
-    "columns" : [ "email" ],
-    "indexType" : null
+    "columns" : [ "email" ]
   } ],
   "createProcedures" : [ ],
   "createFunctions" : [ ],

@@ -73,7 +73,6 @@
   }, {
     "triggerName" : "trg_schema_ddl",
     "tableName" : "hr.SCHEMA",
-    "schema" : null,
     "orReplace" : true,
     "timing" : "AFTER",
     "events" : [ "CREATE", "ALTER", "DROP" ],

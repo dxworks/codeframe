@@ -17,7 +17,6 @@
   "createTriggers" : [ {
     "triggerName" : "trg_users_before_insert",
     "tableName" : "users",
-    "schema" : null,
     "orReplace" : false,
     "timing" : "BEFORE",
     "events" : [ "INSERT" ],
@@ -31,7 +30,6 @@
   }, {
     "triggerName" : "trg_orders_after_update",
     "tableName" : "orders",
-    "schema" : null,
     "orReplace" : false,
     "timing" : "AFTER",
     "events" : [ "UPDATE" ],
@@ -45,7 +43,6 @@
   }, {
     "triggerName" : "trg_products_before_delete",
     "tableName" : "products",
-    "schema" : null,
     "orReplace" : false,
     "timing" : "BEFORE",
     "events" : [ "DELETE" ],
@@ -59,7 +56,6 @@
   }, {
     "triggerName" : "trg_order_items_after_insert",
     "tableName" : "order_items",
-    "schema" : null,
     "orReplace" : false,
     "timing" : "AFTER",
     "events" : [ "INSERT" ],
@@ -73,7 +69,6 @@
   }, {
     "triggerName" : "trg_simple_audit",
     "tableName" : "simple_table",
-    "schema" : null,
     "orReplace" : false,
     "timing" : "AFTER",
     "events" : [ "INSERT" ],

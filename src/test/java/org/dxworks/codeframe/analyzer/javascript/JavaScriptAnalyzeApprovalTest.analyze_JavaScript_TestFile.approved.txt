@@ -1,124 +1,77 @@
 {
   "filePath" : "src/test/resources/samples/javascript/example.test.js",
   "language" : "javascript",
-  "packageName" : null,
   "types" : [ ],
   "methods" : [ ],
   "fields" : [ ],
   "methodCalls" : [ {
     "methodName" : "afterEach",
-    "objectType" : null,
-    "objectName" : null,
-    "callCount" : 1,
-    "parameterCount" : null
+    "callCount" : 1
   }, {
     "methodName" : "beforeEach",
-    "objectType" : null,
-    "objectName" : null,
-    "callCount" : 1,
-    "parameterCount" : null
+    "callCount" : 1
   }, {
     "methodName" : "describe",
-    "objectType" : null,
-    "objectName" : null,
-    "callCount" : 7,
-    "parameterCount" : null
+    "callCount" : 7
   }, {
     "methodName" : "expect",
-    "objectType" : null,
-    "objectName" : null,
-    "callCount" : 11,
-    "parameterCount" : null
+    "callCount" : 11
   }, {
     "methodName" : "failingFetch",
-    "objectType" : null,
-    "objectName" : null,
-    "callCount" : 1,
-    "parameterCount" : null
+    "callCount" : 1
   }, {
     "methodName" : "fetchData",
-    "objectType" : null,
-    "objectName" : null,
-    "callCount" : 1,
-    "parameterCount" : null
+    "callCount" : 1
   }, {
     "methodName" : "filter",
-    "objectType" : null,
     "objectName" : "numbers",
-    "callCount" : 1,
-    "parameterCount" : null
+    "callCount" : 1
   }, {
     "methodName" : "map",
-    "objectType" : null,
     "objectName" : "items",
-    "callCount" : 1,
-    "parameterCount" : null
+    "callCount" : 1
   }, {
     "methodName" : "parseFloat",
-    "objectType" : null,
-    "objectName" : null,
-    "callCount" : 2,
-    "parameterCount" : null
+    "callCount" : 2
   }, {
     "methodName" : "reject",
-    "objectType" : null,
     "objectName" : "Promise",
-    "callCount" : 1,
-    "parameterCount" : null
+    "callCount" : 1
   }, {
     "methodName" : "resolve",
-    "objectType" : null,
     "objectName" : "Promise",
-    "callCount" : 1,
-    "parameterCount" : null
+    "callCount" : 1
   }, {
     "methodName" : "test",
-    "objectType" : null,
-    "objectName" : null,
-    "callCount" : 11,
-    "parameterCount" : null
+    "callCount" : 11
   }, {
     "methodName" : "toBe",
-    "objectType" : null,
     "objectName" : "expect()",
-    "callCount" : 4,
-    "parameterCount" : null
+    "callCount" : 4
   }, {
     "methodName" : "toBeDefined",
-    "objectType" : null,
     "objectName" : "expect()",
-    "callCount" : 1,
-    "parameterCount" : null
+    "callCount" : 1
   }, {
     "methodName" : "toBeGreaterThan",
-    "objectType" : null,
     "objectName" : "expect()",
-    "callCount" : 1,
-    "parameterCount" : null
+    "callCount" : 1
   }, {
     "methodName" : "toBeUndefined",
-    "objectType" : null,
     "objectName" : "expect()",
-    "callCount" : 1,
-    "parameterCount" : null
+    "callCount" : 1
   }, {
     "methodName" : "toContain",
-    "objectType" : null,
     "objectName" : "expect()",
-    "callCount" : 2,
-    "parameterCount" : null
+    "callCount" : 2
   }, {
     "methodName" : "toEqual",
-    "objectType" : null,
     "objectName" : "expect()",
-    "callCount" : 1,
-    "parameterCount" : null
+    "callCount" : 1
   }, {
     "methodName" : "toThrow",
-    "objectType" : null,
     "objectName" : "expect().rejects",
-    "callCount" : 1,
-    "parameterCount" : null
+    "callCount" : 1
   } ],
   "imports" : [ ]
 }

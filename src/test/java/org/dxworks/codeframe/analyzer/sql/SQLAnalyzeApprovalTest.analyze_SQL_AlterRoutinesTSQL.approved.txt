@@ -51,7 +51,6 @@
   } ],
   "createFunctions" : [ {
     "functionName" : "fn_net_amount",
-    "schema" : null,
     "orReplace" : true,
     "parameters" : [ {
       "name" : "@gross",

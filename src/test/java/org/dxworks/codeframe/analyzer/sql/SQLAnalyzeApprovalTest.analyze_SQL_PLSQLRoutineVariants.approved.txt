@@ -34,7 +34,6 @@
     }
   }, {
     "procedureName" : "UPDATE_ORDER_STATUS_NO_SCHEMA",
-    "schema" : null,
     "orReplace" : false,
     "parameters" : [ {
       "name" : "p_order_id",
@@ -54,7 +53,6 @@
     }
   }, {
     "procedureName" : "UPDATE_ORDER_STATUS_OR_REPLACE",
-    "schema" : null,
     "orReplace" : true,
     "parameters" : [ {
       "name" : "p_order_id",
@@ -112,7 +110,6 @@
     }
   }, {
     "functionName" : "SIMPLE_TOTAL_NO_SCHEMA",
-    "schema" : null,
     "orReplace" : false,
     "parameters" : [ {
       "name" : "p_amount",
@@ -129,7 +126,6 @@
     }
   }, {
     "functionName" : "SIMPLE_TOTAL_OR_REPLACE",
-    "schema" : null,
     "orReplace" : true,
     "parameters" : [ {
       "name" : "p_amount",

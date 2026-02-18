@@ -8,7 +8,6 @@
     "visibility" : "public",
     "modifiers" : [ "public" ],
     "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ ],
     "mixins" : [ ],
     "fields" : [ ],
@@ -41,19 +40,16 @@
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "getCode",
-        "objectType" : null,
         "objectName" : "s",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "println",
-        "objectType" : null,
         "objectName" : "System.out",
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "values",
-        "objectType" : null,
         "objectName" : "Status",
         "callCount" : 1,
         "parameterCount" : 0
@@ -63,10 +59,8 @@
   }, {
     "kind" : "enum",
     "name" : "Status",
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ ],
     "mixins" : [ ],
     "fields" : [ {
@@ -112,8 +106,6 @@
       "methodCalls" : [ ]
     }, {
       "name" : "Status",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ {

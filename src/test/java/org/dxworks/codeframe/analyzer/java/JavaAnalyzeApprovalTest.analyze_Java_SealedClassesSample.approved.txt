@@ -5,10 +5,8 @@
   "types" : [ {
     "kind" : "class",
     "name" : "Circle",
-    "visibility" : null,
     "modifiers" : [ "final" ],
     "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ "Shape" ],
     "mixins" : [ ],
     "fields" : [ {
@@ -39,7 +37,6 @@
       "methodCalls" : [ ]
     }, {
       "name" : "Circle",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "annotations" : [ ],
@@ -54,10 +51,8 @@
   }, {
     "kind" : "class",
     "name" : "Rectangle",
-    "visibility" : null,
     "modifiers" : [ "final" ],
     "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ "Shape" ],
     "mixins" : [ ],
     "fields" : [ {
@@ -85,7 +80,6 @@
       "methodCalls" : [ ]
     }, {
       "name" : "Rectangle",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "annotations" : [ ],
@@ -103,10 +97,8 @@
   }, {
     "kind" : "class",
     "name" : "Triangle",
-    "visibility" : null,
     "modifiers" : [ "non-sealed" ],
     "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ "Shape" ],
     "mixins" : [ ],
     "fields" : [ {
@@ -134,7 +126,6 @@
       "methodCalls" : [ ]
     }, {
       "name" : "Triangle",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "annotations" : [ ],
@@ -152,10 +143,8 @@
   }, {
     "kind" : "class",
     "name" : "ShapeProcessor",
-    "visibility" : null,
     "modifiers" : [ ],
     "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ ],
     "mixins" : [ ],
     "fields" : [ ],
@@ -173,19 +162,16 @@
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "area",
-        "objectType" : null,
         "objectName" : "r",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "area",
-        "objectType" : null,
         "objectName" : "t",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "getRadius",
-        "objectType" : null,
         "objectName" : "c",
         "callCount" : 1,
         "parameterCount" : 0
@@ -198,7 +184,6 @@
     "visibility" : "public",
     "modifiers" : [ "public", "sealed" ],
     "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ ],
     "mixins" : [ ],
     "fields" : [ ],
@@ -206,7 +191,6 @@
     "methods" : [ {
       "name" : "area",
       "returnType" : "double",
-      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ ],

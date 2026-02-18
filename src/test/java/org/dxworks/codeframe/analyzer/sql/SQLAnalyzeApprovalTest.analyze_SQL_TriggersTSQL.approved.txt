@@ -59,7 +59,6 @@
   }, {
     "triggerName" : "tr_ddl_audit",
     "tableName" : "DATABASE",
-    "schema" : null,
     "orReplace" : false,
     "timing" : "AFTER",
     "events" : [ "CREATE_TABLE", "ALTER_TABLE", "DROP_TABLE" ],

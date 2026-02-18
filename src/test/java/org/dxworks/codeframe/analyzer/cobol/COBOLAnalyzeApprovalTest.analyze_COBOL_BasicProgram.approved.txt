@@ -8,16 +8,22 @@
     "level" : 1,
     "picture" : "X(20)",
     "section" : "WORKING-STORAGE",
-    "usage" : null,
-    "redefines" : null,
-    "occurs" : null,
     "children" : [ ]
   } ],
   "fileDefinitions" : [ ],
   "copyStatements" : [ ],
   "procedureParameters" : [ ],
   "sections" : [ ],
-  "paragraphs" : [ ],
+  "paragraphs" : [ {
+    "name" : "__PROCEDURE_DIVISION_PROLOGUE__",
+    "performCalls" : [ ],
+    "externalCalls" : [ ],
+    "fileOperations" : [ ],
+    "controlFlowStatements" : [ {
+      "type" : "STOP_RUN"
+    } ],
+    "dataReferences" : [ ]
+  } ],
   "hasExecSql" : false,
   "hasExecCics" : false,
   "hasExecSqlIms" : false

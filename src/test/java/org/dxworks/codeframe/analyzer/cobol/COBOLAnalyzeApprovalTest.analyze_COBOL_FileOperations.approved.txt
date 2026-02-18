@@ -23,45 +23,30 @@
     "level" : 1,
     "picture" : "X",
     "section" : "WORKING-STORAGE",
-    "usage" : null,
-    "redefines" : null,
-    "occurs" : null,
     "children" : [ ]
   }, {
     "name" : "WS-RECORD-COUNT",
     "level" : 1,
     "picture" : "9(5)",
     "section" : "WORKING-STORAGE",
-    "usage" : null,
-    "redefines" : null,
-    "occurs" : null,
     "children" : [ ]
   }, {
     "name" : "WS-COUNT",
     "level" : 1,
     "picture" : "9(5)",
     "section" : "WORKING-STORAGE",
-    "usage" : null,
-    "redefines" : null,
-    "occurs" : null,
     "children" : [ ]
   }, {
     "name" : "WS-INPUT",
     "level" : 1,
     "picture" : "X(10)",
     "section" : "WORKING-STORAGE",
-    "usage" : null,
-    "redefines" : null,
-    "occurs" : null,
     "children" : [ ]
   }, {
     "name" : "WS-OUTPUT",
     "level" : 1,
     "picture" : "X(10)",
     "section" : "WORKING-STORAGE",
-    "usage" : null,
-    "redefines" : null,
-    "occurs" : null,
     "children" : [ ]
   } ],
   "fileDefinitions" : [ {
@@ -69,29 +54,17 @@
     "records" : [ {
       "name" : "CUSTOMER-HEADER-RECORD",
       "level" : 1,
-      "picture" : null,
       "section" : "FILE SECTION",
-      "usage" : null,
-      "redefines" : null,
-      "occurs" : null,
       "children" : [ ]
     }, {
       "name" : "CUSTOMER-DETAIL-RECORD",
       "level" : 1,
-      "picture" : null,
       "section" : "FILE SECTION",
-      "usage" : null,
-      "redefines" : null,
-      "occurs" : null,
       "children" : [ ]
     }, {
       "name" : "CUSTOMER-TRAILER-RECORD",
       "level" : 1,
-      "picture" : null,
       "section" : "FILE SECTION",
-      "usage" : null,
-      "redefines" : null,
-      "occurs" : null,
       "children" : [ ]
     } ]
   }, {
@@ -99,20 +72,12 @@
     "records" : [ {
       "name" : "TRANSACTION-RECORD",
       "level" : 1,
-      "picture" : null,
       "section" : "FILE SECTION",
-      "usage" : null,
-      "redefines" : null,
-      "occurs" : null,
       "children" : [ ]
     }, {
       "name" : "TRANSACTION-HEADER-RECORD",
       "level" : 1,
-      "picture" : null,
       "section" : "FILE SECTION",
-      "usage" : null,
-      "redefines" : null,
-      "occurs" : null,
       "children" : [ ]
     } ]
   }, {
@@ -120,20 +85,12 @@
     "records" : [ {
       "name" : "REPORT-HEADER-RECORD",
       "level" : 1,
-      "picture" : null,
       "section" : "FILE SECTION",
-      "usage" : null,
-      "redefines" : null,
-      "occurs" : null,
       "children" : [ ]
     }, {
       "name" : "REPORT-DETAIL-RECORD",
       "level" : 1,
-      "picture" : null,
       "section" : "FILE SECTION",
-      "usage" : null,
-      "redefines" : null,
-      "occurs" : null,
       "children" : [ ]
     } ]
   } ],
@@ -143,17 +100,17 @@
   "paragraphs" : [ {
     "name" : "1000-MAINLINE",
     "performCalls" : [ {
-      "targetParagraph" : "2000-OPEN-FILES",
-      "thruParagraph" : null
+      "targetParagraph" : "2000-OPEN-FILES"
     }, {
-      "targetParagraph" : "3000-PROCESS-FILES",
-      "thruParagraph" : null
+      "targetParagraph" : "3000-PROCESS-FILES"
     }, {
-      "targetParagraph" : "9000-CLOSE-FILES",
-      "thruParagraph" : null
+      "targetParagraph" : "9000-CLOSE-FILES"
     } ],
     "externalCalls" : [ ],
     "fileOperations" : [ ],
+    "controlFlowStatements" : [ {
+      "type" : "STOP_RUN"
+    } ],
     "dataReferences" : [ ]
   }, {
     "name" : "2000-OPEN-FILES",
@@ -169,30 +126,26 @@
       "verb" : "OPEN",
       "fileName" : "REPORT-FILE"
     } ],
+    "controlFlowStatements" : [ ],
     "dataReferences" : [ ]
   }, {
     "name" : "3000-PROCESS-FILES",
     "performCalls" : [ {
-      "targetParagraph" : "3100-READ-CUSTOMER",
-      "thruParagraph" : null
+      "targetParagraph" : "3100-READ-CUSTOMER"
     }, {
-      "targetParagraph" : "3200-UPDATE-TRANSACTIONS",
-      "thruParagraph" : null
+      "targetParagraph" : "3200-UPDATE-TRANSACTIONS"
     }, {
-      "targetParagraph" : "3300-DELETE-OLD-RECORDS",
-      "thruParagraph" : null
+      "targetParagraph" : "3300-DELETE-OLD-RECORDS"
     }, {
-      "targetParagraph" : "3400-START-AT-KEY",
-      "thruParagraph" : null
+      "targetParagraph" : "3400-START-AT-KEY"
     }, {
-      "targetParagraph" : "3500-WRITE-REPORTS",
-      "thruParagraph" : null
+      "targetParagraph" : "3500-WRITE-REPORTS"
     }, {
-      "targetParagraph" : "3600-DATA-REFERENCES",
-      "thruParagraph" : null
+      "targetParagraph" : "3600-DATA-REFERENCES"
     } ],
     "externalCalls" : [ ],
     "fileOperations" : [ ],
+    "controlFlowStatements" : [ ],
     "dataReferences" : [ ]
   }, {
     "name" : "3100-READ-CUSTOMER",
@@ -202,6 +155,7 @@
       "verb" : "READ",
       "fileName" : "CUSTOMER-FILE"
     } ],
+    "controlFlowStatements" : [ ],
     "dataReferences" : [ "WS-EOF-FLAG" ]
   }, {
     "name" : "3200-UPDATE-TRANSACTIONS",
@@ -211,6 +165,7 @@
       "verb" : "REWRITE",
       "fileName" : "TRANSACTION-RECORD"
     } ],
+    "controlFlowStatements" : [ ],
     "dataReferences" : [ ]
   }, {
     "name" : "3300-DELETE-OLD-RECORDS",
@@ -220,6 +175,7 @@
       "verb" : "DELETE",
       "fileName" : "TRANSACTION-FILE"
     } ],
+    "controlFlowStatements" : [ ],
     "dataReferences" : [ ]
   }, {
     "name" : "3400-START-AT-KEY",
@@ -229,6 +185,7 @@
       "verb" : "START",
       "fileName" : "TRANSACTION-FILE"
     } ],
+    "controlFlowStatements" : [ ],
     "dataReferences" : [ ]
   }, {
     "name" : "3500-WRITE-REPORTS",
@@ -238,6 +195,7 @@
       "verb" : "WRITE",
       "fileName" : "REPORT-RECORD"
     } ],
+    "controlFlowStatements" : [ ],
     "dataReferences" : [ "WS-RECORD-COUNT" ]
   }, {
     "name" : "3600-DATA-REFERENCES",
@@ -248,6 +206,7 @@
       "parameterCount" : 2
     } ],
     "fileOperations" : [ ],
+    "controlFlowStatements" : [ ],
     "dataReferences" : [ "WS-RECORD-COUNT", "END-OF-FILE", "WS-COUNT" ]
   }, {
     "name" : "9000-CLOSE-FILES",
@@ -263,6 +222,7 @@
       "verb" : "CLOSE",
       "fileName" : "REPORT-FILE"
     } ],
+    "controlFlowStatements" : [ ],
     "dataReferences" : [ ]
   } ],
   "hasExecSql" : false,

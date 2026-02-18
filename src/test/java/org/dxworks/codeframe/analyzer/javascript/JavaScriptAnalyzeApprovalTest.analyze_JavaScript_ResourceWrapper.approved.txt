@@ -1,11 +1,9 @@
 {
   "filePath" : "src/test/resources/samples/javascript/resourceLocationWrapper.js",
   "language" : "javascript",
-  "packageName" : null,
   "types" : [ {
     "kind" : "class",
     "name" : "ResourceLocationWrapper",
-    "visibility" : null,
     "modifiers" : [ "export", "default" ],
     "annotations" : [ ],
     "extendsType" : "React.Component",
@@ -14,279 +12,195 @@
     "fields" : [ {
       "name" : "resourceLocationFunctions",
       "type" : "Object",
-      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ]
     }, {
       "name" : "style",
       "type" : "Object",
-      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ]
     } ],
     "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ {
-        "name" : "props",
-        "type" : null
+        "name" : "props"
       }, {
-        "name" : "context",
-        "type" : null
+        "name" : "context"
       } ],
       "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "bind",
-        "objectType" : null,
         "objectName" : "this.fetchAllResourceLocations",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "bind",
-        "objectType" : null,
         "objectName" : "this.fetchAllVisitLocations",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "bind",
-        "objectType" : null,
         "objectName" : "this.fetchItemTypes",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "bind",
-        "objectType" : null,
         "objectName" : "this.getBody",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "fetchAllResourceLocations",
         "objectType" : "ResourceLocationWrapper",
         "objectName" : "this",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "fetchAllVisitLocations",
         "objectType" : "ResourceLocationWrapper",
         "objectName" : "this",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "fetchItemTypes",
         "objectType" : "ResourceLocationWrapper",
         "objectName" : "this",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "super",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "fetchAllResourceLocations",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ {
-        "name" : "self",
-        "type" : null
+        "name" : "self"
       } ],
       "localVariables" : [ "resourceLocationUuidList", "resourceLocations", "error" ],
       "methodCalls" : [ {
         "methodName" : "apiBaseUrl",
-        "objectType" : null,
         "objectName" : "this.urlHelper",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "catch",
-        "objectType" : null,
         "objectName" : "axios.get().then()",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "get",
-        "objectType" : null,
         "objectName" : "axios",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "includes",
-        "objectType" : null,
         "objectName" : "_",
-        "callCount" : 2,
-        "parameterCount" : null
+        "callCount" : 2
       }, {
         "methodName" : "map",
-        "objectType" : null,
         "objectName" : "_",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "notify",
-        "objectType" : null,
         "objectName" : "self.resourceLocationFunctions",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "reduce",
-        "objectType" : null,
         "objectName" : "_",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "replace",
-        "objectType" : null,
         "objectName" : "error.message",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "setState",
-        "objectType" : null,
         "objectName" : "self",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "then",
-        "objectType" : null,
         "objectName" : "axios.get()",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "fetchAllVisitLocations",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ {
-        "name" : "self",
-        "type" : null
+        "name" : "self"
       } ],
       "localVariables" : [ "visitLocationUuidList", "visitLocations", "error" ],
       "methodCalls" : [ {
         "methodName" : "apiBaseUrl",
-        "objectType" : null,
         "objectName" : "this.urlHelper",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "catch",
-        "objectType" : null,
         "objectName" : "axios.get().then()",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "get",
-        "objectType" : null,
         "objectName" : "axios",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "includes",
-        "objectType" : null,
         "objectName" : "_",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "map",
-        "objectType" : null,
         "objectName" : "_",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "notify",
-        "objectType" : null,
         "objectName" : "self.resourceLocationFunctions",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "reduce",
-        "objectType" : null,
         "objectName" : "_",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "replace",
-        "objectType" : null,
         "objectName" : "error.message",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "setState",
-        "objectType" : null,
         "objectName" : "self",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "then",
-        "objectType" : null,
         "objectName" : "axios.get()",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "fetchItemTypes",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ ],
       "localVariables" : [ "self", "error" ],
       "methodCalls" : [ {
         "methodName" : "apiBaseUrl",
-        "objectType" : null,
         "objectName" : "this.urlHelper",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "catch",
-        "objectType" : null,
         "objectName" : "axios.get().then()",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "get",
-        "objectType" : null,
         "objectName" : "axios",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "notify",
-        "objectType" : null,
         "objectName" : "self.resourceLocationFunctions",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "replace",
-        "objectType" : null,
         "objectName" : "error.message",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "setState",
-        "objectType" : null,
         "objectName" : "self",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "then",
-        "objectType" : null,
         "objectName" : "axios.get()",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "getBody",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ ],
@@ -294,8 +208,6 @@
       "methodCalls" : [ ]
     }, {
       "name" : "render",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ ],
       "annotations" : [ ],
       "parameters" : [ ],
@@ -304,8 +216,7 @@
         "methodName" : "getBody",
         "objectType" : "ResourceLocationWrapper",
         "objectName" : "this",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     } ],
     "types" : [ ]

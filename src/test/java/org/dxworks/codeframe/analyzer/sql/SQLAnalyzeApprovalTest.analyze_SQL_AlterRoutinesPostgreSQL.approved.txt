@@ -18,15 +18,12 @@
   "alterViews" : [ ],
   "alterFunctions" : [ {
     "functionName" : "fn_net_amount",
-    "schema" : null,
     "parameters" : [ {
       "name" : "p_gross",
-      "type" : "DECIMAL(12,2)",
-      "direction" : null
+      "type" : "DECIMAL(12,2)"
     }, {
       "name" : "p_tax_rate_id",
-      "type" : "INT",
-      "direction" : null
+      "type" : "INT"
     } ],
     "returnType" : "DECIMAL(12,2)",
     "references" : {
@@ -41,8 +38,7 @@
     "schema" : "inventory",
     "parameters" : [ {
       "name" : "p_warehouse_id",
-      "type" : "INT",
-      "direction" : null
+      "type" : "INT"
     } ],
     "returnType" : "TABLE(product_id INT,product_name VARCHAR,quantity INT,threshold INT)",
     "references" : {
@@ -58,12 +54,10 @@
     "schema" : "sales",
     "parameters" : [ {
       "name" : "p_order_id",
-      "type" : "INT",
-      "direction" : null
+      "type" : "INT"
     }, {
       "name" : "p_customer_id",
-      "type" : "INT",
-      "direction" : null
+      "type" : "INT"
     } ],
     "references" : {
       "relations" : [ "sales.order_items", "sales.orders", "sales.customer_tax_info_view" ]
@@ -77,8 +71,7 @@
     "schema" : "purchasing",
     "parameters" : [ {
       "name" : "p_po_id",
-      "type" : "INT",
-      "direction" : null
+      "type" : "INT"
     } ],
     "references" : {
       "relations" : [ "purchasing.purchase_orders", "purchasing.approved_vendors_view" ]
