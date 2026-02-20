@@ -1,0 +1,73 @@
+{
+  "filePath" : "src/test/resources/samples/cobol/copybook-test.cbl",
+  "language" : "cobol",
+  "programId" : "COPYBOOK-TEST",
+  "dataItems" : [ {
+    "name" : "SIMPLE-RECORD",
+    "level" : 1,
+    "section" : "WORKING-STORAGE",
+    "children" : [ {
+      "name" : "FIELD-1",
+      "level" : 5,
+      "picture" : "9(5)",
+      "section" : "WORKING-STORAGE"
+    }, {
+      "name" : "FIELD-2",
+      "level" : 5,
+      "picture" : "X(10)",
+      "section" : "WORKING-STORAGE"
+    } ]
+  }, {
+    "name" : "FUNCTION-PARAMETERS",
+    "level" : 1,
+    "section" : "WORKING-STORAGE",
+    "children" : [ {
+      "name" : "FUNC-INPUT",
+      "level" : 5,
+      "picture" : "X(20)",
+      "section" : "WORKING-STORAGE"
+    }, {
+      "name" : "FUNC-OUTPUT",
+      "level" : 5,
+      "picture" : "X(20)",
+      "section" : "WORKING-STORAGE"
+    }, {
+      "name" : "FUNC-RESULT",
+      "level" : 5,
+      "picture" : "9(3)",
+      "section" : "WORKING-STORAGE"
+    } ]
+  }, {
+    "name" : "FUNCTION-ERRORS",
+    "level" : 1,
+    "section" : "WORKING-STORAGE",
+    "children" : [ {
+      "name" : "ERROR-CODE",
+      "level" : 5,
+      "picture" : "9(2)",
+      "section" : "WORKING-STORAGE"
+    } ]
+  }, {
+    "name" : "WS-RESULT",
+    "level" : 1,
+    "picture" : "9(5)",
+    "section" : "WORKING-STORAGE"
+  } ],
+  "copyStatements" : [ "SIMPLE", "PROCEDURES" ],
+  "sections" : [ {
+    "name" : "PROCESS-STRING",
+    "paragraphs" : [ {
+      "name" : "PROCESS-STRING-PARAGRAPH",
+      "dataReferences" : [ "FUNC-OUTPUT", "ERROR-CODE" ]
+    } ]
+  }, {
+    "name" : "CALCULATE-SUM",
+    "paragraphs" : [ {
+      "name" : "CALCULATE-SUM-PARAGRAPH",
+      "dataReferences" : [ "FUNC-RESULT", "ERROR-CODE" ]
+    } ]
+  } ],
+  "hasExecSql" : false,
+  "hasExecCics" : false,
+  "hasExecSqlIms" : false
+}

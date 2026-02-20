@@ -86,10 +86,10 @@
     } ],
     "fileOperations" : [ {
       "verb" : "READ",
-      "fileName" : "INPUT-FILE"
+      "target" : "INPUT-FILE"
     }, {
       "verb" : "WRITE",
-      "fileName" : "INPUT-RECORD"
+      "target" : "INPUT-RECORD"
     } ],
     "controlFlowStatements" : [ {
       "type" : "STOP_RUN"
@@ -99,7 +99,7 @@
       "type" : "RETURN",
       "target" : "INPUT-FILE"
     } ],
-    "dataReferences" : [ "WS-INPUT", "LS-PARAMETERS", "WS-IMS-STATUS", "WS-COUNT" ]
+    "dataReferences" : [ "WS-COUNT", "WS-INPUT", "LS-PARAMETERS", "WS-IMS-STATUS" ]
   } ],
   "hasExecSql" : true,
   "hasExecCics" : true,

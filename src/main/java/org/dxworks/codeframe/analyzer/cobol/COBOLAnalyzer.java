@@ -1,13 +1,8 @@
 package org.dxworks.codeframe.analyzer.cobol;
 
-import org.antlr.v4.runtime.BaseErrorListener;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.DefaultErrorStrategy;
-import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.Recognizer;
-import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.Interval;
+import org.antlr.v4.runtime.tree.*;
 import org.dxworks.codeframe.analyzer.cobol.generated.Cobol85BaseVisitor;
 import org.dxworks.codeframe.analyzer.cobol.generated.Cobol85Lexer;
 import org.dxworks.codeframe.analyzer.cobol.generated.Cobol85Parser;
@@ -30,10 +25,18 @@ import java.util.ArrayList;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
+import java.util.Locale;
+import java.io.File;
 
 public class COBOLAnalyzer implements LanguageAnalyzer {
 
     private static final String PROCEDURE_DIVISION_PROLOGUE_PARAGRAPH = "__PROCEDURE_DIVISION_PROLOGUE__";
+
+    private final CobolCopybookRepository copybookRepository;
+
+    public COBOLAnalyzer(CobolCopybookRepository copybookRepository) {
+        this.copybookRepository = copybookRepository;
+    }
 
     @Override
     public Analysis analyze(String filePath, String sourceCode, TSNode rootNode) {
@@ -42,9 +45,10 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
 
         CobolPreprocessorImpl preprocessor = new CobolPreprocessorImpl();
         String preprocessedSource = preprocessSource(sourceCode, preprocessor);
-        Cobol85Parser.StartRuleContext tree = parse(tokenize(preprocessedSource));
+        CommonTokenStream tokens = tokenize(preprocessedSource);
+        Cobol85Parser.StartRuleContext tree = parse(tokens);
 
-        ExtractionVisitor visitor = new ExtractionVisitor(analysis);
+        ExtractionVisitor visitor = new ExtractionVisitor(analysis, tokens);
         visitParseTree(tree, visitor, filePath);
 
         applyVisitorResults(analysis, visitor);
@@ -55,9 +59,13 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
     }
 
     private String preprocessSource(String sourceCode, CobolPreprocessorImpl preprocessor) {
+        // Convert repository files to the List<File> expected by the preprocessor API
+        List<File> copyFiles = copybookRepository != null 
+                ? copybookRepository.indexSnapshot().values().stream().toList()
+                : List.of();
         return preprocessor.process(
                 sourceCode,
-                null,
+                copyFiles,
                 org.dxworks.codeframe.analyzer.cobol.preprocessor.CobolPreprocessor.CobolSourceFormatEnum.FIXED
         );
     }
@@ -147,6 +155,7 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
     // Visitor extracts structure from preprocessed parse tree (EXEC blocks tagged, comment entries handled, COPY/REPLACE removed by reference preprocessor).
     private static class ExtractionVisitor extends Cobol85BaseVisitor<Void> {
         private final COBOLFileAnalysis analysis;
+        private final CommonTokenStream tokens;
         private String programId;
         private final List<COBOLDataItem> workingStorageDataItems = new ArrayList<>();
         private final List<COBOLDataItem> linkageDataItems = new ArrayList<>();
@@ -163,8 +172,9 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
         private boolean hasFdEntries = false; // Track if we have FD entries
 
         // Constructor receives analysis object (flags are detected from raw source since preprocessor removes EXEC blocks).
-        public ExtractionVisitor(COBOLFileAnalysis analysis) {
+        public ExtractionVisitor(COBOLFileAnalysis analysis, CommonTokenStream tokens) {
             this.analysis = analysis;
+            this.tokens = tokens;
         }
         // Scope tracking for data division sections and procedure division context.
         private boolean inWorkingStorageSection;
@@ -528,11 +538,22 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
         // Track PROCEDURE DIVISION sections and their paragraphs.
         @Override
         public Void visitProcedureSection(Cobol85Parser.ProcedureSectionContext ctx) {
+            if (ctx.procedureSectionHeader() == null) {
+                return super.visitProcedureSection(ctx);
+            }
+
+            Cobol85Parser.ProcedureSectionHeaderContext header = ctx.procedureSectionHeader();
+            String headerText = getOriginalText(header);
+            if (header.sectionName() == null || headerText == null || !headerText.toUpperCase(Locale.ROOT).contains("SECTION")) {
+                return super.visitProcedureSection(ctx);
+            }
+
             COBOLSection previousSection = currentSection;
 
             COBOLSection section = new COBOLSection();
-            if (ctx.procedureSectionHeader() != null && ctx.procedureSectionHeader().sectionName() != null) {
-                section.name = normalizeName(ctx.procedureSectionHeader().sectionName().getText());
+            section.name = normalizeName(header.sectionName().getText());
+            if (section.name == null) {
+                return super.visitProcedureSection(ctx);
             }
             sections.add(section);
             currentSection = section;
@@ -612,6 +633,10 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
 
             if (ctx.callUsingPhrase() != null) {
                 externalCall.parameterCount = countCallUsingParameters(ctx.callUsingPhrase());
+                // Extract CALL USING argument identifiers into dataReferences
+                if (paragraph != null) {
+                    paragraph.dataReferences.addAll(extractCallUsingIdentifiers(ctx.callUsingPhrase()));
+                }
             }
 
             if (paragraph != null) {
@@ -624,13 +649,12 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
         }
 
         private void addFileOperation(COBOLParagraph paragraph, String verb, String rawFileName) {
-            if (paragraph == null) {
+            if (paragraph == null || rawFileName == null) {
                 return;
             }
-
             COBOLFileOperation op = new COBOLFileOperation();
             op.verb = verb;
-            op.fileName = normalizeName(rawFileName);
+            op.target = normalizeName(rawFileName);
             paragraph.fileOperations.add(op);
         }
 
@@ -758,12 +782,12 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
                     
                     // Extract source identifier from moveToSendingArea
                     if (moveTo.moveToSendingArea() != null && moveTo.moveToSendingArea().identifier() != null) {
-                        paragraph.dataReferences.add(normalizeName(moveTo.moveToSendingArea().identifier().getText()));
+                        paragraph.dataReferences.add(normalizeDataReference(getOriginalText(moveTo.moveToSendingArea().identifier())));
                     }
                     
                     // Extract target identifiers
                     for (Cobol85Parser.IdentifierContext id : moveTo.identifier()) {
-                        paragraph.dataReferences.add(normalizeName(id.getText()));
+                        paragraph.dataReferences.add(normalizeDataReference(getOriginalText(id)));
                     }
                 }
             }
@@ -778,7 +802,7 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
                 // Extract identifiers from computeStore (left side targets)
                 for (Cobol85Parser.ComputeStoreContext store : ctx.computeStore()) {
                     if (store.identifier() != null) {
-                        paragraph.dataReferences.add(normalizeName(store.identifier().getText()));
+                        paragraph.dataReferences.add(normalizeDataReference(getOriginalText(store.identifier())));
                     }
                 }
             }
@@ -795,13 +819,13 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
                     // Extract from addFrom (source operands)
                     for (Cobol85Parser.AddFromContext from : addTo.addFrom()) {
                         if (from.identifier() != null) {
-                            paragraph.dataReferences.add(normalizeName(from.identifier().getText()));
+                            paragraph.dataReferences.add(normalizeDataReference(getOriginalText(from.identifier())));
                         }
                     }
                     // Extract from addTo (target operands)
                     for (Cobol85Parser.AddToContext to : addTo.addTo()) {
                         if (to.identifier() != null) {
-                            paragraph.dataReferences.add(normalizeName(to.identifier().getText()));
+                            paragraph.dataReferences.add(normalizeDataReference(getOriginalText(to.identifier())));
                         }
                     }
                 }
@@ -817,21 +841,31 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
                 if (ctx.subtractFromStatement() != null) {
                     Cobol85Parser.SubtractFromStatementContext subtractFrom = ctx.subtractFromStatement();
                     for (Cobol85Parser.SubtractSubtrahendContext subtrahend : subtractFrom.subtractSubtrahend()) {
-                        addIdentifierReference(paragraph, subtrahend.identifier());
+                        if (subtrahend.identifier() != null) {
+                            paragraph.dataReferences.add(normalizeDataReference(getOriginalText(subtrahend.identifier())));
+                        }
                     }
                     for (Cobol85Parser.SubtractMinuendContext minuend : subtractFrom.subtractMinuend()) {
-                        addIdentifierReference(paragraph, minuend.identifier());
+                        if (minuend.identifier() != null) {
+                            paragraph.dataReferences.add(normalizeDataReference(getOriginalText(minuend.identifier())));
+                        }
                     }
                 }
 
                 if (ctx.subtractFromGivingStatement() != null) {
                     Cobol85Parser.SubtractFromGivingStatementContext giving = ctx.subtractFromGivingStatement();
                     for (Cobol85Parser.SubtractSubtrahendContext subtrahend : giving.subtractSubtrahend()) {
-                        addIdentifierReference(paragraph, subtrahend.identifier());
+                        if (subtrahend.identifier() != null) {
+                            paragraph.dataReferences.add(normalizeDataReference(getOriginalText(subtrahend.identifier())));
+                        }
                     }
-                    addIdentifierReference(paragraph, giving.subtractMinuendGiving().identifier());
+                    if (giving.subtractMinuendGiving().identifier() != null) {
+                        paragraph.dataReferences.add(normalizeDataReference(getOriginalText(giving.subtractMinuendGiving().identifier())));
+                    }
                     for (Cobol85Parser.SubtractGivingContext result : giving.subtractGiving()) {
-                        addIdentifierReference(paragraph, result.identifier());
+                        if (result.identifier() != null) {
+                            paragraph.dataReferences.add(normalizeDataReference(getOriginalText(result.identifier())));
+                        }
                     }
                 }
 
@@ -851,18 +885,26 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
         public Void visitMultiplyStatement(Cobol85Parser.MultiplyStatementContext ctx) {
             COBOLParagraph paragraph = targetParagraph();
             if (paragraph != null) {
-                addIdentifierReference(paragraph, ctx.identifier());
+                if (ctx.identifier() != null) {
+                    paragraph.dataReferences.add(normalizeDataReference(getOriginalText(ctx.identifier())));
+                }
 
                 if (ctx.multiplyRegular() != null) {
                     for (Cobol85Parser.MultiplyRegularOperandContext operand : ctx.multiplyRegular().multiplyRegularOperand()) {
-                        addIdentifierReference(paragraph, operand.identifier());
+                        if (operand.identifier() != null) {
+                            paragraph.dataReferences.add(normalizeDataReference(getOriginalText(operand.identifier())));
+                        }
                     }
                 }
 
                 if (ctx.multiplyGiving() != null) {
-                    addIdentifierReference(paragraph, ctx.multiplyGiving().multiplyGivingOperand().identifier());
+                    if (ctx.multiplyGiving().multiplyGivingOperand().identifier() != null) {
+                        paragraph.dataReferences.add(normalizeDataReference(getOriginalText(ctx.multiplyGiving().multiplyGivingOperand().identifier())));
+                    }
                     for (Cobol85Parser.MultiplyGivingResultContext result : ctx.multiplyGiving().multiplyGivingResult()) {
-                        addIdentifierReference(paragraph, result.identifier());
+                        if (result.identifier() != null) {
+                            paragraph.dataReferences.add(normalizeDataReference(getOriginalText(result.identifier())));
+                        }
                     }
                 }
             }
@@ -874,36 +916,50 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
         public Void visitDivideStatement(Cobol85Parser.DivideStatementContext ctx) {
             COBOLParagraph paragraph = targetParagraph();
             if (paragraph != null) {
-                addIdentifierReference(paragraph, ctx.identifier());
+                if (ctx.identifier() != null) {
+                    paragraph.dataReferences.add(normalizeDataReference(getOriginalText(ctx.identifier())));
+                }
 
                 if (ctx.divideIntoStatement() != null) {
                     for (Cobol85Parser.DivideIntoContext into : ctx.divideIntoStatement().divideInto()) {
-                        addIdentifierReference(paragraph, into.identifier());
+                        if (into.identifier() != null) {
+                            paragraph.dataReferences.add(normalizeDataReference(getOriginalText(into.identifier())));
+                        }
                     }
                 }
 
                 if (ctx.divideIntoGivingStatement() != null) {
                     Cobol85Parser.DivideIntoGivingStatementContext intoGiving = ctx.divideIntoGivingStatement();
-                    addIdentifierReference(paragraph, intoGiving.identifier());
+                    if (intoGiving.identifier() != null) {
+                        paragraph.dataReferences.add(normalizeDataReference(getOriginalText(intoGiving.identifier())));
+                    }
                     if (intoGiving.divideGivingPhrase() != null) {
                         for (Cobol85Parser.DivideGivingContext giving : intoGiving.divideGivingPhrase().divideGiving()) {
-                            addIdentifierReference(paragraph, giving.identifier());
+                            if (giving.identifier() != null) {
+                                paragraph.dataReferences.add(normalizeDataReference(getOriginalText(giving.identifier())));
+                            }
                         }
                     }
                 }
 
                 if (ctx.divideByGivingStatement() != null) {
                     Cobol85Parser.DivideByGivingStatementContext byGiving = ctx.divideByGivingStatement();
-                    addIdentifierReference(paragraph, byGiving.identifier());
+                    if (byGiving.identifier() != null) {
+                        paragraph.dataReferences.add(normalizeDataReference(getOriginalText(byGiving.identifier())));
+                    }
                     if (byGiving.divideGivingPhrase() != null) {
                         for (Cobol85Parser.DivideGivingContext giving : byGiving.divideGivingPhrase().divideGiving()) {
-                            addIdentifierReference(paragraph, giving.identifier());
+                            if (giving.identifier() != null) {
+                                paragraph.dataReferences.add(normalizeDataReference(getOriginalText(giving.identifier())));
+                            }
                         }
                     }
                 }
 
                 if (ctx.divideRemainder() != null) {
-                    addIdentifierReference(paragraph, ctx.divideRemainder().identifier());
+                    if (ctx.divideRemainder().identifier() != null) {
+                        paragraph.dataReferences.add(normalizeDataReference(getOriginalText(ctx.divideRemainder().identifier())));
+                    }
                 }
             }
             return super.visitDivideStatement(ctx);
@@ -916,7 +972,9 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
             if (paragraph != null) {
                 for (Cobol85Parser.SetToStatementContext setToStatement : ctx.setToStatement()) {
                     for (Cobol85Parser.SetToContext setTo : setToStatement.setTo()) {
-                        addIdentifierReference(paragraph, setTo.identifier());
+                        if (setTo.identifier() != null) {
+                            paragraph.dataReferences.add(normalizeDataReference(getOriginalText(setTo.identifier())));
+                        }
                     }
                     for (Cobol85Parser.SetToValueContext value : setToStatement.setToValue()) {
                         for (Cobol85Parser.IdentifierContext identifier : value.getRuleContexts(Cobol85Parser.IdentifierContext.class)) {
@@ -928,9 +986,13 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
                 if (ctx.setUpDownByStatement() != null) {
                     Cobol85Parser.SetUpDownByStatementContext upDown = ctx.setUpDownByStatement();
                     for (Cobol85Parser.SetToContext setTo : upDown.setTo()) {
-                        addIdentifierReference(paragraph, setTo.identifier());
+                        if (setTo.identifier() != null) {
+                            paragraph.dataReferences.add(normalizeDataReference(getOriginalText(setTo.identifier())));
+                        }
                     }
-                    addIdentifierReference(paragraph, upDown.setByValue().identifier());
+                    if (upDown.setByValue().identifier() != null) {
+                        paragraph.dataReferences.add(normalizeDataReference(getOriginalText(upDown.setByValue().identifier())));
+                    }
                 }
             }
             return super.visitSetStatement(ctx);
@@ -970,14 +1032,11 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
         @Override
         public Void visitExitStatement(Cobol85Parser.ExitStatementContext ctx) {
             COBOLParagraph paragraph = targetParagraph();
-            if (paragraph != null) {
+            if (paragraph != null && ctx.PROGRAM() != null) {
+                // Only capture EXIT PROGRAM, not bare EXIT (which is a no-op)
                 COBOLControlFlowStatement controlFlow = new COBOLControlFlowStatement();
-                if (ctx.PROGRAM() != null) {
-                    controlFlow.type = "EXIT_PROGRAM";
-                } else {
-                    controlFlow.type = "EXIT";
-                }
-                controlFlow.target = null; // EXIT doesn't take a target
+                controlFlow.type = "EXIT_PROGRAM";
+                controlFlow.target = null; // EXIT PROGRAM doesn't take a target
                 paragraph.controlFlowStatements.add(controlFlow);
             }
             return super.visitExitStatement(ctx);
@@ -1004,7 +1063,21 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
             if (paragraph == null || identifier == null) {
                 return;
             }
-            paragraph.dataReferences.add(normalizeDataReference(identifier.getText()));
+            paragraph.dataReferences.add(normalizeDataReference(getOriginalText(identifier)));
+        }
+
+        // Get original text from token stream, preserving whitespace
+        private String getOriginalText(ParserRuleContext ctx) {
+            if (ctx == null || tokens == null) {
+                return "";
+            }
+            int start = ctx.start.getStartIndex();
+            int stop = ctx.stop.getStopIndex();
+            if (start >= 0 && stop >= 0 && stop >= start) {
+                CharStream charStream = tokens.getTokenSource().getInputStream();
+                return charStream.getText(Interval.of(start, stop));
+            }
+            return ctx.getText(); // fallback to regular getText()
         }
 
         private void addQualifiedNameReference(COBOLParagraph paragraph, Cobol85Parser.QualifiedDataNameContext qualifiedDataName) {
@@ -1012,6 +1085,78 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
                 return;
             }
             paragraph.dataReferences.add(normalizeDataReference(qualifiedDataName.getText()));
+        }
+
+        // Extract data references from STRING statements (simplified).
+        @Override
+        public Void visitStringStatement(Cobol85Parser.StringStatementContext ctx) {
+            COBOLParagraph paragraph = targetParagraph();
+            if (paragraph != null) {
+                // Extract from stringSendingPhrase (source operands)
+                for (Cobol85Parser.StringSendingPhraseContext sendingPhrase : ctx.stringSendingPhrase()) {
+                    for (Cobol85Parser.StringSendingContext sending : sendingPhrase.stringSending()) {
+                        if (sending.identifier() != null) {
+                            paragraph.dataReferences.add(normalizeDataReference(getOriginalText(sending.identifier())));
+                        }
+                    }
+                }
+                // Extract from stringIntoPhrase (target operand)
+                if (ctx.stringIntoPhrase() != null && ctx.stringIntoPhrase().identifier() != null) {
+                    paragraph.dataReferences.add(normalizeDataReference(getOriginalText(ctx.stringIntoPhrase().identifier())));
+                }
+            }
+            return super.visitStringStatement(ctx);
+        }
+
+        // Extract data references from EVALUATE statements (simplified).
+        @Override
+        public Void visitEvaluateStatement(Cobol85Parser.EvaluateStatementContext ctx) {
+            COBOLParagraph paragraph = targetParagraph();
+            if (paragraph != null) {
+                // Extract from evaluateSelect (subject identifier)
+                if (ctx.evaluateSelect().identifier() != null) {
+                    paragraph.dataReferences.add(normalizeDataReference(getOriginalText(ctx.evaluateSelect().identifier())));
+                }
+                // Extract from evaluateAlsoSelect (additional subjects)
+                for (Cobol85Parser.EvaluateAlsoSelectContext alsoSelect : ctx.evaluateAlsoSelect()) {
+                    if (alsoSelect.evaluateSelect().identifier() != null) {
+                        paragraph.dataReferences.add(normalizeDataReference(getOriginalText(alsoSelect.evaluateSelect().identifier())));
+                    }
+                }
+            }
+            return super.visitEvaluateStatement(ctx);
+        }
+
+        // Extract data references from INITIALIZE statements (simplified).
+        @Override
+        public Void visitInitializeStatement(Cobol85Parser.InitializeStatementContext ctx) {
+            COBOLParagraph paragraph = targetParagraph();
+            if (paragraph != null) {
+                // Extract target identifiers
+                for (Cobol85Parser.IdentifierContext identifier : ctx.identifier()) {
+                    paragraph.dataReferences.add(normalizeDataReference(getOriginalText(identifier)));
+                }
+            }
+            return super.visitInitializeStatement(ctx);
+        }
+
+        // Extract data references from DISPLAY statements (simplified).
+        @Override
+        public Void visitDisplayStatement(Cobol85Parser.DisplayStatementContext ctx) {
+            COBOLParagraph paragraph = targetParagraph();
+            if (paragraph != null) {
+                // Extract from displayOperand (identifier operands)
+                for (Cobol85Parser.DisplayOperandContext operand : ctx.displayOperand()) {
+                    if (operand.identifier() != null) {
+                        paragraph.dataReferences.add(normalizeDataReference(getOriginalText(operand.identifier())));
+                    }
+                }
+                // Extract from displayAt (identifier for AT clause)
+                if (ctx.displayAt() != null && ctx.displayAt().identifier() != null) {
+                    paragraph.dataReferences.add(normalizeDataReference(getOriginalText(ctx.displayAt().identifier())));
+                }
+            }
+            return super.visitDisplayStatement(ctx);
         }
 
         private String normalizeDataReference(String raw) {
@@ -1042,6 +1187,38 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
                 }
             }
             return total;
+        }
+
+        // Extract identifier names from CALL USING phrase for dataReferences.
+        private List<String> extractCallUsingIdentifiers(Cobol85Parser.CallUsingPhraseContext usingPhrase) {
+            List<String> identifiers = new ArrayList<>();
+            for (Cobol85Parser.CallUsingParameterContext parameter : usingPhrase.callUsingParameter()) {
+                // Extract from BY REFERENCE parameters
+                if (parameter.callByReferencePhrase() != null) {
+                    for (Cobol85Parser.CallByReferenceContext ref : parameter.callByReferencePhrase().callByReference()) {
+                        if (ref.identifier() != null) {
+                            identifiers.add(normalizeName(ref.identifier().getText()));
+                        }
+                    }
+                }
+                // Extract from BY VALUE parameters
+                if (parameter.callByValuePhrase() != null) {
+                    for (Cobol85Parser.CallByValueContext val : parameter.callByValuePhrase().callByValue()) {
+                        if (val.identifier() != null) {
+                            identifiers.add(normalizeName(val.identifier().getText()));
+                        }
+                    }
+                }
+                // Extract from BY CONTENT parameters
+                if (parameter.callByContentPhrase() != null) {
+                    for (Cobol85Parser.CallByContentContext cont : parameter.callByContentPhrase().callByContent()) {
+                        if (cont.identifier() != null) {
+                            identifiers.add(normalizeName(cont.identifier().getText()));
+                        }
+                    }
+                }
+            }
+            return identifiers;
         }
 
         // Extract data items with hierarchy and section context (format 1 entries).
@@ -1096,6 +1273,51 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
             return null;
         }
 
+        // Extract 88-level condition names as children in dataItems hierarchy.
+        @Override
+        public Void visitDataDescriptionEntryFormat3(Cobol85Parser.DataDescriptionEntryFormat3Context ctx) {
+            if (!inWorkingStorageSection && !inLinkageSection && !inLocalStorageSection && !inFileSection) {
+                return null;
+            }
+
+            // Skip global file section processing when we have FD entries to avoid duplication
+            if (hasFdEntries && inFileSection) {
+                return null;
+            }
+
+            COBOLDataItem dataItem = toDataItemFromFormat3(ctx);
+            if (dataItem == null) {
+                return null;
+            }
+
+            List<COBOLDataItem> targetList = null;
+            if (inWorkingStorageSection) {
+                targetList = workingStorageDataItems;
+                dataItem.section = "WORKING-STORAGE";
+            } else if (inLinkageSection) {
+                targetList = linkageDataItems;
+                dataItem.section = "LINKAGE";
+            } else if (inLocalStorageSection) {
+                targetList = localStorageDataItems;
+                dataItem.section = "LOCAL-STORAGE";
+            } else if (inFileSection) {
+                targetList = fileSectionDataItems;
+                dataItem.section = "FILE";
+            }
+
+            if (targetList != null) {
+                if (hierarchy.isEmpty()) {
+                    targetList.add(dataItem);
+                } else {
+                    hierarchy.peek().children.add(dataItem);
+                }
+            }
+
+            // Note: 88-level items are not pushed to hierarchy (they can't have children)
+
+            return null;
+        }
+
         // Convert DataDescriptionEntryFormat1Context to COBOLDataItem with level, name, and picture.
         private COBOLDataItem toDataItem(Cobol85Parser.DataDescriptionEntryFormat1Context ctx) {
             Integer level = parseInteger(ctx.getStart().getText());
@@ -1139,6 +1361,20 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
                     item.occurs = parseInteger(integerLiterals.get(0).getText());
                 }
             }
+
+            return item;
+        }
+
+        // Convert DataDescriptionEntryFormat3Context (88-level) to COBOLDataItem.
+        private COBOLDataItem toDataItemFromFormat3(Cobol85Parser.DataDescriptionEntryFormat3Context ctx) {
+            COBOLDataItem item = new COBOLDataItem();
+            item.level = 88; // 88-level entries are always level 88
+
+            if (ctx.conditionName() != null) {
+                item.name = ctx.conditionName().getText();
+            }
+
+            // Note: VALUE clause is intentionally excluded per Decision #12 in research doc
 
             return item;
         }

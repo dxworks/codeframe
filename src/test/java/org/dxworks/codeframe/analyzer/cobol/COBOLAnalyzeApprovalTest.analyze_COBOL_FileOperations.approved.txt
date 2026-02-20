@@ -22,7 +22,12 @@
     "name" : "WS-EOF-FLAG",
     "level" : 1,
     "picture" : "X",
-    "section" : "WORKING-STORAGE"
+    "section" : "WORKING-STORAGE",
+    "children" : [ {
+      "name" : "END-OF-FILE",
+      "level" : 88,
+      "section" : "WORKING-STORAGE"
+    } ]
   }, {
     "name" : "WS-RECORD-COUNT",
     "level" : 1,
@@ -185,13 +190,13 @@
     "name" : "2000-OPEN-FILES",
     "fileOperations" : [ {
       "verb" : "OPEN",
-      "fileName" : "CUSTOMER-FILE"
+      "target" : "CUSTOMER-FILE"
     }, {
       "verb" : "OPEN",
-      "fileName" : "TRANSACTION-FILE"
+      "target" : "TRANSACTION-FILE"
     }, {
       "verb" : "OPEN",
-      "fileName" : "REPORT-FILE"
+      "target" : "REPORT-FILE"
     } ]
   }, {
     "name" : "3000-PROCESS-FILES",
@@ -212,32 +217,32 @@
     "name" : "3100-READ-CUSTOMER",
     "fileOperations" : [ {
       "verb" : "READ",
-      "fileName" : "CUSTOMER-FILE"
+      "target" : "CUSTOMER-FILE"
     } ],
     "dataReferences" : [ "WS-EOF-FLAG" ]
   }, {
     "name" : "3200-UPDATE-TRANSACTIONS",
     "fileOperations" : [ {
       "verb" : "REWRITE",
-      "fileName" : "TRANSACTION-RECORD"
+      "target" : "TRANSACTION-RECORD"
     } ]
   }, {
     "name" : "3300-DELETE-OLD-RECORDS",
     "fileOperations" : [ {
       "verb" : "DELETE",
-      "fileName" : "TRANSACTION-FILE"
+      "target" : "TRANSACTION-FILE"
     } ]
   }, {
     "name" : "3400-START-AT-KEY",
     "fileOperations" : [ {
       "verb" : "START",
-      "fileName" : "TRANSACTION-FILE"
+      "target" : "TRANSACTION-FILE"
     } ]
   }, {
     "name" : "3500-WRITE-REPORTS",
     "fileOperations" : [ {
       "verb" : "WRITE",
-      "fileName" : "REPORT-RECORD"
+      "target" : "REPORT-RECORD"
     } ],
     "dataReferences" : [ "WS-RECORD-COUNT" ]
   }, {
@@ -247,18 +252,18 @@
       "isDynamic" : false,
       "parameterCount" : 2
     } ],
-    "dataReferences" : [ "WS-RECORD-COUNT", "END-OF-FILE", "WS-COUNT", "WS-RECORD-COUNT-ADD", "WS-RECORD-COUNT-SUB", "WS-RECORD-COUNT-MUL", "WS-RECORD-COUNT-DIV" ]
+    "dataReferences" : [ "WS-RECORD-COUNT", "END-OF-FILE", "WS-COUNT", "WS-RECORD-COUNT-ADD", "WS-RECORD-COUNT-SUB", "WS-RECORD-COUNT-MUL", "WS-RECORD-COUNT-DIV", "WS-INPUT", "WS-OUTPUT" ]
   }, {
     "name" : "9000-CLOSE-FILES",
     "fileOperations" : [ {
       "verb" : "CLOSE",
-      "fileName" : "CUSTOMER-FILE"
+      "target" : "CUSTOMER-FILE"
     }, {
       "verb" : "CLOSE",
-      "fileName" : "TRANSACTION-FILE"
+      "target" : "TRANSACTION-FILE"
     }, {
       "verb" : "CLOSE",
-      "fileName" : "REPORT-FILE"
+      "target" : "REPORT-FILE"
     } ]
   } ],
   "hasExecSql" : false,

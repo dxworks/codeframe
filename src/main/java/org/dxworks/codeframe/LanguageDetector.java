@@ -32,4 +32,13 @@ public class LanguageDetector {
         
         return Optional.empty();
     }
+
+    public static boolean isCobolCopybook(Path filePath) {
+        String fileName = filePath.getFileName().toString().toLowerCase();
+        return fileName.endsWith(".cpy");
+    }
+
+    public static boolean isRelevantSourceOrDependency(Path p) {
+        return detectLanguage(p).isPresent() || isCobolCopybook(p);
+    }
 }
