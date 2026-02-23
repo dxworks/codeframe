@@ -165,7 +165,6 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
         private final List<COBOLFileDefinition> fileDefinitions = new ArrayList<>();
         private final List<COBOLSection> sections = new ArrayList<>();
         private final List<COBOLParagraph> paragraphs = new ArrayList<>();
-        private final List<COBOLExternalCall> externalCalls = new ArrayList<>();
         private final List<String> procedureParameters = new ArrayList<>();
         private final Deque<COBOLDataItem> hierarchy = new ArrayDeque<>();
         private Cobol85Parser.FileDescriptionEntryContext currentFdContext = null;
@@ -641,9 +640,8 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
 
             if (paragraph != null) {
                 paragraph.externalCalls.add(externalCall);
-            } else {
-                externalCalls.add(externalCall);
             }
+            // Note: CALL statements outside paragraphs are handled by prologue mechanism
 
             return super.visitCallStatement(ctx);
         }
@@ -791,6 +789,21 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
                     }
                 }
             }
+            
+            if (ctx.moveCorrespondingToStatement() != null) {
+                Cobol85Parser.MoveCorrespondingToStatementContext moveCorr = ctx.moveCorrespondingToStatement();
+                
+                // Extract source identifier from moveCorrespondingToSendingArea
+                if (moveCorr.moveCorrespondingToSendingArea() != null && moveCorr.moveCorrespondingToSendingArea().identifier() != null) {
+                    paragraph.dataReferences.add(normalizeDataReference(getOriginalText(moveCorr.moveCorrespondingToSendingArea().identifier())));
+                }
+                
+                // Extract target identifiers
+                for (Cobol85Parser.IdentifierContext id : moveCorr.identifier()) {
+                    paragraph.dataReferences.add(normalizeDataReference(getOriginalText(id)));
+                }
+            }
+            
             return super.visitMoveStatement(ctx);
         }
 
@@ -1091,21 +1104,51 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
         @Override
         public Void visitStringStatement(Cobol85Parser.StringStatementContext ctx) {
             COBOLParagraph paragraph = targetParagraph();
-            if (paragraph != null) {
-                // Extract from stringSendingPhrase (source operands)
-                for (Cobol85Parser.StringSendingPhraseContext sendingPhrase : ctx.stringSendingPhrase()) {
-                    for (Cobol85Parser.StringSendingContext sending : sendingPhrase.stringSending()) {
-                        if (sending.identifier() != null) {
-                            paragraph.dataReferences.add(normalizeDataReference(getOriginalText(sending.identifier())));
-                        }
+            if (paragraph == null) {
+                return super.visitStringStatement(ctx);
+            }
+            // Extract from stringSendingPhrase (source operands)
+            for (Cobol85Parser.StringSendingPhraseContext sendingPhrase : ctx.stringSendingPhrase()) {
+                for (Cobol85Parser.StringSendingContext sending : sendingPhrase.stringSending()) {
+                    if (sending.identifier() != null) {
+                        paragraph.dataReferences.add(normalizeDataReference(getOriginalText(sending.identifier())));
                     }
                 }
-                // Extract from stringIntoPhrase (target operand)
-                if (ctx.stringIntoPhrase() != null && ctx.stringIntoPhrase().identifier() != null) {
-                    paragraph.dataReferences.add(normalizeDataReference(getOriginalText(ctx.stringIntoPhrase().identifier())));
-                }
+            }
+            // Extract from stringIntoPhrase (target operand)
+            if (ctx.stringIntoPhrase() != null && ctx.stringIntoPhrase().identifier() != null) {
+                paragraph.dataReferences.add(normalizeDataReference(getOriginalText(ctx.stringIntoPhrase().identifier())));
             }
             return super.visitStringStatement(ctx);
+        }
+
+        // Extract data references from UNSTRING statements (simplified).
+        @Override
+        public Void visitUnstringStatement(Cobol85Parser.UnstringStatementContext ctx) {
+            COBOLParagraph paragraph = targetParagraph();
+            if (paragraph == null) {
+                return super.visitUnstringStatement(ctx);
+            }
+            // Extract from unstringSendingPhrase (source identifier)
+            if (ctx.unstringSendingPhrase() != null && ctx.unstringSendingPhrase().identifier() != null) {
+                paragraph.dataReferences.add(normalizeDataReference(getOriginalText(ctx.unstringSendingPhrase().identifier())));
+            }
+            // Extract from unstringIntoPhrase (target identifiers)
+            if (ctx.unstringIntoPhrase() != null) {
+                for (Cobol85Parser.UnstringIntoContext unstringInto : ctx.unstringIntoPhrase().unstringInto()) {
+                    if (unstringInto.identifier() != null) {
+                        paragraph.dataReferences.add(normalizeDataReference(getOriginalText(unstringInto.identifier())));
+                    }
+                }
+            }
+            // Extract from unstringDelimitedByPhrase (delimiter identifier)
+            if (ctx.unstringSendingPhrase() != null && ctx.unstringSendingPhrase().unstringDelimitedByPhrase() != null) {
+                Cobol85Parser.UnstringDelimitedByPhraseContext delimitedBy = ctx.unstringSendingPhrase().unstringDelimitedByPhrase();
+                if (delimitedBy.identifier() != null) {
+                    paragraph.dataReferences.add(normalizeDataReference(getOriginalText(delimitedBy.identifier())));
+                }
+            }
+            return super.visitUnstringStatement(ctx);
         }
 
         // Extract data references from EVALUATE statements (simplified).

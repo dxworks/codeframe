@@ -60,6 +60,26 @@
     "picture" : "9",
     "section" : "WORKING-STORAGE"
   }, {
+    "name" : "WS-UNSTRING-FIRST",
+    "level" : 1,
+    "picture" : "X(15)",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-UNSTRING-MIDDLE",
+    "level" : 1,
+    "picture" : "X(15)",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-UNSTRING-LAST",
+    "level" : 1,
+    "picture" : "X(20)",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-UNSTRING-SOURCE",
+    "level" : 1,
+    "picture" : "X(50)",
+    "section" : "WORKING-STORAGE"
+  }, {
     "name" : "WS-TRANSACTION-TABLE",
     "level" : 1,
     "section" : "WORKING-STORAGE",
@@ -91,7 +111,7 @@
     "controlFlowStatements" : [ {
       "type" : "STOP_RUN"
     } ],
-    "dataReferences" : [ "WS-NAME", "WS-INDEX1", "WS-INDEX2", "WS-COL(WS-INDEX1, WS-INDEX2)", "WS-FULL-NAME", "WS-FIRST-NAME", "WS-MIDDLE-NAME", "WS-LAST-NAME", "WS-STATUS-CODE", "WS-TRANSACTION-TABLE", "WS-TRAN-COUNTER" ]
+    "dataReferences" : [ "WS-NAME", "WS-INDEX1", "WS-INDEX2", "WS-COL(WS-INDEX1, WS-INDEX2)", "WS-FULL-NAME", "WS-FIRST-NAME", "WS-MIDDLE-NAME", "WS-LAST-NAME", "WS-UNSTRING-SOURCE", "WS-UNSTRING-FIRST", "WS-UNSTRING-MIDDLE", "WS-UNSTRING-LAS", "WS-STATUS-CODE", "WS-TRANSACTION-TABLE", "WS-TRAN-COUNTER" ]
   } ],
   "hasExecSql" : false,
   "hasExecCics" : false,

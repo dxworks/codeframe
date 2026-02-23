@@ -14,6 +14,16 @@
        01  WS-LAST-NAME PIC X(20).
        01  WS-FULL-NAME PIC X(50).
        01  WS-STATUS-CODE PIC 9.
+       01  WS-UNSTRING-FIRST PIC X(15).
+       01  WS-UNSTRING-MIDDLE PIC X(15).
+       01  WS-UNSTRING-LAST PIC X(20).
+       01  WS-UNSTRING-SOURCE PIC X(50).
+       01  WS-CORR-RECORD-1.
+           05  WS-CORR-FIELD-1-1 PIC 9(5).
+           05  WS-CORR-FIELD-1-2 PIC X(10).
+       01  WS-CORR-RECORD-2.
+           05  WS-CORR-FIELD-2-1 PIC 9(5).
+           05  WS-CORR-FIELD-2-2 PIC X(10).
        01  WS-TRANSACTION-TABLE.
            05  WS-TRAN-REC OCCURS 100 TIMES.
                10  WS-TRAN-ID PIC 9(5).
@@ -40,6 +50,14 @@
                   WS-MIDDLE-NAME DELIMITED BY SPACE  
                   WS-LAST-NAME DELIMITED BY SPACE
                   INTO WS-FULL-NAME
+           
+      *    UNSTRING statement test
+           UNSTRING WS-UNSTRING-SOURCE
+               DELIMITED BY SPACE OR ","
+               INTO WS-UNSTRING-FIRST WS-UNSTRING-MIDDLE WS-UNSTRING-LAST
+           
+      *    MOVE CORRESPONDING statement test
+           MOVE CORRESPONDING WS-CORR-RECORD-1 TO WS-CORR-RECORD-2
            
       *    EVALUATE statement test
            EVALUATE WS-STATUS-CODE
