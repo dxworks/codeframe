@@ -80,6 +80,36 @@
     "picture" : "X(50)",
     "section" : "WORKING-STORAGE"
   }, {
+    "name" : "WS-CORR-RECORD-1",
+    "level" : 1,
+    "section" : "WORKING-STORAGE",
+    "children" : [ {
+      "name" : "WS-CORR-FIELD-1-1",
+      "level" : 5,
+      "picture" : "9(5)",
+      "section" : "WORKING-STORAGE"
+    }, {
+      "name" : "WS-CORR-FIELD-1-2",
+      "level" : 5,
+      "picture" : "X(10)",
+      "section" : "WORKING-STORAGE"
+    } ]
+  }, {
+    "name" : "WS-CORR-RECORD-2",
+    "level" : 1,
+    "section" : "WORKING-STORAGE",
+    "children" : [ {
+      "name" : "WS-CORR-FIELD-2-1",
+      "level" : 5,
+      "picture" : "9(5)",
+      "section" : "WORKING-STORAGE"
+    }, {
+      "name" : "WS-CORR-FIELD-2-2",
+      "level" : 5,
+      "picture" : "X(10)",
+      "section" : "WORKING-STORAGE"
+    } ]
+  }, {
     "name" : "WS-TRANSACTION-TABLE",
     "level" : 1,
     "section" : "WORKING-STORAGE",
@@ -111,7 +141,7 @@
     "controlFlowStatements" : [ {
       "type" : "STOP_RUN"
     } ],
-    "dataReferences" : [ "WS-NAME", "WS-INDEX1", "WS-INDEX2", "WS-COL(WS-INDEX1, WS-INDEX2)", "WS-FULL-NAME", "WS-FIRST-NAME", "WS-MIDDLE-NAME", "WS-LAST-NAME", "WS-UNSTRING-SOURCE", "WS-UNSTRING-FIRST", "WS-UNSTRING-MIDDLE", "WS-UNSTRING-LAS", "WS-STATUS-CODE", "WS-TRANSACTION-TABLE", "WS-TRAN-COUNTER" ]
+    "dataReferences" : [ "WS-NAME", "WS-INDEX1", "WS-INDEX2", "WS-COL(WS-INDEX1, WS-INDEX2)", "WS-FULL-NAME", "WS-FIRST-NAME", "WS-MIDDLE-NAME", "WS-LAST-NAME", "WS-UNSTRING-SOURCE", "WS-UNSTRING-FIRST", "WS-UNSTRING-MIDDLE", "WS-UNSTRING-LAS", "WS-CORR-RECORD-1", "WS-CORR-RECORD-2", "WS-STATUS-CODE", "WS-TRANSACTION-TABLE", "WS-TRAN-COUNTER" ]
   } ],
   "hasExecSql" : false,
   "hasExecCics" : false,
