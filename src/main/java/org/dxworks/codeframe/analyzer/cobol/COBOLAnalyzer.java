@@ -61,7 +61,7 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
     private String preprocessSource(String sourceCode, CobolPreprocessorImpl preprocessor) {
         // Convert repository files to the List<File> expected by the preprocessor API
         List<File> copyFiles = copybookRepository != null 
-                ? copybookRepository.indexSnapshot().values().stream().toList()
+                ? List.copyOf(copybookRepository.copyFiles())
                 : List.of();
         return preprocessor.process(
                 sourceCode,
