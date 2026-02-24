@@ -13,6 +13,7 @@ A Tree-sitter-based code parser that extracts structural information from source
 - **Ruby** (.rb)
 - **Rust** (.rs)
 - **SQL** (.sql)
+- **COBOL** (.cbl, .cob, .cpy)
 
 ## Features
 
@@ -144,12 +145,25 @@ Each line has a `kind` field:
 - [Java sample](src/test/java/org/dxworks/codeframe/analyzer/java/JavaAnalyzeApprovalTest.analyze_Java_Sample.approved.txt)
 - [C# sample](src/test/java/org/dxworks/codeframe/analyzer/csharp/CSharpAnalyzeApprovalTest.analyze_CSharp_DataClass.approved.txt)
 - [SQL sample](src/test/java/org/dxworks/codeframe/analyzer/sql/SQLAnalyzeApprovalTest.analyze_SQL_Sample.approved.txt)
+- [COBOL sample](src/test/java/org/dxworks/codeframe/analyzer/cobol/COBOLAnalyzeApprovalTest.analyze_COBOL_BasicProgram.approved.txt)
 
 ### SQL Analysis
 
 SQL file analysis uses a hybrid JSqlParser + ANTLR approach to support multiple dialects (PostgreSQL, MySQL, T-SQL, PL/SQL) without configuration.
 
-For complete documentation on SQL support, see **[SQL_ANALYSIS.md](docs/SQL_ANALYSIS.md)**.
+For complete documentation on SQL support, see **[SQL_SPEC.md](docs/specs/SQL_SPEC.md)**.
+
+### COBOL Analysis
+
+COBOL file analysis extracts structural information including:
+- Program identification and metadata
+- File control entries and data definitions
+- Data items and variables
+- Sections and paragraphs
+- Copy book statements
+- Embedded SQL/CICS/IMS detection
+
+For complete documentation on COBOL support, see **[COBOL_SPEC.md](docs/specs/COBOL_SPEC.md)**.
 
 ## Architecture
 
@@ -161,7 +175,7 @@ See **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** for guidelines on adding new lan
 
 ## Requirements
 
-- Java 11+
+- Java 17+
 - Gradle 8.x
 - No native toolchain required (Tree-sitter natives are bundled via Maven artifacts)
 
@@ -184,7 +198,8 @@ This project uses Tree-sitter and its language grammars, which are licensed unde
 - **C#**: Events not handled; see test samples for details
 - **Java**: Local/anonymous classes not extracted as separate types
 - **Python**: Type aliases using `TypeAlias` annotation are captured with `kind: "type_alias"`. PEP 695 style (`type X = ...`) is not yet supported by the tree-sitter-python grammar
-- **SQL**: See [SQL_ANALYSIS.md](docs/SQL_ANALYSIS.md)
+- **SQL**: See [SQL_SPEC.md](docs/specs/SQL_SPEC.md)
+- **COBOL**: See [COBOL_SPEC.md](docs/specs/COBOL_SPEC.md)
 
 ## Testing
 

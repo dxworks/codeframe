@@ -22,6 +22,7 @@ Each language has a dedicated analyzer:
 | Ruby | `RubyAnalyzer` | Tree-sitter |
 | Rust | `RustAnalyzer` | Tree-sitter |
 | SQL | `SQLAnalyzer` | JSqlParser + ANTLR |
+| COBOL | `COBOLAnalyzer` | ANTLR |
 
 ## Design Decisions
 
@@ -46,7 +47,7 @@ SQL required a different approach than other languages:
 2. **JSqlParser alone**: Parses DDL well but doesn't parse routine bodies (stored procedures, functions)
 3. **ANTLR grammars for MySQL/PostgreSQL**: Couldn't find production-quality grammars
 
-**Solution**: Hybrid approach using JSqlParser for DDL/DML structure, with ANTLR grammars for T-SQL and PL/SQL routine body analysis. See [SQL_ANALYSIS.md](SQL_ANALYSIS.md) for details.
+**Solution**: Hybrid approach using JSqlParser for DDL/DML structure, with ANTLR grammars for T-SQL and PL/SQL routine body analysis. See [SQL_SPEC.md](specs/SQL_SPEC.md) for details.
 
 ### Why JSONL output?
 
