@@ -1,286 +1,167 @@
 {
   "filePath" : "src/test/resources/samples/javascript/DestructuringAndSpread.js",
   "language" : "javascript",
-  "packageName" : null,
-  "types" : [ ],
   "methods" : [ {
     "name" : "createUser",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
-      "name" : "name",
-      "type" : null
+      "name" : "name"
     }, {
-      "name" : "email",
-      "type" : null
+      "name" : "email"
     }, {
-      "name" : "age",
-      "type" : null
+      "name" : "age"
     }, {
-      "name" : "role",
-      "type" : null
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+      "name" : "role"
+    } ]
   }, {
     "name" : "getFirstAndLast",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
-      "name" : "items",
-      "type" : null
+      "name" : "items"
     } ],
-    "localVariables" : [ "items", "last" ],
-    "methodCalls" : [ ]
+    "localVariables" : [ "items", "last" ]
   }, {
     "name" : "processApiResponse",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
-      "name" : "user",
-      "type" : null
+      "name" : "user"
     }, {
-      "name" : "settings",
-      "type" : null
+      "name" : "settings"
     }, {
-      "name" : "timestamp",
-      "type" : null
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+      "name" : "timestamp"
+    } ]
   }, {
     "name" : "mergeUserData",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
-      "name" : "baseUser",
-      "type" : null
+      "name" : "baseUser"
     }, {
-      "name" : "updates",
-      "type" : null
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+      "name" : "updates"
+    } ]
   }, {
     "name" : "combineArrays",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
-      "name" : "arr1",
-      "type" : null
+      "name" : "arr1"
     }, {
-      "name" : "arr2",
-      "type" : null
+      "name" : "arr2"
     }, {
-      "name" : "arr3",
-      "type" : null
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+      "name" : "arr3"
+    } ]
   }, {
     "name" : "sum",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
-      "name" : "...numbers",
-      "type" : null
+      "name" : "...numbers"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "reduce",
-      "objectType" : null,
       "objectName" : "numbers",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "logWithPrefix",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
-      "name" : "prefix",
-      "type" : null
+      "name" : "prefix"
     }, {
-      "name" : "...messages",
-      "type" : null
+      "name" : "...messages"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "forEach",
-      "objectType" : null,
       "objectName" : "messages",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     }, {
       "methodName" : "log",
-      "objectType" : null,
       "objectName" : "console",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "extractUserInfo",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
-      "name" : "userName",
-      "type" : null
+      "name" : "userName"
     }, {
-      "name" : "userEmail",
-      "type" : null
+      "name" : "userEmail"
     }, {
-      "name" : "avatarUrl",
-      "type" : null
+      "name" : "avatarUrl"
     }, {
-      "name" : "bio",
-      "type" : null
+      "name" : "bio"
     }, {
-      "name" : "theme",
-      "type" : null
+      "name" : "theme"
     }, {
-      "name" : "language",
-      "type" : null
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+      "name" : "language"
+    } ]
   }, {
     "name" : "processUsers",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
-      "name" : "users",
-      "type" : null
+      "name" : "users"
     } ],
     "localVariables" : [ "results" ],
     "methodCalls" : [ {
       "methodName" : "push",
       "objectType" : "Array",
       "objectName" : "results",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "createConfig",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
-      "name" : "env",
-      "type" : null
+      "name" : "env"
     }, {
-      "name" : "port",
-      "type" : null
+      "name" : "port"
     }, {
-      "name" : "debug",
-      "type" : null
+      "name" : "debug"
     } ],
     "localVariables" : [ "timestamp" ],
     "methodCalls" : [ {
       "methodName" : "now",
-      "objectType" : null,
       "objectName" : "Date",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "parseOptions",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
-      "name" : "otherOptions",
-      "type" : null
+      "name" : "otherOptions"
     }, {
-      "name" : "timeout",
-      "type" : null
+      "name" : "timeout"
     }, {
-      "name" : "retries",
-      "type" : null
+      "name" : "retries"
     }, {
-      "name" : "headers",
-      "type" : null
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+      "name" : "headers"
+    } ]
   }, {
     "name" : "getOddIndexed",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
-      "name" : "items",
-      "type" : null
+      "name" : "items"
     } ],
     "localVariables" : [ "items" ],
     "methodCalls" : [ {
       "methodName" : "filter",
-      "objectType" : null,
       "objectName" : "<literal>",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "swapValues",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
-      "name" : "a",
-      "type" : null
+      "name" : "a"
     }, {
-      "name" : "b",
-      "type" : null
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+      "name" : "b"
+    } ]
   }, {
     "name" : "getDimensions",
-    "returnType" : null,
-    "visibility" : null,
-    "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "parameters" : [ ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    "modifiers" : [ "export" ]
   }, {
     "name" : "useDimensions",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "parameters" : [ ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "getDimensions",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
-  } ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+  } ]
 }

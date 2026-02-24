@@ -1,28 +1,28 @@
 plugins {
     id 'java'
     id 'application'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'com.gradleup.shadow' version '9.3.1'
     id 'antlr'
 }
 
 java {
-    toolchain { languageVersion = JavaLanguageVersion.of(11) }
+    toolchain { languageVersion = JavaLanguageVersion.of(17) }
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
 
 group = 'org.dxworks'
 version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
-    maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+    mavenLocal()
 }
 
 dependencies {
     // Core binding (bundles natives for Win/Linux/macOS)
-    implementation 'io.github.bonede:tree-sitter:0.25.3'
+    implementation 'io.github.bonede:tree-sitter:0.26.3'
   
     // Language grammars
     implementation 'io.github.bonede:tree-sitter-java:0.23.4'
@@ -34,17 +34,18 @@ dependencies {
     implementation 'io.github.bonede:tree-sitter-ruby:0.23.1'
     implementation 'io.github.bonede:tree-sitter-rust:0.23.1'
 
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.17.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.21.0'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.21.0'
     implementation 'com.github.jsqlparser:jsqlparser:5.3'
-    implementation 'org.antlr:antlr4-runtime:4.13.1'
-    antlr 'org.antlr:antlr4:4.13.1'
+    implementation 'org.antlr:antlr4-runtime:4.13.2'
+    antlr 'org.antlr:antlr4:4.13.2'
     // DXWorks ignore library (loads .ignore patterns)
-    implementation 'org.dxworks:dx-ignore:1.1.0-SNAPSHOT'
+    implementation 'org.dxworks.utils:dx-ignore:1.1.0'
     
     // Testing
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
-    testImplementation 'com.approvaltests:approvaltests:22.3.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter:6.0.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.0.2'
+    testImplementation 'com.approvaltests:approvaltests:26.6.0'
 }
 
 application {
@@ -53,18 +54,43 @@ application {
 
 import org.gradle.api.plugins.antlr.AntlrTask
 
-// Configure ANTLR generation for all grammars in src/main/antlr
-tasks.withType(AntlrTask).configureEach {
-    // Generate visitor interfaces and set a shared Java package for generated sources
+task generateSqlGrammarSource(type: AntlrTask) {
+    source = fileTree(dir: 'src/main/antlr', include: 'sql/**/*.g4')
+    outputDirectory = file('build/generated-src/antlr/sql')
     arguments.clear()
     arguments += ['-visitor',
                   '-package', 'org.dxworks.codeframe.analyzer.sql.generated',
-                  // Make sure grammar imports like `import PlSqlLexer;` can be resolved
-                  // when the grammars live under src/main/antlr/plsql
                   '-lib', 'src/main/antlr']
 }
 
+task generateCobolGrammarSource(type: AntlrTask) {
+    source = fileTree(dir: 'src/main/antlr', include: 'cobol/**/*.g4')
+    outputDirectory = file('build/generated-src/antlr/cobol')
+    arguments.clear()
+    arguments += ['-visitor',
+                  '-package', 'org.dxworks.codeframe.analyzer.cobol.generated',
+                  '-lib', 'src/main/antlr']
+}
+
+tasks.named('generateGrammarSource') {
+    enabled = false
+}
+
+task generateAllGrammarSource {
+    dependsOn generateSqlGrammarSource, generateCobolGrammarSource
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'build/generated-src/antlr/sql'
+            srcDir 'build/generated-src/antlr/cobol'
+        }
+    }
+}
+
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+tasks.named('compileJava') { dependsOn generateAllGrammarSource }
 
 // Produce a single, self-contained JAR named exactly 'codeframe.jar'
 tasks.named('shadowJar') {
@@ -80,4 +106,14 @@ tasks.named('build') {
 // Configure all Test tasks to use JUnit Platform and run in parallel
 tasks.withType(Test).configureEach {
     useJUnitPlatform()
+    dependsOn 'generateAllGrammarSource'
+
+    testLogging {
+        events 'skipped', 'failed'
+        exceptionFormat 'full'
+        showExceptions true
+        showCauses true
+        showStackTraces true
+        showStandardStreams = false
+    }
 }

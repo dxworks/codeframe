@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class PlSqlReferenceExtractor extends PlSqlParserBaseVisitor<Void> {
 
-    private final BaseReferenceExtractor state = new BaseReferenceExtractor() {};
+    private final ReferenceCollector state = new ReferenceCollector();
 
     public Set<String> getTableReferences() {
         return state.getTableReferences();

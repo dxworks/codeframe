@@ -1,17 +1,8 @@
 {
   "filePath" : "src/test/resources/samples/sql/alter_routines_mysql.sql",
   "language" : "sql",
-  "topLevelReferences" : {
-    "relations" : [ ]
-  },
-  "topLevelCalls" : {
-    "functions" : [ ],
-    "procedures" : [ ]
-  },
-  "createTables" : [ ],
-  "alterTables" : [ ],
-  "createViews" : [ ],
-  "createIndexes" : [ ],
+  "topLevelReferences" : { },
+  "topLevelCalls" : { },
   "createProcedures" : [ {
     "procedureName" : "recalc_order_total",
     "schema" : "sales",
@@ -51,46 +42,33 @@
   } ],
   "createFunctions" : [ {
     "functionName" : "fn_net_amount",
-    "schema" : null,
     "orReplace" : false,
     "parameters" : [ {
       "name" : "p_gross",
-      "type" : "DECIMAL(12,2)",
-      "direction" : null
+      "type" : "DECIMAL(12,2)"
     }, {
       "name" : "p_tax_rate_id",
-      "type" : "INT",
-      "direction" : null
+      "type" : "INT"
     } ],
     "returnType" : "DECIMAL(12,2)",
     "references" : {
       "relations" : [ "active_discounts_view", "tax_rates" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
+    "calls" : { }
   }, {
     "functionName" : "fn_get_stock_value",
     "schema" : "inventory",
     "orReplace" : false,
     "parameters" : [ {
       "name" : "p_warehouse_id",
-      "type" : "INT",
-      "direction" : null
+      "type" : "INT"
     } ],
     "returnType" : "DECIMAL(12,2)",
     "references" : {
       "relations" : [ "inventory.stock", "inventory.current_prices_view", "inventory.products" ]
     },
     "calls" : {
-      "functions" : [ "IFNULL", "SUM" ],
-      "procedures" : [ ]
+      "functions" : [ "IFNULL", "SUM" ]
     }
-  } ],
-  "createTriggers" : [ ],
-  "alterViews" : [ ],
-  "alterFunctions" : [ ],
-  "alterProcedures" : [ ],
-  "dropOperations" : [ ]
+  } ]
 }

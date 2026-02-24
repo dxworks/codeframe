@@ -1,0 +1,272 @@
+{
+  "filePath" : "src/test/resources/samples/cobol/file-operations.cbl",
+  "language" : "cobol",
+  "programId" : "FILEOPS-DEMO",
+  "fileControls" : [ {
+    "name" : "CUSTOMER-FILE",
+    "organization" : "SEQUENTIAL",
+    "accessMode" : "SEQUENTIAL",
+    "hasKey" : false
+  }, {
+    "name" : "TRANSACTION-FILE",
+    "organization" : "INDEXED",
+    "accessMode" : "DYNAMIC",
+    "hasKey" : true
+  }, {
+    "name" : "REPORT-FILE",
+    "organization" : "SEQUENTIAL",
+    "accessMode" : "SEQUENTIAL",
+    "hasKey" : false
+  } ],
+  "dataItems" : [ {
+    "name" : "WS-EOF-FLAG",
+    "level" : 1,
+    "picture" : "X",
+    "section" : "WORKING-STORAGE",
+    "children" : [ {
+      "name" : "END-OF-FILE",
+      "level" : 88,
+      "section" : "WORKING-STORAGE"
+    } ]
+  }, {
+    "name" : "WS-RECORD-COUNT",
+    "level" : 1,
+    "picture" : "9(5)",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-COUNT",
+    "level" : 1,
+    "picture" : "9(5)",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-INPUT",
+    "level" : 1,
+    "picture" : "X(10)",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-OUTPUT",
+    "level" : 1,
+    "picture" : "X(10)",
+    "section" : "WORKING-STORAGE"
+  } ],
+  "fileDefinitions" : [ {
+    "name" : "CUSTOMER-FILE",
+    "records" : [ {
+      "name" : "CUSTOMER-HEADER-RECORD",
+      "level" : 1,
+      "section" : "FILE SECTION",
+      "children" : [ {
+        "name" : "RECORD-TYPE",
+        "level" : 5,
+        "picture" : "X(1)"
+      }, {
+        "name" : "HEADER-DATE",
+        "level" : 5,
+        "picture" : "X(8)"
+      }, {
+        "name" : "RECORD-COUNT",
+        "level" : 5,
+        "picture" : "9(5)"
+      } ]
+    }, {
+      "name" : "CUSTOMER-DETAIL-RECORD",
+      "level" : 1,
+      "section" : "FILE SECTION",
+      "children" : [ {
+        "name" : "RECORD-TYPE",
+        "level" : 5,
+        "picture" : "X(1)"
+      }, {
+        "name" : "CUST-ID",
+        "level" : 5,
+        "picture" : "X(10)"
+      }, {
+        "name" : "CUST-NAME",
+        "level" : 5,
+        "picture" : "X(50)"
+      }, {
+        "name" : "CUST-ADDRESS",
+        "level" : 5,
+        "picture" : "X(100)"
+      } ]
+    }, {
+      "name" : "CUSTOMER-TRAILER-RECORD",
+      "level" : 1,
+      "section" : "FILE SECTION",
+      "children" : [ {
+        "name" : "RECORD-TYPE",
+        "level" : 5,
+        "picture" : "X(1)"
+      }, {
+        "name" : "TRAILER-COUNT",
+        "level" : 5,
+        "picture" : "9(5)"
+      } ]
+    } ]
+  }, {
+    "name" : "TRANSACTION-FILE",
+    "records" : [ {
+      "name" : "TRANSACTION-RECORD",
+      "level" : 1,
+      "section" : "FILE SECTION",
+      "children" : [ {
+        "name" : "TRNX-ID",
+        "level" : 5,
+        "picture" : "X(15)"
+      }, {
+        "name" : "TRNX-AMOUNT",
+        "level" : 5,
+        "picture" : "9(9)V99"
+      }, {
+        "name" : "TRNX-DATE",
+        "level" : 5,
+        "picture" : "X(8)"
+      } ]
+    }, {
+      "name" : "TRANSACTION-HEADER-RECORD",
+      "level" : 1,
+      "section" : "FILE SECTION",
+      "children" : [ {
+        "name" : "RECORD-TYPE",
+        "level" : 5,
+        "picture" : "X(1)"
+      }, {
+        "name" : "BATCH-NUMBER",
+        "level" : 5,
+        "picture" : "9(5)"
+      }, {
+        "name" : "BATCH-DATE",
+        "level" : 5,
+        "picture" : "X(8)"
+      } ]
+    } ]
+  }, {
+    "name" : "REPORT-FILE",
+    "records" : [ {
+      "name" : "REPORT-HEADER-RECORD",
+      "level" : 1,
+      "section" : "FILE SECTION",
+      "children" : [ {
+        "name" : "REPORT-TITLE",
+        "level" : 5,
+        "picture" : "X(50)"
+      }, {
+        "name" : "REPORT-DATE",
+        "level" : 5,
+        "picture" : "X(8)"
+      }, {
+        "name" : "PAGE-NUMBER",
+        "level" : 5,
+        "picture" : "9(5)"
+      } ]
+    }, {
+      "name" : "REPORT-DETAIL-RECORD",
+      "level" : 1,
+      "section" : "FILE SECTION",
+      "children" : [ {
+        "name" : "LINE-TYPE",
+        "level" : 5,
+        "picture" : "X(1)"
+      }, {
+        "name" : "LINE-TEXT",
+        "level" : 5,
+        "picture" : "X(132)"
+      } ]
+    } ]
+  } ],
+  "paragraphs" : [ {
+    "name" : "1000-MAINLINE",
+    "performCalls" : [ {
+      "targetParagraph" : "2000-OPEN-FILES"
+    }, {
+      "targetParagraph" : "3000-PROCESS-FILES"
+    }, {
+      "targetParagraph" : "9000-CLOSE-FILES"
+    } ],
+    "controlFlowStatements" : [ {
+      "type" : "STOP_RUN"
+    } ]
+  }, {
+    "name" : "2000-OPEN-FILES",
+    "fileOperations" : [ {
+      "verb" : "OPEN",
+      "target" : "CUSTOMER-FILE"
+    }, {
+      "verb" : "OPEN",
+      "target" : "TRANSACTION-FILE"
+    }, {
+      "verb" : "OPEN",
+      "target" : "REPORT-FILE"
+    } ]
+  }, {
+    "name" : "3000-PROCESS-FILES",
+    "performCalls" : [ {
+      "targetParagraph" : "3100-READ-CUSTOMER"
+    }, {
+      "targetParagraph" : "3200-UPDATE-TRANSACTIONS"
+    }, {
+      "targetParagraph" : "3300-DELETE-OLD-RECORDS"
+    }, {
+      "targetParagraph" : "3400-START-AT-KEY"
+    }, {
+      "targetParagraph" : "3500-WRITE-REPORTS"
+    }, {
+      "targetParagraph" : "3600-DATA-REFERENCES"
+    } ]
+  }, {
+    "name" : "3100-READ-CUSTOMER",
+    "fileOperations" : [ {
+      "verb" : "READ",
+      "target" : "CUSTOMER-FILE"
+    } ],
+    "dataReferences" : [ "WS-EOF-FLAG" ]
+  }, {
+    "name" : "3200-UPDATE-TRANSACTIONS",
+    "fileOperations" : [ {
+      "verb" : "REWRITE",
+      "target" : "TRANSACTION-RECORD"
+    } ]
+  }, {
+    "name" : "3300-DELETE-OLD-RECORDS",
+    "fileOperations" : [ {
+      "verb" : "DELETE",
+      "target" : "TRANSACTION-FILE"
+    } ]
+  }, {
+    "name" : "3400-START-AT-KEY",
+    "fileOperations" : [ {
+      "verb" : "START",
+      "target" : "TRANSACTION-FILE"
+    } ]
+  }, {
+    "name" : "3500-WRITE-REPORTS",
+    "fileOperations" : [ {
+      "verb" : "WRITE",
+      "target" : "REPORT-RECORD"
+    } ],
+    "dataReferences" : [ "WS-RECORD-COUNT" ]
+  }, {
+    "name" : "3600-DATA-REFERENCES",
+    "externalCalls" : [ {
+      "programName" : "SUBPROGRAM",
+      "isDynamic" : false,
+      "parameterCount" : 2
+    } ],
+    "dataReferences" : [ "WS-RECORD-COUNT", "END-OF-FILE", "WS-COUNT", "WS-RECORD-COUNT-ADD", "WS-RECORD-COUNT-SUB", "WS-RECORD-COUNT-MUL", "WS-RECORD-COUNT-DIV", "WS-INPUT", "WS-OUTPUT" ]
+  }, {
+    "name" : "9000-CLOSE-FILES",
+    "fileOperations" : [ {
+      "verb" : "CLOSE",
+      "target" : "CUSTOMER-FILE"
+    }, {
+      "verb" : "CLOSE",
+      "target" : "TRANSACTION-FILE"
+    }, {
+      "verb" : "CLOSE",
+      "target" : "REPORT-FILE"
+    } ]
+  } ],
+  "hasExecSql" : false,
+  "hasExecCics" : false,
+  "hasExecSqlIms" : false
+}

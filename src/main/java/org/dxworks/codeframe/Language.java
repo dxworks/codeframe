@@ -8,6 +8,7 @@ public enum Language {
     CSHARP("csharp"),
     PHP("php"),
     SQL("sql"),
+    COBOL("cobol"),
     RUBY("ruby"),
     RUST("rust");
 

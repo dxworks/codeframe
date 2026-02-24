@@ -7,105 +7,65 @@
     "name" : "EnumUsageSample",
     "visibility" : "public",
     "modifiers" : [ "public" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "GetStatusMessage",
       "returnType" : "string",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "status",
         "type" : "Status"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "get_Active",
-        "objectType" : null,
         "objectName" : "Status",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "get_Closed",
-        "objectType" : null,
         "objectName" : "Status",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "get_Pending",
-        "objectType" : null,
         "objectName" : "Status",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "PrintAll",
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "GetValues",
-        "objectType" : null,
         "objectName" : "Enum",
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "ToString",
-        "objectType" : null,
         "objectName" : "s",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "WriteLine",
-        "objectType" : null,
         "objectName" : "Console",
         "callCount" : 1,
         "parameterCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "enum",
     "name" : "Status",
     "visibility" : "public",
     "modifiers" : [ "public" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "Pending",
-      "type" : "Status",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "type" : "Status"
     }, {
       "name" : "Active",
-      "type" : "Status",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "type" : "Status"
     }, {
       "name" : "Closed",
-      "type" : "Status",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ]
-    } ],
-    "properties" : [ ],
-    "methods" : [ ],
-    "types" : [ ]
+      "type" : "Status"
+    } ]
   } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
   "imports" : [ "using System;" ]
 }

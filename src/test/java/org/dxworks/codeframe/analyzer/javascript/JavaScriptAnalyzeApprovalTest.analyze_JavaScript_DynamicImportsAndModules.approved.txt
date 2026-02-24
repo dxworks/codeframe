@@ -1,561 +1,317 @@
 {
   "filePath" : "src/test/resources/samples/javascript/DynamicImportsAndModules.js",
   "language" : "javascript",
-  "packageName" : null,
   "types" : [ {
     "kind" : "class",
     "name" : "ModuleLoader",
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
-      "name" : "constructor",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "name" : "constructor"
     }, {
       "name" : "load",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ "async" ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "moduleName",
-        "type" : null
+        "name" : "moduleName"
       } ],
       "localVariables" : [ "module" ],
       "methodCalls" : [ {
         "methodName" : "get",
-        "objectType" : null,
         "objectName" : "this.cache",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "has",
-        "objectType" : null,
         "objectName" : "this.cache",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "set",
-        "objectType" : null,
         "objectName" : "this.cache",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "loadMultiple",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ "async" ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "moduleNames",
-        "type" : null
+        "name" : "moduleNames"
       } ],
       "localVariables" : [ "promises" ],
       "methodCalls" : [ {
         "methodName" : "all",
-        "objectType" : null,
         "objectName" : "Promise",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "load",
         "objectType" : "ModuleLoader",
         "objectName" : "this",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "map",
-        "objectType" : null,
         "objectName" : "moduleNames",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "clearCache",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "clear",
-        "objectType" : null,
         "objectName" : "this.cache",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "has",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "moduleName",
-        "type" : null
+        "name" : "moduleName"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "has",
-        "objectType" : null,
         "objectName" : "this.cache",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "PluginManager",
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
-      "name" : "constructor",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "name" : "constructor"
     }, {
       "name" : "register",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ "async" ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "pluginName",
-        "type" : null
+        "name" : "pluginName"
       }, {
-        "name" : "pluginPath",
-        "type" : null
+        "name" : "pluginPath"
       } ],
       "localVariables" : [ "pluginModule", "plugin" ],
       "methodCalls" : [ {
         "methodName" : "error",
-        "objectType" : null,
         "objectName" : "console",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "init",
-        "objectType" : null,
         "objectName" : "plugin",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "set",
-        "objectType" : null,
         "objectName" : "this.plugins",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "execute",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ "async" ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "pluginName",
-        "type" : null
+        "name" : "pluginName"
       }, {
-        "name" : "method",
-        "type" : null
+        "name" : "method"
       }, {
-        "name" : "...args",
-        "type" : null
+        "name" : "...args"
       } ],
       "localVariables" : [ "plugin" ],
       "methodCalls" : [ {
         "methodName" : "get",
-        "objectType" : null,
         "objectName" : "this.plugins",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "getPlugin",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "pluginName",
-        "type" : null
+        "name" : "pluginName"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "get",
-        "objectType" : null,
         "objectName" : "this.plugins",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "listPlugins",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "from",
-        "objectType" : null,
         "objectName" : "Array",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "keys",
-        "objectType" : null,
         "objectName" : "this.plugins",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "FeatureFlags",
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
-      "name" : "constructor",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "name" : "constructor"
     }, {
       "name" : "enableFeature",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ "async" ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "featureName",
-        "type" : null
+        "name" : "featureName"
       } ],
       "localVariables" : [ "featureModule", "feature" ],
       "methodCalls" : [ {
         "methodName" : "get",
-        "objectType" : null,
         "objectName" : "this.features",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "has",
-        "objectType" : null,
         "objectName" : "this.features",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "onEnable",
-        "objectType" : null,
         "objectName" : "feature",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "set",
-        "objectType" : null,
         "objectName" : "this.features",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "isEnabled",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "featureName",
-        "type" : null
+        "name" : "featureName"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "has",
-        "objectType" : null,
         "objectName" : "this.features",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "disableFeature",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ "async" ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "featureName",
-        "type" : null
+        "name" : "featureName"
       } ],
       "localVariables" : [ "feature" ],
       "methodCalls" : [ {
         "methodName" : "delete",
-        "objectType" : null,
         "objectName" : "this.features",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "get",
-        "objectType" : null,
         "objectName" : "this.features",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "onDisable",
-        "objectType" : null,
         "objectName" : "feature",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Router",
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
-      "name" : "constructor",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "name" : "constructor"
     }, {
       "name" : "register",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "path",
-        "type" : null
+        "name" : "path"
       }, {
-        "name" : "importFn",
-        "type" : null
+        "name" : "importFn"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "set",
-        "objectType" : null,
         "objectName" : "this.routes",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "navigate",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ "async" ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "path",
-        "type" : null
+        "name" : "path"
       } ],
       "localVariables" : [ "importFn", "module" ],
       "methodCalls" : [ {
         "methodName" : "get",
-        "objectType" : null,
         "objectName" : "this.routes",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "importFn",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "PreloadManager",
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
-      "name" : "constructor",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "name" : "constructor"
     }, {
       "name" : "preload",
-      "returnType" : null,
-      "visibility" : null,
       "modifiers" : [ "async" ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "modulePaths",
-        "type" : null
+        "name" : "modulePaths"
       } ],
       "localVariables" : [ "promises" ],
       "methodCalls" : [ {
         "methodName" : "add",
-        "objectType" : null,
         "objectName" : "this.preloaded",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "all",
-        "objectType" : null,
         "objectName" : "Promise",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "filter",
-        "objectType" : null,
         "objectName" : "modulePaths",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "has",
-        "objectType" : null,
         "objectName" : "this.preloaded",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "map",
-        "objectType" : null,
         "objectName" : "modulePaths.filter()",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "warn",
-        "objectType" : null,
         "objectName" : "console",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "isPreloaded",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "modulePath",
-        "type" : null
+        "name" : "modulePath"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "has",
-        "objectType" : null,
         "objectName" : "this.preloaded",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   } ],
   "methods" : [ {
     "name" : "loadUserModule",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "async", "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
-      "name" : "userId",
-      "type" : null
+      "name" : "userId"
     } ],
-    "localVariables" : [ "userModule" ],
-    "methodCalls" : [ ]
+    "localVariables" : [ "userModule" ]
   }, {
     "name" : "loadAnalytics",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "async", "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
-      "name" : "environment",
-      "type" : null
+      "name" : "environment"
     } ],
-    "localVariables" : [ "analytics" ],
-    "methodCalls" : [ ]
+    "localVariables" : [ "analytics" ]
   }, {
     "name" : "safeImport",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "async", "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
-      "name" : "modulePath",
-      "type" : null
+      "name" : "modulePath"
     } ],
     "localVariables" : [ "module" ],
     "methodCalls" : [ {
       "methodName" : "error",
-      "objectType" : null,
       "objectName" : "console",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "setupRouter",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "parameters" : [ ],
     "localVariables" : [ "router" ],
     "methodCalls" : [ {
       "methodName" : "register",
       "objectType" : "Router",
       "objectName" : "router",
-      "callCount" : 3,
-      "parameterCount" : null
+      "callCount" : 3
     } ]
-  } ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+  } ]
 }

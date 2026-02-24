@@ -7,24 +7,17 @@
     "name" : "LambdaSample",
     "visibility" : "public",
     "modifiers" : [ "public" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "logger",
       "type" : "Logger",
       "visibility" : "private",
-      "modifiers" : [ "private", "final" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private", "final" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "namesLongerThan3",
       "returnType" : "List<String>",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "users",
         "type" : "List<User>"
@@ -32,14 +25,10 @@
       "localVariables" : [ "names" ],
       "methodCalls" : [ {
         "methodName" : "collect",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "filter",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
@@ -50,7 +39,6 @@
         "parameterCount" : 1
       }, {
         "methodName" : "getName",
-        "objectType" : null,
         "objectName" : "u",
         "callCount" : 1,
         "parameterCount" : 0
@@ -62,14 +50,11 @@
         "parameterCount" : 1
       }, {
         "methodName" : "length",
-        "objectType" : null,
         "objectName" : "n",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "map",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
@@ -80,7 +65,6 @@
         "parameterCount" : 0
       }, {
         "methodName" : "toList",
-        "objectType" : null,
         "objectName" : "Collectors",
         "callCount" : 1,
         "parameterCount" : 0
@@ -90,12 +74,10 @@
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "counters",
         "type" : "List<Counter>"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "forEach",
         "objectType" : "List<Counter>",
@@ -104,91 +86,48 @@
         "parameterCount" : 1
       }, {
         "methodName" : "increment",
-        "objectType" : null,
         "objectName" : "c",
         "callCount" : 1,
         "parameterCount" : 0
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "User",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "name",
       "type" : "String",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "getName",
       "returnType" : "String",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "modifiers" : [ "public" ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Logger",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "info",
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "s",
         "type" : "String"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Counter",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "increment",
       "returnType" : "void",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "modifiers" : [ "public" ]
+    } ]
   } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
   "imports" : [ "import java.util.ArrayList;", "import java.util.List;", "import java.util.stream.Collectors;" ]
 }

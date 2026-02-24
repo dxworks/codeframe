@@ -1,69 +1,44 @@
 {
   "filePath" : "src/test/resources/samples/sql/alter_routines_postgresql.sql",
   "language" : "sql",
-  "topLevelReferences" : {
-    "relations" : [ ]
-  },
-  "topLevelCalls" : {
-    "functions" : [ ],
-    "procedures" : [ ]
-  },
-  "createTables" : [ ],
-  "alterTables" : [ ],
-  "createViews" : [ ],
-  "createIndexes" : [ ],
-  "createProcedures" : [ ],
-  "createFunctions" : [ ],
-  "createTriggers" : [ ],
-  "alterViews" : [ ],
+  "topLevelReferences" : { },
+  "topLevelCalls" : { },
   "alterFunctions" : [ {
     "functionName" : "fn_net_amount",
-    "schema" : null,
     "parameters" : [ {
       "name" : "p_gross",
-      "type" : "DECIMAL(12,2)",
-      "direction" : null
+      "type" : "DECIMAL(12,2)"
     }, {
       "name" : "p_tax_rate_id",
-      "type" : "INT",
-      "direction" : null
+      "type" : "INT"
     } ],
     "returnType" : "DECIMAL(12,2)",
     "references" : {
       "relations" : [ "active_discounts_view", "tax_rates" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
+    "calls" : { }
   }, {
     "functionName" : "fn_get_low_stock_items",
     "schema" : "inventory",
     "parameters" : [ {
       "name" : "p_warehouse_id",
-      "type" : "INT",
-      "direction" : null
+      "type" : "INT"
     } ],
     "returnType" : "TABLE(product_id INT,product_name VARCHAR,quantity INT,threshold INT)",
     "references" : {
       "relations" : [ "inventory.stock", "inventory.products", "inventory.reorder_thresholds_view" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
+    "calls" : { }
   } ],
   "alterProcedures" : [ {
     "procedureName" : "recalc_order_total",
     "schema" : "sales",
     "parameters" : [ {
       "name" : "p_order_id",
-      "type" : "INT",
-      "direction" : null
+      "type" : "INT"
     }, {
       "name" : "p_customer_id",
-      "type" : "INT",
-      "direction" : null
+      "type" : "INT"
     } ],
     "references" : {
       "relations" : [ "sales.order_items", "sales.orders", "sales.customer_tax_info_view" ]
@@ -77,8 +52,7 @@
     "schema" : "purchasing",
     "parameters" : [ {
       "name" : "p_po_id",
-      "type" : "INT",
-      "direction" : null
+      "type" : "INT"
     } ],
     "references" : {
       "relations" : [ "purchasing.purchase_orders", "purchasing.approved_vendors_view" ]
@@ -87,6 +61,5 @@
       "functions" : [ "fn_calculate_discount" ],
       "procedures" : [ "update_expected_stock", "accounting.create_payable", "notifications.send_approval_notification" ]
     }
-  } ],
-  "dropOperations" : [ ]
+  } ]
 }

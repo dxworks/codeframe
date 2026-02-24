@@ -5,218 +5,139 @@
   "types" : [ {
     "kind" : "class",
     "name" : "Circle",
-    "visibility" : null,
     "modifiers" : [ "final" ],
-    "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ "Shape" ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "radius",
       "type" : "double",
       "visibility" : "private",
-      "modifiers" : [ "private", "final" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private", "final" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "area",
       "returnType" : "double",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ "@Override" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "annotations" : [ "@Override" ]
     }, {
       "name" : "getRadius",
       "returnType" : "double",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "Circle",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "radius",
         "type" : "double"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Rectangle",
-    "visibility" : null,
     "modifiers" : [ "final" ],
-    "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ "Shape" ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "width",
       "type" : "double",
       "visibility" : "private",
-      "modifiers" : [ "private", "final" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private", "final" ]
     }, {
       "name" : "height",
       "type" : "double",
       "visibility" : "private",
-      "modifiers" : [ "private", "final" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private", "final" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "area",
       "returnType" : "double",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ "@Override" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "annotations" : [ "@Override" ]
     }, {
       "name" : "Rectangle",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "width",
         "type" : "double"
       }, {
         "name" : "height",
         "type" : "double"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Triangle",
-    "visibility" : null,
     "modifiers" : [ "non-sealed" ],
-    "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ "Shape" ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "base",
       "type" : "double",
       "visibility" : "private",
-      "modifiers" : [ "private", "final" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private", "final" ]
     }, {
       "name" : "height",
       "type" : "double",
       "visibility" : "private",
-      "modifiers" : [ "private", "final" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private", "final" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "area",
       "returnType" : "double",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ "@Override" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "annotations" : [ "@Override" ]
     }, {
       "name" : "Triangle",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "base",
         "type" : "double"
       }, {
         "name" : "height",
         "type" : "double"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "ShapeProcessor",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "describe",
       "returnType" : "String",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "shape",
         "type" : "Shape"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "area",
-        "objectType" : null,
         "objectName" : "r",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "area",
-        "objectType" : null,
         "objectName" : "t",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "getRadius",
-        "objectType" : null,
         "objectName" : "c",
         "callCount" : 1,
         "parameterCount" : 0
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "interface",
     "name" : "Shape",
     "visibility" : "public",
     "modifiers" : [ "public", "sealed" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "area",
-      "returnType" : "double",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
-  } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+      "returnType" : "double"
+    } ]
+  } ]
 }

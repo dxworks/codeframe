@@ -1,37 +1,24 @@
 {
   "filePath" : "src/test/resources/samples/sql/sample.sql",
   "language" : "sql",
-  "topLevelReferences" : {
-    "relations" : [ ]
-  },
-  "topLevelCalls" : {
-    "functions" : [ ],
-    "procedures" : [ ]
-  },
+  "topLevelReferences" : { },
+  "topLevelCalls" : { },
   "createTables" : [ {
     "tableName" : "users",
-    "schema" : null,
     "ifNotExists" : false,
-    "columns" : [ ],
-    "primaryKeys" : [ "id" ],
-    "foreignKeys" : [ ]
+    "primaryKeys" : [ "id" ]
   }, {
     "tableName" : "orders",
-    "schema" : null,
     "ifNotExists" : false,
-    "columns" : [ ],
     "primaryKeys" : [ "order_id" ],
     "foreignKeys" : [ {
-      "name" : null,
       "columns" : [ "user_id" ],
       "referencedTable" : "users",
       "referencedColumns" : [ "id" ]
     } ]
   } ],
-  "alterTables" : [ ],
   "createViews" : [ {
     "viewName" : "active_users",
-    "schema" : null,
     "orReplace" : false,
     "references" : {
       "relations" : [ "users" ]
@@ -40,14 +27,11 @@
   "createIndexes" : [ {
     "indexName" : "idx_username",
     "tableName" : "users",
-    "schema" : null,
     "unique" : false,
-    "columns" : [ "username" ],
-    "indexType" : null
+    "columns" : [ "username" ]
   } ],
   "createProcedures" : [ {
     "procedureName" : "GetUserById",
-    "schema" : null,
     "orReplace" : false,
     "parameters" : [ {
       "name" : "userId",
@@ -57,32 +41,19 @@
     "references" : {
       "relations" : [ "users" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
+    "calls" : { }
   } ],
   "createFunctions" : [ {
     "functionName" : "CalculateTotal",
-    "schema" : null,
     "orReplace" : false,
     "parameters" : [ {
       "name" : "orderId",
-      "type" : "INT",
-      "direction" : null
+      "type" : "INT"
     } ],
     "returnType" : "DECIMAL(10,2)",
     "references" : {
       "relations" : [ "orders" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
-  } ],
-  "createTriggers" : [ ],
-  "alterViews" : [ ],
-  "alterFunctions" : [ ],
-  "alterProcedures" : [ ],
-  "dropOperations" : [ ]
+    "calls" : { }
+  } ]
 }

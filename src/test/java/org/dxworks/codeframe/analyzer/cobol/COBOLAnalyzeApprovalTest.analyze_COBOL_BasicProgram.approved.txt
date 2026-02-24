@@ -1,0 +1,149 @@
+{
+  "filePath" : "src/test/resources/samples/cobol/basic-program.cbl",
+  "language" : "cobol",
+  "programId" : "HELLO-WORLD",
+  "dataItems" : [ {
+    "name" : "WS-NAME",
+    "level" : 1,
+    "picture" : "X(20)",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-TABLE",
+    "level" : 1,
+    "section" : "WORKING-STORAGE",
+    "children" : [ {
+      "name" : "WS-ROW",
+      "level" : 5,
+      "section" : "WORKING-STORAGE",
+      "occurs" : 10,
+      "children" : [ {
+        "name" : "WS-COL",
+        "level" : 10,
+        "picture" : "9(3)",
+        "section" : "WORKING-STORAGE",
+        "occurs" : 5
+      } ]
+    } ]
+  }, {
+    "name" : "WS-INDEX1",
+    "level" : 1,
+    "picture" : "9(2)",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-INDEX2",
+    "level" : 1,
+    "picture" : "9(2)",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-FIRST-NAME",
+    "level" : 1,
+    "picture" : "X(15)",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-MIDDLE-NAME",
+    "level" : 1,
+    "picture" : "X(15)",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-LAST-NAME",
+    "level" : 1,
+    "picture" : "X(20)",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-FULL-NAME",
+    "level" : 1,
+    "picture" : "X(50)",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-STATUS-CODE",
+    "level" : 1,
+    "picture" : "9",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-UNSTRING-FIRST",
+    "level" : 1,
+    "picture" : "X(15)",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-UNSTRING-MIDDLE",
+    "level" : 1,
+    "picture" : "X(15)",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-UNSTRING-LAST",
+    "level" : 1,
+    "picture" : "X(20)",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-UNSTRING-SOURCE",
+    "level" : 1,
+    "picture" : "X(50)",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-CORR-RECORD-1",
+    "level" : 1,
+    "section" : "WORKING-STORAGE",
+    "children" : [ {
+      "name" : "WS-CORR-FIELD-1-1",
+      "level" : 5,
+      "picture" : "9(5)",
+      "section" : "WORKING-STORAGE"
+    }, {
+      "name" : "WS-CORR-FIELD-1-2",
+      "level" : 5,
+      "picture" : "X(10)",
+      "section" : "WORKING-STORAGE"
+    } ]
+  }, {
+    "name" : "WS-CORR-RECORD-2",
+    "level" : 1,
+    "section" : "WORKING-STORAGE",
+    "children" : [ {
+      "name" : "WS-CORR-FIELD-2-1",
+      "level" : 5,
+      "picture" : "9(5)",
+      "section" : "WORKING-STORAGE"
+    }, {
+      "name" : "WS-CORR-FIELD-2-2",
+      "level" : 5,
+      "picture" : "X(10)",
+      "section" : "WORKING-STORAGE"
+    } ]
+  }, {
+    "name" : "WS-TRANSACTION-TABLE",
+    "level" : 1,
+    "section" : "WORKING-STORAGE",
+    "children" : [ {
+      "name" : "WS-TRAN-REC",
+      "level" : 5,
+      "section" : "WORKING-STORAGE",
+      "occurs" : 100,
+      "children" : [ {
+        "name" : "WS-TRAN-ID",
+        "level" : 10,
+        "picture" : "9(5)",
+        "section" : "WORKING-STORAGE"
+      }, {
+        "name" : "WS-TRAN-AMT",
+        "level" : 10,
+        "picture" : "9(8)V99",
+        "section" : "WORKING-STORAGE"
+      } ]
+    } ]
+  }, {
+    "name" : "WS-TRAN-COUNTER",
+    "level" : 1,
+    "picture" : "9(3)",
+    "section" : "WORKING-STORAGE"
+  } ],
+  "paragraphs" : [ {
+    "name" : "1000-MAIN",
+    "controlFlowStatements" : [ {
+      "type" : "STOP_RUN"
+    } ],
+    "dataReferences" : [ "WS-NAME", "WS-INDEX1", "WS-INDEX2", "WS-COL(WS-INDEX1, WS-INDEX2)", "WS-FULL-NAME", "WS-FIRST-NAME", "WS-MIDDLE-NAME", "WS-LAST-NAME", "WS-UNSTRING-SOURCE", "WS-UNSTRING-FIRST", "WS-UNSTRING-MIDDLE", "WS-UNSTRING-LAS", "WS-CORR-RECORD-1", "WS-CORR-RECORD-2", "WS-STATUS-CODE", "WS-TRANSACTION-TABLE", "WS-TRAN-COUNTER" ]
+  } ],
+  "hasExecSql" : false,
+  "hasExecCics" : false,
+  "hasExecSqlIms" : false
+}

@@ -1,24 +1,15 @@
 {
   "filePath" : "src/test/resources/samples/python/exception_handling_sample.py",
   "language" : "python",
-  "packageName" : null,
   "types" : [ {
     "kind" : "class",
     "name" : "ApplicationError",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "Exception",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "message",
         "type" : "str"
@@ -26,48 +17,27 @@
         "name" : "code",
         "type" : "int"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "__init__",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "super",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "__str__",
       "returnType" : "str",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "visibility" : "public"
+    } ]
   }, {
     "kind" : "class",
     "name" : "ValidationError",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "ApplicationError",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "field",
         "type" : "str"
@@ -75,39 +45,23 @@
         "name" : "message",
         "type" : "str"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "__init__",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "super",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "NotFoundError",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "ApplicationError",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "resource",
         "type" : "str"
@@ -115,76 +69,44 @@
         "name" : "identifier",
         "type" : "Any"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "__init__",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "super",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "AuthenticationError",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "ApplicationError",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "reason",
         "type" : "str"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "__init__",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "super",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "RetryableError",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "ApplicationError",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "message",
         "type" : "str"
@@ -192,111 +114,68 @@
         "name" : "retry_after",
         "type" : "int"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "__init__",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "super",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "DataProcessor",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "strict",
         "type" : "bool"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "parse_int",
       "returnType" : "Optional[int]",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "value",
         "type" : "str"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "int",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "parse_number",
       "returnType" : "float",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "value",
         "type" : "str"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "ValidationError",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 2,
-        "parameterCount" : null
+        "callCount" : 2
       }, {
         "methodName" : "error",
-        "objectType" : null,
         "objectName" : "logger",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "float",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "str",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "warning",
-        "objectType" : null,
         "objectName" : "logger",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "safe_divide",
       "returnType" : "Optional[float]",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "a",
         "type" : "float"
@@ -307,23 +186,17 @@
       "localVariables" : [ "result" ],
       "methodCalls" : [ {
         "methodName" : "info",
-        "objectType" : null,
         "objectName" : "logger",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "warning",
-        "objectType" : null,
         "objectName" : "logger",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "process_file",
       "returnType" : "list[str]",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "path",
         "type" : "str"
@@ -331,47 +204,32 @@
       "localVariables" : [ "handle", "lines" ],
       "methodCalls" : [ {
         "methodName" : "ApplicationError",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "NotFoundError",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "close",
         "objectType" : "None",
         "objectName" : "handle",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "debug",
-        "objectType" : null,
         "objectName" : "logger",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "open",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "readlines",
         "objectType" : "None",
         "objectName" : "handle",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "fetch_data",
       "returnType" : "dict[str, Any]",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "key",
         "type" : "str"
@@ -379,149 +237,92 @@
       "localVariables" : [ "data", "acquired" ],
       "methodCalls" : [ {
         "methodName" : "ApplicationError",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "ValidationError",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "debug",
-        "objectType" : null,
         "objectName" : "logger",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "exception",
-        "objectType" : null,
         "objectName" : "logger",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "hash",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "info",
-        "objectType" : null,
         "objectName" : "logger",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "validate_and_process",
       "returnType" : "dict[str, Any]",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "data",
         "type" : "dict[str, Any]"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "ApplicationError",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "ValidationError",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 2,
-        "parameterCount" : null
+        "callCount" : 2
       }, {
         "methodName" : "isinstance",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "load_config",
       "returnType" : "dict[str, Any]",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "path",
         "type" : "str"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "NotFoundError",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "ValidationError",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "load",
-        "objectType" : null,
         "objectName" : "json",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "open",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "convert_value",
       "returnType" : "str",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "value",
         "type" : "Any"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "decode",
-        "objectType" : null,
         "objectName" : "value",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "isinstance",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "str",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "type",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "risky_operation",
       "returnType" : "bool",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "value",
         "type" : "Any"
@@ -529,17 +330,13 @@
       "localVariables" : [ "_" ],
       "methodCalls" : [ {
         "methodName" : "some_method",
-        "objectType" : null,
         "objectName" : "value",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "process_batch",
       "returnType" : "list[Any]",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "items",
         "type" : "list[Any]"
@@ -549,44 +346,31 @@
         "methodName" : "_process_single",
         "objectType" : "DataProcessor",
         "objectName" : "self",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "append",
-        "objectType" : null,
         "objectName" : "results",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "append",
-        "objectType" : null,
         "objectName" : "self._errors",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "clear",
-        "objectType" : null,
         "objectName" : "self._errors",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "_process_single",
       "returnType" : "Any",
       "visibility" : "protected",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "item",
         "type" : "Any"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "ValidationError",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "errors",
@@ -594,118 +378,75 @@
       "visibility" : "public",
       "modifiers" : [ "property" ],
       "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "copy",
-        "objectType" : null,
         "objectName" : "self._errors",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "TransactionContext",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "name",
         "type" : "str"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "__enter__",
       "returnType" : "\"TransactionContext\"",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "info",
-        "objectType" : null,
         "objectName" : "logger",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "__exit__",
       "returnType" : "bool",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "exc_type",
-        "type" : null
+        "name" : "exc_type"
       }, {
-        "name" : "exc_val",
-        "type" : null
+        "name" : "exc_val"
       }, {
-        "name" : "exc_tb",
-        "type" : null
+        "name" : "exc_tb"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "error",
-        "objectType" : null,
         "objectName" : "logger",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "info",
-        "objectType" : null,
         "objectName" : "logger",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "execute",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "operation",
         "type" : "str"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "ApplicationError",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "info",
-        "objectType" : null,
         "objectName" : "logger",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   } ],
   "methods" : [ {
     "name" : "assert_not_none",
     "returnType" : "Any",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "value",
       "type" : "Any"
@@ -713,52 +454,32 @@
       "name" : "name",
       "type" : "str"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "ValidationError",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "wrap_exception",
-    "returnType" : null,
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
-      "name" : "func",
-      "type" : null
+      "name" : "func"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "ApplicationError",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     }, {
       "methodName" : "func",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   } ],
   "fields" : [ {
     "name" : "logger",
-    "type" : null,
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ]
+    "visibility" : "public"
   } ],
   "methodCalls" : [ {
     "methodName" : "getLogger",
-    "objectType" : null,
     "objectName" : "logging",
-    "callCount" : 1,
-    "parameterCount" : null
+    "callCount" : 1
   } ],
   "imports" : [ "from typing import Any, Optional", "import logging", "import json" ]
 }

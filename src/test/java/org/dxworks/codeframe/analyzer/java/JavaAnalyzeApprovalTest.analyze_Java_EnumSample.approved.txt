@@ -7,23 +7,15 @@
     "name" : "EnumSample",
     "visibility" : "public",
     "modifiers" : [ "public" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "getStatusMessage",
       "returnType" : "String",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "status",
         "type" : "Status"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "getCode",
         "objectType" : "Status",
@@ -36,100 +28,61 @@
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "getCode",
-        "objectType" : null,
         "objectName" : "s",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "println",
-        "objectType" : null,
         "objectName" : "System.out",
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "values",
-        "objectType" : null,
         "objectName" : "Status",
         "callCount" : 1,
         "parameterCount" : 0
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "enum",
     "name" : "Status",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "code",
       "type" : "String",
       "visibility" : "private",
-      "modifiers" : [ "private", "final" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private", "final" ]
     }, {
       "name" : "priority",
       "type" : "int",
       "visibility" : "private",
-      "modifiers" : [ "private", "final" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private", "final" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "getCode",
       "returnType" : "String",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "getPriority",
       "returnType" : "int",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "isActive",
       "returnType" : "boolean",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "Status",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "code",
         "type" : "String"
       }, {
         "name" : "priority",
         "type" : "int"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
-  } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+      } ]
+    } ]
+  } ]
 }

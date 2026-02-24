@@ -22,6 +22,8 @@ public class LanguageDetector {
             return Optional.of(Language.PHP);
         } else if (fileName.endsWith(".sql")) {
             return Optional.of(Language.SQL);
+        } else if (fileName.endsWith(".cbl") || fileName.endsWith(".cob") || fileName.endsWith(".cobol")) {
+            return Optional.of(Language.COBOL);
         } else if (fileName.endsWith(".rb")) {
             return Optional.of(Language.RUBY);
         } else if (fileName.endsWith(".rs")) {
@@ -29,5 +31,14 @@ public class LanguageDetector {
         }
         
         return Optional.empty();
+    }
+
+    public static boolean isCobolCopybook(Path filePath) {
+        String fileName = filePath.getFileName().toString().toLowerCase();
+        return fileName.endsWith(".cpy");
+    }
+
+    public static boolean isRelevantSourceOrDependency(Path p) {
+        return detectLanguage(p).isPresent() || isCobolCopybook(p);
     }
 }

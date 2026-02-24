@@ -1,42 +1,30 @@
 {
   "filePath" : "src/test/resources/samples/php/UserService.php",
   "language" : "php",
-  "packageName" : null,
   "types" : [ {
     "kind" : "class",
     "name" : "UserService",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "repository",
       "type" : "UserRepository",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "apiKey",
       "type" : "string",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     }, {
       "name" : "instanceCount",
       "type" : "int",
       "visibility" : "protected",
-      "modifiers" : [ "protected", "static" ],
-      "annotations" : [ ]
+      "modifiers" : [ "protected", "static" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__construct",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "logger",
         "type" : "LoggerInterface"
@@ -44,29 +32,20 @@
         "name" : "cache",
         "type" : "CacheInterface"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "env",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "expect",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "parseFloat",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "toBeGreaterThan",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
@@ -75,7 +54,6 @@
       "returnType" : "?User",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
         "type" : "int"
@@ -83,25 +61,21 @@
       "localVariables" : [ "cacheKey", "user" ],
       "methodCalls" : [ {
         "methodName" : "find",
-        "objectType" : null,
         "objectName" : "repository",
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "get",
-        "objectType" : null,
         "objectName" : "cache",
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "info",
-        "objectType" : null,
         "objectName" : "logger",
         "callCount" : 1,
         "parameterCount" : 2
       }, {
         "methodName" : "set",
-        "objectType" : null,
         "objectName" : "cache",
         "callCount" : 1,
         "parameterCount" : 2
@@ -111,7 +85,6 @@
       "returnType" : "bool",
       "visibility" : "protected",
       "modifiers" : [ "protected" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "user",
         "type" : "User"
@@ -119,20 +92,17 @@
       "localVariables" : [ "isValid" ],
       "methodCalls" : [ {
         "methodName" : "hasValidEmail",
-        "objectType" : null,
         "objectName" : "user",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "isActive",
-        "objectType" : null,
         "objectName" : "user",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "warning",
         "objectType" : "Log",
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 2
       } ]
@@ -141,7 +111,6 @@
       "returnType" : "void",
       "visibility" : "private",
       "modifiers" : [ "private" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "user",
         "type" : "User"
@@ -152,13 +121,11 @@
       "localVariables" : [ "notifier" ],
       "methodCalls" : [ {
         "methodName" : "debug",
-        "objectType" : null,
         "objectName" : "logger",
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "send",
-        "objectType" : null,
         "objectName" : "notifier",
         "callCount" : 1,
         "parameterCount" : 2
@@ -167,17 +134,12 @@
       "name" : "getInstanceCount",
       "returnType" : "int",
       "visibility" : "public",
-      "modifiers" : [ "public", "static" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public", "static" ]
     }, {
       "name" : "deleteUser",
       "returnType" : "bool",
       "visibility" : "public",
       "modifiers" : [ "final", "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
         "type" : "int"
@@ -185,25 +147,21 @@
       "localVariables" : [ "user", "result" ],
       "methodCalls" : [ {
         "methodName" : "delete",
-        "objectType" : null,
         "objectName" : "cache",
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "delete",
-        "objectType" : null,
         "objectName" : "repository",
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "findUser",
-        "objectType" : null,
         "objectName" : "this",
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "validateUser",
-        "objectType" : null,
         "objectName" : "this",
         "callCount" : 1,
         "parameterCount" : 1
@@ -215,85 +173,56 @@
       "modifiers" : [ "public" ],
       "annotations" : [ "#[Deprecated]" ],
       "parameters" : [ {
-        "name" : "id",
-        "type" : null
+        "name" : "id"
       }, {
         "name" : "...tags",
         "type" : "string"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "BaseRepository",
     "visibility" : "public",
     "modifiers" : [ "abstract" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "connection",
       "type" : "PDO",
       "visibility" : "protected",
-      "modifiers" : [ "protected" ],
-      "annotations" : [ ]
+      "modifiers" : [ "protected" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "find",
       "returnType" : "?object",
       "visibility" : "public",
       "modifiers" : [ "abstract", "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
         "type" : "int"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "getTableName",
       "returnType" : "string",
       "visibility" : "protected",
-      "modifiers" : [ "abstract", "protected" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "modifiers" : [ "abstract", "protected" ]
+    } ]
   }, {
     "kind" : "interface",
     "name" : "CacheInterface",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "get",
       "returnType" : "mixed",
       "visibility" : "public",
       "modifiers" : [ "abstract" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "key",
         "type" : "string"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "set",
       "returnType" : "bool",
       "visibility" : "public",
       "modifiers" : [ "abstract" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "key",
         "type" : "string"
@@ -303,30 +232,21 @@
       }, {
         "name" : "ttl",
         "type" : "int"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "delete",
       "returnType" : "bool",
       "visibility" : "public",
       "modifiers" : [ "abstract" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "key",
         "type" : "string"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   } ],
   "methods" : [ {
     "name" : "formatUserName",
     "returnType" : "string",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "firstName",
       "type" : "string"
@@ -337,14 +257,10 @@
     "localVariables" : [ "fullName" ],
     "methodCalls" : [ {
       "methodName" : "trim",
-      "objectType" : null,
-      "objectName" : null,
       "callCount" : 1,
       "parameterCount" : 1
     }, {
       "methodName" : "ucwords",
-      "objectType" : null,
-      "objectName" : null,
       "callCount" : 1,
       "parameterCount" : 1
     } ]
@@ -352,32 +268,22 @@
   "fields" : [ {
     "name" : "APP_VERSION",
     "type" : "string",
-    "visibility" : null,
-    "modifiers" : [ "const" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const" ]
   }, {
     "name" : "MAX_RETRIES",
     "type" : "int",
-    "visibility" : null,
-    "modifiers" : [ "const" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const" ]
   }, {
     "name" : "DEBUG_MODE",
     "type" : "bool",
-    "visibility" : null,
-    "modifiers" : [ "const" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const" ]
   } ],
   "methodCalls" : [ {
     "methodName" : "date_default_timezone_set",
-    "objectType" : null,
-    "objectName" : null,
     "callCount" : 1,
     "parameterCount" : 1
   }, {
     "methodName" : "error_reporting",
-    "objectType" : null,
-    "objectName" : null,
     "callCount" : 1,
     "parameterCount" : 1
   } ],

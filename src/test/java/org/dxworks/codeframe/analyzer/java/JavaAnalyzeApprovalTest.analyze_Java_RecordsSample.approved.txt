@@ -7,23 +7,13 @@
     "name" : "Point",
     "visibility" : "public",
     "modifiers" : [ "public" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "distanceFromOrigin",
       "returnType" : "double",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "sqrt",
-        "objectType" : null,
         "objectName" : "Math",
         "callCount" : 1,
         "parameterCount" : 1
@@ -32,60 +22,32 @@
       "name" : "origin",
       "returnType" : "Point",
       "visibility" : "public",
-      "modifiers" : [ "public", "static" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public", "static" ]
     }, {
       "name" : "Point",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "value",
         "type" : "int"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "Point",
-      "returnType" : null,
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "modifiers" : [ "public" ]
+    } ]
   }, {
     "kind" : "record",
     "name" : "Person",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "isAdult",
       "returnType" : "boolean",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "Person",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "name",
         "type" : "String"
@@ -93,7 +55,6 @@
         "name" : "age",
         "type" : "int"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "isEmpty",
         "objectType" : "String",
@@ -101,11 +62,6 @@
         "callCount" : 1,
         "parameterCount" : 0
       } ]
-    } ],
-    "types" : [ ]
-  } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+    } ]
+  } ]
 }

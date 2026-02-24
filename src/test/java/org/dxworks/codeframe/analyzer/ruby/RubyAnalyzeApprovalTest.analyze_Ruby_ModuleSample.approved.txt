@@ -1,108 +1,64 @@
 {
   "filePath" : "src/test/resources/samples/ruby/ModuleSample.rb",
   "language" : "ruby",
-  "packageName" : null,
   "types" : [ {
     "kind" : "class",
     "name" : "TextProcessor",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
     "mixins" : [ "StringHelpers" ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "process",
-      "returnType" : null,
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "text",
-        "type" : null
+        "name" : "text"
       } ],
       "localVariables" : [ "result" ],
       "methodCalls" : [ {
         "methodName" : "capitalize_words",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "reverse_string",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "module",
     "name" : "StringHelpers",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "capitalize_words",
-      "returnType" : null,
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "text",
-        "type" : null
+        "name" : "text"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "join",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "map",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "split",
-        "objectType" : null,
         "objectName" : "text",
         "callCount" : 1,
         "parameterCount" : 0
       } ]
     }, {
       "name" : "reverse_string",
-      "returnType" : null,
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "text",
-        "type" : null
+        "name" : "text"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "reverse",
-        "objectType" : null,
         "objectName" : "text",
         "callCount" : 1,
         "parameterCount" : 0
       } ]
-    } ],
-    "types" : [ ]
-  } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+    } ]
+  } ]
 }

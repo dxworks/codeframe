@@ -1,36 +1,25 @@
 {
   "filePath" : "src/test/resources/samples/php/ExceptionHandlingSample.php",
   "language" : "php",
-  "packageName" : null,
   "types" : [ {
     "kind" : "class",
     "name" : "ApplicationException",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "errorCode",
       "type" : "string",
       "visibility" : "protected",
-      "modifiers" : [ "protected" ],
-      "annotations" : [ ]
+      "modifiers" : [ "protected" ]
     }, {
       "name" : "context",
       "type" : "array",
       "visibility" : "protected",
-      "modifiers" : [ "protected" ],
-      "annotations" : [ ]
+      "modifiers" : [ "protected" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__construct",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "message",
         "type" : "string"
@@ -47,11 +36,9 @@
         "name" : "previous",
         "type" : "?\\Throwable"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "__construct",
         "objectType" : "parent",
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 3
       } ]
@@ -59,72 +46,49 @@
       "name" : "getErrorCode",
       "returnType" : "string",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "getContext",
       "returnType" : "array",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "toArray",
       "returnType" : "array",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "getFile",
-        "objectType" : null,
         "objectName" : "this",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "getLine",
-        "objectType" : null,
         "objectName" : "this",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "getMessage",
-        "objectType" : null,
         "objectName" : "this",
         "callCount" : 1,
         "parameterCount" : 0
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "ValidationException",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "ApplicationException",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "errors",
       "type" : "array",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__construct",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "errors",
         "type" : "array"
@@ -132,11 +96,9 @@
         "name" : "message",
         "type" : "string"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "__construct",
         "objectType" : "parent",
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 3
       } ]
@@ -144,26 +106,18 @@
       "name" : "getErrors",
       "returnType" : "array",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "hasError",
       "returnType" : "bool",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "field",
         "type" : "string"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "isset",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
@@ -172,44 +126,31 @@
       "returnType" : "?string",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "field",
         "type" : "string"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "NotFoundException",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "ApplicationException",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "resourceType",
       "type" : "string",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     }, {
       "name" : "resourceId",
       "type" : "mixed",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__construct",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "resourceType",
         "type" : "string"
@@ -221,7 +162,6 @@
       "methodCalls" : [ {
         "methodName" : "__construct",
         "objectType" : "parent",
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 4
       } ]
@@ -229,45 +169,28 @@
       "name" : "getResourceType",
       "returnType" : "string",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "getResourceId",
       "returnType" : "mixed",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "modifiers" : [ "public" ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "DatabaseException",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "ApplicationException",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "query",
       "type" : "?string",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__construct",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "message",
         "type" : "string"
@@ -278,11 +201,9 @@
         "name" : "previous",
         "type" : "?\\Throwable"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "__construct",
         "objectType" : "parent",
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 5
       } ]
@@ -290,67 +211,43 @@
       "name" : "getQuery",
       "returnType" : "?string",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "modifiers" : [ "public" ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "AuthenticationException",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "ApplicationException",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__construct",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "message",
         "type" : "string"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "__construct",
         "objectType" : "parent",
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 4
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "AuthorizationException",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "ApplicationException",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "requiredPermission",
       "type" : "string",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__construct",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "requiredPermission",
         "type" : "string"
@@ -359,7 +256,6 @@
       "methodCalls" : [ {
         "methodName" : "__construct",
         "objectType" : "parent",
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 4
       } ]
@@ -367,54 +263,33 @@
       "name" : "getRequiredPermission",
       "returnType" : "string",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "modifiers" : [ "public" ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "UserService",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "users",
       "type" : "array",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__construct",
-      "returnType" : null,
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "findById",
       "returnType" : "array",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
         "type" : "int"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "isset",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
@@ -423,7 +298,6 @@
       "returnType" : "array",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "data",
         "type" : "array"
@@ -431,25 +305,18 @@
       "localVariables" : [ "errors", "id", "user" ],
       "methodCalls" : [ {
         "methodName" : "array_keys",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "empty",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "max",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "validate",
-        "objectType" : null,
         "objectName" : "this",
         "callCount" : 1,
         "parameterCount" : 1
@@ -459,7 +326,6 @@
       "returnType" : "array",
       "visibility" : "private",
       "modifiers" : [ "private" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "data",
         "type" : "array"
@@ -467,14 +333,10 @@
       "localVariables" : [ "errors" ],
       "methodCalls" : [ {
         "methodName" : "empty",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 2,
         "parameterCount" : 1
       }, {
         "methodName" : "filter_var",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 2
       } ]
@@ -483,156 +345,103 @@
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
         "type" : "int"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "isset",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "DatabaseConnection",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "connected",
       "type" : "bool",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     }, {
       "name" : "inTransaction",
       "type" : "bool",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "connect",
       "returnType" : "void",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "disconnect",
       "returnType" : "void",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "isConnected",
       "returnType" : "bool",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "beginTransaction",
       "returnType" : "void",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "commit",
       "returnType" : "void",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "rollback",
       "returnType" : "void",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "query",
       "returnType" : "array",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "sql",
         "type" : "string"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "str_contains",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 2
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "ExceptionHandler",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "handlers",
       "type" : "array",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "register",
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "exceptionClass",
         "type" : "string"
       }, {
         "name" : "handler",
         "type" : "callable"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "handle",
       "returnType" : "mixed",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "e",
         "type" : "\\Throwable"
@@ -640,20 +449,15 @@
       "localVariables" : [ "class" ],
       "methodCalls" : [ {
         "methodName" : "defaultHandler",
-        "objectType" : null,
         "objectName" : "this",
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "get_class",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "isset",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
@@ -662,71 +466,53 @@
       "returnType" : "array",
       "visibility" : "private",
       "modifiers" : [ "private" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "e",
         "type" : "\\Throwable"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "getCode",
-        "objectType" : null,
         "objectName" : "e",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "getMessage",
-        "objectType" : null,
         "objectName" : "e",
         "callCount" : 1,
         "parameterCount" : 0
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "RetryableOperation",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "maxAttempts",
       "type" : "int",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     }, {
       "name" : "delayMs",
       "type" : "int",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__construct",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "maxAttempts",
         "type" : "int"
       }, {
         "name" : "delayMs",
         "type" : "int"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "execute",
       "returnType" : "mixed",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "operation",
         "type" : "callable"
@@ -734,57 +520,41 @@
       "localVariables" : [ "lastException", "attempt" ],
       "methodCalls" : [ {
         "methodName" : "usleep",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "OrderProcessor",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "userService",
       "type" : "UserService",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     }, {
       "name" : "db",
       "type" : "DatabaseConnection",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__construct",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "userService",
         "type" : "UserService"
       }, {
         "name" : "db",
         "type" : "DatabaseConnection"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "processOrder",
       "returnType" : "array",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "userId",
         "type" : "int"
@@ -795,43 +565,36 @@
       "localVariables" : [ "user", "order" ],
       "methodCalls" : [ {
         "methodName" : "beginTransaction",
-        "objectType" : null,
         "objectName" : "db",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "commit",
-        "objectType" : null,
         "objectName" : "db",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "connect",
-        "objectType" : null,
         "objectName" : "db",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "createOrder",
-        "objectType" : null,
         "objectName" : "this",
         "callCount" : 1,
         "parameterCount" : 2
       }, {
         "methodName" : "disconnect",
-        "objectType" : null,
         "objectName" : "db",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "findById",
-        "objectType" : null,
         "objectName" : "userService",
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "rollback",
-        "objectType" : null,
         "objectName" : "db",
         "callCount" : 1,
         "parameterCount" : 0
@@ -841,7 +604,6 @@
       "returnType" : "array",
       "visibility" : "private",
       "modifiers" : [ "private" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "user",
         "type" : "array"
@@ -849,11 +611,8 @@
         "name" : "items",
         "type" : "array"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "rand",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 2
       } ]
@@ -862,7 +621,6 @@
       "returnType" : "array",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "userId",
         "type" : "int"
@@ -870,31 +628,26 @@
       "localVariables" : [ "user", "result" ],
       "methodCalls" : [ {
         "methodName" : "findById",
-        "objectType" : null,
         "objectName" : "userService",
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "getCode",
-        "objectType" : null,
         "objectName" : "e",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "getMessage",
-        "objectType" : null,
         "objectName" : "e",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "getQuery",
-        "objectType" : null,
         "objectName" : "e",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "query",
-        "objectType" : null,
         "objectName" : "db",
         "callCount" : 1,
         "parameterCount" : 1
@@ -904,27 +657,21 @@
       "returnType" : "array",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "userId",
         "type" : "int"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "error_log",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "getMessage",
-        "objectType" : null,
         "objectName" : "e",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "processWithMultipleCatch",
-        "objectType" : null,
         "objectName" : "this",
         "callCount" : 1,
         "parameterCount" : 1
@@ -934,48 +681,36 @@
       "returnType" : "array",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "userId",
         "type" : "int"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "connect",
-        "objectType" : null,
         "objectName" : "db",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "query",
-        "objectType" : null,
         "objectName" : "db",
         "callCount" : 1,
         "parameterCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   } ],
   "methods" : [ {
     "name" : "safeExecute",
     "returnType" : "mixed",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "fn",
       "type" : "callable"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "error_log",
-      "objectType" : null,
-      "objectName" : null,
       "callCount" : 1,
       "parameterCount" : 1
     }, {
       "methodName" : "getMessage",
-      "objectType" : null,
       "objectName" : "e",
       "callCount" : 1,
       "parameterCount" : 0
@@ -983,9 +718,6 @@
   }, {
     "name" : "validateOrThrow",
     "returnType" : "void",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "data",
       "type" : "array"
@@ -996,8 +728,6 @@
     "localVariables" : [ "errors" ],
     "methodCalls" : [ {
       "methodName" : "empty",
-      "objectType" : null,
-      "objectName" : null,
       "callCount" : 2,
       "parameterCount" : 1
     } ]
@@ -1005,26 +735,19 @@
   "fields" : [ {
     "name" : "MAX_RETRY_ATTEMPTS",
     "type" : "int",
-    "visibility" : null,
-    "modifiers" : [ "const" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const" ]
   } ],
   "methodCalls" : [ {
     "methodName" : "error_log",
-    "objectType" : null,
-    "objectName" : null,
     "callCount" : 1,
     "parameterCount" : 1
   }, {
     "methodName" : "getMessage",
-    "objectType" : null,
     "objectName" : "e",
     "callCount" : 1,
     "parameterCount" : 0
   }, {
     "methodName" : "set_exception_handler",
-    "objectType" : null,
-    "objectName" : null,
     "callCount" : 1,
     "parameterCount" : 1
   } ],

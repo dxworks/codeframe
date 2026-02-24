@@ -7,16 +7,5 @@
   "topLevelCalls" : {
     "functions" : [ "dbo.ufn_TotalAmount" ],
     "procedures" : [ "dbo.usp_RecalcOrderTotal" ]
-  },
-  "createTables" : [ ],
-  "alterTables" : [ ],
-  "createViews" : [ ],
-  "createIndexes" : [ ],
-  "createProcedures" : [ ],
-  "createFunctions" : [ ],
-  "createTriggers" : [ ],
-  "alterViews" : [ ],
-  "alterFunctions" : [ ],
-  "alterProcedures" : [ ],
-  "dropOperations" : [ ]
+  }
 }

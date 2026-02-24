@@ -8,10 +8,6 @@
     "functions" : [ "HR.SIMPLE_TOTAL", "SIMPLE_TOTAL" ],
     "procedures" : [ "UPDATE_ORDER_STATUS", "HR.UPDATE_ORDER_STATUS" ]
   },
-  "createTables" : [ ],
-  "alterTables" : [ ],
-  "createViews" : [ ],
-  "createIndexes" : [ ],
   "createProcedures" : [ {
     "procedureName" : "UPDATE_ORDER_STATUS",
     "schema" : "HR",
@@ -29,12 +25,10 @@
       "relations" : [ "HR.ORDERS" ]
     },
     "calls" : {
-      "functions" : [ ],
       "procedures" : [ "HR.LOG_ACCESS", "LOG_ACCESS" ]
     }
   }, {
     "procedureName" : "UPDATE_ORDER_STATUS_NO_SCHEMA",
-    "schema" : null,
     "orReplace" : false,
     "parameters" : [ {
       "name" : "p_order_id",
@@ -49,12 +43,10 @@
       "relations" : [ "ORDERS" ]
     },
     "calls" : {
-      "functions" : [ ],
       "procedures" : [ "HR.LOG_ACCESS", "SIMPLE_TOTAL_NO_SCHEMA" ]
     }
   }, {
     "procedureName" : "UPDATE_ORDER_STATUS_OR_REPLACE",
-    "schema" : null,
     "orReplace" : true,
     "parameters" : [ {
       "name" : "p_order_id",
@@ -89,7 +81,6 @@
       "relations" : [ "ORDERS" ]
     },
     "calls" : {
-      "functions" : [ ],
       "procedures" : [ "HR.LOG_ACCESS", "SIMPLE_TOTAL_OR_REPLACE", "LOG_ACCESS", "HR.SIMPLE_TOTAL_OR_REPLACE_SCHEMA" ]
     }
   } ],
@@ -107,12 +98,10 @@
       "relations" : [ "HR.ORDERS" ]
     },
     "calls" : {
-      "functions" : [ "SIMPLE_TOTAL_NO_SCHEMA" ],
-      "procedures" : [ ]
+      "functions" : [ "SIMPLE_TOTAL_NO_SCHEMA" ]
     }
   }, {
     "functionName" : "SIMPLE_TOTAL_NO_SCHEMA",
-    "schema" : null,
     "orReplace" : false,
     "parameters" : [ {
       "name" : "p_amount",
@@ -124,12 +113,10 @@
       "relations" : [ "ORDERS" ]
     },
     "calls" : {
-      "functions" : [ ],
       "procedures" : [ "HR.LOG_ACCESS" ]
     }
   }, {
     "functionName" : "SIMPLE_TOTAL_OR_REPLACE",
-    "schema" : null,
     "orReplace" : true,
     "parameters" : [ {
       "name" : "p_amount",
@@ -141,8 +128,7 @@
       "relations" : [ "HR.ORDERS" ]
     },
     "calls" : {
-      "functions" : [ "SIMPLE_TOTAL_NO_SCHEMA" ],
-      "procedures" : [ ]
+      "functions" : [ "SIMPLE_TOTAL_NO_SCHEMA" ]
     }
   }, {
     "functionName" : "SIMPLE_TOTAL_OR_REPLACE_SCHEMA",
@@ -158,13 +144,7 @@
       "relations" : [ "ORDERS" ]
     },
     "calls" : {
-      "functions" : [ "SIMPLE_TOTAL_OR_REPLACE", "HR.SIMPLE_TOTAL" ],
-      "procedures" : [ ]
+      "functions" : [ "SIMPLE_TOTAL_OR_REPLACE", "HR.SIMPLE_TOTAL" ]
     }
-  } ],
-  "createTriggers" : [ ],
-  "alterViews" : [ ],
-  "alterFunctions" : [ ],
-  "alterProcedures" : [ ],
-  "dropOperations" : [ ]
+  } ]
 }

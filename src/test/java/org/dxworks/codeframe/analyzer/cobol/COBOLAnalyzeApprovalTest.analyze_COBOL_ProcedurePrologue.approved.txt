@@ -1,0 +1,28 @@
+{
+  "filePath" : "src/test/resources/samples/cobol/procedure-prologue.cbl",
+  "language" : "cobol",
+  "programId" : "PROLOGUE-DEMO",
+  "dataItems" : [ {
+    "name" : "WS-NAME",
+    "level" : 1,
+    "picture" : "X(8)",
+    "section" : "WORKING-STORAGE"
+  } ],
+  "paragraphs" : [ {
+    "name" : "__PROCEDURE_DIVISION_PROLOGUE__",
+    "externalCalls" : [ {
+      "programName" : "SUBPROG",
+      "isDynamic" : false,
+      "parameterCount" : 1
+    } ],
+    "dataReferences" : [ "WS-NAME" ]
+  }, {
+    "name" : "MAIN-PARA",
+    "controlFlowStatements" : [ {
+      "type" : "GOBACK"
+    } ]
+  } ],
+  "hasExecSql" : false,
+  "hasExecCics" : false,
+  "hasExecSqlIms" : false
+}

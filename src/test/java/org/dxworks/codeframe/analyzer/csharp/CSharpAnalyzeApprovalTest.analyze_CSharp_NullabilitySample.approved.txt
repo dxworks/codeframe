@@ -7,39 +7,27 @@
     "name" : "N",
     "visibility" : "public",
     "modifiers" : [ "public", "static" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "LengthOrDefault",
       "returnType" : "int",
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "s",
         "type" : "string?"
       } ],
-      "localVariables" : [ "len" ],
-      "methodCalls" : [ ]
+      "localVariables" : [ "len" ]
     }, {
       "name" : "NotNull",
       "returnType" : "string",
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "s",
         "type" : "string?"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "nameof",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
@@ -48,18 +36,11 @@
       "returnType" : "string",
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "s",
         "type" : "string?"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
   "imports" : [ "using System;" ]
 }

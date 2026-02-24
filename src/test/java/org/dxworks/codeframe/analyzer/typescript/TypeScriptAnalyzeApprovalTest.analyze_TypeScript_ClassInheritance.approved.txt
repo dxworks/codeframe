@@ -1,36 +1,25 @@
 {
   "filePath" : "src/test/resources/samples/typescript/ClassInheritance.ts",
   "language" : "typescript",
-  "packageName" : null,
   "types" : [ {
     "kind" : "class",
     "name" : "User",
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "extendsType" : "Entity",
     "implementsInterfaces" : [ "Serializable" ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "name",
       "type" : "string",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     }, {
       "name" : "email",
       "type" : "string",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
         "type" : "string"
@@ -40,73 +29,41 @@
       }, {
         "name" : "email",
         "type" : "string"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "validate",
       "returnType" : "boolean",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "includes",
-        "objectType" : null,
         "objectName" : "this.email",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "serialize",
       "returnType" : "string",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "stringify",
-        "objectType" : null,
         "objectName" : "JSON",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "getName",
-      "returnType" : "string",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "returnType" : "string"
+    } ]
   }, {
     "kind" : "class",
     "name" : "AdminUser",
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "extendsType" : "User",
     "implementsInterfaces" : [ "Serializable", "Identifiable" ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "permissions",
       "type" : "string[]",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
         "type" : "string"
@@ -119,131 +76,64 @@
       }, {
         "name" : "permissions",
         "type" : "string[]"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "hasPermission",
       "returnType" : "boolean",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "permission",
         "type" : "string"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "includes",
-        "objectType" : null,
         "objectName" : "this.permissions",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "validate",
       "returnType" : "boolean",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "validate",
-        "objectType" : null,
         "objectName" : "super",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Entity",
-    "visibility" : null,
     "modifiers" : [ "abstract", "export" ],
-    "annotations" : [ ],
-    "extendsType" : null,
     "implementsInterfaces" : [ "Identifiable" ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "id",
       "type" : "string",
       "visibility" : "protected",
-      "modifiers" : [ "protected" ],
-      "annotations" : [ ]
+      "modifiers" : [ "protected" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
         "type" : "string"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "getId",
-      "returnType" : "string",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "returnType" : "string"
+    } ]
   }, {
     "kind" : "interface",
     "name" : "Serializable",
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "serialize",
-      "returnType" : "string",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "returnType" : "string"
+    } ]
   }, {
     "kind" : "interface",
     "name" : "Identifiable",
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "getId",
-      "returnType" : "string",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
-  } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+      "returnType" : "string"
+    } ]
+  } ]
 }

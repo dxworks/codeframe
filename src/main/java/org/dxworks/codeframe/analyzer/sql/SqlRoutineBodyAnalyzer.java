@@ -60,7 +60,7 @@ public class SqlRoutineBodyAnalyzer implements RoutineBodyAnalyzer {
      * Aggressive simplification for PostgreSQL routine bodies.
      * Goal: Strip all procedural logic, keep only data access statements (SELECT/INSERT/UPDATE/DELETE/CALL).
      * This allows JSqlParser to extract table references and function/procedure calls.
-     * Package-private for use by UnifiedTSqlRoutineBodyAnalyzer.
+     * Package-private for use by AntlrRoutineBodyAnalyzer.
      */
     static String preprocessPostgreSQL(String body) {
         if (body == null) return null;
@@ -144,7 +144,7 @@ public class SqlRoutineBodyAnalyzer implements RoutineBodyAnalyzer {
     /**
      * Aggressive simplification for MySQL routine bodies.
      * Goal: Strip all procedural logic, keep only data access statements.
-     * Package-private for use by UnifiedTSqlRoutineBodyAnalyzer.
+     * Package-private for use by AntlrRoutineBodyAnalyzer.
      */
     static String preprocessMySql(String body) {
         if (body == null) return null;
@@ -270,33 +270,15 @@ public class SqlRoutineBodyAnalyzer implements RoutineBodyAnalyzer {
         if (existsIdx < 0) return null;
         
         // Find closing paren of EXISTS clause (start searching after "EXISTS")
-        int endIdx = findMatchingParen(trimmed, existsIdx + "EXISTS".length());
+        int openParen = trimmed.indexOf('(', existsIdx + "EXISTS".length());
+        if (openParen < 0) return null;
+        int endIdx = SqlRoutineTextUtils.findMatchingParen(trimmed, openParen);
         if (endIdx <= selectIdx) return null;
         
         String innerSelect = trimmed.substring(selectIdx, endIdx).trim();
         return innerSelect.endsWith(";") ? innerSelect : innerSelect + ";";
     }
 
-    /**
-     * Finds the position of the closing parenthesis matching the opening paren after startIdx.
-     * Returns -1 if not found.
-     */
-    private static int findMatchingParen(String s, int startIdx) {
-        if (startIdx < 0 || startIdx >= s.length()) return -1;
-        int openIdx = s.indexOf('(', startIdx);
-        if (openIdx < 0) return -1;
-        
-        int depth = 1;
-        for (int i = openIdx + 1; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (c == '(') depth++;
-            else if (c == ')') {
-                depth--;
-                if (depth == 0) return i;
-            }
-        }
-        return -1;
-    }
 
     private static String stripBeginEnd(String s) {
         String t = s.trim();

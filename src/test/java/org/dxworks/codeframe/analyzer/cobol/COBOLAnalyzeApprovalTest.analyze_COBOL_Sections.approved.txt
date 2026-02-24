@@ -1,0 +1,107 @@
+{
+  "filePath" : "src/test/resources/samples/cobol/sections.cbl",
+  "language" : "cobol",
+  "programId" : "LINKAGE-TEST",
+  "dataItems" : [ {
+    "name" : "WS-INPUT",
+    "level" : 1,
+    "picture" : "X(10)",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-PROGRAM-NAME",
+    "level" : 1,
+    "picture" : "X(8)",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-COUNT",
+    "level" : 1,
+    "picture" : "9(5)",
+    "section" : "WORKING-STORAGE"
+  }, {
+    "name" : "WS-IMS-STATUS",
+    "level" : 1,
+    "picture" : "S9(4)",
+    "section" : "WORKING-STORAGE",
+    "usage" : "COMP"
+  }, {
+    "name" : "LS-PARAMETERS",
+    "level" : 1,
+    "section" : "LINKAGE",
+    "children" : [ {
+      "name" : "LS-INPUT-REC",
+      "level" : 5,
+      "picture" : "X(10)",
+      "section" : "LINKAGE"
+    }, {
+      "name" : "LS-OUTPUT-REC",
+      "level" : 5,
+      "picture" : "X(10)",
+      "section" : "LINKAGE"
+    } ]
+  }, {
+    "name" : "LS-COUNTER",
+    "level" : 1,
+    "picture" : "99",
+    "section" : "LOCAL-STORAGE"
+  } ],
+  "fileDefinitions" : [ {
+    "name" : "INPUT-FILE",
+    "records" : [ {
+      "name" : "INPUT-RECORD",
+      "level" : 1,
+      "picture" : "X(80)",
+      "section" : "FILE SECTION"
+    } ]
+  } ],
+  "copyStatements" : [ "CUSTCOPY", "ACCTLAY" ],
+  "procedureParameters" : [ "LS-PARAMETERS" ],
+  "paragraphs" : [ {
+    "name" : "MAIN-LOGIC",
+    "performCalls" : [ {
+      "targetParagraph" : "INITIALIZATION"
+    }, {
+      "targetParagraph" : "PROCESS-DATA"
+    }, {
+      "targetParagraph" : "CLEANUP"
+    } ],
+    "controlFlowStatements" : [ {
+      "type" : "GOBACK"
+    } ]
+  }, {
+    "name" : "INITIALIZATION",
+    "dataReferences" : [ "WS-INPUT", "WS-PROGRAM-NAME", "WS-COUNT" ]
+  }, {
+    "name" : "PROCESS-DATA",
+    "dataReferences" : [ "WS-COUNT", "LS-INPUT-REC", "WS-INPUT" ]
+  }, {
+    "name" : "CLEANUP",
+    "externalCalls" : [ {
+      "programName" : "SUBPROG",
+      "isDynamic" : false,
+      "parameterCount" : 2
+    }, {
+      "programName" : "WS-PROGRAM-NAME",
+      "isDynamic" : true,
+      "parameterCount" : 1
+    } ],
+    "fileOperations" : [ {
+      "verb" : "READ",
+      "target" : "INPUT-FILE"
+    }, {
+      "verb" : "WRITE",
+      "target" : "INPUT-RECORD"
+    } ],
+    "controlFlowStatements" : [ {
+      "type" : "STOP_RUN"
+    }, {
+      "type" : "EXIT_PROGRAM"
+    }, {
+      "type" : "RETURN",
+      "target" : "INPUT-FILE"
+    } ],
+    "dataReferences" : [ "WS-COUNT", "WS-INPUT", "LS-PARAMETERS", "WS-IMS-STATUS" ]
+  } ],
+  "hasExecSql" : true,
+  "hasExecCics" : true,
+  "hasExecSqlIms" : true
+}

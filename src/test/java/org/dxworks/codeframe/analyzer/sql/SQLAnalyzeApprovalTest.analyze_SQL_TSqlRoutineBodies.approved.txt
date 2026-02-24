@@ -1,17 +1,8 @@
 {
   "filePath" : "src/test/resources/samples/sql/tsql_routine_bodies.sql",
   "language" : "sql",
-  "topLevelReferences" : {
-    "relations" : [ ]
-  },
-  "topLevelCalls" : {
-    "functions" : [ ],
-    "procedures" : [ ]
-  },
-  "createTables" : [ ],
-  "alterTables" : [ ],
-  "createViews" : [ ],
-  "createIndexes" : [ ],
+  "topLevelReferences" : { },
+  "topLevelCalls" : { },
   "createProcedures" : [ {
     "procedureName" : "usp_GetOrdersByCustomer",
     "schema" : "dbo",
@@ -42,10 +33,7 @@
     "references" : {
       "relations" : [ "dbo.OrderItems" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
+    "calls" : { }
   }, {
     "functionName" : "ufn_OrderHasItem",
     "schema" : "dbo",
@@ -63,14 +51,6 @@
     "references" : {
       "relations" : [ "dbo.OrderItems" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
-  } ],
-  "createTriggers" : [ ],
-  "alterViews" : [ ],
-  "alterFunctions" : [ ],
-  "alterProcedures" : [ ],
-  "dropOperations" : [ ]
+    "calls" : { }
+  } ]
 }

@@ -1,0 +1,62 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. LINKAGE-TEST.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 WS-INPUT PIC X(10).
+       01 WS-PROGRAM-NAME PIC X(8).
+       01 WS-COUNT PIC 9(5).
+       01 WS-IMS-STATUS PIC S9(4) COMP.
+       COPY CUSTCOPY.
+       COPY ACCTLAY REPLACING ==:TAG:== BY ==WS-==.
+
+       LINKAGE SECTION.
+       01 LS-PARAMETERS.
+          05 LS-INPUT-REC    PIC X(10).
+          05 LS-OUTPUT-REC   PIC X(10).
+
+       LOCAL-STORAGE SECTION.
+       01 LS-COUNTER PIC 99.    
+
+       FILE SECTION.
+       FD INPUT-FILE.
+       01 INPUT-RECORD PIC X(80).
+
+       PROCEDURE DIVISION USING LS-PARAMETERS.
+       MAIN-LOGIC.
+           PERFORM INITIALIZATION
+           PERFORM PROCESS-DATA
+           PERFORM CLEANUP
+           GOBACK.
+
+       INITIALIZATION.
+           MOVE SPACES TO WS-INPUT
+           MOVE "LINKAGE-TEST" TO WS-PROGRAM-NAME
+           MOVE 0 TO WS-COUNT.
+
+       PROCESS-DATA.
+           ADD 1 TO WS-COUNT
+           MOVE LS-INPUT-REC TO WS-INPUT
+           DISPLAY "Processed: " WS-INPUT " Count: " WS-COUNT.
+
+       CLEANUP.
+           DISPLAY "Program completed. Total processed: " WS-COUNT.
+           CALL 'SUBPROG' USING WS-INPUT LS-PARAMETERS.
+           CALL WS-PROGRAM-NAME USING WS-INPUT.
+           READ INPUT-FILE.
+           WRITE INPUT-RECORD.
+           MOVE WS-INPUT TO LS-PARAMETERS.
+           MOVE WS-IMS-STATUS TO WS-COUNT.
+           EXEC SQL
+               SELECT COUNT(*) INTO WS-COUNT 
+           END-EXEC.
+           EXEC CICS
+               RECEIVE INTO WS-INPUT
+           END-EXEC.
+           EXEC SQLIMS
+               GET DIAGNOSTICS
+           END-EXEC.
+           CONTINUE.
+           STOP RUN.
+           EXIT PROGRAM.
+           RETURN INPUT-FILE.

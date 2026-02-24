@@ -7,33 +7,21 @@
     "name" : "GenericsSample",
     "visibility" : "public",
     "modifiers" : [ "public" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "findMax",
       "returnType" : "T",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "items",
         "type" : "List<T>"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "max",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "orElse",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
@@ -48,15 +36,12 @@
       "returnType" : "Optional<T>",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "items",
         "type" : "List<T>"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "empty",
-        "objectType" : null,
         "objectName" : "Optional",
         "callCount" : 1,
         "parameterCount" : 0
@@ -74,7 +59,6 @@
         "parameterCount" : 0
       }, {
         "methodName" : "of",
-        "objectType" : null,
         "objectName" : "Optional",
         "callCount" : 1,
         "parameterCount" : 1
@@ -84,21 +68,17 @@
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "numbers",
         "type" : "List<? extends Number>"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "doubleValue",
-        "objectType" : null,
         "objectName" : "n",
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "println",
-        "objectType" : null,
         "objectName" : "System.out",
         "callCount" : 1,
         "parameterCount" : 1
@@ -108,7 +88,6 @@
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "container",
         "type" : "GenericContainer<K, V>"
@@ -119,7 +98,6 @@
         "name" : "value",
         "type" : "V"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "put",
         "objectType" : "GenericContainer<K, V>",
@@ -127,57 +105,42 @@
         "callCount" : 1,
         "parameterCount" : 2
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "GenericContainer<K, V>",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "key",
       "type" : "K",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     }, {
       "name" : "value",
       "type" : "V",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "put",
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "key",
         "type" : "K"
       }, {
         "name" : "value",
         "type" : "V"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "get",
       "returnType" : "V",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "key",
         "type" : "K"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "equals",
         "objectType" : "K",
@@ -185,11 +148,7 @@
         "callCount" : 1,
         "parameterCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
   "imports" : [ "import java.util.List;", "import java.util.Optional;" ]
 }

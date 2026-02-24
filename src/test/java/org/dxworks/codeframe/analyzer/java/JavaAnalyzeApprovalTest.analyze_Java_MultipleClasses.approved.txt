@@ -7,26 +7,17 @@
     "name" : "MultipleClasses",
     "visibility" : "public",
     "modifiers" : [ "public" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "greet",
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "name",
         "type" : "String"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "println",
-        "objectType" : null,
         "objectName" : "System.out",
         "callCount" : 1,
         "parameterCount" : 1
@@ -36,7 +27,6 @@
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "name",
         "type" : "String"
@@ -53,7 +43,6 @@
         "parameterCount" : 0
       }, {
         "methodName" : "println",
-        "objectType" : null,
         "objectName" : "System.out",
         "callCount" : 1,
         "parameterCount" : 1
@@ -64,61 +53,33 @@
       "name" : "InnerHelper",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "extendsType" : null,
-      "implementsInterfaces" : [ ],
-      "mixins" : [ ],
-      "fields" : [ ],
-      "properties" : [ ],
       "methods" : [ {
         "name" : "assist",
         "returnType" : "void",
         "visibility" : "public",
         "modifiers" : [ "public" ],
-        "annotations" : [ ],
-        "parameters" : [ ],
-        "localVariables" : [ ],
         "methodCalls" : [ {
           "methodName" : "println",
-          "objectType" : null,
           "objectName" : "System.out",
           "callCount" : 1,
           "parameterCount" : 1
         } ]
-      } ],
-      "types" : [ ]
+      } ]
     } ]
   }, {
     "kind" : "class",
     "name" : "ExtraClass",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "doWork",
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "println",
-        "objectType" : null,
         "objectName" : "System.out",
         "callCount" : 1,
         "parameterCount" : 1
       } ]
-    } ],
-    "types" : [ ]
-  } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+    } ]
+  } ]
 }

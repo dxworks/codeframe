@@ -7,72 +7,43 @@
     "name" : "Classifier",
     "visibility" : "public",
     "modifiers" : [ "public", "static" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "Describe",
       "returnType" : "string",
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "p",
         "type" : "Person"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "Birthday",
       "returnType" : "Person",
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "p",
         "type" : "Person"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "get_Age",
         "objectType" : "Person",
         "objectName" : "p",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "record",
     "name" : "Person",
     "visibility" : "public",
     "modifiers" : [ "public" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "Name",
-      "type" : "string",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "type" : "string"
     }, {
       "name" : "Age",
-      "type" : "int",
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ]
-    } ],
-    "properties" : [ ],
-    "methods" : [ ],
-    "types" : [ ]
+      "type" : "int"
+    } ]
   } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
   "imports" : [ "using System;" ]
 }

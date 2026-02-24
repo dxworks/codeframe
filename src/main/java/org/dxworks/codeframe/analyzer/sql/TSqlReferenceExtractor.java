@@ -8,7 +8,7 @@ import org.dxworks.codeframe.analyzer.sql.generated.TSqlParser;
  */
 public class TSqlReferenceExtractor extends TSqlParserBaseVisitor<Void> {
 
-    private final BaseReferenceExtractor state = new BaseReferenceExtractor() {};
+    private final ReferenceCollector state = new ReferenceCollector();
 
     public java.util.Set<String> getTableReferences() {
         return state.getTableReferences();

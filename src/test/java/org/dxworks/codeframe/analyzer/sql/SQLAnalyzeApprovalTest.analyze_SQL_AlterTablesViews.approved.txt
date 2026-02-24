@@ -1,14 +1,8 @@
 {
   "filePath" : "src/test/resources/samples/sql/alter_tables_views.sql",
   "language" : "sql",
-  "topLevelReferences" : {
-    "relations" : [ ]
-  },
-  "topLevelCalls" : {
-    "functions" : [ ],
-    "procedures" : [ ]
-  },
-  "createTables" : [ ],
+  "topLevelReferences" : { },
+  "topLevelCalls" : { },
   "alterTables" : [ {
     "tableName" : "users",
     "schema" : "public",
@@ -16,54 +10,29 @@
     "addedColumns" : [ {
       "name" : "last_login",
       "type" : "TIMESTAMP",
-      "nullable" : true,
-      "constraints" : [ ]
-    } ],
-    "droppedColumns" : [ ],
-    "modifiedColumns" : [ ],
-    "addedConstraints" : [ ],
-    "droppedConstraints" : [ ]
+      "nullable" : true
+    } ]
   }, {
     "tableName" : "orders",
     "schema" : "sales",
     "operationType" : "ADD_CONSTRAINT",
-    "addedColumns" : [ ],
-    "droppedColumns" : [ ],
-    "modifiedColumns" : [ ],
-    "addedConstraints" : [ "CONSTRAINT pk_orders PRIMARY KEY (order_id, user_id)" ],
-    "droppedConstraints" : [ ]
+    "addedConstraints" : [ "CONSTRAINT pk_orders PRIMARY KEY (order_id, user_id)" ]
   }, {
     "tableName" : "orders",
     "schema" : "sales",
     "operationType" : "ADD_CONSTRAINT",
-    "addedColumns" : [ ],
-    "droppedColumns" : [ ],
-    "modifiedColumns" : [ ],
-    "addedConstraints" : [ "CONSTRAINT fk_orders_user FOREIGN KEY (user_id) REFERENCES public.users(id)" ],
-    "droppedConstraints" : [ ]
+    "addedConstraints" : [ "CONSTRAINT fk_orders_user FOREIGN KEY (user_id) REFERENCES public.users(id)" ]
   }, {
     "tableName" : "orders",
     "schema" : "sales",
     "operationType" : "DROP_COLUMN",
-    "addedColumns" : [ ],
-    "droppedColumns" : [ "total_amount" ],
-    "modifiedColumns" : [ ],
-    "addedConstraints" : [ ],
-    "droppedConstraints" : [ ]
+    "droppedColumns" : [ "total_amount" ]
   } ],
-  "createViews" : [ ],
-  "createIndexes" : [ ],
-  "createProcedures" : [ ],
-  "createFunctions" : [ ],
-  "createTriggers" : [ ],
   "alterViews" : [ {
     "viewName" : "active_users",
     "schema" : "reporting",
     "references" : {
       "relations" : [ "public.users" ]
     }
-  } ],
-  "alterFunctions" : [ ],
-  "alterProcedures" : [ ],
-  "dropOperations" : [ ]
+  } ]
 }

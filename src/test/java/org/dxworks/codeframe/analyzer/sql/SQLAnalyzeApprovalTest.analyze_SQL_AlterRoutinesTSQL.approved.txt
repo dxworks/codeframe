@@ -1,17 +1,8 @@
 {
   "filePath" : "src/test/resources/samples/sql/alter_routines_tsql.sql",
   "language" : "sql",
-  "topLevelReferences" : {
-    "relations" : [ ]
-  },
-  "topLevelCalls" : {
-    "functions" : [ ],
-    "procedures" : [ ]
-  },
-  "createTables" : [ ],
-  "alterTables" : [ ],
-  "createViews" : [ ],
-  "createIndexes" : [ ],
+  "topLevelReferences" : { },
+  "topLevelCalls" : { },
   "createProcedures" : [ {
     "procedureName" : "recalc_order_total",
     "schema" : "sales",
@@ -51,7 +42,6 @@
   } ],
   "createFunctions" : [ {
     "functionName" : "fn_net_amount",
-    "schema" : null,
     "orReplace" : true,
     "parameters" : [ {
       "name" : "@gross",
@@ -66,10 +56,7 @@
     "references" : {
       "relations" : [ "active_discounts_view", "tax_rates" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
+    "calls" : { }
   }, {
     "functionName" : "fn_get_low_stock_items",
     "schema" : "inventory",
@@ -83,14 +70,6 @@
     "references" : {
       "relations" : [ "inventory.stock", "inventory.products", "inventory.reorder_thresholds_view" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
-  } ],
-  "createTriggers" : [ ],
-  "alterViews" : [ ],
-  "alterFunctions" : [ ],
-  "alterProcedures" : [ ],
-  "dropOperations" : [ ]
+    "calls" : { }
+  } ]
 }

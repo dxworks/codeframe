@@ -1,45 +1,28 @@
 {
   "filePath" : "src/test/resources/samples/python/typing_sample.py",
   "language" : "python",
-  "packageName" : null,
   "types" : [ {
     "kind" : "class",
     "name" : "Point",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "NamedTuple",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "x",
       "type" : "float",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "y",
       "type" : "float",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "distance_from_origin",
       "returnType" : "float",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "translate",
       "returnType" : "Point",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "dx",
         "type" : "float"
@@ -47,108 +30,65 @@
         "name" : "dy",
         "type" : "float"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "Point",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Person",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "NamedTuple",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "name",
       "type" : "str",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "age",
       "type" : "int",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "email",
       "type" : "str | None",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "active",
       "type" : "bool",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "greet",
       "returnType" : "str",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "visibility" : "public"
+    } ]
   }, {
     "kind" : "class",
     "name" : "Rectangle",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "NamedTuple",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "top_left",
       "type" : "Point",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "bottom_right",
       "type" : "Point",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "area",
       "returnType" : "float",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "width",
       "returnType" : "float",
       "visibility" : "public",
       "modifiers" : [ "property" ],
       "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "abs",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "height",
@@ -156,377 +96,210 @@
       "visibility" : "public",
       "modifiers" : [ "property" ],
       "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "abs",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Drawable",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "Protocol",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "draw",
       "returnType" : "str",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "visibility" : "public"
+    } ]
   }, {
     "kind" : "class",
     "name" : "Sizeable",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "Protocol",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "size",
       "returnType" : "int",
       "visibility" : "public",
       "modifiers" : [ "property" ],
-      "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "annotations" : [ "@property" ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Closeable",
     "visibility" : "public",
-    "modifiers" : [ ],
     "annotations" : [ "@runtime_checkable" ],
     "extendsType" : "Protocol",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "close",
       "returnType" : "None",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "visibility" : "public"
+    } ]
   }, {
     "kind" : "class",
     "name" : "Comparable",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__lt__",
       "returnType" : "bool",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "other",
         "type" : "T_contra"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "__le__",
       "returnType" : "bool",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "other",
         "type" : "T_contra"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "SupportsAdd",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__add__",
       "returnType" : "T_co",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "other",
         "type" : "Any"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Stack",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "push",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "item",
         "type" : "T"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "append",
-        "objectType" : null,
         "objectName" : "self._items",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "pop",
       "returnType" : "T",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "IndexError",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "pop",
-        "objectType" : null,
         "objectName" : "self._items",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "peek",
       "returnType" : "T | None",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "is_empty",
       "returnType" : "bool",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "len",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Pair",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "first",
         "type" : "K"
       }, {
         "name" : "second",
         "type" : "V"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "swap",
       "returnType" : "Pair[V, K]",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "Pair",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "map_first",
       "returnType" : "Pair[T, V]",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "func",
         "type" : "Callable[[K], T]"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "Pair",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "func",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "first",
       "returnType" : "K",
       "visibility" : "public",
       "modifiers" : [ "property" ],
-      "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "annotations" : [ "@property" ]
     }, {
       "name" : "second",
       "returnType" : "V",
       "visibility" : "public",
       "modifiers" : [ "property" ],
-      "annotations" : [ "@property" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "annotations" : [ "@property" ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Result",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "value",
         "type" : "T | None"
       }, {
         "name" : "error",
         "type" : "str | None"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "is_ok",
       "returnType" : "bool",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "unwrap",
       "returnType" : "T",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "ValueError",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "unwrap_or",
       "returnType" : "T",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "default",
         "type" : "T"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "ok",
       "returnType" : "Result[T]",
@@ -537,13 +310,9 @@
         "name" : "value",
         "type" : "T"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "cls",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "err",
@@ -555,121 +324,74 @@
         "name" : "error",
         "type" : "str"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "cls",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Configuration",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "VERSION",
       "type" : "Final[str]",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "_instance_count",
       "type" : "ClassVar[int]",
-      "visibility" : "protected",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "protected"
     }, {
       "name" : "DEFAULT_TIMEOUT",
       "type" : "ClassVar[int]",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "public"
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "__init__",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "name",
         "type" : "str"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "get_name",
       "returnType" : "str",
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "get_instance_count",
       "returnType" : "int",
       "visibility" : "public",
       "modifiers" : [ "classmethod" ],
-      "annotations" : [ "@classmethod" ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "annotations" : [ "@classmethod" ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Router",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "navigate",
       "returnType" : "str",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "direction",
         "type" : "Direction"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "request",
       "returnType" : "dict[str, Any]",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "method",
         "type" : "HttpMethod"
       }, {
         "name" : "url",
         "type" : "str"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "log",
       "returnType" : "None",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "level",
         "type" : "LogLevel"
@@ -677,63 +399,37 @@
         "name" : "message",
         "type" : "str"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "print",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Converter",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "convert",
       "returnType" : "int | str",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "value",
         "type" : "int | str | float"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "int",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "isinstance",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 2,
-        "parameterCount" : null
+        "callCount" : 2
       }, {
         "methodName" : "str",
-        "objectType" : null,
-        "objectName" : null,
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "parse",
       "returnType" : "str | list[str]",
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "data",
         "type" : "str"
@@ -741,61 +437,46 @@
         "name" : "as_list",
         "type" : "bool"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "split",
-        "objectType" : null,
         "objectName" : "data",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "strip",
-        "objectType" : null,
         "objectName" : "data",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "convert",
       "returnType" : "str",
       "visibility" : "public",
-      "modifiers" : [ ],
       "annotations" : [ "@overload" ],
       "parameters" : [ {
         "name" : "value",
         "type" : "int"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "convert",
       "returnType" : "int",
       "visibility" : "public",
-      "modifiers" : [ ],
       "annotations" : [ "@overload" ],
       "parameters" : [ {
         "name" : "value",
         "type" : "str"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "convert",
       "returnType" : "str",
       "visibility" : "public",
-      "modifiers" : [ ],
       "annotations" : [ "@overload" ],
       "parameters" : [ {
         "name" : "value",
         "type" : "float"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "parse",
       "returnType" : "list[str]",
       "visibility" : "public",
-      "modifiers" : [ ],
       "annotations" : [ "@overload" ],
       "parameters" : [ {
         "name" : "data",
@@ -803,14 +484,11 @@
       }, {
         "name" : "as_list",
         "type" : "Literal[True]"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "parse",
       "returnType" : "str",
       "visibility" : "public",
-      "modifiers" : [ ],
       "annotations" : [ "@overload" ],
       "parameters" : [ {
         "name" : "data",
@@ -818,254 +496,155 @@
       }, {
         "name" : "as_list",
         "type" : "Literal[False]"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "parse",
       "returnType" : "str",
       "visibility" : "public",
-      "modifiers" : [ ],
       "annotations" : [ "@overload" ],
       "parameters" : [ {
         "name" : "data",
         "type" : "str"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   }, {
     "kind" : "type_alias",
     "name" : "JsonValue",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : "Union[str, int, float, bool, None, list[\"JsonValue\"], dict[str, \"JsonValue\"]]",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
-    "methods" : [ ],
-    "types" : [ ]
+    "extendsType" : "Union[str, int, float, bool, None, list[\"JsonValue\"], dict[str, \"JsonValue\"]]"
   }, {
     "kind" : "type_alias",
     "name" : "Callback",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : "Callable[[str, int], bool]",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
-    "methods" : [ ],
-    "types" : [ ]
+    "extendsType" : "Callable[[str, int], bool]"
   }, {
     "kind" : "type_alias",
     "name" : "Matrix",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : "list[list[float]]",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
-    "methods" : [ ],
-    "types" : [ ]
+    "extendsType" : "list[list[float]]"
   } ],
   "methods" : [ {
     "name" : "first",
     "returnType" : "T | None",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "items",
       "type" : "Sequence[T]"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "last",
     "returnType" : "T | None",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "items",
       "type" : "Sequence[T]"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "identity",
     "returnType" : "T",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "value",
       "type" : "T"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "swap",
     "returnType" : "tuple[V, K]",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "pair",
       "type" : "tuple[K, V]"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "merge_dicts",
     "returnType" : "dict[K, V]",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "d1",
       "type" : "dict[K, V]"
     }, {
       "name" : "d2",
       "type" : "dict[K, V]"
-    } ],
-    "localVariables" : [ ],
-    "methodCalls" : [ ]
+    } ]
   }, {
     "name" : "find_max",
     "returnType" : "Numeric | None",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "items",
       "type" : "Iterable[Numeric]"
     } ],
-    "localVariables" : [ "result" ],
-    "methodCalls" : [ ]
+    "localVariables" : [ "result" ]
   }, {
     "name" : "draw_all",
     "returnType" : "list[str]",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "drawables",
       "type" : "list[Drawable]"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "draw",
-      "objectType" : null,
       "objectName" : "d",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "total_size",
     "returnType" : "int",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "items",
       "type" : "list[Sizeable]"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "sum",
-      "objectType" : null,
-      "objectName" : null,
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   }, {
     "name" : "close_all",
     "returnType" : "None",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "parameters" : [ {
       "name" : "resources",
       "type" : "list[Closeable]"
     } ],
-    "localVariables" : [ ],
     "methodCalls" : [ {
       "methodName" : "close",
-      "objectType" : null,
       "objectName" : "resource",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   } ],
   "fields" : [ {
     "name" : "T",
-    "type" : null,
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ]
+    "visibility" : "public"
   }, {
     "name" : "K",
-    "type" : null,
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ]
+    "visibility" : "public"
   }, {
     "name" : "V",
-    "type" : null,
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ]
+    "visibility" : "public"
   }, {
     "name" : "T_co",
-    "type" : null,
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ]
+    "visibility" : "public"
   }, {
     "name" : "T_contra",
-    "type" : null,
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ]
+    "visibility" : "public"
   }, {
     "name" : "Numeric",
-    "type" : null,
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ]
+    "visibility" : "public"
   }, {
     "name" : "Direction",
-    "type" : null,
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ]
+    "visibility" : "public"
   }, {
     "name" : "HttpMethod",
-    "type" : null,
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ]
+    "visibility" : "public"
   }, {
     "name" : "LogLevel",
-    "type" : null,
-    "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ]
+    "visibility" : "public"
   } ],
   "methodCalls" : [ {
     "methodName" : "TypeVar",
-    "objectType" : null,
-    "objectName" : null,
-    "callCount" : 6,
-    "parameterCount" : null
+    "callCount" : 6
   } ],
   "imports" : [ "from __future__ import annotations", "from abc import abstractmethod", "from collections.abc import Iterable, Iterator, Mapping, Sequence", "from dataclasses import dataclass", "from typing import (\n    Any,\n    Callable,\n    ClassVar,\n    Final,\n    Generic,\n    Literal,\n    NamedTuple,\n    Optional,\n    Protocol,\n    TypeAlias,\n    TypeVar,\n    Union,\n    overload,\n    runtime_checkable,\n)" ]
 }

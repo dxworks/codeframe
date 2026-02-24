@@ -1,19 +1,8 @@
 {
   "filePath" : "src/test/resources/samples/sql/triggers_plsql.sql",
   "language" : "sql",
-  "topLevelReferences" : {
-    "relations" : [ ]
-  },
-  "topLevelCalls" : {
-    "functions" : [ ],
-    "procedures" : [ ]
-  },
-  "createTables" : [ ],
-  "alterTables" : [ ],
-  "createViews" : [ ],
-  "createIndexes" : [ ],
-  "createProcedures" : [ ],
-  "createFunctions" : [ ],
+  "topLevelReferences" : { },
+  "topLevelCalls" : { },
   "createTriggers" : [ {
     "triggerName" : "trg_employees_bi",
     "tableName" : "hr.employees",
@@ -24,10 +13,7 @@
     "references" : {
       "relations" : [ "hr.audit_log" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
+    "calls" : { }
   }, {
     "triggerName" : "trg_employees_salary_au",
     "tableName" : "hr.employees",
@@ -39,7 +25,6 @@
       "relations" : [ "hr.salary_history" ]
     },
     "calls" : {
-      "functions" : [ ],
       "procedures" : [ "hr.pkg_notifications.send_update_alert" ]
     }
   }, {
@@ -52,10 +37,7 @@
     "references" : {
       "relations" : [ "sales.order_items", "sales.orders" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
+    "calls" : { }
   }, {
     "triggerName" : "trg_employees_compound",
     "tableName" : "hr.employees",
@@ -63,9 +45,7 @@
     "orReplace" : true,
     "timing" : "COMPOUND",
     "events" : [ "INSERT", "UPDATE", "DELETE" ],
-    "references" : {
-      "relations" : [ ]
-    },
+    "references" : { },
     "calls" : {
       "functions" : [ "t_emp_ids", "g_emp_ids" ],
       "procedures" : [ "hr.process_employee_change" ]
@@ -73,17 +53,13 @@
   }, {
     "triggerName" : "trg_schema_ddl",
     "tableName" : "hr.SCHEMA",
-    "schema" : null,
     "orReplace" : true,
     "timing" : "AFTER",
     "events" : [ "CREATE", "ALTER", "DROP" ],
     "references" : {
       "relations" : [ "hr.ddl_log" ]
     },
-    "calls" : {
-      "functions" : [ ],
-      "procedures" : [ ]
-    }
+    "calls" : { }
   }, {
     "triggerName" : "trg_orders_total",
     "tableName" : "sales.order_items",
@@ -95,12 +71,7 @@
       "relations" : [ "sales.orders" ]
     },
     "calls" : {
-      "functions" : [ "sales.fn_calculate_order_total" ],
-      "procedures" : [ ]
+      "functions" : [ "sales.fn_calculate_order_total" ]
     }
-  } ],
-  "alterViews" : [ ],
-  "alterFunctions" : [ ],
-  "alterProcedures" : [ ],
-  "dropOperations" : [ ]
+  } ]
 }

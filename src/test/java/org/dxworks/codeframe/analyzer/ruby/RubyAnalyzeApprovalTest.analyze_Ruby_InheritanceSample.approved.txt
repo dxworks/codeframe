@@ -1,159 +1,78 @@
 {
   "filePath" : "src/test/resources/samples/ruby/InheritanceSample.rb",
   "language" : "ruby",
-  "packageName" : null,
   "types" : [ {
     "kind" : "class",
     "name" : "Animal",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "@name",
-      "type" : null,
-      "visibility" : "private",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "private"
     } ],
     "properties" : [ {
       "name" : "name",
-      "type" : null,
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "accessors" : [ {
-        "kind" : "get",
-        "visibility" : null,
-        "modifiers" : [ ],
-        "annotations" : [ ],
-        "localVariables" : [ ],
-        "methodCalls" : [ ]
+        "kind" : "get"
       }, {
-        "kind" : "set",
-        "visibility" : null,
-        "modifiers" : [ ],
-        "annotations" : [ ],
-        "localVariables" : [ ],
-        "methodCalls" : [ ]
+        "kind" : "set"
       } ]
     } ],
     "methods" : [ {
       "name" : "initialize",
-      "returnType" : null,
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "name",
-        "type" : null
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+        "name" : "name"
+      } ]
     }, {
       "name" : "speak",
-      "returnType" : null,
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "visibility" : "public"
+    } ]
   }, {
     "kind" : "class",
     "name" : "Dog",
     "visibility" : "public",
-    "modifiers" : [ ],
-    "annotations" : [ ],
     "extendsType" : "Animal",
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "@breed",
-      "type" : null,
-      "visibility" : "private",
-      "modifiers" : [ ],
-      "annotations" : [ ]
+      "visibility" : "private"
     } ],
     "properties" : [ {
       "name" : "breed",
-      "type" : null,
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "accessors" : [ {
-        "kind" : "get",
-        "visibility" : null,
-        "modifiers" : [ ],
-        "annotations" : [ ],
-        "localVariables" : [ ],
-        "methodCalls" : [ ]
+        "kind" : "get"
       }, {
-        "kind" : "set",
-        "visibility" : null,
-        "modifiers" : [ ],
-        "annotations" : [ ],
-        "localVariables" : [ ],
-        "methodCalls" : [ ]
+        "kind" : "set"
       } ]
     } ],
     "methods" : [ {
       "name" : "initialize",
-      "returnType" : null,
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "name",
-        "type" : null
+        "name" : "name"
       }, {
-        "name" : "breed",
-        "type" : null
+        "name" : "breed"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "super",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
     }, {
       "name" : "speak",
-      "returnType" : null,
-      "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "visibility" : "public"
     }, {
       "name" : "fetch",
-      "returnType" : null,
       "visibility" : "public",
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "item",
-        "type" : null
+        "name" : "item"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "puts",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
-    } ],
-    "types" : [ ]
-  } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+    } ]
+  } ]
 }

@@ -1,264 +1,141 @@
 {
   "filePath" : "src/test/resources/samples/javascript/EnumsAndConstants.js",
   "language" : "javascript",
-  "packageName" : null,
   "types" : [ {
     "kind" : "class",
     "name" : "OrderStatus",
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "PENDING",
       "type" : "OrderStatus",
-      "visibility" : null,
-      "modifiers" : [ "static" ],
-      "annotations" : [ ]
+      "modifiers" : [ "static" ]
     }, {
       "name" : "PROCESSING",
       "type" : "OrderStatus",
-      "visibility" : null,
-      "modifiers" : [ "static" ],
-      "annotations" : [ ]
+      "modifiers" : [ "static" ]
     }, {
       "name" : "SHIPPED",
       "type" : "OrderStatus",
-      "visibility" : null,
-      "modifiers" : [ "static" ],
-      "annotations" : [ ]
+      "modifiers" : [ "static" ]
     }, {
       "name" : "DELIVERED",
       "type" : "OrderStatus",
-      "visibility" : null,
-      "modifiers" : [ "static" ],
-      "annotations" : [ ]
+      "modifiers" : [ "static" ]
     }, {
       "name" : "CANCELLED",
       "type" : "OrderStatus",
-      "visibility" : null,
-      "modifiers" : [ "static" ],
-      "annotations" : [ ]
+      "modifiers" : [ "static" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "key",
-        "type" : null
+        "name" : "key"
       }, {
-        "name" : "label",
-        "type" : null
+        "name" : "label"
       }, {
-        "name" : "order",
-        "type" : null
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    }, {
-      "name" : "values",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ "static" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    }, {
-      "name" : "fromKey",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ "static" ],
-      "annotations" : [ ],
-      "parameters" : [ {
-        "name" : "key",
-        "type" : null
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ {
-        "methodName" : "find",
-        "objectType" : null,
-        "objectName" : "OrderStatus.values()",
-        "callCount" : 1,
-        "parameterCount" : null
-      }, {
-        "methodName" : "values",
-        "objectType" : null,
-        "objectName" : "OrderStatus",
-        "callCount" : 1,
-        "parameterCount" : null
+        "name" : "order"
       } ]
     }, {
-      "name" : "isTerminal",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "name" : "values",
+      "modifiers" : [ "static" ]
+    }, {
+      "name" : "fromKey",
+      "modifiers" : [ "static" ],
+      "parameters" : [ {
+        "name" : "key"
+      } ],
+      "methodCalls" : [ {
+        "methodName" : "find",
+        "objectName" : "OrderStatus.values()",
+        "callCount" : 1
+      }, {
+        "methodName" : "values",
+        "objectName" : "OrderStatus",
+        "callCount" : 1
+      } ]
+    }, {
+      "name" : "isTerminal"
     }, {
       "name" : "canTransitionTo",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "nextStatus",
-        "type" : null
+        "name" : "nextStatus"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "isTerminal",
         "objectType" : "OrderStatus",
         "objectName" : "this",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
-      "name" : "toString",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      "name" : "toString"
+    } ]
   }, {
     "kind" : "class",
     "name" : "Order",
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "constructor",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "id",
-        "type" : null
+        "name" : "id"
       }, {
-        "name" : "items",
-        "type" : null
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+        "name" : "items"
+      } ]
     }, {
       "name" : "updateStatus",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
       "parameters" : [ {
-        "name" : "newStatus",
-        "type" : null
+        "name" : "newStatus"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "canTransitionTo",
-        "objectType" : null,
         "objectName" : "this.status",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       }, {
         "methodName" : "push",
-        "objectType" : null,
         "objectName" : "this.statusHistory",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "getStatusLabel",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "toString",
-        "objectType" : null,
         "objectName" : "this.status",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
     }, {
       "name" : "isComplete",
-      "returnType" : null,
-      "visibility" : null,
-      "modifiers" : [ ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "isTerminal",
-        "objectType" : null,
         "objectName" : "this.status",
-        "callCount" : 1,
-        "parameterCount" : null
+        "callCount" : 1
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   } ],
   "methods" : [ {
     "name" : "getRolePermissions",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
-      "name" : "role",
-      "type" : null
+      "name" : "role"
     } ],
-    "localVariables" : [ "permissions" ],
-    "methodCalls" : [ ]
+    "localVariables" : [ "permissions" ]
   }, {
     "name" : "getHttpStatusMessage",
-    "returnType" : null,
-    "visibility" : null,
     "modifiers" : [ "export" ],
-    "annotations" : [ ],
     "parameters" : [ {
-      "name" : "status",
-      "type" : null
+      "name" : "status"
     } ],
     "localVariables" : [ "messages" ],
     "methodCalls" : [ {
       "methodName" : "get",
       "objectType" : "Map",
       "objectName" : "messages",
-      "callCount" : 1,
-      "parameterCount" : null
+      "callCount" : 1
     } ]
   } ],
   "fields" : [ {
     "name" : "UserRole",
-    "type" : null,
-    "visibility" : null,
-    "modifiers" : [ "const", "export" ],
-    "annotations" : [ ]
+    "modifiers" : [ "const", "export" ]
   }, {
     "name" : "HttpStatus",
-    "type" : null,
-    "visibility" : null,
-    "modifiers" : [ "const", "export" ],
-    "annotations" : [ ]
-  } ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+    "modifiers" : [ "const", "export" ]
+  } ]
 }

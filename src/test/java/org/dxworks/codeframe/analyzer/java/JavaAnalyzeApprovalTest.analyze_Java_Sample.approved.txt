@@ -8,44 +8,33 @@
     "visibility" : "public",
     "modifiers" : [ "public" ],
     "annotations" : [ "@Resource(name = RestConstants.VERSION_1 + \"/user\", supportedClass = Sample.class, supportedVersions = { \"1.0.* - 2.0.*\" })" ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "db",
       "type" : "DatabaseConnection",
       "visibility" : "private",
-      "modifiers" : [ "private", "final" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private", "final" ]
     }, {
       "name" : "logger",
       "type" : "Logger",
       "visibility" : "private",
-      "modifiers" : [ "private", "final" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private", "final" ]
     }, {
       "name" : "users",
       "type" : "List<User>",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "findById",
       "returnType" : "User",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
         "type" : "String"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "debug",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 0
       }, {
@@ -56,14 +45,10 @@
         "parameterCount" : 1
       }, {
         "methodName" : "output",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 0
       }, {
         "methodName" : "printoTo",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
@@ -84,9 +69,6 @@
       "returnType" : "List<User>",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "queryList",
         "objectType" : "DatabaseConnection",
@@ -99,12 +81,10 @@
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
         "type" : "String"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "info",
         "objectType" : "Logger",
@@ -117,24 +97,19 @@
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "users",
         "type" : "List<User>"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "save",
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "user",
         "type" : "User"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "getId",
         "objectType" : "User",
@@ -143,14 +118,10 @@
         "parameterCount" : 0
       }, {
         "methodName" : "insert",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       }, {
         "methodName" : "update",
-        "objectType" : null,
-        "objectName" : null,
         "callCount" : 1,
         "parameterCount" : 1
       } ]
@@ -159,12 +130,10 @@
       "returnType" : "void",
       "visibility" : "private",
       "modifiers" : [ "private" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "user",
         "type" : "User"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "execute",
         "objectType" : "DatabaseConnection",
@@ -189,12 +158,10 @@
       "returnType" : "void",
       "visibility" : "private",
       "modifiers" : [ "private" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "user",
         "type" : "User"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "execute",
         "objectType" : "DatabaseConnection",
@@ -222,118 +189,78 @@
       } ]
     }, {
       "name" : "Sample",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "db",
         "type" : "DatabaseConnection"
       }, {
         "name" : "logger",
         "type" : "Logger"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "User",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "id",
       "type" : "String",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     }, {
       "name" : "name",
       "type" : "String",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     }, {
       "name" : "email",
       "type" : "String",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "getId",
       "returnType" : "String",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "setId",
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "id",
         "type" : "String"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "getName",
       "returnType" : "String",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "setName",
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "name",
         "type" : "String"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      } ]
     }, {
       "name" : "getEmail",
       "returnType" : "String",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "setEmail",
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "email",
         "type" : "String"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
   "imports" : [ "import java.util.List;", "import java.util.stream.Collectors;" ]
 }

@@ -7,42 +7,31 @@
     "name" : "LoopLocals",
     "visibility" : "public",
     "modifiers" : [ "public", "static" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "SumUpTo",
       "returnType" : "int",
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "n",
         "type" : "int"
       } ],
-      "localVariables" : [ "sum" ],
-      "methodCalls" : [ ]
+      "localVariables" : [ "sum" ]
     }, {
       "name" : "SumList",
       "returnType" : "int",
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "xs",
         "type" : "List<int>"
       } ],
-      "localVariables" : [ "sum" ],
-      "methodCalls" : [ ]
+      "localVariables" : [ "sum" ]
     }, {
       "name" : "Process",
       "returnType" : "void",
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "n",
         "type" : "int"
@@ -52,14 +41,8 @@
       }, {
         "name" : "values",
         "type" : "int[]"
-      } ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
+      } ]
+    } ]
   } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
   "imports" : [ "using System;", "using System.Collections.Generic;" ]
 }

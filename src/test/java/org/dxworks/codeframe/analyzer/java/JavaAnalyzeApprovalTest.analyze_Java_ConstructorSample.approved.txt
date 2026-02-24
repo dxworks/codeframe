@@ -7,39 +7,26 @@
     "name" : "ConstructorSample",
     "visibility" : "public",
     "modifiers" : [ "public" ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
     "fields" : [ {
       "name" : "dep",
       "type" : "Dependency",
       "visibility" : "private",
-      "modifiers" : [ "private", "final" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private", "final" ]
     }, {
       "name" : "count",
       "type" : "int",
       "visibility" : "private",
-      "modifiers" : [ "private" ],
-      "annotations" : [ ]
+      "modifiers" : [ "private" ]
     } ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "getCount",
       "returnType" : "int",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "ConstructorSample",
-      "returnType" : null,
       "visibility" : "public",
       "modifiers" : [ "public" ],
-      "annotations" : [ ],
       "parameters" : [ {
         "name" : "dep",
         "type" : "Dependency"
@@ -47,7 +34,6 @@
         "name" : "initial",
         "type" : "int"
       } ],
-      "localVariables" : [ ],
       "methodCalls" : [ {
         "methodName" : "init",
         "objectType" : "Dependency",
@@ -55,33 +41,15 @@
         "callCount" : 1,
         "parameterCount" : 0
       } ]
-    } ],
-    "types" : [ ]
+    } ]
   }, {
     "kind" : "class",
     "name" : "Dependency",
-    "visibility" : null,
-    "modifiers" : [ ],
-    "annotations" : [ ],
-    "extendsType" : null,
-    "implementsInterfaces" : [ ],
-    "mixins" : [ ],
-    "fields" : [ ],
-    "properties" : [ ],
     "methods" : [ {
       "name" : "init",
       "returnType" : "void",
       "visibility" : "public",
-      "modifiers" : [ "public" ],
-      "annotations" : [ ],
-      "parameters" : [ ],
-      "localVariables" : [ ],
-      "methodCalls" : [ ]
-    } ],
-    "types" : [ ]
-  } ],
-  "methods" : [ ],
-  "fields" : [ ],
-  "methodCalls" : [ ],
-  "imports" : [ ]
+      "modifiers" : [ "public" ]
+    } ]
+  } ]
 }
