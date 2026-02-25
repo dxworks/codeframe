@@ -12,44 +12,46 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class TypeScriptAnalyzeApprovalTest {
+    private static final String SAMPLES_BASE_PATH = "src/test/resources/samples/typescript/";
 
     @Test
     void analyze_TypeScript_Sample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/typescript/sample.ts"), Language.TYPESCRIPT);
+        verify("sample.ts", Language.TYPESCRIPT);
     }
 
     @Test
     void analyze_Tsx_ConfirmDiscardPrompt() throws IOException {
-        verify(Paths.get("src/test/resources/samples/typescript/confirm-discard-prompt.tsx"), Language.TYPESCRIPT);
+        verify("confirm-discard-prompt.tsx", Language.TYPESCRIPT);
     }
 
     @Test
     void analyze_TypeScript_OrderParams() throws IOException {
-        verify(Paths.get("src/test/resources/samples/typescript/order-params.ts"), Language.TYPESCRIPT);
+        verify("order-params.ts", Language.TYPESCRIPT);
     }
 
     @Test
     void analyze_TypeScript_InterfaceSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/typescript/interface-sample.ts"), Language.TYPESCRIPT);
+        verify("interface-sample.ts", Language.TYPESCRIPT);
     }
 
     @Test
     void analyze_TypeScript_ClassInheritance() throws IOException {
-        verify(Paths.get("src/test/resources/samples/typescript/ClassInheritance.ts"), Language.TYPESCRIPT);
+        verify("ClassInheritance.ts", Language.TYPESCRIPT);
     }
 
     @Test
     void analyze_TypeScript_TypeScriptTypes() throws IOException {
-        verify(Paths.get("src/test/resources/samples/typescript/TypeScriptTypes.ts"), Language.TYPESCRIPT);
+        verify("TypeScriptTypes.ts", Language.TYPESCRIPT);
     }
 
     @Test
     void analyze_TypeScript_ClassFeatures() throws IOException {
-        verify(Paths.get("src/test/resources/samples/typescript/ClassFeatures.ts"), Language.TYPESCRIPT);
+        verify("ClassFeatures.ts", Language.TYPESCRIPT);
     }
 
-    private static void verify(Path file, Language language) throws IOException {
-        FileAnalysis analysis = (FileAnalysis) App.analyzeFile(file, language);
+    private static void verify(String fileName, Language language) throws IOException {
+        Path filePath = Paths.get(SAMPLES_BASE_PATH + fileName);
+        FileAnalysis analysis = (FileAnalysis) App.analyzeFile(filePath, language);
         Approvals.verify(TestUtils.APPROVAL_MAPPER.writeValueAsString(analysis));
     }
 }

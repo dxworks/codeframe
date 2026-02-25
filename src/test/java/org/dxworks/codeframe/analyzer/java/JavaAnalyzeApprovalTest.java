@@ -12,63 +12,65 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class JavaAnalyzeApprovalTest {
+    private static final String SAMPLES_BASE_PATH = "src/test/resources/samples/java/";
 
     @Test
     void analyze_Java_Sample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/java/Sample.java"), Language.JAVA);
+        verify("Sample.java", Language.JAVA);
     }
 
     @Test
     void analyze_Java_MultipleClasses() throws IOException {
-        verify(Paths.get("src/test/resources/samples/java/MultipleClasses.java"), Language.JAVA);
+        verify("MultipleClasses.java", Language.JAVA);
     }
 
     @Test
     void analyze_Java_RepositorySample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/java/Repository.java"), Language.JAVA);
+        verify("Repository.java", Language.JAVA);
     }
 
     @Test
     void analyze_Java_ConstructorSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/java/ConstructorSample.java"), Language.JAVA);
+        verify("ConstructorSample.java", Language.JAVA);
     }
 
     @Test
     void analyze_Java_LambdaSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/java/LambdaSample.java"), Language.JAVA);
+        verify("LambdaSample.java", Language.JAVA);
     }
 
     @Test
     void analyze_Java_ExceptionHandlingSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/java/ExceptionHandlingSample.java"), Language.JAVA);
+        verify("ExceptionHandlingSample.java", Language.JAVA);
     }
 
     @Test
     void analyze_Java_EnumSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/java/EnumSample.java"), Language.JAVA);
+        verify("EnumSample.java", Language.JAVA);
     }
 
     @Test
     void analyze_Java_AnonymousInnerClassesSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/java/AnonymousInnerClassesSample.java"), Language.JAVA);
+        verify("AnonymousInnerClassesSample.java", Language.JAVA);
     }
 
     @Test
     void analyze_Java_GenericsSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/java/GenericsSample.java"), Language.JAVA);
+        verify("GenericsSample.java", Language.JAVA);
     }
 
     @Test
     void analyze_Java_RecordsSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/java/RecordsSample.java"), Language.JAVA);
+        verify("RecordsSample.java", Language.JAVA);
     }
 
     @Test
     void analyze_Java_SealedClassesSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/java/SealedClassesSample.java"), Language.JAVA);
+        verify("SealedClassesSample.java", Language.JAVA);
     }
 
-    private static void verify(Path filePath, Language language) throws IOException {
+    private static void verify(String fileName, Language language) throws IOException {
+        Path filePath = Paths.get(SAMPLES_BASE_PATH + fileName);
         FileAnalysis analysis = (FileAnalysis) App.analyzeFile(filePath, language);
         Approvals.verify(TestUtils.APPROVAL_MAPPER.writeValueAsString(analysis));
     }

@@ -12,44 +12,46 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class PythonAnalyzeApprovalTest {
+    private static final String SAMPLES_BASE_PATH = "src/test/resources/samples/python/";
 
     @Test
     void analyze_Python_ComplexExample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/python/complex_example.py"), Language.PYTHON);
+        verify("complex_example.py", Language.PYTHON);
     }
 
     @Test
     void analyze_Python_DecoratorsSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/python/decorators_sample.py"), Language.PYTHON);
+        verify("decorators_sample.py", Language.PYTHON);
     }
 
     @Test
     void analyze_Python_EnumSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/python/enum_sample.py"), Language.PYTHON);
+        verify("enum_sample.py", Language.PYTHON);
     }
 
     @Test
     void analyze_Python_ExceptionHandlingSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/python/exception_handling_sample.py"), Language.PYTHON);
+        verify("exception_handling_sample.py", Language.PYTHON);
     }
 
     @Test
     void analyze_Python_InheritanceSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/python/inheritance_sample.py"), Language.PYTHON);
+        verify("inheritance_sample.py", Language.PYTHON);
     }
 
     @Test
     void analyze_Python_NestedStructuresSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/python/nested_structures_sample.py"), Language.PYTHON);
+        verify("nested_structures_sample.py", Language.PYTHON);
     }
 
     @Test
     void analyze_Python_TypingSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/python/typing_sample.py"), Language.PYTHON);
+        verify("typing_sample.py", Language.PYTHON);
     }
 
-    private static void verify(Path file, Language language) throws IOException {
-        FileAnalysis analysis = (FileAnalysis) App.analyzeFile(file, language);
+    private static void verify(String fileName, Language language) throws IOException {
+        Path filePath = Paths.get(SAMPLES_BASE_PATH + fileName);
+        FileAnalysis analysis = (FileAnalysis) App.analyzeFile(filePath, language);
         Approvals.verify(TestUtils.APPROVAL_MAPPER.writeValueAsString(analysis));
     }
 }

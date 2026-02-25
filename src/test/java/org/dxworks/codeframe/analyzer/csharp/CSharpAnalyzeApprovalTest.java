@@ -12,89 +12,91 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class CSharpAnalyzeApprovalTest {
+    private static final String SAMPLES_BASE_PATH = "src/test/resources/samples/csharp/";
 
     @Test
     void analyze_CSharp_DataClass() throws IOException {
-        verify(Paths.get("src/test/resources/samples/csharp/DataClass.cs"), Language.CSHARP);
+        verify("DataClass.cs", Language.CSHARP);
     }
 
     @Test
     void analyze_CSharp_DataClassNS() throws IOException {
-        verify(Paths.get("src/test/resources/samples/csharp/DataClassNS.cs"), Language.CSHARP);
+        verify("DataClassNS.cs", Language.CSHARP);
     }
 
     @Test
     void analyze_CSharp_InterfaceAndGenericsSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/csharp/InterfaceAndGenericsSample.cs"), Language.CSHARP);
+        verify("InterfaceAndGenericsSample.cs", Language.CSHARP);
     }
 
     @Test
     void analyze_CSharp_InnerOutter() throws IOException {
-        verify(Paths.get("src/test/resources/samples/csharp/InnerOutter.cs"), Language.CSHARP);
+        verify("InnerOutter.cs", Language.CSHARP);
     }
 
     @Test
     void analyze_CSharp_InheritanceSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/csharp/InheritanceSample.cs"), Language.CSHARP);
+        verify("InheritanceSample.cs", Language.CSHARP);
     }
 
     @Test
     void analyze_CSharp_ExceptionsAndUsingSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/csharp/ExceptionsAndUsingSample.cs"), Language.CSHARP);
+        verify("ExceptionsAndUsingSample.cs", Language.CSHARP);
     }
 
     @Test
     void analyze_CSharp_DelegatesEventsLambdasSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/csharp/DelegatesEventsLambdasSample.cs"), Language.CSHARP);
+        verify("DelegatesEventsLambdasSample.cs", Language.CSHARP);
     }
 
     @Test
     void analyze_CSharp_ExtensionMethodsSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/csharp/ExtensionMethodsSample.cs"), Language.CSHARP);
+        verify("ExtensionMethodsSample.cs", Language.CSHARP);
     }
 
     @Test
     void analyze_CSharp_RecordsAndPatternsSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/csharp/RecordsAndPatternsSample.cs"), Language.CSHARP);
+        verify("RecordsAndPatternsSample.cs", Language.CSHARP);
     }
 
     @Test
     void analyze_CSharp_NullabilitySample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/csharp/NullabilitySample.cs"), Language.CSHARP);
+        verify("NullabilitySample.cs", Language.CSHARP);
     }
 
     @Test
     void analyze_CSharp_IteratorsAndIndexersSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/csharp/IteratorsAndIndexersSample.cs"), Language.CSHARP);
+        verify("IteratorsAndIndexersSample.cs", Language.CSHARP);
     }
 
     @Test
     void analyze_CSharp_TuplesRangesAndTargetTypedNewSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/csharp/TuplesRangesAndTargetTypedNewSample.cs"), Language.CSHARP);
+        verify("TuplesRangesAndTargetTypedNewSample.cs", Language.CSHARP);
     }
 
     @Test
     void analyze_CSharp_PropertiesUsageSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/csharp/PropertiesUsageSample.cs"), Language.CSHARP);
+        verify("PropertiesUsageSample.cs", Language.CSHARP);
     }
 
     @Test
     void analyze_CSharp_LoopLocalsSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/csharp/LoopLocalsSample.cs"), Language.CSHARP);
+        verify("LoopLocalsSample.cs", Language.CSHARP);
     }
 
     @Test
     void analyze_CSharp_EnumUsageSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/csharp/EnumUsageSample.cs"), Language.CSHARP);
+        verify("EnumUsageSample.cs", Language.CSHARP);
     }
 
     @Test
     void analyze_CSharp_RecursionSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/csharp/RecursionSample.cs"), Language.CSHARP);
+        verify("RecursionSample.cs", Language.CSHARP);
     }
 
-    private static void verify(Path file, Language language) throws IOException {
-        FileAnalysis analysis = (FileAnalysis) App.analyzeFile(file, language);
+    private static void verify(String fileName, Language language) throws IOException {
+        Path filePath = Paths.get(SAMPLES_BASE_PATH + fileName);
+        FileAnalysis analysis = (FileAnalysis) App.analyzeFile(filePath, language);
         Approvals.verify(TestUtils.APPROVAL_MAPPER.writeValueAsString(analysis));
     }
 }

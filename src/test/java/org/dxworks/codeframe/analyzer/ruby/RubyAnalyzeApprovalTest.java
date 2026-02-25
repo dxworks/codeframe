@@ -12,49 +12,51 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class RubyAnalyzeApprovalTest {
+    private static final String SAMPLES_BASE_PATH = "src/test/resources/samples/ruby/";
 
     @Test
     void analyze_Ruby_Sample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/ruby/Sample.rb"), Language.RUBY);
+        verify("Sample.rb", Language.RUBY);
     }
 
     @Test
     void analyze_Ruby_ModuleSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/ruby/ModuleSample.rb"), Language.RUBY);
+        verify("ModuleSample.rb", Language.RUBY);
     }
 
     @Test
     void analyze_Ruby_InheritanceSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/ruby/InheritanceSample.rb"), Language.RUBY);
+        verify("InheritanceSample.rb", Language.RUBY);
     }
 
     @Test
     void analyze_Ruby_VisibilityAndClassMethodsSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/ruby/VisibilityAndClassMethodsSample.rb"), Language.RUBY);
+        verify("VisibilityAndClassMethodsSample.rb", Language.RUBY);
     }
 
     @Test
     void analyze_Ruby_ConstantsAndRequiresSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/ruby/ConstantsAndRequiresSample.rb"), Language.RUBY);
+        verify("ConstantsAndRequiresSample.rb", Language.RUBY);
     }
 
     @Test
     void analyze_Ruby_ActiveRecordSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/ruby/ActiveRecordSample.rb"), Language.RUBY);
+        verify("ActiveRecordSample.rb", Language.RUBY);
     }
     
     @Test
     void analyze_Ruby_NestedTypesSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/ruby/NestedTypesSample.rb"), Language.RUBY);
+        verify("NestedTypesSample.rb", Language.RUBY);
     }
 
     @Test
     void analyze_Ruby_BlocksAndLambdasSample() throws IOException {
-        verify(Paths.get("src/test/resources/samples/ruby/BlocksAndLambdasSample.rb"), Language.RUBY);
+        verify("BlocksAndLambdasSample.rb", Language.RUBY);
     }
 
-    private static void verify(Path file, Language language) throws IOException {
-        FileAnalysis analysis = (FileAnalysis) App.analyzeFile(file, language);
+    private static void verify(String fileName, Language language) throws IOException {
+        Path filePath = Paths.get(SAMPLES_BASE_PATH + fileName);
+        FileAnalysis analysis = (FileAnalysis) App.analyzeFile(filePath, language);
         Approvals.verify(TestUtils.APPROVAL_MAPPER.writeValueAsString(analysis));
     }
 }
