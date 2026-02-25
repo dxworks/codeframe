@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class TypeScriptAnalyzeApprovalTest {
     private static final String SAMPLES_BASE_PATH = "src/test/resources/samples/typescript/";
@@ -50,6 +51,8 @@ public class TypeScriptAnalyzeApprovalTest {
     }
 
     private static void verify(String fileName, Language language) throws IOException {
+        // Initialize analyzers for tests
+        App.initAnalyzersForTestsFromPaths(List.of());
         Path filePath = Paths.get(SAMPLES_BASE_PATH + fileName);
         FileAnalysis analysis = (FileAnalysis) App.analyzeFile(filePath, language);
         Approvals.verify(TestUtils.APPROVAL_MAPPER.writeValueAsString(analysis));

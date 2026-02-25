@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class SQLAnalyzeApprovalTest {
     private static final String SAMPLES_BASE_PATH = "src/test/resources/samples/sql/";
@@ -129,6 +130,8 @@ public class SQLAnalyzeApprovalTest {
     }
 
     private static void verify(String fileName, Language language) throws Exception {
+        // Initialize analyzers for tests
+        App.initAnalyzersForTestsFromPaths(List.of());
         Path filePath = Paths.get(SAMPLES_BASE_PATH + fileName);
         Analysis analysis = App.analyzeFile(filePath, language);
         Approvals.verify(TestUtils.APPROVAL_MAPPER.writeValueAsString(analysis));
