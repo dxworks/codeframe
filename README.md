@@ -14,7 +14,7 @@ A Tree-sitter-based code parser that extracts structural information from source
 - **Rust** (.rs)
 - **SQL** (.sql)
 - **COBOL** (.cbl, .cob, .cpy)
-- **Markdown** (.md, .markdown)
+- **Markdown** (.md, .markdown, .mkd, .mkdn, .mdwn, .mdown)
 
 ## Features
 

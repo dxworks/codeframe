@@ -26,6 +26,10 @@ This is a **normative spec** for Markdown behavior and output shape. It is not a
 
 - `.md`
 - `.markdown`
+- `.mkd`
+- `.mkdn`
+- `.mdwn`
+- `.mdown`
 
 ### 1.3 Out of scope
 
