@@ -1,10 +1,8 @@
 package org.dxworks.codeframe;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.dxworks.codeframe.analyzer.*;
-import org.dxworks.codeframe.analyzer.cobol.COBOLAnalyzer;
+import org.dxworks.codeframe.analyzer.LanguageAnalyzer;
 import org.dxworks.codeframe.analyzer.cobol.CobolCopybookRepository;
-import org.dxworks.codeframe.analyzer.sql.SQLAnalyzer;
 import org.dxworks.codeframe.model.Analysis;
 import org.dxworks.codeframe.model.sql.AlterTableOperation;
 import org.dxworks.codeframe.model.sql.CreateTableOperation;
@@ -14,7 +12,6 @@ import org.dxworks.utils.ignorer.IgnorerBuilder;
 import org.treesitter.*;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -26,7 +23,7 @@ import java.util.stream.Stream;
 
 public class App {
     private static final ObjectMapper MAPPER = new ObjectMapper()
-            .setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY);
+            .setDefaultPropertyInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY);
 
     private static final Map<Language, TSLanguage> TREE_SITTER_LANGUAGES = new HashMap<>();
 
@@ -52,31 +49,16 @@ public class App {
         }
     }
 
-    private static Map<Language, LanguageAnalyzer> buildAnalyzers(CobolCopybookRepository cobolCopybooks) {
-        Map<Language, LanguageAnalyzer> analyzers = new HashMap<>();
-
-        analyzers.put(Language.JAVA, new JavaAnalyzer());
-        analyzers.put(Language.JAVASCRIPT, new JavaScriptAnalyzer());
-        analyzers.put(Language.TYPESCRIPT, new TypeScriptAnalyzer());
-        analyzers.put(Language.PYTHON, new PythonAnalyzer());
-        analyzers.put(Language.CSHARP, new CSharpAnalyzer());
-        analyzers.put(Language.PHP, new PHPAnalyzer());
-        analyzers.put(Language.SQL, new SQLAnalyzer());
-
-        // COBOL analyzer gets the run-scoped repository (constructor injection)
-        analyzers.put(Language.COBOL, new COBOLAnalyzer(cobolCopybooks));
-
-        analyzers.put(Language.RUBY, new RubyAnalyzer());
-        analyzers.put(Language.RUST, new RustAnalyzer());
-
-        return Collections.unmodifiableMap(analyzers);
+    private static Map<Language, LanguageAnalyzer> buildAnalyzers(CobolCopybookRepository cobolCopybooks, CodeframeConfig config) {
+        return LanguageRegistry.buildAnalyzers(cobolCopybooks, config);
     }
 
     /**
      * Convenience overload for tests: pass copybook paths.
      */
     public static void initAnalyzersForTestsFromPaths(List<Path> copybookPaths) {
-        ANALYZERS = buildAnalyzers(new CobolCopybookRepository(copybookPaths.stream().map(Path::toFile).toList()));
+        CodeframeConfig config = CodeframeConfig.load();
+        ANALYZERS = buildAnalyzers(new CobolCopybookRepository(copybookPaths.stream().map(Path::toFile).toList()), config);
     }
 
     public static void main(String[] args) throws Exception {
@@ -84,7 +66,7 @@ public class App {
             System.err.println("Usage: java -jar codeframe.jar <input-folder> <output-file>");
             System.err.println("  <input-folder>: Path to source code directory or file");
             System.err.println("  <output-file>:  Path to output JSONL file");
-            System.err.println("Supported languages: Java, JavaScript, TypeScript, Python, C#, PHP, SQL, COBOL, Ruby, Rust");
+            System.err.println("Supported languages: Java, JavaScript, TypeScript, Python, C#, PHP, SQL, COBOL, Ruby, Rust, Markdown");
             System.exit(2);
         }
 
@@ -113,17 +95,17 @@ public class App {
         // 2) Split: analyzable targets (anything with a Language) vs copybooks (Option A)
         List<Path> files =
                 scopedFiles.stream()
-                        .filter(p -> LanguageDetector.detectLanguage(p).isPresent())
+                        .filter(p -> LanguageRegistry.detectLanguage(p).isPresent())
                         .toList();
 
         // Determine whether we have any COBOL "program" files in scope.
         // If none, do not treat .cpy files as copybooks (they might belong to other ecosystems).
         boolean hasCobolPrograms =
                 files.stream()
-                        .anyMatch(p -> LanguageDetector.detectLanguage(p).orElse(null) == Language.COBOL);
+                        .anyMatch(p -> LanguageRegistry.detectLanguage(p).orElse(null) == Language.COBOL);
 
         List<Path> copyFilesForRun = hasCobolPrograms
-                ? scopedFiles.stream().filter(LanguageDetector::isCobolCopybook).toList()
+                ? scopedFiles.stream().filter(LanguageRegistry::isCobolCopybook).toList()
                 : List.of();
 
         // 3) Build run-scoped copybook repository (only if COBOL programs exist)
@@ -132,7 +114,12 @@ public class App {
         );
 
         // 4) Register analyzers for this run (COBOL gets the repository)
-        ANALYZERS = buildAnalyzers(cobolCopybooks);
+        ANALYZERS = buildAnalyzers(cobolCopybooks, config);
+        
+        System.out.println("Enabled analyzers: " + String.join(", ", ANALYZERS.keySet().stream()
+                .map(lang -> lang.getName().toLowerCase())
+                .sorted()
+                .toList()));
 
         System.out.println("Found " + files.size() + " source files with at most " + maxFileLines + " lines");
         if (!copyFilesForRun.isEmpty()) {
@@ -154,7 +141,7 @@ public class App {
             writer.newLine();
 
             files.parallelStream().forEach(file -> {
-                Optional<Language> langOpt = LanguageDetector.detectLanguage(file);
+                Optional<Language> langOpt = LanguageRegistry.detectLanguage(file);
                 if (langOpt.isEmpty()) {
                     return;
                 }
@@ -231,13 +218,13 @@ public class App {
             try (Stream<Path> stream = Files.walk(input)) {
                 stream.filter(Files::isRegularFile)
                         .filter(p -> ignorer.accepts(p.toAbsolutePath().toString()))
-                        .filter(LanguageDetector::isRelevantSourceOrDependency)
+                        .filter(LanguageRegistry::isRelevantSourceOrDependency)
                         .filter(p -> withinMaxLines(p, maxFileLines))
                         .forEach(files::add);
             }
         } else if (Files.isRegularFile(input)) {
             if (ignorer.accepts(input.toAbsolutePath().toString())
-                    && LanguageDetector.isRelevantSourceOrDependency(input)
+                    && LanguageRegistry.isRelevantSourceOrDependency(input)
                     && withinMaxLines(input, maxFileLines)) {
                 files.add(input);
             }
@@ -285,7 +272,7 @@ public class App {
 
         Analysis analysis;
 
-        if (language == Language.SQL || language == Language.COBOL) {
+        if (language == Language.SQL || language == Language.COBOL || language == Language.MARKDOWN) {
             analysis = analyzer.analyze(filePath.toString(), sourceCode, null);
         } else {
             TSLanguage tsLanguage = TREE_SITTER_LANGUAGES.get(language);

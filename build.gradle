@@ -37,6 +37,9 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.21.0'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.21.0'
     implementation 'com.github.jsqlparser:jsqlparser:5.3'
+    implementation 'org.commonmark:commonmark:0.27.1'
+    implementation 'org.commonmark:commonmark-ext-gfm-tables:0.27.1'
+    implementation 'org.commonmark:commonmark-ext-yaml-front-matter:0.27.1'
     implementation 'org.antlr:antlr4-runtime:4.13.2'
     antlr 'org.antlr:antlr4:4.13.2'
     // DXWorks ignore library (loads .ignore patterns)

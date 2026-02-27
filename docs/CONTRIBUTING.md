@@ -3,11 +3,10 @@
 ## Adding a New Language
 
 1. Add the Tree-sitter grammar dependency to `build.gradle`
-2. Add the language to the `Language` enum
-3. Update `LanguageDetector` with file extension mapping
-4. Create a new analyzer implementing `LanguageAnalyzer`
-5. Register the language and analyzer in `App.java`
-6. Create test samples and approval tests
+2. Add the language to the `Language` enum with its file extensions
+3. Create a new analyzer implementing `LanguageAnalyzer`
+4. Add a case for the new language in `LanguageRegistry.createAnalyzer`
+5. Create test samples and approval tests
 
 ## Analyzer Implementation Conventions
 

@@ -1,0 +1,106 @@
+{
+  "filePath" : "src/test/resources/samples/markdown/Basic.md",
+  "language" : "markdown",
+  "preamble" : {
+    "level" : 0
+  },
+  "sections" : [ {
+    "heading" : "Sample Document",
+    "level" : 1,
+    "elements" : [ {
+      "type" : "paragraph",
+      "lines" : 2
+    }, {
+      "type" : "paragraph",
+      "lines" : 2
+    }, {
+      "type" : "image",
+      "lines" : 1,
+      "properties" : {
+        "altText" : "Sample image with alt text"
+      }
+    }, {
+      "type" : "code_block",
+      "lines" : 7,
+      "properties" : {
+        "language" : "java"
+      }
+    }, {
+      "type" : "table",
+      "lines" : 4
+    }, {
+      "type" : "bullet_list",
+      "lines" : 4,
+      "children" : [ {
+        "type" : "list_item",
+        "lines" : 1,
+        "children" : [ {
+          "type" : "paragraph",
+          "lines" : 1
+        } ]
+      }, {
+        "type" : "list_item",
+        "lines" : 2,
+        "children" : [ {
+          "type" : "paragraph",
+          "lines" : 2
+        } ]
+      }, {
+        "type" : "list_item",
+        "lines" : 1,
+        "children" : [ {
+          "type" : "paragraph",
+          "lines" : 1
+        } ]
+      } ]
+    }, {
+      "type" : "ordered_list",
+      "lines" : 4,
+      "children" : [ {
+        "type" : "list_item",
+        "lines" : 1,
+        "children" : [ {
+          "type" : "paragraph",
+          "lines" : 1
+        } ]
+      }, {
+        "type" : "list_item",
+        "lines" : 2,
+        "children" : [ {
+          "type" : "paragraph",
+          "lines" : 2
+        } ]
+      }, {
+        "type" : "list_item",
+        "lines" : 1,
+        "children" : [ {
+          "type" : "paragraph",
+          "lines" : 1
+        } ]
+      } ]
+    }, {
+      "type" : "block_quote",
+      "lines" : 2
+    }, {
+      "type" : "thematic_break",
+      "lines" : 1
+    }, {
+      "type" : "html_block",
+      "lines" : 3
+    }, {
+      "type" : "code_block",
+      "lines" : 3
+    } ],
+    "subsections" : [ {
+      "heading" : "Empty Section",
+      "level" : 2
+    } ]
+  }, {
+    "heading" : "Another Section",
+    "level" : 1,
+    "elements" : [ {
+      "type" : "paragraph",
+      "lines" : 1
+    } ]
+  } ]
+}

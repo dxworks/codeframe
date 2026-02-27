@@ -1,2 +1,16 @@
 maxFileLines: 20000
 hideSqlTableColumns: false
+
+# Analyzer configuration
+analyzers:
+  java: true
+  javascript: true
+  typescript: true
+  python: true
+  csharp: true
+  php: true
+  sql: true
+  cobol: true
+  ruby: true
+  rust: true
+  markdown: true

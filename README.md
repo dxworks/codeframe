@@ -14,6 +14,7 @@ A Tree-sitter-based code parser that extracts structural information from source
 - **Rust** (.rs)
 - **SQL** (.sql)
 - **COBOL** (.cbl, .cob, .cpy)
+- **Markdown** (.md, .markdown)
 
 ## Features
 
@@ -121,10 +122,22 @@ CodeFrame supports optional configuration via a `codeframe-config.yml` file in t
 | `maxFileLines` | integer | 20000 | Maximum number of lines a file can have. Files exceeding this limit are skipped during analysis. |
 | `hideSqlTableColumns` | boolean | false | When true, SQL analysis output omits table column definitions for CREATE/ALTER TABLE operations. |
 
+| `analyzers` | map | all enabled | Enable/disable specific language analyzers. See Analyzer Configuration below. |
+
+**Analyzer Configuration:**
+
+You can selectively enable/disable analyzers using the `analyzers` map. All analyzers are enabled by default.
+
+**Available analyzer keys:** `java`, `javascript`, `typescript`, `python`, `csharp`, `php`, `sql`, `cobol`, `ruby`, `rust`, `markdown`
+
 **Example configuration:**
 ```yaml
 maxFileLines: 20000
 hideSqlTableColumns: false
+analyzers:
+  java: true
+  python: true
+  sql: true
 ```
 
 **Behavior:**
@@ -146,6 +159,7 @@ Each line has a `kind` field:
 - [C# sample](src/test/java/org/dxworks/codeframe/analyzer/csharp/CSharpAnalyzeApprovalTest.analyze_CSharp_DataClass.approved.txt)
 - [SQL sample](src/test/java/org/dxworks/codeframe/analyzer/sql/SQLAnalyzeApprovalTest.analyze_SQL_Sample.approved.txt)
 - [COBOL sample](src/test/java/org/dxworks/codeframe/analyzer/cobol/COBOLAnalyzeApprovalTest.analyze_COBOL_BasicProgram.approved.txt)
+- [Markdown sample](src/test/java/org/dxworks/codeframe/analyzer/markdown/MarkdownAnalyzeApprovalTest.analyze_Basic.approved.txt)
 
 ### SQL Analysis
 
@@ -164,6 +178,15 @@ COBOL file analysis extracts structural information including:
 - Embedded SQL/CICS/IMS detection
 
 For complete documentation on COBOL support, see **[COBOL_SPEC.md](docs/specs/COBOL_SPEC.md)**.
+
+### Markdown Analysis
+
+Markdown file analysis extracts document structure including:
+- Preamble and heading hierarchy
+- Block-level elements (paragraphs, code blocks, tables, lists, block quotes, thematic breaks, HTML blocks, images)
+- Line spans for extracted elements
+
+For complete documentation on Markdown support, see **[MARKDOWN_SPEC.md](docs/specs/MARKDOWN_SPEC.md)**.
 
 ## Architecture
 
@@ -200,6 +223,7 @@ This project uses Tree-sitter and its language grammars, which are licensed unde
 - **Python**: Type aliases using `TypeAlias` annotation are captured with `kind: "type_alias"`. PEP 695 style (`type X = ...`) is not yet supported by the tree-sitter-python grammar
 - **SQL**: See [SQL_SPEC.md](docs/specs/SQL_SPEC.md)
 - **COBOL**: See [COBOL_SPEC.md](docs/specs/COBOL_SPEC.md)
+- **Markdown**: Front matter is ignored in output; links and inline formatting are not emitted as dedicated elements. See [MARKDOWN_SPEC.md](docs/specs/MARKDOWN_SPEC.md)
 
 ## Testing
 

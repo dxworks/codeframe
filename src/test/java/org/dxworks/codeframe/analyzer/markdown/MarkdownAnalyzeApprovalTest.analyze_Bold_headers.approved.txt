@@ -1,0 +1,105 @@
+{
+  "filePath" : "src/test/resources/samples/markdown/Bold_headers.md",
+  "language" : "markdown",
+  "sections" : [ {
+    "heading" : "Document with No Preamble Content",
+    "level" : 1,
+    "elements" : [ {
+      "type" : "paragraph",
+      "lines" : 1
+    } ],
+    "subsections" : [ {
+      "heading" : "Bold Heading Test",
+      "level" : 2,
+      "subsections" : [ {
+        "heading" : "Important Section Title",
+        "level" : 3,
+        "elements" : [ {
+          "type" : "paragraph",
+          "lines" : 1
+        }, {
+          "type" : "bullet_list",
+          "lines" : 2,
+          "children" : [ {
+            "type" : "list_item",
+            "lines" : 1,
+            "children" : [ {
+              "type" : "paragraph",
+              "lines" : 1
+            } ]
+          }, {
+            "type" : "list_item",
+            "lines" : 1,
+            "children" : [ {
+              "type" : "paragraph",
+              "lines" : 1
+            } ]
+          } ]
+        } ]
+      }, {
+        "heading" : "Another Bold Heading",
+        "level" : 3,
+        "elements" : [ {
+          "type" : "paragraph",
+          "lines" : 1
+        }, {
+          "type" : "thematic_break",
+          "lines" : 1
+        } ]
+      } ]
+    }, {
+      "heading" : "Normal Heading Test",
+      "level" : 2,
+      "subsections" : [ {
+        "heading" : "Regular Heading Without Bold",
+        "level" : 3,
+        "elements" : [ {
+          "type" : "paragraph",
+          "lines" : 1
+        }, {
+          "type" : "ordered_list",
+          "lines" : 3,
+          "children" : [ {
+            "type" : "list_item",
+            "lines" : 1,
+            "children" : [ {
+              "type" : "paragraph",
+              "lines" : 1
+            } ]
+          }, {
+            "type" : "list_item",
+            "lines" : 1,
+            "children" : [ {
+              "type" : "paragraph",
+              "lines" : 1
+            } ]
+          }, {
+            "type" : "list_item",
+            "lines" : 1,
+            "children" : [ {
+              "type" : "paragraph",
+              "lines" : 1
+            } ]
+          } ]
+        } ]
+      }, {
+        "heading" : "Final Bold Test",
+        "level" : 3,
+        "elements" : [ {
+          "type" : "paragraph",
+          "lines" : 1
+        }, {
+          "type" : "table",
+          "lines" : 4
+        } ]
+      } ]
+    }, {
+      "heading" : "Conclusion",
+      "level" : 2,
+      "elements" : [ {
+        "type" : "paragraph",
+        "lines" : 1
+      } ]
+    } ]
+  } ]
+}

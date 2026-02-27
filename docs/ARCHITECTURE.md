@@ -2,8 +2,8 @@
 
 ## Core Components
 
-- **`Language`** - Enum defining supported languages
-- **`LanguageDetector`** - Detects language from file extension
+- **`Language`** - Enum defining supported languages with their file extensions
+- **`LanguageRegistry`** - Central registry for language detection and analyzer creation
 - **`LanguageAnalyzer`** - Interface for language-specific analyzers
 - **`FileAnalysis`** - Model containing analysis results
 
@@ -23,6 +23,7 @@ Each language has a dedicated analyzer:
 | Rust | `RustAnalyzer` | Tree-sitter |
 | SQL | `SQLAnalyzer` | JSqlParser + ANTLR |
 | COBOL | `COBOLAnalyzer` | ANTLR |
+| Markdown | `MarkdownAnalyzer` | commonmark-java + GFM Tables + YAML Front Matter extension |
 
 ## Design Decisions
 
@@ -48,6 +49,16 @@ SQL required a different approach than other languages:
 3. **ANTLR grammars for MySQL/PostgreSQL**: Couldn't find production-quality grammars
 
 **Solution**: Hybrid approach using JSqlParser for DDL/DML structure, with ANTLR grammars for T-SQL and PL/SQL routine body analysis. See [SQL_SPEC.md](specs/SQL_SPEC.md) for details.
+
+### Why commonmark-java for Markdown?
+
+Markdown is document-structure analysis, not programming-language AST analysis.
+
+- **Purpose-built AST parser**: `commonmark-java` provides block-oriented nodes (headings, paragraphs, code blocks, lists, tables) that map directly to the Markdown output model.
+- **Source spans for line counting**: block node source spans are used to compute deterministic `lines` values.
+- **Targeted extensions**: GFM tables extension is enabled for table detection; YAML front matter extension is enabled and front matter blocks are intentionally ignored in output.
+
+See [MARKDOWN_SPEC.md](specs/MARKDOWN_SPEC.md) for exact Markdown output shape and scope.
 
 ### Why JSONL output?
 
