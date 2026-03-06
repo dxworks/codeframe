@@ -25,6 +25,11 @@ public class MarkdownAnalyzeApprovalTest {
         verify("Bold_headers.md", Language.MARKDOWN);
     }
 
+    @Test
+    void analyze_Links() throws IOException {
+        verify("Links.md", Language.MARKDOWN);
+    }
+
     private static void verify(String fileName, Language language) throws IOException {
         App.initAnalyzersForTestsFromPaths(List.of());
         Path filePath = Paths.get(SAMPLES_BASE_PATH + fileName);

@@ -99,7 +99,8 @@ Each section contains an ordered list of block elements preserving document flow
 
 - Extracted as `"paragraph"` elements with line count.
 - Preserves interleaving order with other elements (code blocks, tables, lists).
-- No inline formatting is captured (bold, italic, code spans).
+- Paragraphs may include `children` for inline elements (currently only relative links).
+- No inline formatting is captured (bold, italic, code spans), except relative links (see 3.4.6).
 
 #### 3.4.2 Code Blocks
 
@@ -119,6 +120,7 @@ Each section contains an ordered list of block elements preserving document flow
 - **Ordered lists**: Extracted as `"ordered_list"` elements.
 - List containers include `children` with `"list_item"` elements.
 - Each `"list_item"` includes its own `children` preserving block-level content order (for example: paragraph, nested list, code block).
+- Inline elements (relative links) are nested under the paragraph/list item that contains them, not emitted as top-level section elements.
 - List item paragraphs are nested under `"list_item"`, not emitted as sibling top-level section elements.
 - Task-list items are represented as regular list structures (`"bullet_list"`/`"ordered_list"` and `"list_item"`); checkbox state is not extracted in V1.
 
@@ -126,14 +128,21 @@ Each section contains an ordered list of block elements preserving document flow
 
 - Extracted as `"block_quote"` elements with line count.
 - Nested block quotes are treated as a single element.
+- Block quotes capture the same block-level structure as regular sections (paragraphs, lists, code blocks, tables, thematic breaks, html blocks), preserving order.
+- Inline links inside block quotes are extracted following the same inline hierarchy rules as paragraphs.
 
 #### 3.4.6 Other Block Elements
 
 - **Thematic breaks** (`---`, `***`): Extracted as `"thematic_break"`.
 - **HTML blocks**: Extracted as `"html_block"` with line count only.
 - **Images**: Extracted as `"image"` with `properties: { "altText": "..." }` (destination URL is not extracted).
+- **Links (relative only)**: Extracted as "link" with `properties: { "text": "...", "destination": "..." }` when the destination is a **relative** path.
+  - Link elements are nested under the containing paragraph/list item via `children` (inline hierarchy).
+  - Links outside paragraphs/list items (e.g., headings) are emitted as section elements.
+  - Relative means no scheme (e.g., `http:`), no protocol-relative (`//`), and no `mailto:` or other URI schemes.
+  - Absolute URLs are skipped to avoid leaking sensitive endpoints.
 
-**Note**: Links are not extracted because they can include sensitive URLs or internal endpoints, and they are not required for V1 structural analysis.
+**Note**: Links are extracted only when the destination is relative; absolute URLs are skipped to avoid leaking sensitive endpoints.
 
 **Note**: YAML front matter (content between `---` delimiters at file start) is not processed as it's not part of the CommonMark standard.
 
@@ -143,7 +152,7 @@ Each section contains an ordered list of block elements preserving document flow
 |---|---|---|---|
 | Fenced code block | `"code_block"` | `{ "language": "java" }` | Language from fenced code info string |
 | Indented code block | `"code_block"` | `{}` | No language info available |
-| Paragraph | `"paragraph"` | `{}` | Preserves interleaving order with other elements |
+| Paragraph | `"paragraph"` | `{}` | Preserves interleaving order; `children` may include inline links |
 | Table (GFM) | `"table"` | `{}` | Size only, no cell/row details |
 | Bullet list | `"bullet_list"` | `{}` | `children` contains `list_item` elements |
 | Ordered list | `"ordered_list"` | `{}` | `children` contains `list_item` elements |
@@ -152,6 +161,7 @@ Each section contains an ordered list of block elements preserving document flow
 | Thematic break (`---`) | `"thematic_break"` | `{}` | |
 | HTML block | `"html_block"` | `{}` | Size only, no content extraction |
 | Image | `"image"` | `{ "altText": "..." }` | Destination URL is not extracted |
+| Link (relative only) | `"link"` | `{ "text": "...", "destination": "..." }` | Nested under containing paragraph/list item |
 
 ### 3.5 `MarkdownElement`
 
@@ -215,7 +225,7 @@ In this contract, optional fields (for example `properties`, `children`) may be 
 
 ## 4. Current Limitations (V1)
 
-- Inline formatting (bold, italic, code spans) is not captured.
+- Inline formatting (bold, italic, code spans) is not captured, except relative links (nested under paragraphs/list items).
 - Table cell/row/column structure is not analyzed (size only).
 - List hierarchy is captured, but no aggregate list metrics are computed (item count, max depth).
 - No semantic analysis of code block content.

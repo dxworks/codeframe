@@ -80,7 +80,11 @@
       } ]
     }, {
       "type" : "block_quote",
-      "lines" : 2
+      "lines" : 2,
+      "children" : [ {
+        "type" : "paragraph",
+        "lines" : 2
+      } ]
     }, {
       "type" : "thematic_break",
       "lines" : 1

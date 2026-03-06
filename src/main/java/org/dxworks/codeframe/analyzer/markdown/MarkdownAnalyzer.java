@@ -8,6 +8,7 @@ import org.commonmark.node.AbstractVisitor;
 import org.commonmark.node.CustomBlock;
 import org.commonmark.node.Text;
 import org.commonmark.node.Paragraph;
+import org.commonmark.node.Link;
 import org.commonmark.node.Image;
 import org.commonmark.node.FencedCodeBlock;
 import org.commonmark.node.IndentedCodeBlock;
@@ -115,6 +116,7 @@ public class MarkdownAnalyzer implements LanguageAnalyzer {
         private final List<MarkdownSection> sections;
         private final List<MarkdownSection> sectionStack;
         private final List<MarkdownElement> elementStack = new ArrayList<>();
+        private int blockQuoteDepth = 0;
         
         public MarkdownSectionVisitor(List<MarkdownSection> sections, 
                                     List<MarkdownSection> sectionStack) {
@@ -136,7 +138,9 @@ public class MarkdownAnalyzer implements LanguageAnalyzer {
                 if (standaloneImage != null) {
                     addElementToCurrentContext(createImageElement(standaloneImage));
                 } else {
-                    addElementToCurrentContext(createParagraphElement(paragraph));
+                    MarkdownElement element = createParagraphElement(paragraph);
+                    withElementContext(element, () -> super.visit(paragraph));
+                    return;
                 }
             }
             super.visit(paragraph);
@@ -193,7 +197,17 @@ public class MarkdownAnalyzer implements LanguageAnalyzer {
         @Override
         public void visit(BlockQuote blockQuote) {
             if (hasFoundFirstHeading()) {
-                addElementToCurrentContext(createBlockQuoteElement(blockQuote));
+                blockQuoteDepth++;
+                try {
+                    if (blockQuoteDepth > 1) {
+                        super.visit(blockQuote);
+                        return;
+                    }
+                    MarkdownElement element = createBlockQuoteElement(blockQuote);
+                    withElementContext(element, () -> super.visit(blockQuote));
+                } finally {
+                    blockQuoteDepth--;
+                }
                 return;
             }
             super.visit(blockQuote);
@@ -224,11 +238,22 @@ public class MarkdownAnalyzer implements LanguageAnalyzer {
             }
             super.visit(listItem);
         }
+
+        @Override
+        public void visit(Link link) {
+            if (hasFoundFirstHeading()) {
+                String destination = link.getDestination();
+                if (isRelativeLinkDestination(destination)) {
+                    addElementToCurrentContext(createLinkElement(link, destination));
+                }
+            }
+            super.visit(link);
+        }
         
         private boolean hasFoundFirstHeading() {
             return !sectionStack.isEmpty();
         }
-        
+
         private MarkdownSection getCurrentSection() {
             return sectionStack.isEmpty() ? null : sectionStack.get(sectionStack.size() - 1);
         }
@@ -275,6 +300,28 @@ public class MarkdownAnalyzer implements LanguageAnalyzer {
             Map<String, Object> properties = new HashMap<>();
             properties.put("altText", extractText(image));
             return createElement("image", image, properties);
+        }
+
+        private MarkdownElement createLinkElement(Link link, String destination) {
+            Map<String, Object> properties = new HashMap<>();
+            properties.put("text", extractText(link));
+            properties.put("destination", destination);
+            return createElement("link", link, properties);
+        }
+
+        private boolean isRelativeLinkDestination(String destination) {
+            if (destination == null) {
+                return false;
+            }
+            String trimmed = destination.trim();
+            if (trimmed.isEmpty()) {
+                return false;
+            }
+            if (trimmed.startsWith("//")) {
+                return false;
+            }
+            int schemeIndex = trimmed.indexOf(':');
+            return schemeIndex <= 0;
         }
         
         private int computeLineSpan(Node node) {

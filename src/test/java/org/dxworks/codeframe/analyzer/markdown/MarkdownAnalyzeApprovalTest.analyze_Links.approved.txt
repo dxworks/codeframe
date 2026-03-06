@@ -1,0 +1,185 @@
+{
+  "filePath" : "src/test/resources/samples/markdown/Links.md",
+  "language" : "markdown",
+  "sections" : [ {
+    "heading" : "Link Coverage Sample",
+    "level" : 1,
+    "elements" : [ {
+      "type" : "paragraph",
+      "lines" : 2,
+      "children" : [ {
+        "type" : "link",
+        "lines" : 1,
+        "properties" : {
+          "destination" : "README.md",
+          "text" : "README"
+        }
+      } ]
+    } ],
+    "subsections" : [ {
+      "heading" : "Heading With Spec Link",
+      "level" : 2,
+      "elements" : [ {
+        "type" : "link",
+        "lines" : 1,
+        "properties" : {
+          "destination" : "docs/specs/MARKDOWN_SPEC.md",
+          "text" : "Spec"
+        }
+      } ]
+    }, {
+      "heading" : "Inline Links In Paragraph",
+      "level" : 2,
+      "elements" : [ {
+        "type" : "paragraph",
+        "lines" : 2,
+        "children" : [ {
+          "type" : "link",
+          "lines" : 1,
+          "properties" : {
+            "destination" : "./config/settings.yml",
+            "text" : "Config"
+          }
+        }, {
+          "type" : "link",
+          "lines" : 1,
+          "properties" : {
+            "destination" : "../PARENT.md",
+            "text" : "Parent"
+          }
+        } ]
+      } ]
+    }, {
+      "heading" : "List Links",
+      "level" : 2,
+      "elements" : [ {
+        "type" : "bullet_list",
+        "lines" : 3,
+        "children" : [ {
+          "type" : "list_item",
+          "lines" : 1,
+          "children" : [ {
+            "type" : "paragraph",
+            "lines" : 1,
+            "children" : [ {
+              "type" : "link",
+              "lines" : 1,
+              "properties" : {
+                "destination" : "guides/getting-started.md",
+                "text" : "Guide"
+              }
+            } ]
+          } ]
+        }, {
+          "type" : "list_item",
+          "lines" : 1,
+          "children" : [ {
+            "type" : "paragraph",
+            "lines" : 1
+          } ]
+        }, {
+          "type" : "list_item",
+          "lines" : 1,
+          "children" : [ {
+            "type" : "paragraph",
+            "lines" : 1,
+            "children" : [ {
+              "type" : "link",
+              "lines" : 1,
+              "properties" : {
+                "destination" : "docs/local.md",
+                "text" : "Local"
+              }
+            } ]
+          } ]
+        } ]
+      } ]
+    }, {
+      "heading" : "Block Quote Links",
+      "level" : 2,
+      "elements" : [ {
+        "type" : "block_quote",
+        "lines" : 9,
+        "children" : [ {
+          "type" : "paragraph",
+          "lines" : 2,
+          "children" : [ {
+            "type" : "link",
+            "lines" : 1,
+            "properties" : {
+              "destination" : "CHANGELOG.md",
+              "text" : "Changelog"
+            }
+          } ]
+        }, {
+          "type" : "bullet_list",
+          "lines" : 2,
+          "children" : [ {
+            "type" : "list_item",
+            "lines" : 1,
+            "children" : [ {
+              "type" : "paragraph",
+              "lines" : 1,
+              "children" : [ {
+                "type" : "link",
+                "lines" : 1,
+                "properties" : {
+                  "destination" : "docs/quoted-guide.md",
+                  "text" : "Quoted Guide"
+                }
+              } ]
+            } ]
+          }, {
+            "type" : "list_item",
+            "lines" : 1,
+            "children" : [ {
+              "type" : "paragraph",
+              "lines" : 1
+            } ]
+          } ]
+        }, {
+          "type" : "code_block",
+          "lines" : 3,
+          "properties" : {
+            "language" : "text"
+          }
+        } ]
+      } ]
+    }, {
+      "heading" : "Reference Links",
+      "level" : 2,
+      "elements" : [ {
+        "type" : "paragraph",
+        "lines" : 1,
+        "children" : [ {
+          "type" : "link",
+          "lines" : 1,
+          "properties" : {
+            "destination" : "docs/specs/MARKDOWN_SPEC.md",
+            "text" : "Spec"
+          }
+        } ]
+      } ]
+    }, {
+      "heading" : "Code Block (ignored)",
+      "level" : 2,
+      "elements" : [ {
+        "type" : "code_block",
+        "lines" : 3,
+        "properties" : {
+          "language" : "markdown"
+        }
+      } ]
+    }, {
+      "heading" : "Image (ignored destination)",
+      "level" : 2,
+      "elements" : [ {
+        "type" : "image",
+        "lines" : 1,
+        "properties" : {
+          "altText" : "Alt text"
+        }
+      } ]
+    } ]
+  } ]
+}
