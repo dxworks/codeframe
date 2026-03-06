@@ -121,7 +121,6 @@ CodeFrame supports optional configuration via a `codeframe-config.yml` file in t
 |--------|------|---------|-------------|
 | `maxFileLines` | integer | 20000 | Maximum number of lines a file can have. Files exceeding this limit are skipped during analysis. |
 | `hideSqlTableColumns` | boolean | false | When true, SQL analysis output omits table column definitions for CREATE/ALTER TABLE operations. |
-
 | `analyzers` | map | all enabled | Enable/disable specific language analyzers. See Analyzer Configuration below. |
 
 **Analyzer Configuration:**
@@ -195,6 +194,10 @@ See **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** for details on core components a
 ## Contributing
 
 See **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** for guidelines on adding new languages and analyzer conventions.
+
+## Documentation Map
+
+See **[docs/INDEX.md](docs/INDEX.md)** for the documentation source-of-truth map.
 
 ## Requirements
 
