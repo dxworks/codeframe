@@ -97,11 +97,6 @@ For chained invocations where receiver type is not syntactically known, `objectN
 - Anonymous/local class semantics are extraction-only and may be partial.
 - Interface constant fields (`public static final` constants declared in interfaces) are not extracted.
 
-### TODO (known gaps for next iteration)
-
-- [ ] Record component fields: record components (e.g. `Point(int x, int y)`) should appear as `final` fields but are currently missing from output.
-- [ ] Nested non-class types: nested interfaces, enums, and records declared inside a class body are not captured in the parent's `types` array (only nested classes are).
-
 ---
 
 ## 5. Test Baseline

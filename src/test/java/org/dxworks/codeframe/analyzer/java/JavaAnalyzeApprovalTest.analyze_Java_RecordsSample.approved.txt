@@ -7,6 +7,15 @@
     "name" : "Point",
     "visibility" : "public",
     "modifiers" : [ "public" ],
+    "fields" : [ {
+      "name" : "x",
+      "type" : "int",
+      "modifiers" : [ "final" ]
+    }, {
+      "name" : "y",
+      "type" : "int",
+      "modifiers" : [ "final" ]
+    } ],
     "methods" : [ {
       "name" : "distanceFromOrigin",
       "returnType" : "double",
@@ -39,6 +48,15 @@
   }, {
     "kind" : "record",
     "name" : "Person",
+    "fields" : [ {
+      "name" : "name",
+      "type" : "String",
+      "modifiers" : [ "final" ]
+    }, {
+      "name" : "age",
+      "type" : "int",
+      "modifiers" : [ "final" ]
+    } ],
     "methods" : [ {
       "name" : "isAdult",
       "returnType" : "boolean",

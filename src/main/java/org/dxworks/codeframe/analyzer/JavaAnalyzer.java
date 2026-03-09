@@ -63,10 +63,21 @@ public class JavaAnalyzer implements LanguageAnalyzer {
                 analyzeClassRecursively(sourceCode, classDecl, analysis);
             }
         }
+
+        Set<Integer> nestedNonClassTypeIdsInClasses = identifyNestedNodes(
+                allClasses,
+                "class_body",
+                "interface_declaration",
+                "enum_declaration",
+                "record_declaration"
+        );
         
         // Find all interface declarations
         List<TSNode> interfaceDecls = findAllDescendants(rootNode, "interface_declaration");
         for (TSNode interfaceDecl : interfaceDecls) {
+            if (isNestedInClass(interfaceDecl, nestedNonClassTypeIdsInClasses)) {
+                continue;
+            }
             TypeInfo typeInfo = analyzeInterface(sourceCode, interfaceDecl);
             analysis.types.add(typeInfo);
         }
@@ -74,6 +85,9 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         // Find all enum declarations
         List<TSNode> enumDecls = findAllDescendants(rootNode, "enum_declaration");
         for (TSNode enumDecl : enumDecls) {
+            if (isNestedInClass(enumDecl, nestedNonClassTypeIdsInClasses)) {
+                continue;
+            }
             TypeInfo enumInfo = analyzeEnum(sourceCode, enumDecl);
             analysis.types.add(enumInfo);
         }
@@ -81,11 +95,18 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         // Find all record declarations (Java 14+)
         List<TSNode> recordDecls = findAllDescendants(rootNode, "record_declaration");
         for (TSNode recordDecl : recordDecls) {
+            if (isNestedInClass(recordDecl, nestedNonClassTypeIdsInClasses)) {
+                continue;
+            }
             TypeInfo recordInfo = analyzeRecord(sourceCode, recordDecl);
             analysis.types.add(recordInfo);
         }
         
         return analysis;
+    }
+
+    private boolean isNestedInClass(TSNode declaration, Set<Integer> nestedTypeIds) {
+        return nestedTypeIds.contains(declaration.getStartByte());
     }
     
     
@@ -125,6 +146,21 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         List<TSNode> nestedClasses = findAllChildren(classBody, "class_declaration");
         for (TSNode nested : nestedClasses) {
             analyzeClassRecursivelyInto(source, nested, typeInfo.types);
+        }
+
+        List<TSNode> nestedInterfaces = findAllChildren(classBody, "interface_declaration");
+        for (TSNode nested : nestedInterfaces) {
+            typeInfo.types.add(analyzeInterface(source, nested));
+        }
+
+        List<TSNode> nestedEnums = findAllChildren(classBody, "enum_declaration");
+        for (TSNode nested : nestedEnums) {
+            typeInfo.types.add(analyzeEnum(source, nested));
+        }
+
+        List<TSNode> nestedRecords = findAllChildren(classBody, "record_declaration");
+        for (TSNode nested : nestedRecords) {
+            typeInfo.types.add(analyzeRecord(source, nested));
         }
     }
 
@@ -175,6 +211,60 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         return typeInfo;
     }
 
+    private void collectRecordComponentFields(String source, TSNode recordDecl, TypeInfo typeInfo, Map<String, String> fieldTypes) {
+        List<TSNode> components = findRecordComponentNodes(recordDecl);
+        for (TSNode comp : components) {
+            TSNode compType = findTypeNode(comp);
+            String compName = extractRecordComponentName(source, comp);
+            if (compName == null || compType == null) {
+                continue;
+            }
+
+            String typeName = extractTypeWithGenerics(source, compType, comp);
+            FieldInfo fi = new FieldInfo();
+            fi.name = compName;
+            fi.type = typeName;
+            // Components are implicitly final
+            fi.modifiers.add("final");
+            // No explicit visibility by default
+            typeInfo.fields.add(fi);
+            fieldTypes.put(compName, typeName);
+        }
+    }
+
+    private List<TSNode> findRecordComponentNodes(TSNode recordDecl) {
+        TSNode paramsNode = findFirstChild(recordDecl, "formal_parameters");
+        if (paramsNode == null) {
+            TSNode headerNode = findFirstChild(recordDecl, "record_header");
+            if (headerNode != null) {
+                paramsNode = findFirstChild(headerNode, "formal_parameters");
+            }
+        }
+
+        if (paramsNode != null) {
+            List<TSNode> components = findAllChildren(paramsNode, "record_component");
+            if (!components.isEmpty()) {
+                return components;
+            }
+
+            // Fallback for grammars that model record components as formal parameters.
+            List<TSNode> formalParams = findAllChildren(paramsNode, "formal_parameter");
+            if (!formalParams.isEmpty()) {
+                return formalParams;
+            }
+        }
+
+        return findAllDescendants(recordDecl, "record_component");
+    }
+
+    private String extractRecordComponentName(String source, TSNode componentNode) {
+        List<TSNode> identifiers = findAllDescendants(componentNode, "identifier");
+        if (identifiers.isEmpty()) {
+            return null;
+        }
+        return getNodeText(source, identifiers.get(identifiers.size() - 1));
+    }
+
     private TypeInfo analyzeRecord(String source, TSNode recordDecl) {
         TypeInfo typeInfo = new TypeInfo();
         typeInfo.kind = "record";
@@ -191,24 +281,8 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         extractInterfaces(source, recordDecl, "super_interfaces", typeInfo.implementsInterfaces);
 
         // Record components as fields
-        List<TSNode> components = findAllDescendants(recordDecl, "record_component");
         Map<String, String> fieldTypes = new HashMap<>();
-        for (TSNode comp : components) {
-            TSNode compType = comp.getNamedChild(0);
-            TSNode compName = findFirstChild(comp, "identifier");
-            if (compName != null && compType != null) {
-                String name = getNodeText(source, compName);
-                String typeName = extractTypeWithGenerics(source, compType, comp);
-                FieldInfo fi = new FieldInfo();
-                fi.name = name;
-                fi.type = typeName;
-                // Components are implicitly final
-                fi.modifiers.add("final");
-                // No explicit visibility by default
-                typeInfo.fields.add(fi);
-                fieldTypes.put(name, typeName);
-            }
-        }
+        collectRecordComponentFields(source, recordDecl, typeInfo, fieldTypes);
 
         // Analyze record body for additional members
         TSNode recordBody = findFirstChild(recordDecl, "class_body");

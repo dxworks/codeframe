@@ -81,6 +81,13 @@
       "name" : "circumference",
       "modifiers" : [ "get" ]
     } ]
+  }, {
+    "kind" : "class",
+    "name" : "DefaultWidget",
+    "modifiers" : [ "export", "default" ],
+    "methods" : [ {
+      "name" : "ping"
+    } ]
   } ],
   "methods" : [ {
     "name" : "getUserCity",
@@ -403,5 +410,9 @@
     "name" : "mathUtils",
     "type" : "Object",
     "modifiers" : [ "const", "export" ]
+  }, {
+    "name" : "fs",
+    "type" : "requireResult",
+    "modifiers" : [ "const" ]
   } ]
 }

@@ -377,3 +377,15 @@ export function initializeDefaults(options) {
     
     return result;
 }
+
+// 8. Class expression exported as default through identifier
+const DefaultWidget = class DefaultWidgetImpl {
+    ping() {
+        return 'pong';
+    }
+};
+
+export default DefaultWidget;
+
+// 9. CommonJS require should not be extracted as imports
+const fs = require('fs');

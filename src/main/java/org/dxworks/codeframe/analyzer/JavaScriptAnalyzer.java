@@ -118,23 +118,15 @@ public class JavaScriptAnalyzer implements LanguageAnalyzer {
             }
             if (declNode != null) {
                 String dtext = getNodeText(sourceCode, declNode);
-                if (dtext != null) {
-                    if (dtext.trim().startsWith("const ") || dtext.contains(" const ")) mi.modifiers.add("const");
-                    else if (dtext.trim().startsWith("let ") || dtext.contains(" let ")) mi.modifiers.add("let");
-                    else if (dtext.trim().startsWith("var ") || dtext.contains(" var ")) mi.modifiers.add("var");
-                }
+                addDeclarationKindModifier(dtext, mi.modifiers, true);
             }
 
             // Detect export via ancestors: variable_declarator -> lexical_declaration -> export_statement
             anc = declarator.getParent();
             while (anc != null && !anc.isNull()) {
                 String at = anc.getType();
-                if ("export_statement".equals(at) || "export_default_declaration".equals(at)) {
-                    mi.modifiers.add("export");
-                    String ptxt = getNodeText(sourceCode, anc);
-                    if (ptxt != null && ptxt.contains("export default")) {
-                        mi.modifiers.add("default");
-                    }
+                if (isExportNodeType(at)) {
+                    addExportModifiers(sourceCode, anc, mi.modifiers);
                     break;
                 }
                 anc = anc.getParent();
@@ -229,6 +221,88 @@ public class JavaScriptAnalyzer implements LanguageAnalyzer {
             analysis.methods.add(mi);
         }
     }
+
+    private Set<String> collectDefaultExportedIdentifiers(String source, TSNode rootNode) {
+        Set<String> names = new HashSet<>();
+        int childCount = rootNode.getNamedChildCount();
+        for (int i = 0; i < childCount; i++) {
+            TSNode child = rootNode.getNamedChild(i);
+            if (child == null || child.isNull()) continue;
+
+            String nodeType = child.getType();
+            if (!"export_statement".equals(nodeType) && !"export_default_declaration".equals(nodeType)) {
+                continue;
+            }
+
+            String text = getNodeText(source, child);
+            if (text == null) continue;
+            String trimmed = text.trim();
+            if (!trimmed.startsWith("export default ")) continue;
+
+            String target = trimmed.substring("export default ".length()).trim();
+            if (target.endsWith(";")) {
+                target = target.substring(0, target.length() - 1).trim();
+            }
+
+            if (isValidIdentifier(target)) {
+                names.add(target);
+            }
+        }
+        return names;
+    }
+
+    private boolean isExportNodeType(String nodeType) {
+        return "export_statement".equals(nodeType) || "export_default_declaration".equals(nodeType);
+    }
+
+    private void addExportModifiers(String source, TSNode node, List<String> modifiers) {
+        if (node == null || node.isNull()) return;
+        if (!isExportNodeType(node.getType())) return;
+
+        modifiers.add("export");
+        String text = getNodeText(source, node);
+        if (text != null && text.contains("export default")) {
+            modifiers.add("default");
+        }
+    }
+
+    private TSNode findWrappedDeclarationNode(TSNode node) {
+        if (node == null || node.isNull()) return null;
+
+        String nodeType = node.getType();
+        if ("lexical_declaration".equals(nodeType) || "variable_declaration".equals(nodeType)) {
+            return node;
+        }
+
+        if (!"export_statement".equals(nodeType)) {
+            return null;
+        }
+
+        for (int j = 0; j < node.getNamedChildCount(); j++) {
+            TSNode exportChild = node.getNamedChild(j);
+            if (exportChild == null) continue;
+
+            String exportChildType = exportChild.getType();
+            if ("lexical_declaration".equals(exportChildType) || "variable_declaration".equals(exportChildType)) {
+                return exportChild;
+            }
+        }
+
+        return null;
+    }
+
+    private void addDeclarationKindModifier(String declarationText, List<String> modifiers, boolean allowContains) {
+        if (declarationText == null) return;
+
+        String trimmed = declarationText.trim();
+        if (trimmed.startsWith("const ") || (allowContains && declarationText.contains(" const "))) {
+            modifiers.add("const");
+        } else if (trimmed.startsWith("let ") || (allowContains && declarationText.contains(" let "))) {
+            modifiers.add("let");
+        } else if (trimmed.startsWith("var ") || (allowContains && declarationText.contains(" var "))) {
+            modifiers.add("var");
+        }
+    }
     
     /**
      * Extract file-level constants and variables (const, let, var declarations at module level).
@@ -242,23 +316,7 @@ public class JavaScriptAnalyzer implements LanguageAnalyzer {
             if (child == null || child.isNull()) continue;
             
             String nodeType = child.getType();
-            TSNode declNode = null;
-            
-            // Handle export statements wrapping declarations
-            if ("export_statement".equals(nodeType)) {
-                for (int j = 0; j < child.getNamedChildCount(); j++) {
-                    TSNode exportChild = child.getNamedChild(j);
-                    if (exportChild != null) {
-                        String exportChildType = exportChild.getType();
-                        if ("lexical_declaration".equals(exportChildType) || "variable_declaration".equals(exportChildType)) {
-                            declNode = exportChild;
-                            break;
-                        }
-                    }
-                }
-            } else if ("lexical_declaration".equals(nodeType) || "variable_declaration".equals(nodeType)) {
-                declNode = child;
-            }
+            TSNode declNode = findWrappedDeclarationNode(child);
             
             if (declNode == null) continue;
             
@@ -286,18 +344,10 @@ public class JavaScriptAnalyzer implements LanguageAnalyzer {
                 
                 // Determine declaration kind (const, let, var)
                 String declText = getNodeText(source, declNode);
-                if (declText != null) {
-                    if (declText.trim().startsWith("const ")) {
-                        field.modifiers.add("const");
-                    } else if (declText.trim().startsWith("let ")) {
-                        field.modifiers.add("let");
-                    } else if (declText.trim().startsWith("var ")) {
-                        field.modifiers.add("var");
-                    }
-                }
+                addDeclarationKindModifier(declText, field.modifiers, false);
                 
                 // Check for export
-                if ("export_statement".equals(nodeType)) {
+                if (isExportNodeType(nodeType)) {
                     field.modifiers.add("export");
                 }
                 
@@ -340,31 +390,16 @@ public class JavaScriptAnalyzer implements LanguageAnalyzer {
      * Extract class expressions (const Point = class { ... }) as types.
      */
     private void extractClassExpressions(String source, TSNode rootNode, FileAnalysis analysis) {
+        Set<String> defaultExportedIdentifiers = collectDefaultExportedIdentifiers(source, rootNode);
+
         int childCount = rootNode.getNamedChildCount();
         for (int i = 0; i < childCount; i++) {
             TSNode child = rootNode.getNamedChild(i);
             if (child == null || child.isNull()) continue;
             
             String nodeType = child.getType();
-            TSNode declNode = null;
-            boolean isExported = false;
-            
-            // Handle export statements wrapping declarations
-            if ("export_statement".equals(nodeType)) {
-                isExported = true;
-                for (int j = 0; j < child.getNamedChildCount(); j++) {
-                    TSNode exportChild = child.getNamedChild(j);
-                    if (exportChild != null) {
-                        String exportChildType = exportChild.getType();
-                        if ("lexical_declaration".equals(exportChildType) || "variable_declaration".equals(exportChildType)) {
-                            declNode = exportChild;
-                            break;
-                        }
-                    }
-                }
-            } else if ("lexical_declaration".equals(nodeType) || "variable_declaration".equals(nodeType)) {
-                declNode = child;
-            }
+            TSNode declNode = findWrappedDeclarationNode(child);
+            boolean isExported = "export_statement".equals(nodeType);
             
             if (declNode == null) continue;
             
@@ -383,11 +418,16 @@ public class JavaScriptAnalyzer implements LanguageAnalyzer {
                 // Analyze the class expression
                 String varName = getNodeText(source, nameNode);
                 TypeInfo typeInfo = analyzeClassExpression(source, initializer, varName);
-                
+
                 if (isExported) {
-                    typeInfo.modifiers.add("export");
+                    addExportModifiers(source, child, typeInfo.modifiers);
                 }
-                
+
+                if (defaultExportedIdentifiers.contains(varName)) {
+                    typeInfo.modifiers.add("export");
+                    typeInfo.modifiers.add("default");
+                }
+
                 if (typeInfo.name != null && !typeInfo.name.isEmpty()) {
                     analysis.types.add(typeInfo);
                 }
@@ -628,12 +668,8 @@ public class JavaScriptAnalyzer implements LanguageAnalyzer {
         TSNode parent = classDecl.getParent();
         if (parent != null && !parent.isNull()) {
             String ptype = parent.getType();
-            if ("export_statement".equals(ptype) || "export_default_declaration".equals(ptype)) {
-                typeInfo.modifiers.add("export");
-                String parentText = getNodeText(source, parent);
-                if (parentText != null && parentText.contains("export default")) {
-                    typeInfo.modifiers.add("default");
-                }
+            if (isExportNodeType(ptype)) {
+                addExportModifiers(source, parent, typeInfo.modifiers);
             }
         }
         
@@ -725,12 +761,8 @@ public class JavaScriptAnalyzer implements LanguageAnalyzer {
         TSNode parent = funcDecl.getParent();
         if (parent != null && !parent.isNull()) {
             String ptype = parent.getType();
-            if ("export_statement".equals(ptype) || "export_default_declaration".equals(ptype)) {
-                methodInfo.modifiers.add("export");
-                String parentText = getNodeText(source, parent);
-                if (parentText != null && parentText.contains("export default")) {
-                    methodInfo.modifiers.add("default");
-                }
+            if (isExportNodeType(ptype)) {
+                addExportModifiers(source, parent, methodInfo.modifiers);
             }
         }
         
