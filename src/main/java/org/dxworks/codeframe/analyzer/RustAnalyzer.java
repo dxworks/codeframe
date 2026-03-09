@@ -307,6 +307,7 @@ public class RustAnalyzer implements LanguageAnalyzer {
         TypeInfo implType = new TypeInfo();
         implType.kind = "impl";
         implType.name = implTypeName;
+        extractAttributes(source, implNode, implType);
         
         addImplMethods(source, implNode, implType, implTypeName);
         

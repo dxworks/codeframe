@@ -20,6 +20,7 @@ impl Point {
     }
 }
 
+#[allow(dead_code)]
 impl Default for Point {
     fn default() -> Self {
         Point { x: 0.0, y: 0.0 }
@@ -27,6 +28,7 @@ impl Default for Point {
 }
 
 struct Rectangle {
+    #[allow(dead_code)]
     top_left: Point,
     bottom_right: Point,
 }
@@ -39,9 +41,11 @@ impl Rectangle {
         }
     }
 
+    #[inline]
     fn area(&self) -> f64 {
         let width = (self.bottom_right.x - self.top_left.x).abs();
         let height = (self.bottom_right.y - self.top_left.y).abs();
+        let _cache: std::collections::HashMap<i32, i32> = std::collections::HashMap::new();
         width * height
     }
 
