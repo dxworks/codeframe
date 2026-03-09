@@ -4,6 +4,7 @@ import org.dxworks.codeframe.model.*;
 import org.treesitter.TSNode;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +53,9 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         
         // Find all class declarations and identify nested ones
         List<TSNode> allClasses = findAllDescendants(rootNode, "class_declaration");
-        Set<Integer> nestedClassIds = identifyNestedNodes(allClasses, "class_body", "class_declaration");
+        Set<Integer> nestedClassIds = new HashSet<>(identifyNestedNodes(allClasses, "class_body", "class_declaration"));
+        nestedClassIds.addAll(findNestedClassIdsFromOwnerBodies(rootNode, "enum_declaration", "enum_body"));
+        nestedClassIds.addAll(findNestedClassIdsFromRecordBodies(rootNode));
         
         // Process only top-level classes recursively (they will add nested classes themselves)
         for (TSNode classDecl : allClasses) {
@@ -122,6 +125,25 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         List<TSNode> nestedClasses = findAllChildren(classBody, "class_declaration");
         for (TSNode nested : nestedClasses) {
             analyzeClassRecursivelyInto(source, nested, typeInfo.types);
+        }
+    }
+
+    private void collectOwnedFieldsFromBodyInto(String source, TSNode bodyNode, List<FieldInfo> targetList, Map<String, String> fieldTypes) {
+        if (bodyNode == null) return;
+
+        List<TSNode> fieldDecls = findOwnedDescendants(bodyNode, "field_declaration");
+        for (TSNode field : fieldDecls) {
+            String declaredType = null;
+            TSNode typeNode = findTypeNode(field);
+            if (typeNode != null) {
+                declaredType = extractTypeWithGenerics(source, typeNode, field);
+            }
+
+            List<TSNode> declarators = findAllDescendants(field, "variable_declarator");
+            for (TSNode declarator : declarators) {
+                FieldInfo fi = buildFieldInfo(source, field, declarator, declaredType, fieldTypes);
+                if (fi != null) targetList.add(fi);
+            }
         }
     }
     
@@ -196,13 +218,13 @@ public class JavaAnalyzer implements LanguageAnalyzer {
         }
         if (recordBody != null) {
             // Regular fields
-            collectFieldsFromBodyInto(source, recordBody, typeInfo.fields, fieldTypes);
+            collectOwnedFieldsFromBodyInto(source, recordBody, typeInfo.fields, fieldTypes);
 
             // Methods and constructors
-            collectMethodsAndConstructors(source, recordBody, typeInfo, fieldTypes);
+            collectOwnedMethodsAndConstructors(source, recordBody, typeInfo, fieldTypes);
 
             // Compact constructor (no parameter list)
-            List<TSNode> compactCtors = findAllDescendants(recordBody, "compact_constructor_declaration");
+            List<TSNode> compactCtors = findOwnedDescendants(recordBody, "compact_constructor_declaration");
             for (TSNode compact : compactCtors) {
                 MethodInfo mi = new MethodInfo();
                 extractModifiersAndVisibility(source, compact, mi.modifiers, mi);
@@ -241,10 +263,10 @@ public class JavaAnalyzer implements LanguageAnalyzer {
             Map<String, String> fieldTypes = new HashMap<>();
 
             // Fields declared in enum body
-            collectFieldsFromBodyInto(source, enumBody, typeInfo.fields, fieldTypes);
+            collectOwnedFieldsFromBodyInto(source, enumBody, typeInfo.fields, fieldTypes);
 
             // Methods and constructors
-            collectMethodsAndConstructors(source, enumBody, typeInfo, fieldTypes);
+            collectOwnedMethodsAndConstructors(source, enumBody, typeInfo, fieldTypes);
         }
 
         return typeInfo;
@@ -481,23 +503,14 @@ public class JavaAnalyzer implements LanguageAnalyzer {
 
     private List<FieldInfo> collectFieldsFromBody(String source, TSNode classBody, Map<String, String> fieldTypes) {
         List<FieldInfo> fields = new ArrayList<>();
-        collectFieldsFromBodyInto(source, classBody, fields, fieldTypes, false);
+        collectFieldsFromBodyInto(source, classBody, fields, fieldTypes);
         return fields;
     }
     
-    // Overload for enum/record bodies that need to search nested declarations
     private void collectFieldsFromBodyInto(String source, TSNode classBody, List<FieldInfo> targetList, Map<String, String> fieldTypes) {
-        collectFieldsFromBodyInto(source, classBody, targetList, fieldTypes, true);
-    }
-    
-    private void collectFieldsFromBodyInto(String source, TSNode classBody, List<FieldInfo> targetList, Map<String, String> fieldTypes, boolean includeNested) {
         if (classBody == null) return;
-        
-        // includeNested=false: use findAllChildren (direct children only, avoids nested class fields)
-        // includeNested=true: use findAllDescendants (all descendants, needed for enum/record bodies)
-        List<TSNode> fieldDecls = includeNested 
-            ? findAllDescendants(classBody, "field_declaration")
-            : findAllChildren(classBody, "field_declaration");
+
+        List<TSNode> fieldDecls = findAllChildren(classBody, "field_declaration");
         for (TSNode field : fieldDecls) {
             String declaredType = null;
             TSNode typeNode = findTypeNode(field);
@@ -644,27 +657,129 @@ public class JavaAnalyzer implements LanguageAnalyzer {
     // Helper: Extract interfaces/extends into target list
     private void extractInterfaces(String source, TSNode node, String childNodeType, List<String> targetList) {
         TSNode interfacesNode = findFirstChild(node, childNodeType);
-        if (interfacesNode != null) {
-            List<TSNode> typeIdentifiers = findAllDescendants(interfacesNode, "type_identifier");
-            for (TSNode typeId : typeIdentifiers) {
-                targetList.add(getNodeText(source, typeId));
+        if (interfacesNode == null) {
+            return;
+        }
+
+        TSNode candidatesRoot = findFirstChild(interfacesNode, "type_list");
+        if (candidatesRoot == null) {
+            candidatesRoot = interfacesNode;
+        }
+
+        int count = candidatesRoot.getNamedChildCount();
+        for (int i = 0; i < count; i++) {
+            TSNode candidate = candidatesRoot.getNamedChild(i);
+            String typeName = extractSuperInterfaceName(source, candidate);
+            if (typeName != null) {
+                targetList.add(typeName);
             }
         }
     }
+
+    private String extractSuperInterfaceName(String source, TSNode candidate) {
+        if (candidate == null) return null;
+
+        String type = candidate.getType();
+        if (isTypeNameNode(type)) {
+            return getNodeText(source, candidate);
+        }
+
+        TSNode resolved = firstNonNull(
+                findFirstChild(candidate, NT_TYPE_IDENTIFIER),
+                findFirstChild(candidate, NT_SCOPED_TYPE_IDENTIFIER),
+                findFirstDescendant(candidate, NT_TYPE_IDENTIFIER),
+                findFirstDescendant(candidate, NT_SCOPED_TYPE_IDENTIFIER),
+                findFirstDescendant(candidate, NT_SCOPED_IDENTIFIER)
+        );
+        return resolved == null ? null : getNodeText(source, resolved);
+    }
+
+    private boolean isTypeNameNode(String nodeType) {
+        return NT_TYPE_IDENTIFIER.equals(nodeType)
+                || NT_SCOPED_TYPE_IDENTIFIER.equals(nodeType)
+                || NT_SCOPED_IDENTIFIER.equals(nodeType);
+    }
+
+    private TSNode firstNonNull(TSNode... nodes) {
+        for (TSNode node : nodes) {
+            if (node != null) {
+                return node;
+            }
+        }
+        return null;
+    }
     
-    // Helper: Collect methods and constructors from a body node
-    private void collectMethodsAndConstructors(String source, TSNode bodyNode, TypeInfo typeInfo, Map<String, String> fieldTypes) {
-        List<TSNode> methods = findAllDescendants(bodyNode, "method_declaration");
+    // Helper: Collect methods and constructors from a body node, excluding members owned by nested types.
+    private void collectOwnedMethodsAndConstructors(String source, TSNode bodyNode, TypeInfo typeInfo, Map<String, String> fieldTypes) {
+        List<TSNode> methods = findOwnedDescendants(bodyNode, "method_declaration");
         for (TSNode method : methods) {
             MethodInfo methodInfo = analyzeMethod(source, method, typeInfo.name, fieldTypes);
             typeInfo.methods.add(methodInfo);
         }
-        
-        List<TSNode> constructors = findAllDescendants(bodyNode, "constructor_declaration");
+
+        List<TSNode> constructors = findOwnedDescendants(bodyNode, "constructor_declaration");
         for (TSNode constructor : constructors) {
             MethodInfo ctorInfo = analyzeConstructor(source, constructor, typeInfo.name, fieldTypes);
             typeInfo.methods.add(ctorInfo);
         }
+    }
+
+    private List<TSNode> findOwnedDescendants(TSNode ownerBody, String descendantType) {
+        List<TSNode> descendants = findAllDescendants(ownerBody, descendantType);
+        List<TSNode> nestedTypes = new ArrayList<>();
+        nestedTypes.addAll(findAllDescendants(ownerBody, "class_declaration"));
+        nestedTypes.addAll(findAllDescendants(ownerBody, "enum_declaration"));
+        nestedTypes.addAll(findAllDescendants(ownerBody, "record_declaration"));
+
+        List<TSNode> owned = new ArrayList<>();
+        for (TSNode node : descendants) {
+            if (!isInsideAny(node, nestedTypes)) {
+                owned.add(node);
+            }
+        }
+        return owned;
+    }
+
+    private Set<Integer> findNestedClassIdsFromOwnerBodies(TSNode rootNode, String ownerType, String bodyType) {
+        Set<Integer> nestedIds = new HashSet<>();
+        List<TSNode> owners = findAllDescendants(rootNode, ownerType);
+        for (TSNode owner : owners) {
+            TSNode body = findFirstChild(owner, bodyType);
+            if (body == null) continue;
+            for (TSNode nested : findAllDescendants(body, "class_declaration")) {
+                nestedIds.add(nested.getStartByte());
+            }
+        }
+        return nestedIds;
+    }
+
+    private Set<Integer> findNestedClassIdsFromRecordBodies(TSNode rootNode) {
+        Set<Integer> nestedIds = new HashSet<>();
+        List<TSNode> records = findAllDescendants(rootNode, "record_declaration");
+        for (TSNode record : records) {
+            TSNode body = findFirstChild(record, "class_body");
+            if (body == null) {
+                body = findFirstChild(record, "record_body");
+            }
+            if (body == null) continue;
+            for (TSNode nested : findAllDescendants(body, "class_declaration")) {
+                nestedIds.add(nested.getStartByte());
+            }
+        }
+        return nestedIds;
+    }
+
+    private boolean isInsideAny(TSNode node, List<TSNode> containers) {
+        int start = node.getStartByte();
+        int end = node.getEndByte();
+        for (TSNode container : containers) {
+            int cStart = container.getStartByte();
+            int cEnd = container.getEndByte();
+            if (start > cStart && end < cEnd) {
+                return true;
+            }
+        }
+        return false;
     }
     
     // Helper: Find type node in common locations

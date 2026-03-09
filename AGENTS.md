@@ -21,9 +21,7 @@ This file is the primary guide for Codex and contributors working in this reposi
 - General behavior: `README.md`
 - Analyzer extraction conventions: `docs/CONTRIBUTING.md`
 - Language architecture: `docs/ARCHITECTURE.md`
-- SQL contract: `docs/specs/SQL_SPEC.md`
-- COBOL contract: `docs/specs/COBOL_SPEC.md`
-- Markdown contract: `docs/specs/MARKDOWN_SPEC.md`
+- Language output contracts: `docs/specs/*_SPEC.md`
 
 ## Do/Don't for Repo Automation
 
