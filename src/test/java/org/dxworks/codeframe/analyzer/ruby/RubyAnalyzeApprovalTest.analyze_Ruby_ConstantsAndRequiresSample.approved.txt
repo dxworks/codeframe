@@ -114,6 +114,14 @@
       "name" : "MAX_REDIRECTS",
       "visibility" : "public",
       "modifiers" : [ "const" ]
+    } ],
+    "methods" : [ {
+      "name" : "get",
+      "visibility" : "public",
+      "modifiers" : [ "static" ],
+      "parameters" : [ {
+        "name" : "url"
+      } ]
     } ]
   } ],
   "fields" : [ {
@@ -143,6 +151,11 @@
     "methodName" : "puts",
     "callCount" : 1,
     "parameterCount" : 1
+  }, {
+    "methodName" : "require",
+    "objectName" : "Bundler",
+    "callCount" : 1,
+    "parameterCount" : 1
   } ],
-  "imports" : [ "require 'bundler/setup'", "Bundler.require(:default)", "require 'json'", "require 'net/http'", "require_relative '../lib/helper'", "require_relative 'config'" ]
+  "imports" : [ "require 'bundler/setup'", "require 'json'", "require 'net/http'", "require_relative '../lib/helper'", "require_relative 'config'" ]
 }

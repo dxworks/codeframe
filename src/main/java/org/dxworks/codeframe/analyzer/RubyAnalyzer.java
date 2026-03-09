@@ -133,12 +133,15 @@ public class RubyAnalyzer implements LanguageAnalyzer {
      * @param skipRequires if true, skip require/require_relative calls (they're captured in imports)
      */
     private void extractCallsFromNode(String source, TSNode node, List<MethodCall> calls, boolean skipRequires) {
-        for (TSNode callExpr : findAllDescendants(node, "call")) {
+        List<TSNode> callExprs = new ArrayList<>();
+        callExprs.addAll(findAllDescendants(node, "call"));
+        callExprs.addAll(findAllDescendants(node, "method_call"));
+        for (TSNode callExpr : callExprs) {
             String methodName = extractMethodName(source, callExpr);
             if (methodName == null || methodName.isEmpty()) continue;
             
             // Skip require/require_relative if requested
-            if (skipRequires && ("require".equals(methodName) || "require_relative".equals(methodName))) {
+            if (skipRequires && isBareRequireCall(source, callExpr, methodName)) {
                 continue;
             }
             
@@ -177,7 +180,7 @@ public class RubyAnalyzer implements LanguageAnalyzer {
     }
     
     private void extractRequires(String source, TSNode rootNode, FileAnalysis analysis) {
-        // Extract require statements
+        // Extract bare require/require_relative statements (exclude receiver calls like Bundler.require)
         List<TSNode> calls = findAllDescendants(rootNode, "call");
         for (TSNode call : calls) {
             if (call == null || call.isNull()) continue;
@@ -185,11 +188,21 @@ public class RubyAnalyzer implements LanguageAnalyzer {
             TSNode method = findFirstChild(call, "identifier");
             if (method != null && !method.isNull()) {
                 String methodName = getNodeText(source, method);
-                if ("require".equals(methodName) || "require_relative".equals(methodName)) {
+                if (isBareRequireCall(source, call, methodName)) {
                     analysis.imports.add(getNodeText(source, call).trim());
                 }
             }
         }
+    }
+
+    private boolean isBareRequireCall(String source, TSNode callNode, String methodName) {
+        if (callNode == null || callNode.isNull() || methodName == null) return false;
+        String callText = getNodeText(source, callNode).trim();
+        boolean bareRequire = "require".equals(methodName)
+                && (callText.startsWith("require ") || callText.startsWith("require(") || "require".equals(callText));
+        boolean bareRequireRelative = "require_relative".equals(methodName)
+                && (callText.startsWith("require_relative ") || callText.startsWith("require_relative(") || "require_relative".equals(callText));
+        return bareRequire || bareRequireRelative;
     }
     
     // Helpers for call analysis (structural refactor, no behavior change)
@@ -568,16 +581,8 @@ public class RubyAnalyzer implements LanguageAnalyzer {
 
             // Extract Rails DSL annotations (associations, validations, callbacks, scopes)
             extractRailsDslAnnotations(source, bodyStatement, typeInfo);
-            // Analyze methods within this module body
-            List<TSNode> methods = findAllChildren(bodyStatement, "method");
-            for (TSNode method : methods) {
-                if (method == null || method.isNull()) continue;
-                
-                MethodInfo methodInfo = analyzeMethod(source, method, typeInfo.name);
-                if (methodInfo.name != null && !methodInfo.name.isEmpty()) {
-                    typeInfo.methods.add(methodInfo);
-                }
-            }
+            // Analyze methods with visibility tracking (same behavior as classes)
+            analyzeMethodsWithVisibility(source, bodyStatement, typeInfo);
 
             // Apply visibility symbol lists in modules as well
             applyVisibilitySymbolLists(source, bodyStatement, typeInfo);
