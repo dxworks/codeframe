@@ -109,10 +109,14 @@ public class PythonAnalyzer implements LanguageAnalyzer {
     }
     
     /**
-     * Extract type aliases (both old-style TypeAlias annotation and PEP 695 style).
+     * Extract type aliases.
+     *
+     * Supports old-style `TypeAlias` assignments. Also attempts PEP 695 `type`
+     * statements when the active tree-sitter-python grammar exposes
+     * `type_alias_statement` nodes.
      */
     private void extractTypeAliases(String source, TSNode rootNode, FileAnalysis analysis) {
-        // PEP 695 style: type Name = SomeType
+        // PEP 695 style (parser-grammar dependent): type Name = SomeType
         for (TSNode typeAliasStmt : findAllDescendants(rootNode, "type_alias_statement")) {
             TypeInfo typeAlias = analyzeTypeAliasStatement(source, typeAliasStmt);
             if (typeAlias != null && typeAlias.name != null) {
@@ -182,7 +186,8 @@ public class PythonAnalyzer implements LanguageAnalyzer {
     }
     
     /**
-     * Analyze PEP 695 type alias statement: type Name = SomeType
+     * Analyze a PEP 695 type alias statement: type Name = SomeType.
+     * Called only when such nodes are produced by the parser grammar.
      */
     private TypeInfo analyzeTypeAliasStatement(String source, TSNode typeAliasStmt) {
         TypeInfo typeInfo = new TypeInfo();
@@ -630,7 +635,7 @@ public class PythonAnalyzer implements LanguageAnalyzer {
         // Check for special decorators that affect modifiers
         for (String annotation : methodInfo.annotations) {
             if (annotation.contains("@staticmethod")) {
-                methodInfo.modifiers.add("static");
+                methodInfo.modifiers.add("staticmethod");
             } else if (annotation.contains("@classmethod")) {
                 methodInfo.modifiers.add("classmethod");
             } else if (annotation.contains("@property")) {

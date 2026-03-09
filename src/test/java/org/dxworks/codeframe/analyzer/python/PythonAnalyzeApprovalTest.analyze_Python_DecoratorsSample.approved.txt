@@ -61,7 +61,7 @@
       "name" : "add",
       "returnType" : "float",
       "visibility" : "public",
-      "modifiers" : [ "static" ],
+      "modifiers" : [ "staticmethod" ],
       "annotations" : [ "@staticmethod" ],
       "parameters" : [ {
         "name" : "a",
@@ -74,7 +74,7 @@
       "name" : "subtract",
       "returnType" : "float",
       "visibility" : "public",
-      "modifiers" : [ "static" ],
+      "modifiers" : [ "staticmethod" ],
       "annotations" : [ "@staticmethod" ],
       "parameters" : [ {
         "name" : "a",
@@ -176,7 +176,7 @@
       "name" : "power",
       "returnType" : "float",
       "visibility" : "public",
-      "modifiers" : [ "static" ],
+      "modifiers" : [ "staticmethod" ],
       "annotations" : [ "@staticmethod", "@log_calls" ],
       "parameters" : [ {
         "name" : "base",
