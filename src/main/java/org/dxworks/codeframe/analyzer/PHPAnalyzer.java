@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
 
@@ -46,65 +47,32 @@ public class PHPAnalyzer implements LanguageAnalyzer {
             }
             
             // Find all interface declarations
-            List<TSNode> interfaceDecls = findAllDescendants(rootNode, "interface_declaration");
-            for (TSNode interfaceDecl : interfaceDecls) {
-                try {
-                    if (interfaceDecl == null || interfaceDecl.isNull()) continue;
-                    
-                    TypeInfo typeInfo = analyzeInterface(sourceCode, interfaceDecl);
-                    if (typeInfo.name != null && !typeInfo.name.isEmpty()) {
-                        analysis.types.add(typeInfo);
-                    }
-                } catch (Exception e) {
-                    System.err.println("Warning: Failed to analyze interface in " + filePath + ": " + e.getMessage());
-                }
-            }
+            processDescendants(rootNode, "interface_declaration", "interface", filePath, interfaceDecl -> {
+                TypeInfo typeInfo = analyzeInterface(sourceCode, interfaceDecl);
+                addIfNamedType(analysis, typeInfo);
+            });
             
             // Find all trait declarations
-            List<TSNode> traitDecls = findAllDescendants(rootNode, "trait_declaration");
-            for (TSNode traitDecl : traitDecls) {
-                try {
-                    if (traitDecl == null || traitDecl.isNull()) continue;
-                    
-                    TypeInfo typeInfo = analyzeTrait(sourceCode, traitDecl);
-                    if (typeInfo.name != null && !typeInfo.name.isEmpty()) {
-                        analysis.types.add(typeInfo);
-                    }
-                } catch (Exception e) {
-                    System.err.println("Warning: Failed to analyze trait in " + filePath + ": " + e.getMessage());
-                }
-            }
+            processDescendants(rootNode, "trait_declaration", "trait", filePath, traitDecl -> {
+                TypeInfo typeInfo = analyzeTrait(sourceCode, traitDecl);
+                addIfNamedType(analysis, typeInfo);
+            });
             
             // Find all enum declarations (PHP 8.1+)
-            List<TSNode> enumDecls = findAllDescendants(rootNode, "enum_declaration");
-            for (TSNode enumDecl : enumDecls) {
-                try {
-                    if (enumDecl == null || enumDecl.isNull()) continue;
-                    
-                    TypeInfo typeInfo = analyzeEnum(sourceCode, enumDecl);
-                    if (typeInfo.name != null && !typeInfo.name.isEmpty()) {
-                        analysis.types.add(typeInfo);
-                    }
-                } catch (Exception e) {
-                    System.err.println("Warning: Failed to analyze enum in " + filePath + ": " + e.getMessage());
-                }
-            }
+            processDescendants(rootNode, "enum_declaration", "enum", filePath, enumDecl -> {
+                TypeInfo typeInfo = analyzeEnum(sourceCode, enumDecl);
+                addIfNamedType(analysis, typeInfo);
+            });
             
             // Find standalone functions
-            List<TSNode> functionDecls = findAllDescendants(rootNode, "function_definition");
-            for (TSNode funcDecl : functionDecls) {
-                try {
-                    if (funcDecl == null || funcDecl.isNull()) continue;
-                    if (!isInsideClass(funcDecl)) {
-                        MethodInfo methodInfo = analyzeFunction(sourceCode, funcDecl);
-                        if (methodInfo.name != null && !methodInfo.name.isEmpty()) {
-                            analysis.methods.add(methodInfo);
-                        }
+            processDescendants(rootNode, "function_definition", "function", filePath, funcDecl -> {
+                if (!isInsideClass(funcDecl)) {
+                    MethodInfo methodInfo = analyzeFunction(sourceCode, funcDecl);
+                    if (methodInfo.name != null && !methodInfo.name.isEmpty()) {
+                        analysis.methods.add(methodInfo);
                     }
-                } catch (Exception e) {
-                    System.err.println("Warning: Failed to analyze function in " + filePath + ": " + e.getMessage());
                 }
-            }
+            });
             
             // Extract file-level constants and variables
             extractFileLevelFields(sourceCode, rootNode, analysis);
@@ -117,6 +85,25 @@ public class PHPAnalyzer implements LanguageAnalyzer {
         }
         
         return analysis;
+    }
+
+    private void addIfNamedType(FileAnalysis analysis, TypeInfo typeInfo) {
+        if (typeInfo != null && typeInfo.name != null && !typeInfo.name.isEmpty()) {
+            analysis.types.add(typeInfo);
+        }
+    }
+
+    private void processDescendants(TSNode rootNode, String nodeType, String label, String filePath,
+                                    Consumer<TSNode> processor) {
+        List<TSNode> nodes = findAllDescendants(rootNode, nodeType);
+        for (TSNode node : nodes) {
+            try {
+                if (node == null || node.isNull()) continue;
+                processor.accept(node);
+            } catch (Exception e) {
+                System.err.println("Warning: Failed to analyze " + label + " in " + filePath + ": " + e.getMessage());
+            }
+        }
     }
     
     /**
@@ -439,7 +426,8 @@ public class PHPAnalyzer implements LanguageAnalyzer {
             TSNode parent = node.getParent();
             while (!isNullNode(parent)) {
                 String type = parent.getType();
-                if ("class_declaration".equals(type) || "trait_declaration".equals(type) || "enum_declaration".equals(type)) {
+                if ("class_declaration".equals(type) || "interface_declaration".equals(type)
+                        || "trait_declaration".equals(type) || "enum_declaration".equals(type)) {
                     return true;
                 }
                 parent = parent.getParent();
@@ -488,6 +476,7 @@ public class PHPAnalyzer implements LanguageAnalyzer {
         typeInfo.kind = "class";
         
         extractModifiersAndVisibility(source, classDecl, typeInfo);
+        extractAttributes(source, classDecl, typeInfo.annotations);
         typeInfo.name = extractName(source, classDecl);
         typeInfo.extendsType = extractExtendsType(source, classDecl);
         extractImplementedInterfaces(source, classDecl, typeInfo);
@@ -511,6 +500,7 @@ public class PHPAnalyzer implements LanguageAnalyzer {
         typeInfo.kind = "interface";
         
         extractModifiersAndVisibility(source, interfaceDecl, typeInfo);
+        extractAttributes(source, interfaceDecl, typeInfo.annotations);
         typeInfo.name = extractName(source, interfaceDecl);
         
         // Interfaces can extend other interfaces (stored in implementsInterfaces for simplicity)
@@ -523,8 +513,7 @@ public class PHPAnalyzer implements LanguageAnalyzer {
             MethodInfo mi = new MethodInfo();
             mi.name = extractName(source, m);
             mi.returnType = extractReturnType(source, findTypeNode(m));
-            mi.visibility = "public";
-            mi.modifiers.add("abstract");
+            extractModifiersAndVisibility(source, m, mi);
             
             TSNode fp = findFirstChild(m, "formal_parameters");
             if (!isNullNode(fp)) {
@@ -558,6 +547,7 @@ public class PHPAnalyzer implements LanguageAnalyzer {
     private TypeInfo analyzeTrait(String source, TSNode traitDecl) {
         TypeInfo typeInfo = new TypeInfo();
         typeInfo.kind = "trait";
+        extractAttributes(source, traitDecl, typeInfo.annotations);
         typeInfo.name = extractName(source, traitDecl);
         
         TSNode traitBody = findFirstChild(traitDecl, "declaration_list");
@@ -585,6 +575,7 @@ public class PHPAnalyzer implements LanguageAnalyzer {
     private TypeInfo analyzeEnum(String source, TSNode enumDecl) {
         TypeInfo typeInfo = new TypeInfo();
         typeInfo.kind = "enum";
+        extractAttributes(source, enumDecl, typeInfo.annotations);
         typeInfo.name = extractName(source, enumDecl);
         typeInfo.extendsType = extractEnumBackingType(source, enumDecl);
         extractImplementedInterfaces(source, enumDecl, typeInfo);
@@ -795,31 +786,32 @@ public class PHPAnalyzer implements LanguageAnalyzer {
             String kind = child.getType();
 
             if ("simple_parameter".equals(kind) || "property_promotion_parameter".equals(kind)) {
-                TSNode varNameNode = findFirstChild(child, "variable_name");
-                if (varNameNode == null || varNameNode.isNull()) continue;
-                
-                String name = stripPhpVarPrefix(getNodeText(source, varNameNode));
-                if (!isValidIdentifier(name)) continue;
-                
-                TSNode typeNode = findTypeNode(child);
-                String paramType = (typeNode != null && !typeNode.isNull()) ? getNodeText(source, typeNode) : null;
-                methodInfo.parameters.add(new Parameter(name, paramType));
+                addParameter(source, child, methodInfo, false);
             } else if ("variadic_parameter".equals(kind)) {
                 // Handle variadic parameters: ...$param or Type ...$param
-                TSNode varNameNode = findFirstChild(child, "variable_name");
-                if (varNameNode == null || varNameNode.isNull()) continue;
-                
-                String baseName = stripPhpVarPrefix(getNodeText(source, varNameNode));
-                if (!isValidIdentifier(baseName)) continue;
-                
-                // Prefix with ... to indicate variadic
-                String name = "..." + baseName;
-                
-                TSNode typeNode = findTypeNode(child);
-                String paramType = (typeNode != null && !typeNode.isNull()) ? getNodeText(source, typeNode) : null;
-                methodInfo.parameters.add(new Parameter(name, paramType));
+                addParameter(source, child, methodInfo, true);
             }
         }
+    }
+
+    private void addParameter(String source, TSNode paramNode, MethodInfo methodInfo, boolean variadic) {
+        String baseName = extractParameterBaseName(source, paramNode);
+        if (!isValidIdentifier(baseName)) return;
+
+        String name = variadic ? "..." + baseName : baseName;
+        String paramType = extractParameterType(source, paramNode);
+        methodInfo.parameters.add(new Parameter(name, paramType));
+    }
+
+    private String extractParameterBaseName(String source, TSNode paramNode) {
+        TSNode varNameNode = findFirstChild(paramNode, "variable_name");
+        if (isNullNode(varNameNode)) return null;
+        return stripPhpVarPrefix(getNodeText(source, varNameNode));
+    }
+
+    private String extractParameterType(String source, TSNode paramNode) {
+        TSNode typeNode = findTypeNode(paramNode);
+        return (!isNullNode(typeNode)) ? getNodeText(source, typeNode) : null;
     }
     
     private void analyzeMethodBody(String source, TSNode bodyNode, MethodInfo methodInfo) {
@@ -849,48 +841,26 @@ public class PHPAnalyzer implements LanguageAnalyzer {
                 }
             }
         }
-        
-        // Process function calls: func()
-        for (TSNode callExpr : findAllDescendants(bodyNode, "function_call_expression")) {
-            if (callExpr == null || callExpr.isNull()) continue;
-            TSNode functionNode = callExpr.getNamedChild(0);
-            if (functionNode != null && "name".equals(functionNode.getType())) {
-                String methodName = getNodeText(source, functionNode);
-                if (isValidIdentifier(methodName)) {
-                    int paramCount = countArguments(callExpr);
-                    collectMethodCall(methodInfo, methodName, null, null, paramCount);
-                }
-            }
-        }
-        
-        // Process member calls: $obj->method()
-        for (TSNode memberCall : findAllDescendants(bodyNode, "member_call_expression")) {
-            if (memberCall == null || memberCall.isNull()) continue;
-            
-            String[] callInfo = extractMemberCallInfo(source, memberCall);
-            String methodName = callInfo[0];
-            String objectName = callInfo[1];
-            String objectType = (objectName != null && !"this".equals(objectName)) ? localTypes.get(objectName) : null;
-            
-            if (isValidIdentifier(methodName)) {
-                int paramCount = countArguments(memberCall);
-                collectMethodCall(methodInfo, methodName, objectType, objectName, paramCount);
-            }
-        }
-        
-        // Process scoped calls: Class::method()
-        for (TSNode scopedCall : findAllDescendants(bodyNode, "scoped_call_expression")) {
-            if (scopedCall == null || scopedCall.isNull()) continue;
-            
-            String[] callInfo = extractScopedCallInfo(source, scopedCall);
-            if (isValidIdentifier(callInfo[0])) {
-                int paramCount = countArguments(scopedCall);
-                collectMethodCall(methodInfo, callInfo[0], callInfo[1], null, paramCount);
-            }
-        }
+
+        // Reuse shared extraction logic and then enrich objectType from local inference
+        extractCallsFromNode(source, bodyNode, methodInfo.methodCalls);
+        enrichObjectTypesFromLocals(methodInfo.methodCalls, localTypes);
         
         // Sort method calls alphabetically
         methodInfo.methodCalls.sort(METHOD_CALL_COMPARATOR);
+    }
+
+    private void enrichObjectTypesFromLocals(List<MethodCall> calls, Map<String, String> localTypes) {
+        for (MethodCall call : calls) {
+            if (call == null) continue;
+            if (call.objectType != null) continue;
+            if (call.objectName == null || "this".equals(call.objectName)) continue;
+
+            String inferredType = localTypes.get(call.objectName);
+            if (inferredType != null && !inferredType.isBlank()) {
+                call.objectType = inferredType;
+            }
+        }
     }
     
     private List<FieldInfo> collectFieldsFromBody(String source, TSNode classBody) {
@@ -950,43 +920,44 @@ public class PHPAnalyzer implements LanguageAnalyzer {
             TSNode child = node.getNamedChild(i);
             if (child == null || child.isNull()) continue;
             String type = child.getType();
-            
-            if ("visibility_modifier".equals(type) || "static_modifier".equals(type) || 
-                "final_modifier".equals(type) || "abstract_modifier".equals(type)) {
-                String modText = getNodeText(source, child);
-                
-                if (target instanceof TypeInfo) {
-                    TypeInfo typeInfo = (TypeInfo) target;
-                    typeInfo.modifiers.add(modText);
-                    // Set visibility for types
-                    if ("public".equals(modText) || "private".equals(modText) || "protected".equals(modText)) {
-                        typeInfo.visibility = modText;
-                    }
-                } else if (target instanceof MethodInfo) {
-                    MethodInfo methodInfo = (MethodInfo) target;
-                    methodInfo.modifiers.add(modText);
-                    // Set visibility for methods
-                    if ("public".equals(modText) || "private".equals(modText) || "protected".equals(modText)) {
-                        methodInfo.visibility = modText;
-                    }
-                } else if (target instanceof FieldInfo) {
-                    FieldInfo fieldInfo = (FieldInfo) target;
-                    fieldInfo.modifiers.add(modText);
-                    // Set visibility for fields
-                    if ("public".equals(modText) || "private".equals(modText) || "protected".equals(modText)) {
-                        fieldInfo.visibility = modText;
-                    }
-                }
-            }
+
+            if (!isModifierNodeType(type)) continue;
+
+            String modText = getNodeText(source, child);
+            applyModifierAndVisibility(target, modText);
         }
         
-        // PHP default visibility is public for classes, public for methods/properties if not specified
-        if (target instanceof TypeInfo && ((TypeInfo) target).visibility == null) {
-            ((TypeInfo) target).visibility = "public";
-        } else if (target instanceof MethodInfo && ((MethodInfo) target).visibility == null) {
-            ((MethodInfo) target).visibility = "public";
-        } else if (target instanceof FieldInfo && ((FieldInfo) target).visibility == null) {
-            ((FieldInfo) target).visibility = "public";
+    }
+
+    private boolean isModifierNodeType(String nodeType) {
+        return "visibility_modifier".equals(nodeType)
+                || "static_modifier".equals(nodeType)
+                || "final_modifier".equals(nodeType)
+                || "abstract_modifier".equals(nodeType);
+    }
+
+    private void applyModifierAndVisibility(Object target, String modifier) {
+        if (target instanceof TypeInfo typeInfo) {
+            typeInfo.modifiers.add(modifier);
+            if (isVisibilityModifier(modifier)) {
+                typeInfo.visibility = modifier;
+            }
+        } else if (target instanceof MethodInfo methodInfo) {
+            methodInfo.modifiers.add(modifier);
+            if (isVisibilityModifier(modifier)) {
+                methodInfo.visibility = modifier;
+            }
+        } else if (target instanceof FieldInfo fieldInfo) {
+            fieldInfo.modifiers.add(modifier);
+            if (isVisibilityModifier(modifier)) {
+                fieldInfo.visibility = modifier;
+            }
         }
+    }
+
+    private boolean isVisibilityModifier(String modifier) {
+        return "public".equals(modifier)
+                || "private".equals(modifier)
+                || "protected".equals(modifier);
     }
 }

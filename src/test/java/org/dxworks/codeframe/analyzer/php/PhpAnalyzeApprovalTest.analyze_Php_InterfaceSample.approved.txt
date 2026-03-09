@@ -4,11 +4,11 @@
   "types" : [ {
     "kind" : "interface",
     "name" : "IRepository",
-    "visibility" : "public",
+    "annotations" : [ "#[Contract]" ],
     "methods" : [ {
       "name" : "findById",
       "visibility" : "public",
-      "modifiers" : [ "abstract" ],
+      "modifiers" : [ "public" ],
       "parameters" : [ {
         "name" : "id"
       } ]
@@ -16,7 +16,7 @@
       "name" : "save",
       "returnType" : "void",
       "visibility" : "public",
-      "modifiers" : [ "abstract" ],
+      "modifiers" : [ "public" ],
       "parameters" : [ {
         "name" : "entity"
       } ]
@@ -24,12 +24,17 @@
   }, {
     "kind" : "interface",
     "name" : "INamed",
-    "visibility" : "public",
+    "annotations" : [ "#[NamedContract]" ],
     "methods" : [ {
       "name" : "getName",
       "returnType" : "string",
       "visibility" : "public",
-      "modifiers" : [ "abstract" ]
+      "modifiers" : [ "public" ]
     } ]
+  } ],
+  "fields" : [ {
+    "name" : "FILE_LEVEL",
+    "type" : "string",
+    "modifiers" : [ "const" ]
   } ]
 }

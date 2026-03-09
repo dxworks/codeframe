@@ -4,7 +4,6 @@
   "types" : [ {
     "kind" : "class",
     "name" : "Entity",
-    "visibility" : "public",
     "fields" : [ {
       "name" : "data",
       "type" : "array",
@@ -120,7 +119,6 @@
   }, {
     "kind" : "class",
     "name" : "MethodOverloader",
-    "visibility" : "public",
     "fields" : [ {
       "name" : "methods",
       "type" : "array",
@@ -205,7 +203,6 @@
   }, {
     "kind" : "class",
     "name" : "Validator",
-    "visibility" : "public",
     "fields" : [ {
       "name" : "rules",
       "type" : "array",
@@ -260,7 +257,6 @@
   }, {
     "kind" : "class",
     "name" : "DeepCopyable",
-    "visibility" : "public",
     "fields" : [ {
       "name" : "id",
       "type" : "int",
@@ -359,7 +355,6 @@
   }, {
     "kind" : "class",
     "name" : "Exportable",
-    "visibility" : "public",
     "fields" : [ {
       "name" : "id",
       "type" : "int",
@@ -430,7 +425,6 @@
   }, {
     "kind" : "class",
     "name" : "Collection",
-    "visibility" : "public",
     "implementsInterfaces" : [ "ArrayAccess", "Countable", "IteratorAggregate" ],
     "fields" : [ {
       "name" : "items",
@@ -542,7 +536,6 @@
   }, {
     "kind" : "class",
     "name" : "QueryBuilder",
-    "visibility" : "public",
     "fields" : [ {
       "name" : "table",
       "type" : "string",

@@ -4,7 +4,6 @@
   "types" : [ {
     "kind" : "class",
     "name" : "SimpleLogger",
-    "visibility" : "public",
     "mixins" : [ "Loggable" ],
     "fields" : [ {
       "name" : "name",
@@ -44,7 +43,6 @@
   }, {
     "kind" : "class",
     "name" : "User",
-    "visibility" : "public",
     "mixins" : [ "Loggable", "Identifiable", "Countable" ],
     "fields" : [ {
       "name" : "id",
@@ -116,7 +114,6 @@
   }, {
     "kind" : "class",
     "name" : "DataExporter",
-    "visibility" : "public",
     "mixins" : [ "Serializable", "JsonExportable" ],
     "fields" : [ {
       "name" : "name",
@@ -180,7 +177,6 @@
   }, {
     "kind" : "class",
     "name" : "SecureEntity",
-    "visibility" : "public",
     "mixins" : [ "Loggable" ],
     "fields" : [ {
       "name" : "id",
@@ -220,7 +216,6 @@
   }, {
     "kind" : "class",
     "name" : "Product",
-    "visibility" : "public",
     "mixins" : [ "FullyFeatured", "Countable" ],
     "fields" : [ {
       "name" : "id",

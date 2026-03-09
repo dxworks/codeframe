@@ -4,7 +4,6 @@
   "types" : [ {
     "kind" : "class",
     "name" : "UnionTypeExample",
-    "visibility" : "public",
     "fields" : [ {
       "name" : "number",
       "type" : "int|float",
@@ -95,7 +94,6 @@
   }, {
     "kind" : "class",
     "name" : "IntersectionTypeExample",
-    "visibility" : "public",
     "methods" : [ {
       "name" : "processCollection",
       "returnType" : "array",
@@ -123,7 +121,6 @@
   }, {
     "kind" : "class",
     "name" : "ImmutableUser",
-    "visibility" : "public",
     "methods" : [ {
       "name" : "__construct",
       "visibility" : "public",
@@ -165,7 +162,6 @@
   }, {
     "kind" : "class",
     "name" : "ImmutableConfig",
-    "visibility" : "public",
     "methods" : [ {
       "name" : "__construct",
       "visibility" : "public",
@@ -204,7 +200,6 @@
   }, {
     "kind" : "class",
     "name" : "MatchExpressionExample",
-    "visibility" : "public",
     "methods" : [ {
       "name" : "getStatusLabel",
       "returnType" : "string",
@@ -249,7 +244,6 @@
   }, {
     "kind" : "class",
     "name" : "Address",
-    "visibility" : "public",
     "methods" : [ {
       "name" : "__construct",
       "visibility" : "public",
@@ -282,7 +276,6 @@
   }, {
     "kind" : "class",
     "name" : "Profile",
-    "visibility" : "public",
     "methods" : [ {
       "name" : "__construct",
       "visibility" : "public",
@@ -298,7 +291,6 @@
   }, {
     "kind" : "class",
     "name" : "NullsafeExample",
-    "visibility" : "public",
     "fields" : [ {
       "name" : "profile",
       "type" : "?Profile",
@@ -351,7 +343,6 @@
   }, {
     "kind" : "class",
     "name" : "NamedArgumentsExample",
-    "visibility" : "public",
     "methods" : [ {
       "name" : "createUser",
       "returnType" : "array",
@@ -423,7 +414,6 @@
   }, {
     "kind" : "class",
     "name" : "PromotedPropertiesExample",
-    "visibility" : "public",
     "methods" : [ {
       "name" : "__construct",
       "visibility" : "public",
@@ -467,7 +457,7 @@
   }, {
     "kind" : "class",
     "name" : "Entity",
-    "visibility" : "public",
+    "annotations" : [ "#[\\Attribute(\\Attribute::TARGET_CLASS)]" ],
     "methods" : [ {
       "name" : "__construct",
       "visibility" : "public",
@@ -480,7 +470,7 @@
   }, {
     "kind" : "class",
     "name" : "Column",
-    "visibility" : "public",
+    "annotations" : [ "#[\\Attribute(\\Attribute::TARGET_PROPERTY)]" ],
     "methods" : [ {
       "name" : "__construct",
       "visibility" : "public",
@@ -499,7 +489,7 @@
   }, {
     "kind" : "class",
     "name" : "Route",
-    "visibility" : "public",
+    "annotations" : [ "#[\\Attribute(\\Attribute::TARGET_METHOD)]" ],
     "methods" : [ {
       "name" : "__construct",
       "visibility" : "public",
@@ -515,7 +505,7 @@
   }, {
     "kind" : "class",
     "name" : "Validated",
-    "visibility" : "public",
+    "annotations" : [ "#[\\Attribute(\\Attribute::TARGET_PARAMETER)]" ],
     "methods" : [ {
       "name" : "__construct",
       "visibility" : "public",
@@ -528,7 +518,7 @@
   }, {
     "kind" : "class",
     "name" : "Product",
-    "visibility" : "public",
+    "annotations" : [ "#[Entity(table: 'products')]" ],
     "fields" : [ {
       "name" : "id",
       "type" : "int",
@@ -592,7 +582,6 @@
   }, {
     "kind" : "class",
     "name" : "FirstClassCallableExample",
-    "visibility" : "public",
     "methods" : [ {
       "name" : "add",
       "returnType" : "int",
@@ -673,7 +662,6 @@
   }, {
     "kind" : "class",
     "name" : "NewInInitializersExample",
-    "visibility" : "public",
     "methods" : [ {
       "name" : "__construct",
       "visibility" : "public",
@@ -699,22 +687,20 @@
   }, {
     "kind" : "interface",
     "name" : "Countable",
-    "visibility" : "public",
     "methods" : [ {
       "name" : "count",
       "returnType" : "int",
       "visibility" : "public",
-      "modifiers" : [ "abstract" ]
+      "modifiers" : [ "public" ]
     } ]
   }, {
     "kind" : "interface",
     "name" : "Stringable",
-    "visibility" : "public",
     "methods" : [ {
       "name" : "__toString",
       "returnType" : "string",
       "visibility" : "public",
-      "modifiers" : [ "abstract" ]
+      "modifiers" : [ "public" ]
     } ]
   } ],
   "methods" : [ {

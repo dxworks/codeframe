@@ -4,7 +4,6 @@
   "types" : [ {
     "kind" : "class",
     "name" : "Task",
-    "visibility" : "public",
     "fields" : [ {
       "name" : "id",
       "type" : "int",
@@ -106,12 +105,11 @@
   }, {
     "kind" : "interface",
     "name" : "Describable",
-    "visibility" : "public",
     "methods" : [ {
       "name" : "describe",
       "returnType" : "string",
       "visibility" : "public",
-      "modifiers" : [ "abstract" ]
+      "modifiers" : [ "public" ]
     } ]
   }, {
     "kind" : "trait",

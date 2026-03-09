@@ -4,7 +4,6 @@
   "types" : [ {
     "kind" : "class",
     "name" : "BaseEntity",
-    "visibility" : "public",
     "modifiers" : [ "abstract" ],
     "implementsInterfaces" : [ "Entity", "Comparable" ],
     "mixins" : [ "HasTimestamps", "HasUuid" ],
@@ -121,7 +120,6 @@
   }, {
     "kind" : "class",
     "name" : "User",
-    "visibility" : "public",
     "extendsType" : "BaseEntity",
     "fields" : [ {
       "name" : "username",
@@ -225,7 +223,6 @@
   }, {
     "kind" : "class",
     "name" : "Product",
-    "visibility" : "public",
     "extendsType" : "BaseEntity",
     "fields" : [ {
       "name" : "name",
@@ -366,7 +363,6 @@
   }, {
     "kind" : "class",
     "name" : "AdminUser",
-    "visibility" : "public",
     "extendsType" : "User",
     "fields" : [ {
       "name" : "permissions",
@@ -503,7 +499,6 @@
   }, {
     "kind" : "class",
     "name" : "ImmutableConfig",
-    "visibility" : "public",
     "modifiers" : [ "final" ],
     "implementsInterfaces" : [ "Serializable" ],
     "fields" : [ {
@@ -579,7 +574,6 @@
   }, {
     "kind" : "class",
     "name" : "ServiceContainer",
-    "visibility" : "public",
     "fields" : [ {
       "name" : "services",
       "type" : "array",
@@ -635,52 +629,49 @@
   }, {
     "kind" : "interface",
     "name" : "Identifiable",
-    "visibility" : "public",
     "methods" : [ {
       "name" : "getId",
       "returnType" : "int",
       "visibility" : "public",
-      "modifiers" : [ "abstract" ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "getUuid",
       "returnType" : "string",
       "visibility" : "public",
-      "modifiers" : [ "abstract" ]
+      "modifiers" : [ "public" ]
     } ]
   }, {
     "kind" : "interface",
     "name" : "Timestampable",
-    "visibility" : "public",
     "methods" : [ {
       "name" : "getCreatedAt",
       "returnType" : "\\DateTimeInterface",
       "visibility" : "public",
-      "modifiers" : [ "abstract" ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "getUpdatedAt",
       "returnType" : "?\\DateTimeInterface",
       "visibility" : "public",
-      "modifiers" : [ "abstract" ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "touch",
       "returnType" : "void",
       "visibility" : "public",
-      "modifiers" : [ "abstract" ]
+      "modifiers" : [ "public" ]
     } ]
   }, {
     "kind" : "interface",
     "name" : "Serializable",
-    "visibility" : "public",
     "methods" : [ {
       "name" : "serialize",
       "returnType" : "string",
       "visibility" : "public",
-      "modifiers" : [ "abstract" ]
+      "modifiers" : [ "public" ]
     }, {
       "name" : "deserialize",
       "returnType" : "self",
       "visibility" : "public",
-      "modifiers" : [ "abstract" ],
+      "modifiers" : [ "public", "static" ],
       "parameters" : [ {
         "name" : "data",
         "type" : "string"
@@ -689,12 +680,11 @@
   }, {
     "kind" : "interface",
     "name" : "Comparable",
-    "visibility" : "public",
     "methods" : [ {
       "name" : "compareTo",
       "returnType" : "int",
       "visibility" : "public",
-      "modifiers" : [ "abstract" ],
+      "modifiers" : [ "public" ],
       "parameters" : [ {
         "name" : "other",
         "type" : "object"
@@ -703,7 +693,7 @@
       "name" : "equals",
       "returnType" : "bool",
       "visibility" : "public",
-      "modifiers" : [ "abstract" ],
+      "modifiers" : [ "public" ],
       "parameters" : [ {
         "name" : "other",
         "type" : "object"
@@ -712,13 +702,12 @@
   }, {
     "kind" : "interface",
     "name" : "Entity",
-    "visibility" : "public",
     "implementsInterfaces" : [ "Identifiable", "Timestampable", "Serializable" ],
     "methods" : [ {
       "name" : "toArray",
       "returnType" : "array",
       "visibility" : "public",
-      "modifiers" : [ "abstract" ]
+      "modifiers" : [ "public" ]
     } ]
   }, {
     "kind" : "trait",

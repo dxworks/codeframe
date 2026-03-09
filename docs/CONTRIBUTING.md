@@ -88,7 +88,7 @@ All analyzers should extract file/module-level elements into the `FileAnalysis` 
 - **Python**: Top-level assignments with type annotations (e.g., `MAX_RETRIES: int = 3`)
 - **JavaScript/TypeScript**: `const`, `let`, `var` declarations at module level
 - **Ruby**: Module-level constants (e.g., `MAX_SIZE = 100`)
-- **PHP**: Global variables and constants
+- **PHP**: Top-level `const` declarations (global variable extraction is out of scope)
 - **Java/C#**: Static fields are captured at the class level (not file level)
 
 **`methodCalls`** - Top-level function calls outside any class/function:
@@ -111,8 +111,8 @@ console.log("Starting...");   // → methodCalls: [{methodName: "log", objectNam
 ### Field/Variable Visibility
 
 - **Ruby**: Instance variables (`@var`) are private by default
-- **Java/C#**: Use explicit modifiers
-- **Python**: Leading underscore (`_var`) indicates private by convention
+- **Java/C#/TypeScript/PHP/Rust**: Emit visibility only when explicitly present in source
+- **Python**: Leading underscore (`_var`) indicates protected by convention; double underscore (`__var`) indicates private
 
 ### Test Coverage
 
