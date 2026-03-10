@@ -135,6 +135,9 @@
     "modifiers" : [ "const", "export" ]
   } ],
   "methodCalls" : [ {
+    "methodName" : "initializeRetries",
+    "callCount" : 1
+  }, {
     "methodName" : "log",
     "objectName" : "console",
     "callCount" : 1

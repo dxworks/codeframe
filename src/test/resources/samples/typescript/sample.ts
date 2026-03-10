@@ -9,6 +9,7 @@ export const DEFAULT_TIMEOUT: number = 5000;
 
 // Module-level setup calls
 console.log('Initializing module...');
+if (MAX_RETRIES > 0) initializeRetries();
 
 // Standalone function
 export function calculateTotal(items: number[]): number {
