@@ -1,0 +1,45 @@
+{
+  "filePath" : "src/test/resources/samples/c/TypeDeclarations.c",
+  "language" : "c",
+  "types" : [ {
+    "kind" : "typedef",
+    "name" : "Point",
+    "extendsType" : "struct Point {\n    int x;\n    int y;\n}"
+  }, {
+    "kind" : "struct",
+    "name" : "Point",
+    "fields" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    } ]
+  }, {
+    "kind" : "typedef",
+    "name" : "Number",
+    "extendsType" : "union Number {\n    int i;\n    float f;\n}"
+  }, {
+    "kind" : "union",
+    "name" : "Number",
+    "fields" : [ {
+      "name" : "i",
+      "type" : "int"
+    }, {
+      "name" : "f",
+      "type" : "float"
+    } ]
+  }, {
+    "kind" : "enum",
+    "name" : "Status",
+    "fields" : [ {
+      "name" : "STATUS_OK"
+    }, {
+      "name" : "STATUS_FAIL"
+    } ]
+  }, {
+    "kind" : "typedef",
+    "name" : "cmp_fn",
+    "extendsType" : "int (*cmp_fn)(const void* a, const void* b)"
+  } ]
+}

@@ -1,0 +1,55 @@
+{
+  "filePath" : "src/test/resources/samples/cpp/TypeCoverageAndWrappedDeclaration.cpp",
+  "language" : "cpp",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "Outer",
+    "types" : [ {
+      "kind" : "class",
+      "name" : "Inner",
+      "fields" : [ {
+        "name" : "v",
+        "type" : "int"
+      } ]
+    } ]
+  }, {
+    "kind" : "struct",
+    "name" : "Plain",
+    "fields" : [ {
+      "name" : "x",
+      "type" : "int"
+    } ]
+  }, {
+    "kind" : "union",
+    "name" : "Number",
+    "fields" : [ {
+      "name" : "i",
+      "type" : "int"
+    }, {
+      "name" : "f",
+      "type" : "float"
+    } ]
+  }, {
+    "kind" : "enum",
+    "name" : "Color",
+    "fields" : [ {
+      "name" : "RED"
+    }, {
+      "name" : "BLUE"
+    } ]
+  } ],
+  "methods" : [ {
+    "name" : "declared_ref",
+    "returnType" : "int&"
+  }, {
+    "name" : "run_type_coverage",
+    "returnType" : "int",
+    "localVariables" : [ "in", "n" ],
+    "methodCalls" : [ {
+      "methodName" : "declared_ref",
+      "callCount" : 1,
+      "parameterCount" : 0
+    } ]
+  } ],
+  "imports" : [ "#include <cstddef>" ]
+}

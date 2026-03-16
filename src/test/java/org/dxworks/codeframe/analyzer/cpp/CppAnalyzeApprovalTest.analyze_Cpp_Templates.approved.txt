@@ -1,0 +1,39 @@
+{
+  "filePath" : "src/test/resources/samples/cpp/Templates.cpp",
+  "language" : "cpp",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "Box<typename T>",
+    "fields" : [ {
+      "name" : "value",
+      "type" : "T"
+    } ],
+    "methods" : [ {
+      "name" : "get",
+      "returnType" : "T"
+    } ]
+  } ],
+  "methods" : [ {
+    "name" : "identity<typename T>",
+    "returnType" : "T",
+    "parameters" : [ {
+      "name" : "input",
+      "type" : "T"
+    } ]
+  }, {
+    "name" : "use_templates",
+    "returnType" : "int",
+    "localVariables" : [ "b" ],
+    "methodCalls" : [ {
+      "methodName" : "get",
+      "objectType" : "Box<int>",
+      "objectName" : "b",
+      "callCount" : 1,
+      "parameterCount" : 0
+    }, {
+      "methodName" : "identity",
+      "callCount" : 1,
+      "parameterCount" : 1
+    } ]
+  } ]
+}

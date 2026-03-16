@@ -1,0 +1,42 @@
+{
+  "filePath" : "src/test/resources/samples/c/BasicFunctions.c",
+  "language" : "c",
+  "methods" : [ {
+    "name" : "add",
+    "returnType" : "int",
+    "parameters" : [ {
+      "name" : "a",
+      "type" : "int"
+    }, {
+      "name" : "b",
+      "type" : "int"
+    } ],
+    "localVariables" : [ "sum" ],
+    "methodCalls" : [ {
+      "methodName" : "printf",
+      "callCount" : 1,
+      "parameterCount" : 2
+    } ]
+  }, {
+    "name" : "boot",
+    "returnType" : "void",
+    "methodCalls" : [ {
+      "methodName" : "add",
+      "callCount" : 1,
+      "parameterCount" : 2
+    } ]
+  }, {
+    "name" : "main",
+    "returnType" : "int",
+    "methodCalls" : [ {
+      "methodName" : "boot",
+      "callCount" : 1,
+      "parameterCount" : 0
+    } ]
+  } ],
+  "fields" : [ {
+    "name" : "global_count",
+    "type" : "int"
+  } ],
+  "imports" : [ "#include <stdio.h>" ]
+}

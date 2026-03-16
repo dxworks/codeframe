@@ -12,6 +12,9 @@ Use this index to find the correct source of truth quickly.
 - [TypeScript Spec](specs/TYPESCRIPT_SPEC.md): TypeScript analysis output contract and extraction rules.
 - [Python Spec](specs/PYTHON_SPEC.md): Python analysis output contract and extraction rules.
 - [C# Spec](specs/CSHARP_SPEC.md): C# analysis output contract and extraction rules.
+- [C Spec](specs/C_SPEC.md): C analysis output contract and extraction rules.
+- [C++ Spec](specs/CPP_SPEC.md): C++ analysis output contract and extraction rules.
+- [C/C++ Common Spec](specs/C_CPP_SPEC.md): shared C/C++ extraction rules used by both C and C++ specs.
 - [PHP Spec](specs/PHP_SPEC.md): PHP analysis output contract and extraction rules.
 - [SQL Spec](specs/SQL_SPEC.md): SQL analysis output contract and supported extraction.
 - [COBOL Spec](specs/COBOL_SPEC.md): COBOL analysis output contract and extraction rules.

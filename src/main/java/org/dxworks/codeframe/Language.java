@@ -6,6 +6,8 @@ public enum Language {
     TYPESCRIPT("typescript", ".ts", ".tsx"),
     PYTHON("python", ".py"),
     CSHARP("csharp", ".cs"),
+    C("c", ".c"),
+    CPP("cpp", ".cpp", ".cc", ".cxx", ".h", ".hpp", ".hh", ".hxx"),
     PHP("php", ".php"),
     SQL("sql", ".sql"),
     COBOL("cobol", ".cbl", ".cob", ".cobol"),

@@ -18,6 +18,8 @@ Each language has a dedicated analyzer:
 | TypeScript | `TypeScriptAnalyzer` | Tree-sitter |
 | Python | `PythonAnalyzer` | Tree-sitter |
 | C# | `CSharpAnalyzer` | Tree-sitter |
+| C | `CAnalyzer` | Tree-sitter |
+| C++ | `CppAnalyzer` | Tree-sitter |
 | PHP | `PHPAnalyzer` | Tree-sitter |
 | Ruby | `RubyAnalyzer` | Tree-sitter |
 | Rust | `RustAnalyzer` | Tree-sitter |

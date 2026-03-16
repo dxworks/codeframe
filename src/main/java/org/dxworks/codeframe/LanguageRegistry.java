@@ -59,6 +59,8 @@ public class LanguageRegistry {
             case TYPESCRIPT -> new TypeScriptAnalyzer();
             case PYTHON -> new PythonAnalyzer();
             case CSHARP -> new CSharpAnalyzer();
+            case C -> new CAnalyzer();
+            case CPP -> new CppAnalyzer();
             case PHP -> new PHPAnalyzer();
             case SQL -> new SQLAnalyzer();
             case COBOL -> new COBOLAnalyzer(cobolCopybooks);

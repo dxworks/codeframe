@@ -1,0 +1,68 @@
+{
+  "filePath" : "src/test/resources/samples/c/CallInferenceAndTopLevelCalls.c",
+  "language" : "c",
+  "types" : [ {
+    "kind" : "typedef",
+    "name" : "Logger",
+    "extendsType" : "struct Logger {\n    int (*writer)(int);\n}"
+  }, {
+    "kind" : "struct",
+    "name" : "Logger",
+    "fields" : [ {
+      "name" : "writer",
+      "type" : "int (*writer)(int)"
+    } ]
+  } ],
+  "methods" : [ {
+    "name" : "write_impl",
+    "returnType" : "int",
+    "parameters" : [ {
+      "name" : "value",
+      "type" : "int"
+    } ]
+  }, {
+    "name" : "declared_only",
+    "returnType" : "int",
+    "parameters" : [ {
+      "name" : "value",
+      "type" : "int"
+    } ]
+  }, {
+    "name" : "log_message",
+    "returnType" : "void",
+    "parameters" : [ {
+      "name" : "logger",
+      "type" : "Logger"
+    } ],
+    "methodCalls" : [ {
+      "methodName" : "writer",
+      "objectType" : "Logger",
+      "objectName" : "logger",
+      "callCount" : 1,
+      "parameterCount" : 1
+    } ]
+  }, {
+    "name" : "compute",
+    "returnType" : "int",
+    "methodCalls" : [ {
+      "methodName" : "log_message",
+      "callCount" : 1,
+      "parameterCount" : 1
+    } ]
+  } ],
+  "fields" : [ {
+    "name" : "global_callback",
+    "type" : "int (*global_callback)(int)"
+  }, {
+    "name" : "global_logger",
+    "type" : "Logger"
+  }, {
+    "name" : "init_value",
+    "type" : "int"
+  } ],
+  "methodCalls" : [ {
+    "methodName" : "compute",
+    "callCount" : 1,
+    "parameterCount" : 0
+  } ]
+}

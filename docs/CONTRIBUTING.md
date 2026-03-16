@@ -6,7 +6,9 @@
 2. Add the language to the `Language` enum with its file extensions
 3. Create a new analyzer implementing `LanguageAnalyzer`
 4. Add a case for the new language in `LanguageRegistry.createAnalyzer`
-5. Create test samples and approval tests
+5. Add the language key to `codeframe-config.yml` under `analyzers` with default `true`
+6. Update README analyzer configuration docs (`Available analyzer keys`) to include the new key
+7. Create test samples and approval tests
 
 ## Analyzer Implementation Conventions
 

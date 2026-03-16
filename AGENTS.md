@@ -1,6 +1,6 @@
 # CodeFrame Agent Guide
 
-This file is the primary guide for Codex and contributors working in this repository.
+This file is the primary guide for AI contributors working in this repository.
 
 ## Design Guidelines
 
@@ -22,11 +22,3 @@ This file is the primary guide for Codex and contributors working in this reposi
 - Analyzer extraction conventions: `docs/CONTRIBUTING.md`
 - Language architecture: `docs/ARCHITECTURE.md`
 - Language output contracts: `docs/specs/*_SPEC.md`
-
-## Do/Don't for Repo Automation
-
-- Prefer `rg`/`rg --files` for file and text search.
-- Keep parser changes deterministic and extraction-only.
-- Keep approval tests as the verification baseline for analyzers.
-- Treat `src/test/resources/**` as sample fixtures, not project documentation.
-- Do not run markdown link/lint checks against fixture files under `src/test/resources/**`.

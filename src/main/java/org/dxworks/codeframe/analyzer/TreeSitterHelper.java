@@ -162,6 +162,22 @@ public class TreeSitterHelper {
         return null;
     }
 
+    /**
+     * Structural TSNode equality helper.
+     *
+     * Tree-sitter Java wrappers may represent the same underlying syntax node
+     * with different object identities across traversals, so reference equality
+     * is not reliable for boundary checks.
+     */
+    public static boolean isSameNode(TSNode first, TSNode second) {
+        if (first == null || second == null || first.isNull() || second.isNull()) {
+            return false;
+        }
+        return first.getStartByte() == second.getStartByte()
+            && first.getEndByte() == second.getEndByte()
+            && first.getType().equals(second.getType());
+    }
+
     public static boolean isTypeOneOf(String type, String... types) {
         if (type == null) return false;
         for (String t : types) if (type.equals(t)) return true;

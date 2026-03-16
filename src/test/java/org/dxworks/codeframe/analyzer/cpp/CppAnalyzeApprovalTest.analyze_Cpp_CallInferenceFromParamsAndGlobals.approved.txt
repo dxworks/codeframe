@@ -1,0 +1,98 @@
+{
+  "filePath" : "src/test/resources/samples/cpp/CallInferenceFromParamsAndGlobals.cpp",
+  "language" : "cpp",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "Logger",
+    "methods" : [ {
+      "name" : "writer",
+      "returnType" : "int",
+      "parameters" : [ {
+        "name" : "value",
+        "type" : "int"
+      } ]
+    } ]
+  } ],
+  "methods" : [ {
+    "name" : "declared_identity<typename T>",
+    "returnType" : "T",
+    "parameters" : [ {
+      "name" : "input",
+      "type" : "T"
+    } ]
+  }, {
+    "name" : "declared_ns<typename U>",
+    "returnType" : "U",
+    "parameters" : [ {
+      "name" : "value",
+      "type" : "U"
+    } ]
+  }, {
+    "name" : "log_message",
+    "returnType" : "int",
+    "parameters" : [ {
+      "name" : "logger",
+      "type" : "Logger"
+    } ],
+    "localVariables" : [ "local_values" ],
+    "methodCalls" : [ {
+      "methodName" : "size",
+      "objectType" : "std::vector<int>",
+      "objectName" : "global_values",
+      "callCount" : 1,
+      "parameterCount" : 0
+    }, {
+      "methodName" : "size",
+      "objectType" : "std::vector<int>",
+      "objectName" : "local_values",
+      "callCount" : 1,
+      "parameterCount" : 0
+    }, {
+      "methodName" : "writer",
+      "objectType" : "Logger",
+      "objectName" : "global_logger",
+      "callCount" : 1,
+      "parameterCount" : 1
+    }, {
+      "methodName" : "writer",
+      "objectType" : "Logger",
+      "objectName" : "logger",
+      "callCount" : 1,
+      "parameterCount" : 1
+    } ]
+  }, {
+    "name" : "compute",
+    "returnType" : "int"
+  }, {
+    "name" : "run_decl",
+    "returnType" : "int",
+    "methodCalls" : [ {
+      "methodName" : "declared_identity",
+      "callCount" : 1,
+      "parameterCount" : 1
+    }, {
+      "methodName" : "declared_ns",
+      "callCount" : 1,
+      "parameterCount" : 1
+    } ]
+  } ],
+  "fields" : [ {
+    "name" : "global_logger",
+    "type" : "Logger"
+  }, {
+    "name" : "global_values",
+    "type" : "std::vector<int>"
+  }, {
+    "name" : "global_callback",
+    "type" : "int (*global_callback)(int)"
+  }, {
+    "name" : "boot_value",
+    "type" : "int"
+  } ],
+  "methodCalls" : [ {
+    "methodName" : "compute",
+    "callCount" : 1,
+    "parameterCount" : 0
+  } ],
+  "imports" : [ "#include <vector>" ]
+}

@@ -1,0 +1,55 @@
+{
+  "filePath" : "src/test/resources/samples/cpp/ClassesAndInheritance.cpp",
+  "language" : "cpp",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "Counter",
+    "fields" : [ {
+      "name" : "count",
+      "type" : "int"
+    } ],
+    "methods" : [ {
+      "name" : "Counter"
+    }, {
+      "name" : "~Counter"
+    }, {
+      "name" : "value",
+      "returnType" : "int"
+    } ]
+  }, {
+    "kind" : "class",
+    "name" : "AdvancedCounter",
+    "extendsType" : ": public Counter",
+    "methods" : [ {
+      "name" : "operator+",
+      "returnType" : "int",
+      "parameters" : [ {
+        "name" : "other",
+        "type" : "int"
+      } ],
+      "methodCalls" : [ {
+        "methodName" : "value",
+        "callCount" : 1,
+        "parameterCount" : 0
+      } ]
+    } ]
+  } ],
+  "methods" : [ {
+    "name" : "helper",
+    "returnType" : "int",
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "int"
+    } ]
+  }, {
+    "name" : "main",
+    "returnType" : "int",
+    "localVariables" : [ "c" ],
+    "methodCalls" : [ {
+      "methodName" : "helper",
+      "callCount" : 1,
+      "parameterCount" : 1
+    } ]
+  } ],
+  "imports" : [ "#include <string>" ]
+}

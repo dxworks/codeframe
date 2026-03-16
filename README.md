@@ -9,6 +9,8 @@ A Tree-sitter-based code parser that extracts structural information from source
 - **TypeScript** (.ts)
 - **Python** (.py)
 - **C#** (.cs)
+- **C** (.c)
+- **C++** (.cpp, .cc, .cxx, .h, .hpp, .hh, .hxx)
 - **PHP** (.php)
 - **Ruby** (.rb)
 - **Rust** (.rs)
@@ -127,7 +129,7 @@ CodeFrame supports optional configuration via a `codeframe-config.yml` file in t
 
 You can selectively enable/disable analyzers using the `analyzers` map. All analyzers are enabled by default.
 
-**Available analyzer keys:** `java`, `javascript`, `typescript`, `python`, `csharp`, `php`, `sql`, `cobol`, `ruby`, `rust`, `markdown`
+**Available analyzer keys:** `java`, `javascript`, `typescript`, `python`, `csharp`, `c`, `cpp`, `php`, `sql`, `cobol`, `ruby`, `rust`, `markdown`
 
 **Example configuration:**
 ```yaml

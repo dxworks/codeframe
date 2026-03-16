@@ -8,6 +8,8 @@ analyzers:
   typescript: true
   python: true
   csharp: true
+  c: true
+  cpp: true
   php: true
   sql: true
   cobol: true

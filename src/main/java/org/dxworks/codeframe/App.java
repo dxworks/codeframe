@@ -41,6 +41,8 @@ public class App {
             TREE_SITTER_LANGUAGES.put(Language.TYPESCRIPT, (TSLanguage) Class.forName("org.treesitter.TreeSitterTypescript").getDeclaredConstructor().newInstance());
             TREE_SITTER_LANGUAGES.put(Language.PYTHON, (TSLanguage) Class.forName("org.treesitter.TreeSitterPython").getDeclaredConstructor().newInstance());
             TREE_SITTER_LANGUAGES.put(Language.CSHARP, (TSLanguage) Class.forName("org.treesitter.TreeSitterCSharp").getDeclaredConstructor().newInstance());
+            TREE_SITTER_LANGUAGES.put(Language.C, (TSLanguage) Class.forName("org.treesitter.TreeSitterC").getDeclaredConstructor().newInstance());
+            TREE_SITTER_LANGUAGES.put(Language.CPP, (TSLanguage) Class.forName("org.treesitter.TreeSitterCpp").getDeclaredConstructor().newInstance());
             TREE_SITTER_LANGUAGES.put(Language.PHP, (TSLanguage) Class.forName("org.treesitter.TreeSitterPhp").getDeclaredConstructor().newInstance());
             TREE_SITTER_LANGUAGES.put(Language.RUBY, (TSLanguage) Class.forName("org.treesitter.TreeSitterRuby").getDeclaredConstructor().newInstance());
             TREE_SITTER_LANGUAGES.put(Language.RUST, (TSLanguage) Class.forName("org.treesitter.TreeSitterRust").getDeclaredConstructor().newInstance());
@@ -66,7 +68,7 @@ public class App {
             System.err.println("Usage: java -jar codeframe.jar <input-folder> <output-file>");
             System.err.println("  <input-folder>: Path to source code directory or file");
             System.err.println("  <output-file>:  Path to output JSONL file");
-            System.err.println("Supported languages: Java, JavaScript, TypeScript, Python, C#, PHP, SQL, COBOL, Ruby, Rust, Markdown");
+            System.err.println("Supported languages: Java, JavaScript, TypeScript, Python, C#, C, C++, PHP, SQL, COBOL, Ruby, Rust, Markdown");
             System.exit(2);
         }
 
@@ -258,6 +260,7 @@ public class App {
 
     public static Analysis analyzeFile(Path filePath, Language language, CodeframeConfig config) throws IOException {
         String sourceCode = Files.readString(filePath, StandardCharsets.UTF_8);
+        String lowerName = filePath.getFileName().toString().toLowerCase();
 
         if (sourceCode.startsWith("\uFEFF")) {
             sourceCode = sourceCode.substring(1);
@@ -274,23 +277,71 @@ public class App {
 
         if (language == Language.SQL || language == Language.COBOL || language == Language.MARKDOWN) {
             analysis = analyzer.analyze(filePath.toString(), sourceCode, null);
+        } else if (language == Language.CPP && lowerName.endsWith(".h")) {
+            analysis = analyzeHeaderWithCppFallback(filePath, sourceCode);
         } else {
-            TSLanguage tsLanguage = TREE_SITTER_LANGUAGES.get(language);
-            if (tsLanguage == null) {
-                throw new IllegalArgumentException("No Tree-sitter language available for: " + language);
-            }
-
-            TSParser parser = new TSParser();
-            parser.setLanguage(tsLanguage);
-
-            TSTree tree = parser.parseString(null, sourceCode);
-            TSNode rootNode = tree.getRootNode();
-
-            analysis = analyzer.analyze(filePath.toString(), sourceCode, rootNode);
+            analysis = analyzeWithTreeSitterLanguage(filePath, sourceCode, language);
         }
 
         filterSqlColumnsIfNeeded(analysis, config);
         return analysis;
+    }
+
+    private static Analysis analyzeHeaderWithCppFallback(Path filePath, String sourceCode) {
+        Analysis cppAnalysis = analyzeWithTreeSitterLanguage(filePath, sourceCode, Language.CPP);
+        Analysis cAnalysis = analyzeWithTreeSitterLanguage(filePath, sourceCode, Language.C);
+
+        int cppScore = parseQualityScore(sourceCode, Language.CPP);
+        int cScore = parseQualityScore(sourceCode, Language.C);
+
+        return cppScore <= cScore ? cppAnalysis : cAnalysis;
+    }
+
+    private static int parseQualityScore(String sourceCode, Language language) {
+        TSLanguage tsLanguage = TREE_SITTER_LANGUAGES.get(language);
+        if (tsLanguage == null) {
+            return Integer.MAX_VALUE;
+        }
+
+        TSParser parser = new TSParser();
+        parser.setLanguage(tsLanguage);
+        TSTree tree = parser.parseString(null, sourceCode);
+        TSNode rootNode = tree.getRootNode();
+        return countErrorNodes(rootNode);
+    }
+
+    private static int countErrorNodes(TSNode node) {
+        if (node == null || node.isNull()) {
+            return 0;
+        }
+
+        int errors = ("ERROR".equals(node.getType()) || "MISSING".equals(node.getType())) ? 1 : 0;
+        for (int i = 0; i < node.getNamedChildCount(); i++) {
+            errors += countErrorNodes(node.getNamedChild(i));
+        }
+        return errors;
+    }
+
+    private static Analysis analyzeWithTreeSitterLanguage(Path filePath, String sourceCode, Language language) {
+        LanguageAnalyzer analyzer = ANALYZERS.get(language);
+        if (analyzer == null) {
+            throw new IllegalStateException(
+                    "Analyzers not initialized or no analyzer available for: " + language
+            );
+        }
+
+        TSLanguage tsLanguage = TREE_SITTER_LANGUAGES.get(language);
+        if (tsLanguage == null) {
+            throw new IllegalArgumentException("No Tree-sitter language available for: " + language);
+        }
+
+        TSParser parser = new TSParser();
+        parser.setLanguage(tsLanguage);
+
+        TSTree tree = parser.parseString(null, sourceCode);
+        TSNode rootNode = tree.getRootNode();
+
+        return analyzer.analyze(filePath.toString(), sourceCode, rootNode);
     }
 
     private static void filterSqlColumnsIfNeeded(Analysis analysis, CodeframeConfig config) {
