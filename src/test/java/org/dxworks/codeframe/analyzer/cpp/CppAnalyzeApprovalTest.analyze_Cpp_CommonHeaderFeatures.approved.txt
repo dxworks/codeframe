@@ -1,0 +1,119 @@
+{
+  "filePath" : "src/test/resources/samples/cpp/CommonHeaderFeatures.h",
+  "language" : "cpp",
+  "types" : [ {
+    "kind" : "struct",
+    "name" : "Point",
+    "fields" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    } ]
+  }, {
+    "kind" : "struct",
+    "name" : "HeaderConfig",
+    "fields" : [ {
+      "name" : "buffer_size",
+      "type" : "size_t"
+    }, {
+      "name" : "flags",
+      "type" : "uint32_t"
+    }, {
+      "name" : "origin",
+      "type" : "Point"
+    } ]
+  }, {
+    "kind" : "enum",
+    "name" : "StatusCode",
+    "fields" : [ {
+      "name" : "STATUS_OK"
+    }, {
+      "name" : "STATUS_ERROR"
+    } ]
+  } ],
+  "methods" : [ {
+    "name" : "clamp_int",
+    "returnType" : "int",
+    "parameters" : [ {
+      "name" : "value",
+      "type" : "int"
+    }, {
+      "name" : "min_value",
+      "type" : "int"
+    }, {
+      "name" : "max_value",
+      "type" : "int"
+    } ]
+  }, {
+    "name" : "init_config",
+    "returnType" : "StatusCode",
+    "parameters" : [ {
+      "name" : "config",
+      "type" : "HeaderConfig *"
+    } ]
+  }, {
+    "name" : "validate_name",
+    "returnType" : "int",
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "const char *"
+    } ]
+  }, {
+    "name" : "sort_points",
+    "returnType" : "int",
+    "parameters" : [ {
+      "name" : "items",
+      "type" : "Point *"
+    }, {
+      "name" : "count",
+      "type" : "size_t"
+    }, {
+      "name" : "compare",
+      "type" : "CompareFn"
+    } ]
+  }, {
+    "name" : "legacy_sum",
+    "returnType" : "int",
+    "parameters" : [ {
+      "name" : "a",
+      "type" : "int"
+    }, {
+      "name" : "b",
+      "type" : "int"
+    } ]
+  }, {
+    "name" : "touch_point",
+    "returnType" : "int",
+    "parameters" : [ {
+      "name" : "point",
+      "type" : "Point &"
+    } ]
+  }, {
+    "name" : "touch_point_const",
+    "returnType" : "int",
+    "parameters" : [ {
+      "name" : "point",
+      "type" : "const Point &"
+    } ]
+  }, {
+    "name" : "consume_point",
+    "returnType" : "int",
+    "parameters" : [ {
+      "name" : "point",
+      "type" : "Point &&"
+    } ]
+  } ],
+  "fields" : [ {
+    "name" : "DEFAULT_CONFIG",
+    "type" : "HeaderConfig"
+  }, {
+    "name" : "global_counter",
+    "type" : "int"
+  }, {
+    "name" : "global_callback_cpp",
+    "type" : "int (*global_callback_cpp)(int)"
+  } ],
+  "imports" : [ "#include <stddef.h>", "#include <stdint.h>" ]
+}

@@ -293,7 +293,6 @@ public class App {
 
         int cppScore = parseQualityScore(sourceCode, Language.CPP);
         int cScore = parseQualityScore(sourceCode, Language.C);
-
         return cppScore <= cScore ? cppAnalysis : cAnalysis;
     }
 
@@ -316,8 +315,8 @@ public class App {
         }
 
         int errors = ("ERROR".equals(node.getType()) || "MISSING".equals(node.getType())) ? 1 : 0;
-        for (int i = 0; i < node.getNamedChildCount(); i++) {
-            errors += countErrorNodes(node.getNamedChild(i));
+        for (int i = 0; i < node.getChildCount(); i++) {
+            errors += countErrorNodes(node.getChild(i));
         }
         return errors;
     }

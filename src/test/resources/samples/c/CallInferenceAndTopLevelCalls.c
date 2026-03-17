@@ -6,7 +6,9 @@ int write_impl(int value) {
     return value;
 }
 
-int declared_only(int value);
+int declared_only(const char *value);
+int dispatch_values(void *restrict context, int (*cb)(int));
+int (*make_dispatcher(void))(int);
 int (*global_callback)(int);
 
 Logger global_logger;

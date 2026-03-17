@@ -76,6 +76,10 @@ Extract:
 - local variables (identifier names)
 - method/function calls from body
 
+Type-text preservation rule:
+- Return/parameter type text is preserved in source-like form when syntactically clear.
+- Declarator qualifiers/symbols are retained where present (for example `const`, `restrict`, `*`, `&`, and function-pointer declarator forms such as `int (*cb)(int)`).
+
 ### 4.3 Calls
 
 For each call:
@@ -90,6 +94,7 @@ Chained/indirect expressions with unknown receiver type remain unresolved (`null
 
 - Extract concrete type declarations supported by each analyzer (see language-specific specs).
 - Nested types are captured when explicit in syntax.
+- File-scope field `type` text follows the same source-like preservation principle.
 
 ---
 

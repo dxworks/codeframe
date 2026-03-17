@@ -72,6 +72,72 @@ public class TreeSitterHelper {
         if (s == null) return null;
         return s.replaceAll("\\s+", " ").trim();
     }
+
+    public static String normalizeWhitespace(String text) {
+        if (text == null) {
+            return null;
+        }
+
+        StringBuilder out = new StringBuilder(text.length());
+        boolean pendingSpace = false;
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (Character.isWhitespace(c)) {
+                pendingSpace = true;
+                continue;
+            }
+            if (pendingSpace && out.length() > 0) {
+                out.append(' ');
+            }
+            out.append(c);
+            pendingSpace = false;
+        }
+
+        return out.toString().trim();
+    }
+
+    public static int findLastIdentifierOccurrence(String text, String identifier) {
+        if (text == null || identifier == null || identifier.isBlank()) {
+            return -1;
+        }
+
+        int from = text.length();
+        while (true) {
+            int idx = text.lastIndexOf(identifier, from - 1);
+            if (idx < 0) {
+                return -1;
+            }
+
+            boolean leftOk = idx == 0 || !isIdentifierChar(text.charAt(idx - 1));
+            int end = idx + identifier.length();
+            boolean rightOk = end >= text.length() || !isIdentifierChar(text.charAt(end));
+            if (leftOk && rightOk) {
+                return idx;
+            }
+
+            from = idx;
+        }
+    }
+
+    public static String normalizeFunctionPointerSpacing(String text) {
+        if (text == null) {
+            return null;
+        }
+
+        String normalized = text;
+        while (normalized.contains("(* )")) {
+            normalized = normalized.replace("(* )", "(*)");
+        }
+        while (normalized.contains("(& )")) {
+            normalized = normalized.replace("(& )", "(&)");
+        }
+
+        return normalized;
+    }
+
+    private static boolean isIdentifierChar(char c) {
+        return Character.isLetterOrDigit(c) || c == '_';
+    }
     
     public static TSNode findFirstChild(TSNode parent, String nodeType) {
         if (parent == null || parent.isNull()) return null;

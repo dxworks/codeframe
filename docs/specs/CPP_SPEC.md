@@ -45,6 +45,7 @@ C++-specific type kinds:
 ### 3.2 Free functions
 
 - Extract free functions at namespace/file scope as `methods`.
+- Preserve `returnType` and parameter `type` text in source-like form when syntactically clear (for example `const char *`, `HeaderConfig *`, `Widget &`, `int (*cb)(int)`).
 
 ### 3.3 Constructors and destructors
 
@@ -58,6 +59,10 @@ C++-specific type kinds:
 
 - Template declarations are captured with template parameter text attached to names.
 - No template instantiation semantics are performed.
+
+### 3.6 File-scope declarations
+
+- File-scope variable/constant `fields[].type` preserves source-like declarator text where present.
 
 ---
 

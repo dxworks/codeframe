@@ -25,8 +25,21 @@
     "returnType" : "int",
     "parameters" : [ {
       "name" : "value",
-      "type" : "int"
+      "type" : "const char *"
     } ]
+  }, {
+    "name" : "dispatch_values",
+    "returnType" : "int",
+    "parameters" : [ {
+      "name" : "context",
+      "type" : "void *restrict"
+    }, {
+      "name" : "cb",
+      "type" : "int (*)(int)"
+    } ]
+  }, {
+    "name" : "make_dispatcher",
+    "returnType" : "int"
   }, {
     "name" : "log_message",
     "returnType" : "void",

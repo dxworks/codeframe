@@ -314,12 +314,43 @@ public class CAnalyzer implements LanguageAnalyzer {
 
         List<TSNode> params = findAllChildren(parameterList, "parameter_declaration");
         for (TSNode param : params) {
-            String paramType = extractDeclarationTypeText(source, param);
             String paramName = extractFirstIdentifier(source, param);
+            String paramType = extractParameterTypeText(source, param, paramName);
             if (paramName != null) {
                 method.parameters.add(new Parameter(paramName, paramType));
             }
         }
+    }
+
+    private String extractParameterTypeText(String source, TSNode parameterNode, String parameterName) {
+        if (parameterNode == null || parameterNode.isNull()) {
+            return null;
+        }
+
+        String fullText = getNodeText(source, parameterNode);
+        if (fullText == null || fullText.isBlank()) {
+            return extractDeclarationTypeText(source, parameterNode);
+        }
+
+        String normalized = normalizeWhitespace(fullText);
+        if (parameterName == null || parameterName.isBlank()) {
+            return normalized;
+        }
+
+        int idx = findLastIdentifierOccurrence(normalized, parameterName);
+        if (idx < 0) {
+            return extractDeclarationTypeText(source, parameterNode);
+        }
+
+        String typeText = normalizeWhitespace(
+            normalized.substring(0, idx) + " " + normalized.substring(idx + parameterName.length())
+        );
+        typeText = normalizeFunctionPointerSpacing(typeText);
+
+        if (typeText == null || typeText.isBlank()) {
+            return extractDeclarationTypeText(source, parameterNode);
+        }
+        return typeText;
     }
 
     private void analyzeMethodBody(String source, TSNode body, MethodInfo method, Map<String, String> fileScopeTypes) {
@@ -541,10 +572,49 @@ public class CAnalyzer implements LanguageAnalyzer {
             return false;
         }
 
-        // C function-pointer variables look like: int (*cb)(int)
-        // where pointer_declarator is nested inside the function_declarator.
-        // A true top-level function declaration should not have this nested pattern.
-        return findAllDescendants(functionDeclarator, "pointer_declarator").isEmpty();
+        TSNode ancestor = functionDeclarator.getParent();
+        while (ancestor != null && !ancestor.isNull()) {
+            if ("pointer_declarator".equals(ancestor.getType())) {
+                return false;
+            }
+            ancestor = ancestor.getParent();
+        }
+
+        TSNode nestedDeclarator = getChildByFieldName(functionDeclarator, "declarator");
+        while (nestedDeclarator != null && !nestedDeclarator.isNull()) {
+            if ("pointer_declarator".equals(nestedDeclarator.getType())) {
+                return false;
+            }
+            if ("parenthesized_declarator".equals(nestedDeclarator.getType())
+                && !findAllDescendants(nestedDeclarator, "pointer_declarator").isEmpty()
+                && !isFunctionReturningFunctionPointerDeclaration(nestedDeclarator)) {
+                return false;
+            }
+            nestedDeclarator = getChildByFieldName(nestedDeclarator, "declarator");
+        }
+
+        return true;
+    }
+
+    private boolean isFunctionReturningFunctionPointerDeclaration(TSNode parenthesizedDeclarator) {
+        if (parenthesizedDeclarator == null || parenthesizedDeclarator.isNull()) {
+            return false;
+        }
+
+        List<TSNode> pointerDeclarators = findAllDescendants(parenthesizedDeclarator, "pointer_declarator");
+        for (TSNode pointerDeclarator : pointerDeclarators) {
+            TSNode pointedDeclarator = getChildByFieldName(pointerDeclarator, "declarator");
+            if (pointedDeclarator == null || pointedDeclarator.isNull()) {
+                continue;
+            }
+
+            if ("function_declarator".equals(pointedDeclarator.getType())
+                || !findAllDescendants(pointedDeclarator, "function_declarator").isEmpty()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private String extractDeclaratorName(String source, TSNode declarator) {

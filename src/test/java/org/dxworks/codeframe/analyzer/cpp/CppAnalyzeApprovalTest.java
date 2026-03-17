@@ -40,6 +40,16 @@ public class CppAnalyzeApprovalTest {
         verify("TypeCoverageAndWrappedDeclaration.cpp", Language.CPP);
     }
 
+    @Test
+    void analyze_Cpp_CommonHeaderFeatures() throws IOException {
+        verify("CommonHeaderFeatures.h", Language.CPP);
+    }
+
+    @Test
+    void analyze_Cpp_MacroHeavyHeader() throws IOException {
+        verify("MacroHeavyHeader.h", Language.CPP);
+    }
+
     private static void verify(String fileName, Language language) throws IOException {
         App.initAnalyzersForTestsFromPaths(List.of());
         Path filePath = Paths.get(SAMPLES_BASE_PATH + fileName);

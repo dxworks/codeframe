@@ -67,6 +67,10 @@ Method/function metadata:
 - `localVariables`
 - `methodCalls`
 
+Type-text preservation rule:
+- `returnType` and parameter `type` values preserve Rust reference syntax when present.
+- Examples: `&User`, `&Point`, `&mut T`.
+
 ### 3.3 Fields
 
 Extracted field sources:
@@ -79,6 +83,8 @@ Field metadata:
 - `type`
 - `visibility`
 - `modifiers` (`const`, `static`, `mut`, and visibility when present)
+
+Field type text follows the same preservation principle (source-like syntax where possible).
 
 ### 3.4 Method Calls and Macros
 

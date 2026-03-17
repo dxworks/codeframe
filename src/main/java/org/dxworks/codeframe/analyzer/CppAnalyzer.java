@@ -561,6 +561,51 @@ public class CppAnalyzer implements LanguageAnalyzer {
             if ("template_declaration".equals(child.getType())) {
                 addTemplateFunctionMethod(source, child, analysis, fileScopeTypes);
             }
+
+            if ("linkage_specification".equals(child.getType()) || child.getType().startsWith("preproc_")) {
+                extractContainerMethods(source, child, analysis, fileScopeTypes);
+            }
+        }
+    }
+
+    private void extractContainerMethods(String source, TSNode container, FileAnalysis analysis, Map<String, String> fileScopeTypes) {
+        for (TSNode functionNode : findAllDescendants(container, "function_definition")) {
+            if (isInsideNodeType(functionNode, "class_specifier")
+                || isInsideNodeType(functionNode, "struct_specifier")
+                || isInsideNodeType(functionNode, "union_specifier")
+                || isInsideNodeType(functionNode, "enum_specifier")
+                || isInsideNodeType(functionNode, "template_declaration")) {
+                continue;
+            }
+            MethodInfo method = analyzeFunctionDefinition(source, functionNode, null, fileScopeTypes);
+            if (method != null && method.name != null) {
+                analysis.methods.add(method);
+            }
+        }
+
+        for (TSNode declarationNode : findAllDescendants(container, "declaration")) {
+            if (isInsideNodeType(declarationNode, "class_specifier")
+                || isInsideNodeType(declarationNode, "struct_specifier")
+                || isInsideNodeType(declarationNode, "union_specifier")
+                || isInsideNodeType(declarationNode, "enum_specifier")
+                || isInsideNodeType(declarationNode, "function_definition")
+                || isInsideNodeType(declarationNode, "template_declaration")) {
+                continue;
+            }
+            MethodInfo method = analyzeFunctionDeclaration(source, declarationNode, null);
+            if (method != null && method.name != null) {
+                analysis.methods.add(method);
+            }
+        }
+
+        for (TSNode templateNode : findAllDescendants(container, "template_declaration")) {
+            if (isInsideNodeType(templateNode, "class_specifier")
+                || isInsideNodeType(templateNode, "struct_specifier")
+                || isInsideNodeType(templateNode, "union_specifier")
+                || isInsideNodeType(templateNode, "enum_specifier")) {
+                continue;
+            }
+            addTemplateFunctionMethod(source, templateNode, analysis, fileScopeTypes);
         }
     }
 
@@ -575,12 +620,43 @@ public class CppAnalyzer implements LanguageAnalyzer {
         }
 
         for (TSNode param : findAllChildren(parameterList, "parameter_declaration")) {
-            String paramType = extractDeclarationTypeText(source, param);
             String paramName = extractFirstIdentifier(source, param);
+            String paramType = extractParameterTypeText(source, param, paramName);
             if (paramName != null) {
                 method.parameters.add(new Parameter(paramName, paramType));
             }
         }
+    }
+
+    private String extractParameterTypeText(String source, TSNode parameterNode, String parameterName) {
+        if (parameterNode == null || parameterNode.isNull()) {
+            return null;
+        }
+
+        String fullText = getNodeText(source, parameterNode);
+        if (fullText == null || fullText.isBlank()) {
+            return extractDeclarationTypeText(source, parameterNode);
+        }
+
+        String normalized = normalizeWhitespace(fullText);
+        if (parameterName == null || parameterName.isBlank()) {
+            return normalized;
+        }
+
+        int idx = findLastIdentifierOccurrence(normalized, parameterName);
+        if (idx < 0) {
+            return extractDeclarationTypeText(source, parameterNode);
+        }
+
+        String typeText = normalizeWhitespace(
+            normalized.substring(0, idx) + " " + normalized.substring(idx + parameterName.length())
+        );
+        typeText = normalizeFunctionPointerSpacing(typeText);
+
+        if (typeText == null || typeText.isBlank()) {
+            return extractDeclarationTypeText(source, parameterNode);
+        }
+        return typeText;
     }
 
     private void analyzeMethodBody(String source, TSNode body, MethodInfo method, Map<String, String> fileScopeTypes) {
@@ -655,32 +731,52 @@ public class CppAnalyzer implements LanguageAnalyzer {
         Map<String, String> fileScopeTypes = new HashMap<>();
         for (int i = 0; i < rootNode.getNamedChildCount(); i++) {
             TSNode child = rootNode.getNamedChild(i);
-            if (child == null || child.isNull() || !"declaration".equals(child.getType())) {
+            if (child == null || child.isNull()) {
                 continue;
             }
 
-            if (containsNonFieldFunctionDeclaration(child)) {
-                continue;
+            if ("declaration".equals(child.getType())) {
+                addTopLevelFieldsFromDeclaration(source, child, analysis, fileScopeTypes);
             }
 
-            String typeText = extractDeclarationTypeText(source, child);
-            for (String name : extractDeclaredVariableNames(source, child)) {
-                if (name == null || name.isBlank()) {
-                    continue;
-                }
-
-                String fieldType = resolveFileScopeFieldType(source, child, name, typeText);
-
-                FieldInfo field = new FieldInfo();
-                field.name = name;
-                field.type = fieldType;
-                analysis.fields.add(field);
-                if (fieldType != null) {
-                    fileScopeTypes.put(name, fieldType);
+            if ("linkage_specification".equals(child.getType()) || child.getType().startsWith("preproc_")) {
+                for (TSNode declarationNode : findAllDescendants(child, "declaration")) {
+                    if (isInsideNodeType(declarationNode, "class_specifier")
+                        || isInsideNodeType(declarationNode, "struct_specifier")
+                        || isInsideNodeType(declarationNode, "union_specifier")
+                        || isInsideNodeType(declarationNode, "enum_specifier")
+                        || isInsideNodeType(declarationNode, "function_definition")
+                        || isInsideNodeType(declarationNode, "template_declaration")) {
+                        continue;
+                    }
+                    addTopLevelFieldsFromDeclaration(source, declarationNode, analysis, fileScopeTypes);
                 }
             }
         }
         return fileScopeTypes;
+    }
+
+    private void addTopLevelFieldsFromDeclaration(String source, TSNode declarationNode, FileAnalysis analysis, Map<String, String> fileScopeTypes) {
+        if (containsNonFieldFunctionDeclaration(declarationNode)) {
+            return;
+        }
+
+        String typeText = extractDeclarationTypeText(source, declarationNode);
+        for (String name : extractDeclaredVariableNames(source, declarationNode)) {
+            if (name == null || name.isBlank()) {
+                continue;
+            }
+
+            String fieldType = resolveFileScopeFieldType(source, declarationNode, name, typeText);
+
+            FieldInfo field = new FieldInfo();
+            field.name = name;
+            field.type = fieldType;
+            analysis.fields.add(field);
+            if (fieldType != null) {
+                fileScopeTypes.put(name, fieldType);
+            }
+        }
     }
 
     private String resolveFileScopeFieldType(String source, TSNode declarationNode, String fieldName, String baseType) {
@@ -780,7 +876,27 @@ public class CppAnalyzer implements LanguageAnalyzer {
             return false;
         }
 
-        return findAllDescendants(functionDeclarator, "pointer_declarator").isEmpty();
+        TSNode ancestor = functionDeclarator.getParent();
+        while (ancestor != null && !ancestor.isNull()) {
+            if ("pointer_declarator".equals(ancestor.getType())) {
+                return false;
+            }
+            ancestor = ancestor.getParent();
+        }
+
+        TSNode nestedDeclarator = getChildByFieldName(functionDeclarator, "declarator");
+        while (nestedDeclarator != null && !nestedDeclarator.isNull()) {
+            if ("pointer_declarator".equals(nestedDeclarator.getType())) {
+                return false;
+            }
+            if ("parenthesized_declarator".equals(nestedDeclarator.getType())
+                && !findAllDescendants(nestedDeclarator, "pointer_declarator").isEmpty()) {
+                return false;
+            }
+            nestedDeclarator = getChildByFieldName(nestedDeclarator, "declarator");
+        }
+
+        return true;
     }
 
     private String extractDeclaratorName(String source, TSNode declarator) {

@@ -1,0 +1,41 @@
+{
+  "filePath" : "src/test/resources/samples/cpp/MacroHeavyHeader.h",
+  "language" : "cpp",
+  "types" : [ {
+    "kind" : "struct",
+    "name" : "MacroRecord",
+    "fields" : [ {
+      "name" : "flags",
+      "type" : "uint32_t"
+    }, {
+      "name" : "size",
+      "type" : "size_t"
+    } ]
+  } ],
+  "methods" : [ {
+    "name" : "run_macro_flow",
+    "returnType" : "int",
+    "parameters" : [ {
+      "name" : "record",
+      "type" : "MacroRecord *"
+    }, {
+      "name" : "handler",
+      "type" : "int (*)(int)"
+    } ]
+  }, {
+    "name" : "bind_macro_record",
+    "returnType" : "int",
+    "parameters" : [ {
+      "name" : "record",
+      "type" : "const MacroRecord &"
+    } ]
+  } ],
+  "fields" : [ {
+    "name" : "global_mask",
+    "type" : "uint32_t"
+  }, {
+    "name" : "macro_handler",
+    "type" : "int (*macro_handler)(int)"
+  } ],
+  "imports" : [ "#include <stddef.h>", "#include <stdint.h>" ]
+}

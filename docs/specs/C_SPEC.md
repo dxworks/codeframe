@@ -40,6 +40,7 @@ C-specific type kinds:
 ### 3.1 File-scope functions
 
 - Function declarations/definitions at file scope are extracted as `methods`.
+- Method `returnType` and parameter `type` preserve C declarator syntax where present (for example `const char *`, `void *restrict`, `int (*cb)(int)`).
 
 ### 3.2 Type declarations
 
@@ -56,6 +57,7 @@ C-specific type kinds:
 
 - Function pointer declarations are preserved as source-like text, not decomposed into a deep semantic model.
 - Example: `int (*cmp)(const void*, const void*)` is kept as textual type information (for example in `extendsType`), rather than split into pointer-layer/type-system objects.
+- File-scope field `type` follows the same source-like preservation principle.
 - Out of scope in V1: typedef-chain resolution, compatibility inference, and calling-convention semantics.
 
 ---
