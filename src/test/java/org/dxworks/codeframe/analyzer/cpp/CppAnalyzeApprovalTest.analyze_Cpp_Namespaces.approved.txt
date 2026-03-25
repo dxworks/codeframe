@@ -2,6 +2,10 @@
   "filePath" : "src/test/resources/samples/cpp/Namespaces.cpp",
   "language" : "cpp",
   "types" : [ {
+    "kind" : "typedef",
+    "name" : "GlobalCount",
+    "extendsType" : "int"
+  }, {
     "kind" : "namespace",
     "name" : "math",
     "methods" : [ {
@@ -24,6 +28,10 @@
       } ]
     } ],
     "types" : [ {
+      "kind" : "typedef",
+      "name" : "Value",
+      "extendsType" : "int"
+    }, {
       "kind" : "class",
       "name" : "Vector",
       "methods" : [ {

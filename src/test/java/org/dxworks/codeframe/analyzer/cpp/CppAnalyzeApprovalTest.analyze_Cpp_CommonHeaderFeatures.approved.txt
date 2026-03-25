@@ -36,6 +36,7 @@
   "methods" : [ {
     "name" : "clamp_int",
     "returnType" : "int",
+    "modifiers" : [ "static", "inline" ],
     "parameters" : [ {
       "name" : "value",
       "type" : "int"
@@ -107,13 +108,16 @@
   } ],
   "fields" : [ {
     "name" : "DEFAULT_CONFIG",
-    "type" : "HeaderConfig"
+    "type" : "HeaderConfig",
+    "modifiers" : [ "extern", "const" ]
   }, {
     "name" : "global_counter",
-    "type" : "int"
+    "type" : "int",
+    "modifiers" : [ "extern" ]
   }, {
     "name" : "global_callback_cpp",
-    "type" : "int (*global_callback_cpp)(int)"
+    "type" : "int (*global_callback_cpp)(int)",
+    "modifiers" : [ "extern" ]
   } ],
   "imports" : [ "#include <stddef.h>", "#include <stdint.h>" ]
 }

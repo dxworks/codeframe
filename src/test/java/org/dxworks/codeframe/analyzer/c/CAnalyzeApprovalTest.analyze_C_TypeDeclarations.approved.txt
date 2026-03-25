@@ -38,6 +38,16 @@
       "name" : "STATUS_FAIL"
     } ]
   }, {
+    "kind" : "struct",
+    "name" : "Flags",
+    "fields" : [ {
+      "name" : "readable",
+      "type" : "unsigned int"
+    }, {
+      "name" : "writable",
+      "type" : "unsigned int"
+    } ]
+  }, {
     "kind" : "typedef",
     "name" : "cmp_fn",
     "extendsType" : "int (*cmp_fn)(const void* a, const void* b)"

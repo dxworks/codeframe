@@ -36,6 +36,16 @@
       "type" : "T"
     } ]
   }, {
+    "name" : "tracef",
+    "returnType" : "int",
+    "modifiers" : [ "extern" ],
+    "parameters" : [ {
+      "name" : "fmt",
+      "type" : "const char *"
+    }, {
+      "name" : "..."
+    } ]
+  }, {
     "name" : "log_message",
     "returnType" : "int",
     "parameters" : [ {

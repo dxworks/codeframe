@@ -1,6 +1,9 @@
 #include <cstddef>
 
 int& declared_ref();
+class ForwardOnly;
+struct Pending;
+enum class Waiting;
 
 class Outer {
 public:
@@ -19,7 +22,7 @@ union Number {
     float f;
 };
 
-enum Color {
+enum class Color {
     RED,
     BLUE
 };

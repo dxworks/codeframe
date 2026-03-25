@@ -2,6 +2,7 @@
 
 template <typename T>
 T declared_identity(T input);
+extern int tracef(const char *fmt, ...);
 
 namespace util {
 

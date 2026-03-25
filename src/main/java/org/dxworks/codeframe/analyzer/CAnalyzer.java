@@ -105,9 +105,10 @@ public class CAnalyzer implements LanguageAnalyzer {
         typeInfo.name = extractTypeName(source, typeNode);
 
         TSNode body = findFirstChild(typeNode, "field_declaration_list");
-        if (body != null) {
-            extractStructFields(source, body, typeInfo);
+        if (body == null) {
+            return null;
         }
+        extractStructFields(source, body, typeInfo);
         return typeInfo;
     }
 
@@ -117,15 +118,16 @@ public class CAnalyzer implements LanguageAnalyzer {
         typeInfo.name = extractTypeName(source, enumNode);
 
         TSNode enumeratorList = findFirstChild(enumNode, "enumerator_list");
-        if (enumeratorList != null) {
-            List<TSNode> enumerators = findAllChildren(enumeratorList, "enumerator");
-            for (TSNode enumerator : enumerators) {
-                String enumMember = extractName(source, enumerator, "identifier");
-                if (enumMember != null) {
-                    FieldInfo field = new FieldInfo();
-                    field.name = enumMember;
-                    typeInfo.fields.add(field);
-                }
+        if (enumeratorList == null) {
+            return null;
+        }
+        List<TSNode> enumerators = findAllChildren(enumeratorList, "enumerator");
+        for (TSNode enumerator : enumerators) {
+            String enumMember = extractName(source, enumerator, "identifier");
+            if (enumMember != null) {
+                FieldInfo field = new FieldInfo();
+                field.name = enumMember;
+                typeInfo.fields.add(field);
             }
         }
 
@@ -282,6 +284,8 @@ public class CAnalyzer implements LanguageAnalyzer {
         method.name = extractDeclaratorName(source, declarator);
         method.returnType = extractDeclarationTypeText(source, functionNode);
         extractParameters(source, declarator, method);
+        addModifiersFromSpecifiers(method.modifiers, source, functionNode,
+            List.of("storage_class_specifier", "function_specifier"));
 
         TSNode body = getChildByFieldName(functionNode, "body");
         if (body == null) {
@@ -299,6 +303,8 @@ public class CAnalyzer implements LanguageAnalyzer {
         method.name = extractDeclaratorName(source, functionDeclarator);
         method.returnType = extractDeclarationTypeText(source, declarationNode);
         extractParameters(source, functionDeclarator, method);
+        addModifiersFromSpecifiers(method.modifiers, source, declarationNode,
+            List.of("storage_class_specifier", "function_specifier"));
         return method;
     }
 
@@ -319,6 +325,10 @@ public class CAnalyzer implements LanguageAnalyzer {
             if (paramName != null) {
                 method.parameters.add(new Parameter(paramName, paramType));
             }
+        }
+
+        if (hasVariadicParameter(source, parameterList)) {
+            method.parameters.add(new Parameter("...", null));
         }
     }
 
@@ -448,6 +458,8 @@ public class CAnalyzer implements LanguageAnalyzer {
                 FieldInfo field = new FieldInfo();
                 field.name = name;
                 field.type = fieldType;
+                addModifiersFromSpecifiers(field.modifiers, source, child,
+                    List.of("storage_class_specifier", "type_qualifier"));
                 analysis.fields.add(field);
                 if (fieldType != null) {
                     fileScopeTypes.put(name, fieldType);
@@ -702,5 +714,41 @@ public class CAnalyzer implements LanguageAnalyzer {
         }
 
         return null;
+    }
+
+    private boolean hasVariadicParameter(String source, TSNode parameterList) {
+        if (parameterList == null || parameterList.isNull()) {
+            return false;
+        }
+        for (int i = 0; i < parameterList.getNamedChildCount(); i++) {
+            TSNode child = parameterList.getNamedChild(i);
+            if (child != null && !child.isNull() && "variadic_parameter".equals(child.getType())) {
+                return true;
+            }
+        }
+        String text = getNodeText(source, parameterList);
+        return text != null && text.contains("...");
+    }
+
+    private void addModifiersFromSpecifiers(List<String> target, String source, TSNode node, List<String> specifierNodeTypes) {
+        if (target == null || node == null || node.isNull() || specifierNodeTypes == null || specifierNodeTypes.isEmpty()) {
+            return;
+        }
+
+        for (String specifierNodeType : specifierNodeTypes) {
+            for (TSNode specifierNode : findAllDescendants(node, specifierNodeType)) {
+                if (isInsideNodeType(specifierNode, "parameter_declaration")) {
+                    continue;
+                }
+                String token = getNodeText(source, specifierNode);
+                if (token == null) {
+                    continue;
+                }
+                String normalized = token.trim();
+                if (!normalized.isEmpty() && !target.contains(normalized)) {
+                    target.add(normalized);
+                }
+            }
+        }
     }
 }

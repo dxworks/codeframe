@@ -32,7 +32,7 @@
       "type" : "float"
     } ]
   }, {
-    "kind" : "enum",
+    "kind" : "enum class",
     "name" : "Color",
     "fields" : [ {
       "name" : "RED"

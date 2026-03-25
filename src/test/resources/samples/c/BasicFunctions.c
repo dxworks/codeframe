@@ -1,14 +1,16 @@
 #include <stdio.h>
 
-int global_count = 0;
+static int global_count = 0;
+extern volatile int global_limit;
+extern void tracef(const char *fmt, ...);
 
-int add(int a, int b) {
+inline int add(int a, int b) {
     int sum = a + b;
     printf("sum: %d", sum);
     return sum;
 }
 
-void boot() {
+static void boot() {
     add(1, 2);
 }
 

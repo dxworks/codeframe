@@ -32,10 +32,12 @@
   } ],
   "fields" : [ {
     "name" : "global_mask",
-    "type" : "uint32_t"
+    "type" : "uint32_t",
+    "modifiers" : [ "extern" ]
   }, {
     "name" : "macro_handler",
-    "type" : "int (*macro_handler)(int)"
+    "type" : "int (*macro_handler)(int)",
+    "modifiers" : [ "extern" ]
   } ],
   "imports" : [ "#include <stddef.h>", "#include <stdint.h>" ]
 }

@@ -1,4 +1,8 @@
+using GlobalCount = int;
+
 namespace math {
+
+using Value = int;
 
 class Vector {
 public:

@@ -2,8 +2,19 @@
   "filePath" : "src/test/resources/samples/c/BasicFunctions.c",
   "language" : "c",
   "methods" : [ {
+    "name" : "tracef",
+    "returnType" : "void",
+    "modifiers" : [ "extern" ],
+    "parameters" : [ {
+      "name" : "fmt",
+      "type" : "const char *"
+    }, {
+      "name" : "..."
+    } ]
+  }, {
     "name" : "add",
     "returnType" : "int",
+    "modifiers" : [ "inline" ],
     "parameters" : [ {
       "name" : "a",
       "type" : "int"
@@ -20,6 +31,7 @@
   }, {
     "name" : "boot",
     "returnType" : "void",
+    "modifiers" : [ "static" ],
     "methodCalls" : [ {
       "methodName" : "add",
       "callCount" : 1,
@@ -36,7 +48,12 @@
   } ],
   "fields" : [ {
     "name" : "global_count",
-    "type" : "int"
+    "type" : "int",
+    "modifiers" : [ "static" ]
+  }, {
+    "name" : "global_limit",
+    "type" : "int",
+    "modifiers" : [ "extern", "volatile" ]
   } ],
   "imports" : [ "#include <stdio.h>" ]
 }

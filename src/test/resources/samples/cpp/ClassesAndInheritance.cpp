@@ -4,13 +4,14 @@ class Counter {
 public:
     Counter() {}
     ~Counter() {}
-    int value() { return count; }
+    virtual int value() const { return count; }
 private:
     int count;
 };
 
-class AdvancedCounter : public Counter {
+class AdvancedCounter final : public Counter {
 public:
+    int value() const override { return 1; }
     int operator+(int other) { return value() + other; }
 };
 
@@ -21,10 +22,11 @@ public:
 
 class Widget : public Counter, public Printable {
 public:
+    static int instances;
     Counter* self() { return this; }
 };
 
-int helper(int x) {
+static inline int helper(int x) {
     return x + 1;
 }
 
