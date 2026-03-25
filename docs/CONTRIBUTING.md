@@ -14,6 +14,12 @@
 
 Follow these conventions to ensure consistency across all analyzers.
 
+### Spec Authoring Rule
+
+- Language specs in `docs/specs/*_SPEC.md` are normative and must be self-sufficient.
+- Document the final extraction contract directly in the spec; avoid temporary option labels or decision-history wording.
+- When analyzer behavior changes, update the relevant spec and approval baselines in the same change.
+
 ### Extraction Contract (All Parsers)
 
 - Extract facts only. Do not infer capabilities or intent.

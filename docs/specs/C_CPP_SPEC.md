@@ -51,7 +51,7 @@ Top-level fields:
 - `filePath`
 - `language` = set by the concrete analyzer (`"c"` for C, `"cpp"` for C++)
 - `imports` (`#include` directives as raw text)
-- `types` (C: struct/union/enum/typedef aliases; C++: class/struct/union/enum)
+- `types` (C: struct/union/enum/typedef aliases; C++: class/struct/union/enum/enum class/namespace/typedef)
 - `methods` (functions and methods)
 - `fields` (file-scope variables/constants)
 - `methodCalls` (top-level calls in executable file scope)
@@ -72,13 +72,38 @@ Top-level fields:
 Extract:
 - name
 - return type text (when syntactically present)
+- `visibility` (see language-specific specs; C has no visibility, C++ uses access specifiers)
+- `modifiers` (storage-class and qualifier keywords present on the declaration)
 - parameters (`name`, `type` when present)
 - local variables (identifier names)
 - method/function calls from body
 
+Shared modifier keywords captured for functions/methods:
+- `static`, `extern`, `inline`
+- Language-specific modifiers are defined in `C_SPEC.md` and `CPP_SPEC.md`.
+
 Type-text preservation rule:
 - Return/parameter type text is preserved in source-like form when syntactically clear.
 - Declarator qualifiers/symbols are retained where present (for example `const`, `restrict`, `*`, `&`, and function-pointer declarator forms such as `int (*cb)(int)`).
+
+Variadic parameters:
+- C/C++ variadic `...` is extracted as a parameter with `name: "..."` and no type.
+
+Example — given:
+
+```c
+static inline int add(int a, int b) { return a + b; }
+void log(const char *fmt, ...);
+```
+
+Extracted methods:
+
+```json
+{ "name": "add", "returnType": "int", "modifiers": ["static", "inline"],
+  "parameters": [{"name": "a", "type": "int"}, {"name": "b", "type": "int"}] }
+{ "name": "log", "returnType": "void",
+  "parameters": [{"name": "fmt", "type": "const char *"}, {"name": "..."}] }
+```
 
 ### 4.3 Calls
 
@@ -93,8 +118,30 @@ Chained/indirect expressions with unknown receiver type remain unresolved (`null
 ### 4.4 Common type handling
 
 - Extract concrete type declarations supported by each analyzer (see language-specific specs).
+- `modifiers` are captured on types when syntactically present (see language-specific specs).
 - Nested types are captured when explicit in syntax.
-- File-scope field `type` text follows the same source-like preservation principle.
+- Forward declarations (bodyless `struct Foo;`) are skipped — no empty type is emitted.
+
+### 4.5 File-scope fields
+
+Extract:
+- `name`
+- `type` (source-like text)
+- `modifiers` (storage-class and qualifier keywords: `static`, `extern`, `const`, `volatile`)
+
+Example — given:
+
+```c
+static int counter = 0;
+extern const char *app_name;
+```
+
+Extracted fields:
+
+```json
+{ "name": "counter", "type": "int", "modifiers": ["static"] }
+{ "name": "app_name", "type": "const char *", "modifiers": ["extern"] }
+```
 
 ---
 

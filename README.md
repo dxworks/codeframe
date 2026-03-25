@@ -195,7 +195,7 @@ See **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** for details on core components a
 
 ## Contributing
 
-See **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** for guidelines on adding new languages and analyzer conventions.
+See **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** for guidelines on adding new languages, authoring language specs, and analyzer conventions.
 
 ## Documentation Map
 

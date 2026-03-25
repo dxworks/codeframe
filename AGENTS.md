@@ -9,6 +9,11 @@ This file is the primary guide for AI contributors working in this repository.
 - Do not hack toward a solution; prefer grammar/tree understanding and a proper fix.
 - For parser/analyzer behavior, follow the global Extraction Contract in `docs/CONTRIBUTING.md`.
 
+## Documentation Rules (Canonical)
+
+- Keep documentation DRY across the project: policy/rules must have one canonical location.
+- Other documents should link to canonical policy text instead of duplicating it.
+
 ## Canonical Reading Order
 
 1. `README.md` for usage, CLI behavior, and configuration.

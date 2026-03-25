@@ -9,7 +9,9 @@
       "name" : "Inner",
       "fields" : [ {
         "name" : "v",
-        "type" : "int"
+        "type" : "int",
+        "visibility" : "public",
+        "modifiers" : [ "public" ]
       } ]
     } ]
   }, {

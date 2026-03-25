@@ -17,8 +17,13 @@ void log_message(Logger logger) {
     logger.writer(2);
 }
 
+Logger* get_logger() {
+    return &global_logger;
+}
+
 int compute() {
     log_message(global_logger);
+    get_logger()->writer(1);
     return 0;
 }
 

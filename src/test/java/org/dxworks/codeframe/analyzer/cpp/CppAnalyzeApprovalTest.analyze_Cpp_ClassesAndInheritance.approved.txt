@@ -6,15 +6,23 @@
     "name" : "Counter",
     "fields" : [ {
       "name" : "count",
-      "type" : "int"
+      "type" : "int",
+      "visibility" : "private",
+      "modifiers" : [ "private" ]
     } ],
     "methods" : [ {
-      "name" : "Counter"
+      "name" : "Counter",
+      "visibility" : "public",
+      "modifiers" : [ "public" ]
     }, {
-      "name" : "~Counter"
+      "name" : "~Counter",
+      "visibility" : "public",
+      "modifiers" : [ "public" ]
     }, {
       "name" : "value",
-      "returnType" : "int"
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public" ]
     } ]
   }, {
     "kind" : "class",
@@ -23,6 +31,8 @@
     "methods" : [ {
       "name" : "operator+",
       "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
       "parameters" : [ {
         "name" : "other",
         "type" : "int"
@@ -32,6 +42,25 @@
         "callCount" : 1,
         "parameterCount" : 0
       } ]
+    } ]
+  }, {
+    "kind" : "class",
+    "name" : "Printable",
+    "methods" : [ {
+      "name" : "label",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public" ]
+    } ]
+  }, {
+    "kind" : "class",
+    "name" : "Widget",
+    "extendsType" : ": public Counter, public Printable",
+    "methods" : [ {
+      "name" : "self",
+      "returnType" : "Counter",
+      "visibility" : "public",
+      "modifiers" : [ "public" ]
     } ]
   } ],
   "methods" : [ {
@@ -44,11 +73,21 @@
   }, {
     "name" : "main",
     "returnType" : "int",
-    "localVariables" : [ "c" ],
+    "localVariables" : [ "w" ],
     "methodCalls" : [ {
       "methodName" : "helper",
       "callCount" : 1,
       "parameterCount" : 1
+    }, {
+      "methodName" : "self",
+      "objectType" : "Widget",
+      "objectName" : "w",
+      "callCount" : 1,
+      "parameterCount" : 0
+    }, {
+      "methodName" : "value",
+      "callCount" : 1,
+      "parameterCount" : 0
     } ]
   } ],
   "imports" : [ "#include <string>" ]

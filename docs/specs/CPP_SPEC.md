@@ -29,6 +29,9 @@ C++-specific type kinds:
 - `struct`
 - `union`
 - `enum`
+- `enum class`
+- `namespace`
+- `typedef` (for `using` aliases)
 
 `language` is always `"cpp"`.
 
@@ -40,7 +43,24 @@ C++-specific type kinds:
 
 - Extract classes with:
   - `name`, `kind`, `fields`, `methods`, nested `types`
-  - inheritance list in `extendsType` (raw base-specifier text)
+  - inheritance list in `extendsType` (raw base-specifier text, including multiple bases)
+
+Example — given:
+
+```cpp
+class Widget : public Drawable, public Serializable {
+public:
+    void render();
+};
+```
+
+Extracted type:
+
+```json
+{ "kind": "class", "name": "Widget",
+  "extendsType": ": public Drawable, public Serializable",
+  "methods": [{"name": "render", "returnType": "void", "visibility": "public", "modifiers": ["public"]}] }
+```
 
 ### 3.2 Free functions
 
@@ -58,11 +78,172 @@ C++-specific type kinds:
 ### 3.5 Templates
 
 - Template declarations are captured with template parameter text attached to names.
+- The `template` keyword is captured in `modifiers[]`, while keeping template-parameter text attached to the name.
 - No template instantiation semantics are performed.
+
+Example — given:
+
+```cpp
+template <typename T>
+T identity(T input) { return input; }
+```
+
+Extracted method:
+
+```json
+{"name": "identity<typename T>", "returnType": "T", "modifiers": ["template"],
+ "parameters": [{"name": "input", "type": "T"}]}
+```
 
 ### 3.6 File-scope declarations
 
 - File-scope variable/constant `fields[].type` preserves source-like declarator text where present.
+- `modifiers` are captured per the shared spec (§4.5).
+
+### 3.7 Access specifiers (visibility)
+
+C++ class member access specifiers map to `visibility` and are included in `modifiers`, consistent with Java/C#/TypeScript:
+
+- `public`, `private`, `protected` → `visibility` field + entry in `modifiers[]`
+
+Example — given:
+
+```cpp
+class Foo {
+private:
+    int secret;
+public:
+    void show();
+};
+```
+
+Extracted:
+
+```json
+{ "kind": "class", "name": "Foo",
+  "fields": [{"name": "secret", "type": "int", "visibility": "private", "modifiers": ["private"]}],
+  "methods": [{"name": "show", "returnType": "void", "visibility": "public", "modifiers": ["public"]}] }
+```
+
+### 3.8 C++ method/function modifiers
+
+The following C++ keywords are captured as `modifiers[]` when syntactically present on a method or function:
+
+- `virtual`, `override`, `final`
+- `static`, `inline`, `constexpr`, `consteval`
+- `explicit` (constructors)
+- `const` (trailing member-function qualifier)
+
+Example — given:
+
+```cpp
+class Base {
+public:
+    virtual void draw() const;
+    static int count();
+};
+class Derived : public Base {
+public:
+    void draw() const override;
+};
+```
+
+Extracted methods on `Base`:
+
+```json
+{"name": "draw", "returnType": "void", "visibility": "public", "modifiers": ["public", "virtual", "const"]}
+{"name": "count", "returnType": "int", "visibility": "public", "modifiers": ["public", "static"]}
+```
+
+Extracted methods on `Derived`:
+
+```json
+{"name": "draw", "returnType": "void", "visibility": "public", "modifiers": ["public", "const", "override"]}
+```
+
+### 3.9 Namespaces
+
+- Namespaces are extracted as **container types** with `kind: "namespace"`, consistent with Rust `mod` handling.
+- Types, methods, and fields declared inside a namespace are nested under that namespace type.
+- Nested namespaces produce nested container types.
+- Anonymous namespaces use an empty or synthetic name.
+
+Example — given:
+
+```cpp
+namespace math {
+    class Vector {
+    public:
+        int magnitude();
+    };
+    int sum(int a, int b) { return a + b; }
+}
+```
+
+Extracted:
+
+```json
+{"types": [{
+    "kind": "namespace", "name": "math",
+    "types": [{"kind": "class", "name": "Vector",
+        "methods": [{"name": "magnitude", "returnType": "int", "visibility": "public", "modifiers": ["public"]}]}],
+    "methods": [{"name": "sum", "returnType": "int"}]
+}]}
+```
+
+### 3.10 Scoped enums (`enum class`)
+
+- `enum class` declarations are extracted as types with `kind: "enum class"`.
+- The name is the unqualified enum name.
+
+Example — given:
+
+```cpp
+enum class Color { RED, GREEN, BLUE };
+```
+
+Extracted type:
+
+```json
+{"kind": "enum class", "name": "Color", "fields": [{"name": "RED"}, {"name": "GREEN"}, {"name": "BLUE"}]}
+```
+
+### 3.11 `using` type aliases
+
+- `using` type aliases are extracted as types with `kind: "typedef"` and alias target in `extendsType`.
+- Consistent with C typedef representation.
+
+Example — given:
+
+```cpp
+using IntVec = std::vector<int>;
+```
+
+Extracted type:
+
+```json
+{"kind": "typedef", "name": "IntVec", "extendsType": "std::vector<int>"}
+```
+
+### 3.12 Lambdas
+
+- Lambda expressions are **not** extracted as standalone types or methods.
+- Calls made inside a lambda body are captured as calls within the enclosing function.
+
+### 3.13 `auto` type
+
+- When `auto` is the source-level return type or variable type, it is preserved as `"auto"` in type text.
+- No type deduction is performed.
+
+### 3.14 Default/deleted functions
+
+- `= default` and `= delete` suffixed functions are extracted as normal methods.
+- The `= default`/`= delete` suffix is not captured as a modifier or separate field.
+
+### 3.15 Multiple inheritance
+
+- The full base-specifier list is preserved as-is in `extendsType`.
+- See §3.1 example.
 
 ---
 
@@ -71,8 +252,10 @@ C++-specific type kinds:
 In addition to shared limitations from `C_CPP_SPEC.md`:
 
 - No overload resolution.
-- No ADL/namespace semantic binding.
+- No namespace semantic binding (qualified lookup, ADL) — extraction is structural only (§3.9).
 - No C++20 module semantic analysis.
+- Lambda expressions are not standalone entities (§3.12).
+- No `auto` type deduction (§3.13).
 
 ---
 

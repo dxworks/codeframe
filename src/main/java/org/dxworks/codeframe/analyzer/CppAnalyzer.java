@@ -103,7 +103,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
         return null;
     }
 
-    private void extractNamespaceMethods(String source, TSNode namespaceNode, FileAnalysis analysis, Map<String, String> fileScopeTypes) {
+    private void extractNamespaceMethods(String source, TSNode namespaceNode, TypeInfo namespaceInfo, Map<String, String> fileScopeTypes) {
         for (TSNode functionNode : findAllDescendants(namespaceNode, "function_definition")) {
             if (isInsideTypeContainer(functionNode, namespaceNode)) {
                 continue;
@@ -113,7 +113,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
             }
             MethodInfo method = analyzeFunctionDefinition(source, functionNode, null, fileScopeTypes);
             if (method != null && method.name != null) {
-                analysis.methods.add(method);
+                namespaceInfo.methods.add(method);
             }
         }
 
@@ -121,17 +121,20 @@ public class CppAnalyzer implements LanguageAnalyzer {
             if (isInsideTypeContainer(templateNode, namespaceNode)) {
                 continue;
             }
-            addTemplateFunctionMethod(source, templateNode, analysis, fileScopeTypes);
+            MethodInfo method = addTemplateFunctionMethod(source, templateNode, fileScopeTypes);
+            if (method != null && method.name != null) {
+                namespaceInfo.methods.add(method);
+            }
         }
     }
 
-    private void addTemplateFunctionMethod(String source, TSNode templateNode, FileAnalysis analysis, Map<String, String> fileScopeTypes) {
+    private MethodInfo addTemplateFunctionMethod(String source, TSNode templateNode, Map<String, String> fileScopeTypes) {
         TSNode declaration = getChildByFieldName(templateNode, "declaration");
         if (declaration == null && templateNode.getNamedChildCount() > 0) {
             declaration = templateNode.getNamedChild(templateNode.getNamedChildCount() - 1);
         }
         if (declaration == null || declaration.isNull()) {
-            return;
+            return null;
         }
 
         TSNode templateParams = findFirstChild(templateNode, "template_parameter_list");
@@ -145,8 +148,25 @@ public class CppAnalyzer implements LanguageAnalyzer {
         if (method != null && method.name != null && templateParams != null) {
             method.name = method.name + getNodeText(source, templateParams);
         }
-        if (method != null && method.name != null) {
-            analysis.methods.add(method);
+        applyTemplateModifier(method);
+        return method;
+    }
+
+    private void applyTemplateModifier(MethodInfo method) {
+        if (method == null) {
+            return;
+        }
+        if (!method.modifiers.contains("template")) {
+            method.modifiers.add("template");
+        }
+    }
+
+    private void applyTemplateModifier(TypeInfo typeInfo) {
+        if (typeInfo == null) {
+            return;
+        }
+        if (!typeInfo.modifiers.contains("template")) {
+            typeInfo.modifiers.add("template");
         }
     }
 
@@ -165,14 +185,14 @@ public class CppAnalyzer implements LanguageAnalyzer {
         return false;
     }
 
-    private void extractNamespaceTypes(String source, TSNode namespaceNode, FileAnalysis analysis, Set<Integer> seenTypeNodes) {
+    private void extractNamespaceTypes(String source, TSNode namespaceNode, TypeInfo namespaceInfo, Set<Integer> seenTypeNodes) {
         for (TSNode classNode : findAllDescendants(namespaceNode, "class_specifier")) {
             if (!markSeen(seenTypeNodes, classNode)) {
                 continue;
             }
             TypeInfo classInfo = analyzeClass(source, classNode);
             if (classInfo != null && classInfo.name != null) {
-                analysis.types.add(classInfo);
+                namespaceInfo.types.add(classInfo);
             }
         }
 
@@ -182,9 +202,46 @@ public class CppAnalyzer implements LanguageAnalyzer {
             }
             TypeInfo templateType = analyzeTemplateType(source, templateNode);
             if (templateType != null && templateType.name != null) {
-                analysis.types.add(templateType);
+                namespaceInfo.types.add(templateType);
             }
         }
+    }
+
+    private String extractNamespaceName(String source, TSNode namespaceNode) {
+        TSNode nameNode = getChildByFieldName(namespaceNode, "name");
+        if (nameNode != null && !nameNode.isNull()) {
+            String name = getNodeText(source, nameNode);
+            if (name != null && !name.isBlank()) {
+                return name;
+            }
+        }
+        TSNode identifierNode = findFirstChild(namespaceNode, "identifier");
+        if (identifierNode != null && !identifierNode.isNull()) {
+            String name = getNodeText(source, identifierNode);
+            if (name != null && !name.isBlank()) {
+                return name;
+            }
+        }
+        return "";
+    }
+
+    private TypeInfo analyzeNamespace(String source, TSNode namespaceNode, Map<String, String> fileScopeTypes) {
+        TypeInfo namespaceInfo = new TypeInfo();
+        namespaceInfo.kind = "namespace";
+        namespaceInfo.name = extractNamespaceName(source, namespaceNode);
+
+        Set<Integer> seenTypeNodes = new HashSet<>();
+        extractNamespaceTypes(source, namespaceNode, namespaceInfo, seenTypeNodes);
+        extractNamespaceMethods(source, namespaceNode, namespaceInfo, fileScopeTypes);
+
+        for (TSNode nestedNamespace : findAllChildren(namespaceNode, "namespace_definition")) {
+            TypeInfo nested = analyzeNamespace(source, nestedNamespace, fileScopeTypes);
+            if (nested != null) {
+                namespaceInfo.types.add(nested);
+            }
+        }
+
+        return namespaceInfo;
     }
 
     private void extractTopLevelTypes(String source, TSNode rootNode, FileAnalysis analysis) {
@@ -211,7 +268,11 @@ public class CppAnalyzer implements LanguageAnalyzer {
             }
 
             if ("namespace_definition".equals(childType)) {
-                extractNamespaceTypes(source, child, analysis, seenTypeNodes);
+                TypeInfo namespaceInfo = analyzeNamespace(source, child, Map.of());
+                if (namespaceInfo != null) {
+                    analysis.types.add(namespaceInfo);
+                }
+                continue;
             }
 
             for (TSNode structNode : findAllDescendants(child, "struct_specifier")) {
@@ -273,6 +334,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
         if (parameters != null && typeInfo.name != null) {
             typeInfo.name = typeInfo.name + getNodeText(source, parameters);
         }
+        applyTemplateModifier(typeInfo);
 
         return typeInfo;
     }
@@ -282,6 +344,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
         typeInfo.kind = "class";
         typeInfo.name = extractTypeName(source, classNode);
         Set<Integer> seenNestedTypeNodes = new HashSet<>();
+        String currentVisibility = "private";
 
         TSNode baseClause = findFirstChild(classNode, "base_class_clause");
         if (baseClause != null) {
@@ -303,8 +366,13 @@ public class CppAnalyzer implements LanguageAnalyzer {
             }
 
             String memberType = member.getType();
+            if ("access_specifier".equals(memberType)) {
+                currentVisibility = extractAccessSpecifierVisibility(source, member);
+                continue;
+            }
+
             if ("field_declaration".equals(memberType)) {
-                extractFieldMembers(source, member, typeInfo);
+                extractFieldMembers(source, member, typeInfo, currentVisibility);
                 extractNestedTypesFromFieldDeclaration(source, member, typeInfo, seenNestedTypeNodes);
             }
 
@@ -313,6 +381,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
                 || "template_declaration".equals(memberType)) {
                 MethodInfo method = analyzeClassMethod(source, member, typeInfo.name);
                 if (method != null && method.name != null) {
+                    applyVisibility(method, currentVisibility);
                     typeInfo.methods.add(method);
                 }
             }
@@ -328,7 +397,42 @@ public class CppAnalyzer implements LanguageAnalyzer {
         return typeInfo;
     }
 
-    private void extractFieldMembers(String source, TSNode fieldDecl, TypeInfo typeInfo) {
+    private String extractAccessSpecifierVisibility(String source, TSNode accessSpecifierNode) {
+        if (accessSpecifierNode == null || accessSpecifierNode.isNull()) {
+            return null;
+        }
+        String raw = getNodeText(source, accessSpecifierNode);
+        if (raw == null) {
+            return null;
+        }
+        String value = raw.replace(":", "").trim();
+        if ("public".equals(value) || "private".equals(value) || "protected".equals(value)) {
+            return value;
+        }
+        return null;
+    }
+
+    private void applyVisibility(FieldInfo field, String visibility) {
+        if (field == null || visibility == null || visibility.isBlank()) {
+            return;
+        }
+        field.visibility = visibility;
+        if (!field.modifiers.contains(visibility)) {
+            field.modifiers.add(visibility);
+        }
+    }
+
+    private void applyVisibility(MethodInfo method, String visibility) {
+        if (method == null || visibility == null || visibility.isBlank()) {
+            return;
+        }
+        method.visibility = visibility;
+        if (!method.modifiers.contains(visibility)) {
+            method.modifiers.add(visibility);
+        }
+    }
+
+    private void extractFieldMembers(String source, TSNode fieldDecl, TypeInfo typeInfo, String visibility) {
         String fieldType = extractDeclarationTypeText(source, fieldDecl);
         List<TSNode> names = findAllDescendants(fieldDecl, "field_identifier");
         if (names.isEmpty()) {
@@ -346,6 +450,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
             FieldInfo field = new FieldInfo();
             field.name = name;
             field.type = fieldType;
+            applyVisibility(field, visibility);
             typeInfo.fields.add(field);
         }
     }
@@ -375,6 +480,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
             if (templated != null && templated.name != null && templateParams != null) {
                 templated.name = templated.name + getNodeText(source, templateParams);
             }
+            applyTemplateModifier(templated);
             return templated;
         }
 
@@ -539,7 +645,6 @@ public class CppAnalyzer implements LanguageAnalyzer {
             }
 
             if ("namespace_definition".equals(child.getType())) {
-                extractNamespaceMethods(source, child, analysis, fileScopeTypes);
                 continue;
             }
 
@@ -559,7 +664,10 @@ public class CppAnalyzer implements LanguageAnalyzer {
             }
 
             if ("template_declaration".equals(child.getType())) {
-                addTemplateFunctionMethod(source, child, analysis, fileScopeTypes);
+                MethodInfo method = addTemplateFunctionMethod(source, child, fileScopeTypes);
+                if (method != null && method.name != null) {
+                    analysis.methods.add(method);
+                }
             }
 
             if ("linkage_specification".equals(child.getType()) || child.getType().startsWith("preproc_")) {
@@ -605,7 +713,10 @@ public class CppAnalyzer implements LanguageAnalyzer {
                 || isInsideNodeType(templateNode, "enum_specifier")) {
                 continue;
             }
-            addTemplateFunctionMethod(source, templateNode, analysis, fileScopeTypes);
+            MethodInfo method = addTemplateFunctionMethod(source, templateNode, fileScopeTypes);
+            if (method != null && method.name != null) {
+                analysis.methods.add(method);
+            }
         }
     }
 

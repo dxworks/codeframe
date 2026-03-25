@@ -4,18 +4,24 @@
   "types" : [ {
     "kind" : "class",
     "name" : "Box<typename T>",
+    "modifiers" : [ "template" ],
     "fields" : [ {
       "name" : "value",
-      "type" : "T"
+      "type" : "T",
+      "visibility" : "public",
+      "modifiers" : [ "public" ]
     } ],
     "methods" : [ {
       "name" : "get",
-      "returnType" : "T"
+      "returnType" : "T",
+      "visibility" : "public",
+      "modifiers" : [ "public" ]
     } ]
   } ],
   "methods" : [ {
     "name" : "identity<typename T>",
     "returnType" : "T",
+    "modifiers" : [ "template" ],
     "parameters" : [ {
       "name" : "input",
       "type" : "T"

@@ -2,31 +2,39 @@
   "filePath" : "src/test/resources/samples/cpp/Namespaces.cpp",
   "language" : "cpp",
   "types" : [ {
-    "kind" : "class",
-    "name" : "Vector",
+    "kind" : "namespace",
+    "name" : "math",
     "methods" : [ {
-      "name" : "magnitude",
-      "returnType" : "int"
+      "name" : "sum",
+      "returnType" : "int",
+      "parameters" : [ {
+        "name" : "a",
+        "type" : "int"
+      }, {
+        "name" : "b",
+        "type" : "int"
+      } ]
+    }, {
+      "name" : "passthrough<typename T>",
+      "returnType" : "T",
+      "modifiers" : [ "template" ],
+      "parameters" : [ {
+        "name" : "value",
+        "type" : "T"
+      } ]
+    } ],
+    "types" : [ {
+      "kind" : "class",
+      "name" : "Vector",
+      "methods" : [ {
+        "name" : "magnitude",
+        "returnType" : "int",
+        "visibility" : "public",
+        "modifiers" : [ "public" ]
+      } ]
     } ]
   } ],
   "methods" : [ {
-    "name" : "sum",
-    "returnType" : "int",
-    "parameters" : [ {
-      "name" : "a",
-      "type" : "int"
-    }, {
-      "name" : "b",
-      "type" : "int"
-    } ]
-  }, {
-    "name" : "passthrough<typename T>",
-    "returnType" : "T",
-    "parameters" : [ {
-      "name" : "value",
-      "type" : "T"
-    } ]
-  }, {
     "name" : "run",
     "returnType" : "int",
     "methodCalls" : [ {

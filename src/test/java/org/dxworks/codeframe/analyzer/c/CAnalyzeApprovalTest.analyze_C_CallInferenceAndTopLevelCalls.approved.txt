@@ -55,10 +55,22 @@
       "parameterCount" : 1
     } ]
   }, {
+    "name" : "get_logger",
+    "returnType" : "Logger"
+  }, {
     "name" : "compute",
     "returnType" : "int",
     "methodCalls" : [ {
+      "methodName" : "get_logger",
+      "callCount" : 1,
+      "parameterCount" : 0
+    }, {
       "methodName" : "log_message",
+      "callCount" : 1,
+      "parameterCount" : 1
+    }, {
+      "methodName" : "writer",
+      "objectName" : "get_logger",
       "callCount" : 1,
       "parameterCount" : 1
     } ]
