@@ -1,0 +1,24 @@
+{
+  "filePath" : "src/test/resources/samples/c/BasicHeader.h",
+  "language" : "c",
+  "types" : [ {
+    "kind" : "struct",
+    "name" : "HeaderPoint",
+    "fields" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    } ]
+  }, {
+    "kind" : "enum",
+    "name" : "HeaderStatus",
+    "fields" : [ {
+      "name" : "HEADER_OK"
+    }, {
+      "name" : "HEADER_FAIL"
+    } ]
+  } ],
+  "imports" : [ "#include <stddef.h>" ]
+}

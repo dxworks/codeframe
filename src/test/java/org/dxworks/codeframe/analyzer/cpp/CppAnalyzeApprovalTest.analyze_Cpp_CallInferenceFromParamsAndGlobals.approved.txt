@@ -93,6 +93,19 @@
       "callCount" : 1,
       "parameterCount" : 1
     } ]
+  }, {
+    "name" : "run_lambda",
+    "returnType" : "int",
+    "localVariables" : [ "invoke" ],
+    "methodCalls" : [ {
+      "methodName" : "compute",
+      "callCount" : 1,
+      "parameterCount" : 0
+    }, {
+      "methodName" : "invoke",
+      "callCount" : 1,
+      "parameterCount" : 0
+    } ]
   } ],
   "fields" : [ {
     "name" : "global_logger",

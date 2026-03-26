@@ -18,8 +18,20 @@ T passthrough(T value) {
     return value;
 }
 
+namespace detail {
+int scale(int value) {
+    return value * 2;
+}
+}
+
+}
+
+namespace {
+int hidden_value() {
+    return 5;
+}
 }
 
 int run() {
-    return math::sum(1, 2);
+    return math::sum(1, 2) + math::detail::scale(3) + hidden_value();
 }

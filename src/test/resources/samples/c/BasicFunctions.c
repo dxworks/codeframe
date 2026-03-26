@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 static int global_count = 0;
+const int max_size = 100;
 extern volatile int global_limit;
 extern void tracef(const char *fmt, ...);
 

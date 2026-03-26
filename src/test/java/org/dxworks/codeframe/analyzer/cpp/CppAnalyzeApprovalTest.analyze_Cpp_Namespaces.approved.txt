@@ -40,12 +40,33 @@
         "visibility" : "public",
         "modifiers" : [ "public" ]
       } ]
+    }, {
+      "kind" : "namespace",
+      "name" : "detail",
+      "methods" : [ {
+        "name" : "scale",
+        "returnType" : "int",
+        "parameters" : [ {
+          "name" : "value",
+          "type" : "int"
+        } ]
+      } ]
+    } ]
+  }, {
+    "kind" : "namespace",
+    "methods" : [ {
+      "name" : "hidden_value",
+      "returnType" : "int"
     } ]
   } ],
   "methods" : [ {
     "name" : "run",
     "returnType" : "int",
     "methodCalls" : [ {
+      "methodName" : "hidden_value",
+      "callCount" : 1,
+      "parameterCount" : 0
+    }, {
       "methodName" : "sum",
       "callCount" : 1,
       "parameterCount" : 2

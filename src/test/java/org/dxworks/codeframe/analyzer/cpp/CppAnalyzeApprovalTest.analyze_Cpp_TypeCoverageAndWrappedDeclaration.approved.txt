@@ -32,6 +32,20 @@
       "type" : "float"
     } ]
   }, {
+    "kind" : "typedef",
+    "name" : "OldPoint",
+    "extendsType" : "struct OldPoint {\n    int x;\n    int y;\n}"
+  }, {
+    "kind" : "struct",
+    "name" : "OldPoint",
+    "fields" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    } ]
+  }, {
     "kind" : "enum class",
     "name" : "Color",
     "fields" : [ {
@@ -39,15 +53,30 @@
     }, {
       "name" : "BLUE"
     } ]
+  }, {
+    "kind" : "enum",
+    "name" : "Priority",
+    "fields" : [ {
+      "name" : "LOW"
+    }, {
+      "name" : "HIGH"
+    } ]
   } ],
   "methods" : [ {
     "name" : "declared_ref",
     "returnType" : "int&"
   }, {
+    "name" : "declared_auto",
+    "returnType" : "auto"
+  }, {
     "name" : "run_type_coverage",
     "returnType" : "int",
-    "localVariables" : [ "in", "n" ],
+    "localVariables" : [ "in", "n", "local_auto" ],
     "methodCalls" : [ {
+      "methodName" : "declared_auto",
+      "callCount" : 1,
+      "parameterCount" : 0
+    }, {
       "methodName" : "declared_ref",
       "callCount" : 1,
       "parameterCount" : 0

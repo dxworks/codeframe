@@ -37,3 +37,10 @@ int boot_value = compute();
 int run_decl() {
     return declared_identity(1) + util::declared_ns(2);
 }
+
+int run_lambda() {
+     auto invoke = []() {
+        return compute();
+    };
+    return invoke();
+}

@@ -31,7 +31,7 @@ C++-specific type kinds:
 - `enum`
 - `enum class`
 - `namespace`
-- `typedef` (for `using` aliases)
+- `typedef` (for `using` aliases and old-style `typedef` declarations)
 
 `language` is always `"cpp"`.
 
@@ -133,6 +133,12 @@ The following C++ keywords are captured as `modifiers[]` when syntactically pres
 - `static`, `inline`, `constexpr`, `consteval`
 - `explicit` (constructors)
 - `const` (trailing member-function qualifier)
+- `noexcept`
+- `friend` for friend function declarations extracted as methods
+
+Note: `pure` (for pure-virtual declarations like `= 0`) is currently not extracted.
+Tree-sitter C++ does not consistently expose a stable `pure_virtual_clause` node shape for all declarations we analyze,
+so this analyzer intentionally does not emit a `pure` modifier in V1.
 
 Example — given:
 
@@ -160,6 +166,11 @@ Extracted methods on `Derived`:
 ```json
 {"name": "draw", "returnType": "void", "visibility": "public", "modifiers": ["public", "const", "override"]}
 ```
+
+### 3.8.1 C++ field modifiers
+
+- Class/struct fields capture source-level specifier modifiers when syntactically present.
+- This includes `mutable` on class fields.
 
 ### 3.9 Namespaces
 
@@ -195,6 +206,8 @@ Extracted:
 
 - `enum class` declarations are extracted as types with `kind: "enum class"`.
 - The name is the unqualified enum name.
+- Enums with explicit underlying type (for example `enum Priority : int`) are extracted as normal enum/enum class types.
+- Underlying enum base type is not captured separately in V1.
 
 Example — given:
 
@@ -212,6 +225,7 @@ Extracted type:
 
 - `using` type aliases are extracted as types with `kind: "typedef"` and alias target in `extendsType`.
 - Consistent with C typedef representation.
+- Old-style C++ `typedef` declarations are also extracted as `kind: "typedef"`, with alias target preserved in `extendsType`.
 
 Example — given:
 
@@ -245,6 +259,12 @@ Extracted type:
 - The full base-specifier list is preserved as-is in `extendsType`.
 - See §3.1 example.
 
+### 3.16 Friend declarations
+
+- Friend function declarations/definitions inside classes are extracted as methods on the containing class.
+- Extracted friend methods include `"friend"` in `modifiers[]`.
+- Friend class declarations are not extracted as methods.
+
 ---
 
 ## 4. Current Limitations (C++ V1)
@@ -253,6 +273,7 @@ In addition to shared limitations from `C_CPP_SPEC.md`:
 
 - No overload resolution.
 - No namespace semantic binding (qualified lookup, ADL) — extraction is structural only (§3.9).
+- Pure virtual marker extraction (`= 0` → `pure`) is not supported in V1 due to Tree-sitter C++ AST shape inconsistency.
 - No C++20 module semantic analysis.
 - Lambda expressions are not standalone entities (§3.12).
 - No `auto` type deduction (§3.13).

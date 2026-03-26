@@ -89,6 +89,10 @@ Type-text preservation rule:
 Variadic parameters:
 - C/C++ variadic `...` is extracted as a parameter with `name: "..."` and no type.
 
+C++ linkage blocks:
+- Declarations inside `extern "C" { ... }` linkage specifications are extracted the same way as equivalent top-level declarations.
+- Linkage text itself is not emitted as a separate entity.
+
 Example — given:
 
 ```c

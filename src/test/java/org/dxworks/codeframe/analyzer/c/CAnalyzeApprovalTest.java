@@ -30,6 +30,11 @@ public class CAnalyzeApprovalTest {
         verify("CallInferenceAndTopLevelCalls.c", Language.C);
     }
 
+    @Test
+    void analyze_C_BasicHeader() throws IOException {
+        verify("BasicHeader.h", Language.C);
+    }
+
     private static void verify(String fileName, Language language) throws IOException {
         App.initAnalyzersForTestsFromPaths(List.of());
         Path filePath = Paths.get(SAMPLES_BASE_PATH + fileName);
