@@ -15,6 +15,8 @@ import java.util.Set;
 import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
 
 public class CAnalyzer implements LanguageAnalyzer {
+    private static final CCppAnalysisOptions OPTIONS = CCppAnalysisOptions.C;
+
     @Override
     public FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
         FileAnalysis analysis = new FileAnalysis();
@@ -62,7 +64,7 @@ public class CAnalyzer implements LanguageAnalyzer {
             if (!CCppHelper.markSeen(seenTypeNodes, typeNode)) {
                 continue;
             }
-            TypeInfo info = analyzeStructLike(source, typeNode, kind);
+            TypeInfo info = CCppHelper.analyzeStructLike(source, typeNode, kind, OPTIONS);
             if (info != null && info.name != null) {
                 analysis.types.add(info);
             }
@@ -74,88 +76,11 @@ public class CAnalyzer implements LanguageAnalyzer {
             if (!CCppHelper.markSeen(seenTypeNodes, enumNode)) {
                 continue;
             }
-            TypeInfo info = analyzeEnum(source, enumNode);
+            TypeInfo info = CCppHelper.analyzeEnum(source, enumNode, OPTIONS);
             if (info != null && info.name != null) {
                 analysis.types.add(info);
             }
         }
-    }
-
-    private TypeInfo analyzeStructLike(String source, TSNode typeNode, String kind) {
-        TypeInfo typeInfo = new TypeInfo();
-        typeInfo.kind = kind;
-        typeInfo.name = CCppHelper.extractTypeName(source, typeNode);
-
-        TSNode body = findFirstChild(typeNode, "field_declaration_list");
-        if (body == null) {
-            return null;
-        }
-        extractStructFields(source, body, typeInfo);
-        return typeInfo;
-    }
-
-    private TypeInfo analyzeEnum(String source, TSNode enumNode) {
-        TypeInfo typeInfo = new TypeInfo();
-        typeInfo.kind = "enum";
-        typeInfo.name = CCppHelper.extractTypeName(source, enumNode);
-
-        TSNode enumeratorList = findFirstChild(enumNode, "enumerator_list");
-        if (enumeratorList == null) {
-            return null;
-        }
-        List<TSNode> enumerators = findAllChildren(enumeratorList, "enumerator");
-        for (TSNode enumerator : enumerators) {
-            String enumMember = extractName(source, enumerator, "identifier");
-            if (enumMember != null) {
-                FieldInfo field = new FieldInfo();
-                field.name = enumMember;
-                typeInfo.fields.add(field);
-            }
-        }
-
-        return typeInfo;
-    }
-
-    private void extractStructFields(String source, TSNode fieldList, TypeInfo typeInfo) {
-        List<TSNode> fieldDecls = findAllChildren(fieldList, "field_declaration");
-        for (TSNode fieldDecl : fieldDecls) {
-            String fieldType = CCppHelper.extractDeclarationTypeText(source, fieldDecl, false);
-            List<TSNode> declarators = findAllDescendants(fieldDecl, "field_identifier");
-            if (declarators.isEmpty()) {
-                declarators = findAllDescendants(fieldDecl, "identifier");
-            }
-
-            for (TSNode declarator : declarators) {
-                String fieldName = getNodeText(source, declarator);
-                if (fieldName == null || fieldName.isBlank()) {
-                    continue;
-                }
-
-                FieldInfo fieldInfo = new FieldInfo();
-                fieldInfo.name = fieldName;
-                fieldInfo.type = getStructFieldType(source, fieldDecl, declarator, fieldType);
-                typeInfo.fields.add(fieldInfo);
-            }
-        }
-    }
-
-    private String getStructFieldType(String source, TSNode fieldDecl, TSNode fieldIdentifier, String baseType) {
-        if (baseType == null || fieldIdentifier == null || fieldIdentifier.isNull()) {
-            return baseType;
-        }
-
-        TSNode functionDeclarator = CCppHelper.findAncestorOfType(fieldIdentifier, fieldDecl, "function_declarator");
-        TSNode pointerDeclarator = CCppHelper.findAncestorOfType(fieldIdentifier, fieldDecl, "pointer_declarator");
-        if (functionDeclarator == null || pointerDeclarator == null) {
-            return baseType;
-        }
-
-        String declaratorText = getNodeText(source, functionDeclarator);
-        if (declaratorText == null || declaratorText.isBlank()) {
-            return baseType;
-        }
-
-        return (baseType + " " + declaratorText).trim();
     }
 
     private void extractTopLevelMethods(String source, TSNode rootNode, FileAnalysis analysis, Map<String, String> fileScopeTypes) {
@@ -176,7 +101,7 @@ public class CAnalyzer implements LanguageAnalyzer {
             if ("declaration".equals(child.getType())) {
                 List<TSNode> functionDeclarators = findAllDescendants(child, "function_declarator");
                 for (TSNode declarator : functionDeclarators) {
-                    if (!CCppHelper.isTopLevelFunctionDeclaration(declarator, true)) {
+                    if (!CCppHelper.isTopLevelFunctionDeclaration(declarator, OPTIONS)) {
                         continue;
                     }
                     MethodInfo method = analyzeFunctionDeclaration(source, declarator, child);
@@ -193,17 +118,17 @@ public class CAnalyzer implements LanguageAnalyzer {
 
         TSNode declarator = getChildByFieldName(functionNode, "declarator");
         method.name = CCppHelper.extractDeclaratorName(source, declarator);
-        method.returnType = CCppHelper.extractDeclarationTypeText(source, functionNode, false);
-        CCppHelper.extractParameters(source, declarator, method, false);
+        method.returnType = CCppHelper.extractDeclarationTypeText(source, functionNode, OPTIONS);
+        CCppHelper.extractParameters(source, declarator, method, OPTIONS);
         CCppHelper.addModifiersFromSpecifiers(method.modifiers, source, functionNode,
-            List.of("storage_class_specifier", "function_specifier"), false, false);
+            OPTIONS.functionSpecifierNodeTypes, OPTIONS, false);
 
         TSNode body = getChildByFieldName(functionNode, "body");
         if (body == null) {
             body = findFirstChild(functionNode, "compound_statement");
         }
         if (body != null) {
-            CCppHelper.analyzeMethodBody(source, body, method, fileScopeTypes, false, true, false);
+            CCppHelper.analyzeMethodBody(source, body, method, fileScopeTypes, OPTIONS);
         }
 
         return method;
@@ -212,10 +137,10 @@ public class CAnalyzer implements LanguageAnalyzer {
     private MethodInfo analyzeFunctionDeclaration(String source, TSNode functionDeclarator, TSNode declarationNode) {
         MethodInfo method = new MethodInfo();
         method.name = CCppHelper.extractDeclaratorName(source, functionDeclarator);
-        method.returnType = CCppHelper.extractDeclarationTypeText(source, declarationNode, false);
-        CCppHelper.extractParameters(source, functionDeclarator, method, false);
+        method.returnType = CCppHelper.extractDeclarationTypeText(source, declarationNode, OPTIONS);
+        CCppHelper.extractParameters(source, functionDeclarator, method, OPTIONS);
         CCppHelper.addModifiersFromSpecifiers(method.modifiers, source, declarationNode,
-            List.of("storage_class_specifier", "function_specifier"), false, false);
+            OPTIONS.functionSpecifierNodeTypes, OPTIONS, false);
         return method;
     }
 
@@ -227,11 +152,11 @@ public class CAnalyzer implements LanguageAnalyzer {
                 continue;
             }
 
-            if (CCppHelper.containsNonFieldFunctionDeclaration(child, true)) {
+            if (CCppHelper.containsNonFieldFunctionDeclaration(child, OPTIONS)) {
                 continue;
             }
 
-            String typeText = CCppHelper.extractDeclarationTypeText(source, child, false);
+            String typeText = CCppHelper.extractDeclarationTypeText(source, child, OPTIONS);
             List<String> declaredNames = CCppHelper.extractDeclaredVariableNames(source, child);
             for (String name : declaredNames) {
                 if (name == null || name.isBlank()) {
@@ -244,7 +169,7 @@ public class CAnalyzer implements LanguageAnalyzer {
                 field.name = name;
                 field.type = fieldType;
                 CCppHelper.addModifiersFromSpecifiers(field.modifiers, source, child,
-                    List.of("storage_class_specifier", "type_qualifier"), false, false);
+                    OPTIONS.fieldSpecifierNodeTypes, OPTIONS, false);
                 analysis.fields.add(field);
                 if (fieldType != null) {
                     fileScopeTypes.put(name, fieldType);
@@ -266,7 +191,7 @@ public class CAnalyzer implements LanguageAnalyzer {
             }
 
             MethodInfo collector = new MethodInfo();
-            CCppHelper.extractMethodCall(source, call, collector, fileScopeTypes == null ? Map.of() : fileScopeTypes, false, true);
+            CCppHelper.extractMethodCall(source, call, collector, fileScopeTypes == null ? Map.of() : fileScopeTypes, OPTIONS);
             analysis.methodCalls.addAll(collector.methodCalls);
         }
 

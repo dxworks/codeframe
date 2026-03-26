@@ -85,6 +85,127 @@ public final class CCppHelper {
         return typeInfo;
     }
 
+    public static TypeInfo analyzeStructLike(String source, TSNode typeNode, String kind, CCppAnalysisOptions options) {
+        TypeInfo typeInfo = new TypeInfo();
+        typeInfo.kind = kind;
+        typeInfo.name = extractTypeName(source, typeNode);
+        addModifiersFromSpecifiers(typeInfo.modifiers, source, typeNode, options.typeSpecifierNodeTypes,
+            options, isTypeContainerNode(typeNode));
+
+        TSNode body = findFirstChild(typeNode, "field_declaration_list");
+        if (body == null) {
+            return null;
+        }
+        extractStructFields(source, body, typeInfo, options);
+        return typeInfo;
+    }
+
+    public static TypeInfo analyzeEnum(String source, TSNode enumNode, CCppAnalysisOptions options) {
+        TypeInfo typeInfo = new TypeInfo();
+        String enumText = getNodeText(source, enumNode);
+        typeInfo.kind = enumText != null && containsKeyword(enumText, "class") ? "enum class" : "enum";
+        typeInfo.name = extractTypeName(source, enumNode);
+
+        TSNode enumeratorList = findFirstChild(enumNode, "enumerator_list");
+        if (enumeratorList == null) {
+            return null;
+        }
+        for (TSNode enumerator : findAllChildren(enumeratorList, "enumerator")) {
+            String enumMember = extractName(source, enumerator, "identifier");
+            if (enumMember != null) {
+                FieldInfo field = new FieldInfo();
+                field.name = enumMember;
+                typeInfo.fields.add(field);
+            }
+        }
+
+        return typeInfo;
+    }
+
+    public static void extractStructFields(String source, TSNode fieldList, TypeInfo typeInfo, CCppAnalysisOptions options) {
+        for (TSNode fieldDecl : findAllChildren(fieldList, "field_declaration")) {
+            String fieldType = extractDeclarationTypeText(source, fieldDecl, options);
+            List<TSNode> declarators = findAllDescendants(fieldDecl, "field_identifier");
+            if (declarators.isEmpty()) {
+                declarators = findAllDescendants(fieldDecl, "identifier");
+            }
+
+            for (TSNode declarator : declarators) {
+                String fieldName = getNodeText(source, declarator);
+                if (fieldName == null || fieldName.isBlank()) {
+                    continue;
+                }
+
+                FieldInfo fieldInfo = new FieldInfo();
+                fieldInfo.name = fieldName;
+                fieldInfo.type = getStructFieldType(source, fieldDecl, declarator, fieldType);
+                addModifiersFromSpecifiers(fieldInfo.modifiers, source, fieldDecl,
+                    options.fieldSpecifierNodeTypes, options, false);
+                typeInfo.fields.add(fieldInfo);
+            }
+        }
+    }
+
+    public static String getStructFieldType(String source, TSNode fieldDecl, TSNode fieldIdentifier, String baseType) {
+        if (baseType == null || fieldIdentifier == null || fieldIdentifier.isNull()) {
+            return baseType;
+        }
+
+        TSNode functionDeclarator = findAncestorOfType(fieldIdentifier, fieldDecl, "function_declarator");
+        TSNode pointerDeclarator = findAncestorOfType(fieldIdentifier, fieldDecl, "pointer_declarator");
+        if (functionDeclarator == null || pointerDeclarator == null) {
+            return baseType;
+        }
+
+        String declaratorText = getNodeText(source, functionDeclarator);
+        if (declaratorText == null || declaratorText.isBlank()) {
+            return baseType;
+        }
+
+        return (baseType + " " + declaratorText).trim();
+    }
+
+    static boolean isTypeContainerNode(TSNode node) {
+        if (node == null || node.isNull()) {
+            return false;
+        }
+        String type = node.getType();
+        return "class_specifier".equals(type) || "struct_specifier".equals(type) || "union_specifier".equals(type);
+    }
+
+    public static boolean isInsideTypeContainer(TSNode node, TSNode stopNode) {
+        TSNode current = node == null ? null : node.getParent();
+        while (current != null && !current.isNull()) {
+            if (isSameNode(current, stopNode)) {
+                return false;
+            }
+            if (isTypeContainerNode(current)) {
+                return true;
+            }
+            current = current.getParent();
+        }
+        return false;
+    }
+
+    public static boolean isInsideTypeContainer(TSNode node) {
+        return isInsideNodeType(node, "class_specifier")
+            || isInsideNodeType(node, "struct_specifier")
+            || isInsideNodeType(node, "union_specifier")
+            || isInsideNodeType(node, "enum_specifier");
+    }
+
+    public static boolean isInsideTypeOrFunctionContainer(TSNode node) {
+        return isInsideTypeContainer(node) || isInsideNodeType(node, "function_definition");
+    }
+
+    public static boolean isInsideTypeOrTemplateContainer(TSNode node) {
+        return isInsideTypeContainer(node) || isInsideNodeType(node, "template_declaration");
+    }
+
+    public static boolean isInsideTypeOrFunctionOrTemplateContainer(TSNode node) {
+        return isInsideTypeOrFunctionContainer(node) || isInsideNodeType(node, "template_declaration");
+    }
+
     public static boolean isFunctionPointerDeclarator(TSNode declaratorNode) {
         if (declaratorNode == null || declaratorNode.isNull()) {
             return false;
@@ -108,6 +229,10 @@ public final class CCppHelper {
         }
 
         return null;
+    }
+
+    public static void extractParameters(String source, TSNode declarator, MethodInfo method, CCppAnalysisOptions options) {
+        extractParameters(source, declarator, method, options.includeAutoInDeclarationType);
     }
 
     public static void extractParameters(String source, TSNode declarator, MethodInfo method, boolean includeAutoInDeclarationType) {
@@ -176,6 +301,15 @@ public final class CCppHelper {
                                          TSNode body,
                                          MethodInfo method,
                                          Map<String, String> fileScopeTypes,
+                                         CCppAnalysisOptions options) {
+        analyzeMethodBody(source, body, method, fileScopeTypes,
+            options.allowQualifiedIdentifierCalls, options.deepBaseObjectLookup, options.includeAutoInDeclarationType);
+    }
+
+    public static void analyzeMethodBody(String source,
+                                         TSNode body,
+                                         MethodInfo method,
+                                         Map<String, String> fileScopeTypes,
                                          boolean allowQualifiedIdentifierCalls,
                                          boolean deepBaseObjectLookup,
                                          boolean includeAutoInDeclarationType) {
@@ -207,6 +341,15 @@ public final class CCppHelper {
         }
 
         method.methodCalls.sort(METHOD_CALL_COMPARATOR);
+    }
+
+    public static void extractMethodCall(String source,
+                                         TSNode call,
+                                         MethodInfo method,
+                                         Map<String, String> localTypes,
+                                         CCppAnalysisOptions options) {
+        extractMethodCall(source, call, method, localTypes,
+            options.allowQualifiedIdentifierCalls, options.deepBaseObjectLookup);
     }
 
     public static void extractMethodCall(String source,
@@ -310,6 +453,10 @@ public final class CCppHelper {
         return names;
     }
 
+    public static boolean containsNonFieldFunctionDeclaration(TSNode declarationNode, CCppAnalysisOptions options) {
+        return containsNonFieldFunctionDeclaration(declarationNode, options.allowFunctionReturningFunctionPointer);
+    }
+
     public static boolean containsNonFieldFunctionDeclaration(TSNode declarationNode, boolean allowFunctionReturningFunctionPointer) {
         List<TSNode> functionDeclarators = findAllDescendants(declarationNode, "function_declarator");
         for (TSNode functionDeclarator : functionDeclarators) {
@@ -318,6 +465,10 @@ public final class CCppHelper {
             }
         }
         return false;
+    }
+
+    public static boolean isTopLevelFunctionDeclaration(TSNode functionDeclarator, CCppAnalysisOptions options) {
+        return isTopLevelFunctionDeclaration(functionDeclarator, options.allowFunctionReturningFunctionPointer);
     }
 
     public static boolean isTopLevelFunctionDeclaration(TSNode functionDeclarator, boolean allowFunctionReturningFunctionPointer) {
@@ -465,6 +616,16 @@ public final class CCppHelper {
                                                    String source,
                                                    TSNode node,
                                                    List<String> specifierNodeTypes,
+                                                   CCppAnalysisOptions options,
+                                                   boolean collectingTypeModifiers) {
+        addModifiersFromSpecifiers(target, source, node, specifierNodeTypes,
+            options.includeAnonymousSpecifiers, collectingTypeModifiers);
+    }
+
+    public static void addModifiersFromSpecifiers(List<String> target,
+                                                   String source,
+                                                   TSNode node,
+                                                   List<String> specifierNodeTypes,
                                                    boolean includeAnonymous,
                                                    boolean collectingTypeModifiers) {
         if (target == null || node == null || node.isNull() || specifierNodeTypes == null || specifierNodeTypes.isEmpty()) {
@@ -527,6 +688,10 @@ public final class CCppHelper {
         }
 
         return result;
+    }
+
+    public static String extractDeclarationTypeText(String source, TSNode node, CCppAnalysisOptions options) {
+        return extractDeclarationTypeText(source, node, options.includeAutoInDeclarationType);
     }
 
     public static String extractDeclarationTypeText(String source, TSNode node, boolean includeAuto) {

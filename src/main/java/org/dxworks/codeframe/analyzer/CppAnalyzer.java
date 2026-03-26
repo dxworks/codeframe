@@ -15,22 +15,7 @@ import java.util.Set;
 import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
 
 public class CppAnalyzer implements LanguageAnalyzer {
-    private static final List<String> CPP_FUNCTION_SPECIFIER_NODES = List.of(
-        "storage_class_specifier",
-        "function_specifier",
-        "virtual",
-        "noexcept",
-        "type_qualifier",
-        "virtual_specifier",
-        "explicit_function_specifier"
-    );
-    private static final List<String> CPP_FIELD_SPECIFIER_NODES = List.of(
-        "storage_class_specifier",
-        "type_qualifier"
-    );
-    private static final List<String> CPP_TYPE_SPECIFIER_NODES = List.of(
-        "virtual_specifier"
-    );
+    private static final CCppAnalysisOptions OPTIONS = CCppAnalysisOptions.CPP;
 
     @Override
     public FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
@@ -66,7 +51,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
             if (!CCppHelper.markSeen(seenNestedTypeNodes, structNode)) {
                 continue;
             }
-            TypeInfo nested = analyzeStructLike(source, structNode, "struct");
+            TypeInfo nested = CCppHelper.analyzeStructLike(source, structNode, "struct", OPTIONS);
             if (nested != null && nested.name != null) {
                 typeInfo.types.add(nested);
             }
@@ -76,7 +61,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
             if (!CCppHelper.markSeen(seenNestedTypeNodes, unionNode)) {
                 continue;
             }
-            TypeInfo nested = analyzeStructLike(source, unionNode, "union");
+            TypeInfo nested = CCppHelper.analyzeStructLike(source, unionNode, "union", OPTIONS);
             if (nested != null && nested.name != null) {
                 typeInfo.types.add(nested);
             }
@@ -86,7 +71,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
             if (!CCppHelper.markSeen(seenNestedTypeNodes, enumNode)) {
                 continue;
             }
-            TypeInfo nested = analyzeEnum(source, enumNode);
+            TypeInfo nested = CCppHelper.analyzeEnum(source, enumNode, OPTIONS);
             if (nested != null && nested.name != null) {
                 typeInfo.types.add(nested);
             }
@@ -95,13 +80,13 @@ public class CppAnalyzer implements LanguageAnalyzer {
 
     private void extractNamespaceMethods(String source, TSNode namespaceNode, TypeInfo namespaceInfo, Map<String, String> fileScopeTypes) {
         for (TSNode functionNode : findAllDescendants(namespaceNode, "function_definition")) {
-            if (isInsideTypeContainer(functionNode, namespaceNode)) {
+            if (CCppHelper.isInsideTypeContainer(functionNode, namespaceNode)) {
                 continue;
             }
             if (isInsideNestedNamespace(functionNode, namespaceNode)) {
                 continue;
             }
-            if (isInsideNodeType(functionNode, "template_declaration")) {
+            if (CCppHelper.isInsideNodeType(functionNode, "template_declaration")) {
                 continue;
             }
             MethodInfo method = analyzeFunctionDefinition(source, functionNode, null, fileScopeTypes);
@@ -111,7 +96,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
         }
 
         for (TSNode templateNode : findAllDescendants(namespaceNode, "template_declaration")) {
-            if (isInsideTypeContainer(templateNode, namespaceNode)) {
+            if (CCppHelper.isInsideTypeContainer(templateNode, namespaceNode)) {
                 continue;
             }
             if (isInsideNestedNamespace(templateNode, namespaceNode)) {
@@ -164,21 +149,6 @@ public class CppAnalyzer implements LanguageAnalyzer {
         if (!typeInfo.modifiers.contains("template")) {
             typeInfo.modifiers.add("template");
         }
-    }
-
-    private boolean isInsideTypeContainer(TSNode node, TSNode stopNode) {
-        TSNode current = node == null ? null : node.getParent();
-        while (current != null && !current.isNull()) {
-            if (isSameNode(current, stopNode)) {
-                return false;
-            }
-            String t = current.getType();
-            if ("class_specifier".equals(t) || "struct_specifier".equals(t) || "union_specifier".equals(t)) {
-                return true;
-            }
-            current = current.getParent();
-        }
-        return false;
     }
 
     private boolean isInsideNestedNamespace(TSNode node, TSNode namespaceNode) {
@@ -336,7 +306,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
 
             for (TSNode structNode : findAllDescendants(child, "struct_specifier")) {
                 if (CCppHelper.markSeen(seenTypeNodes, structNode)) {
-                    TypeInfo info = analyzeStructLike(source, structNode, "struct");
+                    TypeInfo info = CCppHelper.analyzeStructLike(source, structNode, "struct", OPTIONS);
                     if (info != null && info.name != null) {
                         analysis.types.add(info);
                     }
@@ -345,7 +315,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
 
             for (TSNode unionNode : findAllDescendants(child, "union_specifier")) {
                 if (CCppHelper.markSeen(seenTypeNodes, unionNode)) {
-                    TypeInfo info = analyzeStructLike(source, unionNode, "union");
+                    TypeInfo info = CCppHelper.analyzeStructLike(source, unionNode, "union", OPTIONS);
                     if (info != null && info.name != null) {
                         analysis.types.add(info);
                     }
@@ -354,7 +324,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
 
             for (TSNode enumNode : findAllDescendants(child, "enum_specifier")) {
                 if (CCppHelper.markSeen(seenTypeNodes, enumNode)) {
-                    TypeInfo info = analyzeEnum(source, enumNode);
+                    TypeInfo info = CCppHelper.analyzeEnum(source, enumNode, OPTIONS);
                     if (info != null && info.name != null) {
                         analysis.types.add(info);
                     }
@@ -377,7 +347,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
         if ("class_specifier".equals(declaration.getType())) {
             typeInfo = analyzeClass(source, declaration);
         } else if ("struct_specifier".equals(declaration.getType())) {
-            typeInfo = analyzeStructLike(source, declaration, "struct");
+            typeInfo = CCppHelper.analyzeStructLike(source, declaration, "struct", OPTIONS);
         } else {
             return null;
         }
@@ -395,7 +365,8 @@ public class CppAnalyzer implements LanguageAnalyzer {
         TypeInfo typeInfo = new TypeInfo();
         typeInfo.kind = "class";
         typeInfo.name = CCppHelper.extractTypeName(source, classNode);
-        addModifiersFromSpecifiers(typeInfo.modifiers, source, classNode, CPP_TYPE_SPECIFIER_NODES);
+        CCppHelper.addModifiersFromSpecifiers(typeInfo.modifiers, source, classNode, OPTIONS.typeSpecifierNodeTypes,
+            OPTIONS, CCppHelper.isTypeContainerNode(classNode));
         Set<Integer> seenNestedTypeNodes = new HashSet<>();
         String currentVisibility = "private";
 
@@ -425,7 +396,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
             }
 
             if ("field_declaration".equals(memberType)) {
-                if (CCppHelper.containsNonFieldFunctionDeclaration(member, false)) {
+                if (CCppHelper.containsNonFieldFunctionDeclaration(member, OPTIONS)) {
                     MethodInfo method = analyzeClassMethod(source, member, typeInfo.name);
                     if (method != null && method.name != null) {
                         applyVisibility(method, currentVisibility);
@@ -495,7 +466,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
     }
 
     private void extractFieldMembers(String source, TSNode fieldDecl, TypeInfo typeInfo, String visibility) {
-        String fieldType = CCppHelper.extractDeclarationTypeText(source, fieldDecl, true);
+        String fieldType = CCppHelper.extractDeclarationTypeText(source, fieldDecl, OPTIONS);
         List<TSNode> names = findAllDescendants(fieldDecl, "field_identifier");
         if (names.isEmpty()) {
             names = findAllDescendants(fieldDecl, "identifier");
@@ -512,7 +483,8 @@ public class CppAnalyzer implements LanguageAnalyzer {
             FieldInfo field = new FieldInfo();
             field.name = name;
             field.type = fieldType;
-            addModifiersFromSpecifiers(field.modifiers, source, fieldDecl, CPP_FIELD_SPECIFIER_NODES);
+            CCppHelper.addModifiersFromSpecifiers(field.modifiers, source, fieldDecl, OPTIONS.fieldSpecifierNodeTypes,
+                OPTIONS, CCppHelper.isTypeContainerNode(fieldDecl));
             applyVisibility(field, visibility);
             typeInfo.fields.add(field);
         }
@@ -573,15 +545,16 @@ public class CppAnalyzer implements LanguageAnalyzer {
         method.name = extractCppMethodName(source, declarator, className);
         method.returnType = extractFunctionReturnType(source, functionNode, declarator);
         normalizeCtorDtorReturnType(method, className);
-        CCppHelper.extractParameters(source, declarator, method, true);
-        addModifiersFromSpecifiers(method.modifiers, source, functionNode, CPP_FUNCTION_SPECIFIER_NODES);
+        CCppHelper.extractParameters(source, declarator, method, OPTIONS);
+        CCppHelper.addModifiersFromSpecifiers(method.modifiers, source, functionNode, OPTIONS.functionSpecifierNodeTypes,
+            OPTIONS, CCppHelper.isTypeContainerNode(functionNode));
 
         TSNode body = getChildByFieldName(functionNode, "body");
         if (body == null) {
             body = findFirstChild(functionNode, "compound_statement");
         }
         if (body != null) {
-            CCppHelper.analyzeMethodBody(source, body, method, fileScopeTypes, true, false, true);
+            CCppHelper.analyzeMethodBody(source, body, method, fileScopeTypes, OPTIONS);
         }
 
         return method;
@@ -592,7 +565,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
         if (declarator == null) {
             return null;
         }
-        if (!CCppHelper.isTopLevelFunctionDeclaration(declarator, false)) {
+        if (!CCppHelper.isTopLevelFunctionDeclaration(declarator, OPTIONS)) {
             return null;
         }
 
@@ -600,8 +573,9 @@ public class CppAnalyzer implements LanguageAnalyzer {
         method.name = extractCppMethodName(source, declarator, className);
         method.returnType = extractFunctionReturnType(source, declarationNode, declarator);
         normalizeCtorDtorReturnType(method, className);
-        CCppHelper.extractParameters(source, declarator, method, true);
-        addModifiersFromSpecifiers(method.modifiers, source, declarationNode, CPP_FUNCTION_SPECIFIER_NODES);
+        CCppHelper.extractParameters(source, declarator, method, OPTIONS);
+        CCppHelper.addModifiersFromSpecifiers(method.modifiers, source, declarationNode, OPTIONS.functionSpecifierNodeTypes,
+            OPTIONS, CCppHelper.isTypeContainerNode(declarationNode));
         return method;
     }
 
@@ -696,65 +670,6 @@ public class CppAnalyzer implements LanguageAnalyzer {
         return null;
     }
 
-    private TypeInfo analyzeStructLike(String source, TSNode typeNode, String kind) {
-        TypeInfo typeInfo = new TypeInfo();
-        typeInfo.kind = kind;
-        typeInfo.name = CCppHelper.extractTypeName(source, typeNode);
-        addModifiersFromSpecifiers(typeInfo.modifiers, source, typeNode, CPP_TYPE_SPECIFIER_NODES);
-
-        TSNode body = findFirstChild(typeNode, "field_declaration_list");
-        if (body == null) {
-            return null;
-        }
-        extractStructFields(source, body, typeInfo);
-        return typeInfo;
-    }
-
-    private TypeInfo analyzeEnum(String source, TSNode enumNode) {
-        TypeInfo typeInfo = new TypeInfo();
-        String enumText = getNodeText(source, enumNode);
-        typeInfo.kind = enumText != null && CCppHelper.containsKeyword(enumText, "class") ? "enum class" : "enum";
-        typeInfo.name = CCppHelper.extractTypeName(source, enumNode);
-
-        TSNode enumeratorList = findFirstChild(enumNode, "enumerator_list");
-        if (enumeratorList == null) {
-            return null;
-        }
-        for (TSNode enumerator : findAllChildren(enumeratorList, "enumerator")) {
-            String enumMember = extractName(source, enumerator, "identifier");
-            if (enumMember != null) {
-                FieldInfo field = new FieldInfo();
-                field.name = enumMember;
-                typeInfo.fields.add(field);
-            }
-        }
-
-        return typeInfo;
-    }
-
-    private void extractStructFields(String source, TSNode fieldList, TypeInfo typeInfo) {
-        for (TSNode fieldDecl : findAllChildren(fieldList, "field_declaration")) {
-            String fieldType = CCppHelper.extractDeclarationTypeText(source, fieldDecl, true);
-            List<TSNode> declarators = findAllDescendants(fieldDecl, "field_identifier");
-            if (declarators.isEmpty()) {
-                declarators = findAllDescendants(fieldDecl, "identifier");
-            }
-
-            for (TSNode declarator : declarators) {
-                String fieldName = getNodeText(source, declarator);
-                if (fieldName == null || fieldName.isBlank()) {
-                    continue;
-                }
-
-                FieldInfo fieldInfo = new FieldInfo();
-                fieldInfo.name = fieldName;
-                fieldInfo.type = fieldType;
-                addModifiersFromSpecifiers(fieldInfo.modifiers, source, fieldDecl, CPP_FIELD_SPECIFIER_NODES);
-                typeInfo.fields.add(fieldInfo);
-            }
-        }
-    }
-
     private void extractTopLevelMethods(String source, TSNode rootNode, FileAnalysis analysis, Map<String, String> fileScopeTypes) {
         for (int i = 0; i < rootNode.getNamedChildCount(); i++) {
             TSNode child = rootNode.getNamedChild(i);
@@ -796,11 +711,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
 
     private void extractContainerMethods(String source, TSNode container, FileAnalysis analysis, Map<String, String> fileScopeTypes) {
         for (TSNode functionNode : findAllDescendants(container, "function_definition")) {
-            if (isInsideNodeType(functionNode, "class_specifier")
-                || isInsideNodeType(functionNode, "struct_specifier")
-                || isInsideNodeType(functionNode, "union_specifier")
-                || isInsideNodeType(functionNode, "enum_specifier")
-                || isInsideNodeType(functionNode, "template_declaration")) {
+            if (CCppHelper.isInsideTypeOrTemplateContainer(functionNode)) {
                 continue;
             }
             MethodInfo method = analyzeFunctionDefinition(source, functionNode, null, fileScopeTypes);
@@ -810,12 +721,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
         }
 
         for (TSNode declarationNode : findAllDescendants(container, "declaration")) {
-            if (isInsideNodeType(declarationNode, "class_specifier")
-                || isInsideNodeType(declarationNode, "struct_specifier")
-                || isInsideNodeType(declarationNode, "union_specifier")
-                || isInsideNodeType(declarationNode, "enum_specifier")
-                || isInsideNodeType(declarationNode, "function_definition")
-                || isInsideNodeType(declarationNode, "template_declaration")) {
+            if (CCppHelper.isInsideTypeOrFunctionOrTemplateContainer(declarationNode)) {
                 continue;
             }
             MethodInfo method = analyzeFunctionDeclaration(source, declarationNode, null);
@@ -825,10 +731,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
         }
 
         for (TSNode templateNode : findAllDescendants(container, "template_declaration")) {
-            if (isInsideNodeType(templateNode, "class_specifier")
-                || isInsideNodeType(templateNode, "struct_specifier")
-                || isInsideNodeType(templateNode, "union_specifier")
-                || isInsideNodeType(templateNode, "enum_specifier")) {
+            if (CCppHelper.isInsideTypeContainer(templateNode)) {
                 continue;
             }
             MethodInfo method = addTemplateFunctionMethod(source, templateNode, fileScopeTypes);
@@ -852,12 +755,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
 
             if ("linkage_specification".equals(child.getType()) || child.getType().startsWith("preproc_")) {
                 for (TSNode declarationNode : findAllDescendants(child, "declaration")) {
-                    if (isInsideNodeType(declarationNode, "class_specifier")
-                        || isInsideNodeType(declarationNode, "struct_specifier")
-                        || isInsideNodeType(declarationNode, "union_specifier")
-                        || isInsideNodeType(declarationNode, "enum_specifier")
-                        || isInsideNodeType(declarationNode, "function_definition")
-                        || isInsideNodeType(declarationNode, "template_declaration")) {
+                    if (CCppHelper.isInsideTypeOrFunctionOrTemplateContainer(declarationNode)) {
                         continue;
                     }
                     addTopLevelFieldsFromDeclaration(source, declarationNode, analysis, fileScopeTypes);
@@ -868,11 +766,11 @@ public class CppAnalyzer implements LanguageAnalyzer {
     }
 
     private void addTopLevelFieldsFromDeclaration(String source, TSNode declarationNode, FileAnalysis analysis, Map<String, String> fileScopeTypes) {
-        if (CCppHelper.containsNonFieldFunctionDeclaration(declarationNode, false)) {
+        if (CCppHelper.containsNonFieldFunctionDeclaration(declarationNode, OPTIONS)) {
             return;
         }
 
-        String typeText = CCppHelper.extractDeclarationTypeText(source, declarationNode, true);
+        String typeText = CCppHelper.extractDeclarationTypeText(source, declarationNode, OPTIONS);
         for (String name : CCppHelper.extractDeclaredVariableNames(source, declarationNode)) {
             if (name == null || name.isBlank()) {
                 continue;
@@ -883,7 +781,8 @@ public class CppAnalyzer implements LanguageAnalyzer {
             FieldInfo field = new FieldInfo();
             field.name = name;
             field.type = fieldType;
-            addModifiersFromSpecifiers(field.modifiers, source, declarationNode, CPP_FIELD_SPECIFIER_NODES);
+            CCppHelper.addModifiersFromSpecifiers(field.modifiers, source, declarationNode, OPTIONS.fieldSpecifierNodeTypes,
+                OPTIONS, CCppHelper.isTypeContainerNode(declarationNode));
             analysis.fields.add(field);
             if (fieldType != null) {
                 fileScopeTypes.put(name, fieldType);
@@ -926,37 +825,22 @@ public class CppAnalyzer implements LanguageAnalyzer {
         return aliasInfo;
     }
 
-    private void addModifiersFromSpecifiers(List<String> target, String source, TSNode node, List<String> specifierNodeTypes) {
-        boolean collectingTypeModifiers = "class_specifier".equals(node.getType())
-            || "struct_specifier".equals(node.getType())
-            || "union_specifier".equals(node.getType());
-        CCppHelper.addModifiersFromSpecifiers(target, source, node, specifierNodeTypes, true, collectingTypeModifiers);
-    }
-
     private void extractTopLevelCalls(String source, TSNode rootNode, FileAnalysis analysis, Map<String, String> fileScopeTypes) {
         for (TSNode call : findAllDescendants(rootNode, "call_expression")) {
-            if (isInsideNodeType(call, "function_definition")
-                || isInsideNodeType(call, "class_specifier")
-                || isInsideNodeType(call, "struct_specifier")
-                || isInsideNodeType(call, "union_specifier")
-                || isInsideNodeType(call, "enum_specifier")) {
+            if (CCppHelper.isInsideTypeOrFunctionContainer(call)) {
                 continue;
             }
 
             MethodInfo collector = new MethodInfo();
-            CCppHelper.extractMethodCall(source, call, collector, fileScopeTypes == null ? Map.of() : fileScopeTypes, true, false);
+            CCppHelper.extractMethodCall(source, call, collector, fileScopeTypes == null ? Map.of() : fileScopeTypes, OPTIONS);
             analysis.methodCalls.addAll(collector.methodCalls);
         }
 
         analysis.methodCalls.sort(METHOD_CALL_COMPARATOR);
     }
 
-    private boolean isInsideNodeType(TSNode node, String ancestorType) {
-        return CCppHelper.isInsideNodeType(node, ancestorType);
-    }
-
     private String extractFunctionReturnType(String source, TSNode declarationNode, TSNode functionDeclarator) {
-        String baseType = CCppHelper.extractDeclarationTypeText(source, declarationNode, true);
+        String baseType = CCppHelper.extractDeclarationTypeText(source, declarationNode, OPTIONS);
         if (baseType == null || functionDeclarator == null || functionDeclarator.isNull()) {
             return baseType;
         }
