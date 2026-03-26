@@ -51,6 +51,10 @@
     "type" : "int",
     "modifiers" : [ "static" ]
   }, {
+    "name" : "max_size",
+    "type" : "int",
+    "modifiers" : [ "const" ]
+  }, {
     "name" : "global_limit",
     "type" : "int",
     "modifiers" : [ "extern", "volatile" ]
