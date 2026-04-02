@@ -88,6 +88,23 @@ docker run --rm -it -v "$PWD:/workspace" -v "/path/to/code:/src:ro" -w /workspac
 
 The analysis results are written to the path you pass as the second argument (e.g., `/workspace/.out/analysis.jsonl`) in **JSONL format** (JSON Lines - one JSON object per line). Parent directories for the output file are created automatically, and `.out/` is gitignored by default.
 
+### Summary artifacts
+
+CodeFrame includes a Voyager summary generator that parses `results/*.jsonl` and emits:
+
+- `results/summary.md`
+- `results/summary.html`
+
+Run it with:
+
+```bash
+# Unix/macOS
+python3 codeframe-summary.py results
+
+# Windows
+py -3 codeframe-summary.py results
+```
+
 ### Ignore patterns (.ignore)
 
 - Location: project root `.ignore` (included in releases).
