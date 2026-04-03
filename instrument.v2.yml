@@ -1,6 +1,6 @@
 name: codeframe
 id: codeframe
-version: 1.0.0
+version: 0.6.3
 
 actions:
   start:
@@ -14,7 +14,7 @@ actions:
   summary:
     md-file: results/summary.md
     html-file: results/summary.html
-    category: Structural Relationship
+    category: Structural Relations
     commands:
       generate-summary:
         id: generate-summary
