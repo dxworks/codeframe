@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -392,7 +391,6 @@ def _create_summary_payload(
     language_metrics: dict[str, dict[str, int]] | None = None,
     has_data_quality_issues: bool = True,
 ) -> dict[str, Any]:
-    generated_at = _iso_now()
 
     sql_metrics = sql_metrics or {
         'files': 0,
@@ -424,12 +422,10 @@ def _create_summary_payload(
     type_kind_rows = _build_type_kind_rows(type_kinds)
 
     metadata: dict[str, Any] = {
-        'jsonl.files': len(jsonl_files),
         'files.total': files_total,
         'run.total.files': run_expected_total,
         'run.files.analyzed': run_files_analyzed,
         'run.files.with.errors': run_files_with_errors,
-        'run.duration.seconds': run_duration_seconds,
         'run.coverage.percent': coverage_percent,
         'languages.count': len(languages),
         'types.total': metrics['typesTotal'],
@@ -441,7 +437,6 @@ def _create_summary_payload(
         'method.calls.total': metrics['methodCallCountTotal'],
         'data.invalid.lines': invalid_lines,
         'data.parse.failures': parse_failures,
-        'generated.at': generated_at,
     }
 
     for language, count in sorted(languages.items()):
@@ -453,11 +448,9 @@ def _create_summary_payload(
     markdown_lines: list[str] = [
         '## CodeFrame',
         '',
-        f'- JSONL files: {_format_int(len(jsonl_files))}',
         f'- Files analyzed: {_format_int(files_total)}',
         f'- Coverage: {_format_int(run_files_analyzed)}/{_format_int(run_expected_total)} ({coverage_percent}%)',
         f'- Files with errors: {_format_int(run_files_with_errors)}',
-        f'- Duration: {_format_int(run_duration_seconds)} s',
         f'- Type declarations: {_format_int(metrics["typesTotal"])}',
         f'- Method call edges: {_format_int(metrics["methodCallEdgesTotal"])}',
         f'- Relationship links (extends/implements/mixins): '
@@ -465,20 +458,20 @@ def _create_summary_payload(
         '',
         '### Structural Metrics by Language',
         '',
-        '| Language | Files | Share | Types | Methods | Fields/Props | Relationship Links |',
-        '| --- | ---: | ---: | ---: | ---: | ---: | ---: |',
+        '| Language | Files (%) | Types | Methods | Fields/Props | Relationship Links |',
+        '| --- | ---: | ---: | ---: | ---: | ---: |',
     ]
 
     for row in language_rows:
         markdown_lines.append(
-            f"| {row['language']} | {row['filesFormatted']} | {row['share']} | {row['typesFormatted']} "
+            f"| {row['language']} | {row['filesWithShareFormatted']} | {row['typesFormatted']} "
             f"| {row['methodsFormatted']} | {row['fieldsFormatted']} | {row['relationshipsFormatted']} |"
         )
 
     markdown_lines.extend(
         [
             '',
-            '### Type Kind Breakdown',
+            '### Type Breakdown',
             '',
             '| Kind | Count |',
             '| --- | ---: |',
@@ -533,16 +526,13 @@ def _create_summary_payload(
         )
 
     template_model = {
-        'generatedAt': generated_at,
         'isDataQualityPartial': has_data_quality_issues,
         'metrics': {
-            'jsonlFilesFormatted': _format_int(len(jsonl_files)),
             'filesTotalFormatted': _format_int(files_total),
             'runTotalFilesFormatted': _format_int(run_expected_total),
             'runFilesAnalyzedFormatted': _format_int(run_files_analyzed),
             'runFilesWithErrorsFormatted': _format_int(run_files_with_errors),
             'runCoveragePercent': coverage_percent,
-            'runDurationSecondsFormatted': _format_int(run_duration_seconds),
             'typesTotalFormatted': _format_int(metrics['typesTotal']),
             'extendsTotalFormatted': _format_int(metrics['extendsTotal']),
             'implementsTotalFormatted': _format_int(metrics['implementsTotal']),
@@ -620,6 +610,7 @@ def _build_language_rows(
                 'fieldsFormatted': _format_int(fields),
                 'relationshipsFormatted': _format_int(relationships),
                 'share': f"{_percent(files, files_total)}%",
+                'filesWithShareFormatted': f"{_format_int(files)} ({_percent(files, files_total)}%)",
             }
         )
 
@@ -745,21 +736,3 @@ def _percent(value: int, total: int) -> str:
 def _format_int(value: int) -> str:
     return f'{value:,}'
 
-
-def _iso_now() -> str:
-    local_now = datetime.now().astimezone()
-    return f"{local_now.strftime('%Y-%m-%d %H:%M:%S')} {_format_gmt_offset(local_now.strftime('%z'))}"
-
-
-def _format_gmt_offset(offset: str) -> str:
-    if len(offset) != 5:
-        return 'GMT+0'
-
-    sign = offset[0]
-    hours = int(offset[1:3])
-    minutes = int(offset[3:5])
-
-    if minutes == 0:
-        return f'GMT{sign}{hours}'
-
-    return f'GMT{sign}{hours}:{minutes:02d}'

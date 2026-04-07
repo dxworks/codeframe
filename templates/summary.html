@@ -54,18 +54,15 @@
     <p>Summary input is missing</p>
   {{else}}
     <div class="summary-grid">
-      <div class="summary-item"><strong>JSONL files</strong><br>{{metrics.jsonlFilesFormatted}}</div>
       <div class="summary-item"><strong>Files analyzed</strong><br>{{metrics.filesTotalFormatted}}</div>
       <div class="summary-item"><strong>Coverage</strong><br>{{metrics.runFilesAnalyzedFormatted}} / {{metrics.runTotalFilesFormatted}} ({{metrics.runCoveragePercent}}%)</div>
       <div class="summary-item"><strong>Files with errors</strong><br>{{metrics.runFilesWithErrorsFormatted}}</div>
-      <div class="summary-item"><strong>Duration (s)</strong><br>{{metrics.runDurationSecondsFormatted}}</div>
       <div class="summary-item"><strong>Types</strong><br>{{metrics.typesTotalFormatted}}</div>
       <div class="summary-item"><strong>Extends</strong><br>{{metrics.extendsTotalFormatted}}</div>
       <div class="summary-item"><strong>Implements</strong><br>{{metrics.implementsTotalFormatted}}</div>
       <div class="summary-item"><strong>Mixins</strong><br>{{metrics.mixinsTotalFormatted}}</div>
       <div class="summary-item"><strong>Method call edges</strong><br>{{metrics.methodCallEdgesTotalFormatted}}</div>
       <div class="summary-item"><strong>Method call total</strong><br>{{metrics.methodCallCountTotalFormatted}}</div>
-      <div class="summary-item"><strong>Generated at</strong><br>{{generatedAt}}</div>
     </div>
 
     {{#if isDataQualityPartial}}
@@ -79,8 +76,7 @@
       <thead>
         <tr>
           <th>Language</th>
-          <th>Files</th>
-          <th>Share</th>
+          <th>Files (%)</th>
           <th>Types</th>
           <th>Methods</th>
           <th>Fields/Props</th>
@@ -91,8 +87,7 @@
         {{#each languageRows}}
           <tr>
             <td>{{language}}</td>
-            <td class="num">{{filesFormatted}}</td>
-            <td class="num">{{share}}</td>
+            <td class="num">{{filesWithShareFormatted}}</td>
             <td class="num">{{typesFormatted}}</td>
             <td class="num">{{methodsFormatted}}</td>
             <td class="num">{{fieldsFormatted}}</td>
@@ -102,7 +97,7 @@
       </tbody>
     </table>
 
-    <h3>Type Kind Breakdown</h3>
+    <h3>Type Breakdown</h3>
     <table>
       <thead>
         <tr>
