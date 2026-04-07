@@ -45,13 +45,18 @@ jobs:
         id: assets
         run: |
           set -euo pipefail
-          mkdir -p codeframe
+          mkdir -p codeframe/templates
           # Use constant fat jar name produced by Shadow config
           JAR_PATH="build/libs/codeframe.jar"
           cp "$JAR_PATH" codeframe/codeframe.jar
           cp instrument.yml codeframe/instrument.yml
+          cp instrument.v2.yml codeframe/instrument.v2.yml
           cp .ignore codeframe/.ignore
           cp codeframe-config.yml codeframe/codeframe-config.yml
+          cp codeframe-summary.py codeframe/codeframe-summary.py
+          cp summary_extract.py codeframe/summary_extract.py
+          cp summary_render.py codeframe/summary_render.py
+          cp templates/summary.html codeframe/templates/summary.html
           # Voyager archive name
           ARCHIVE_NAME="codeframe-${{ steps.tag.outputs.suffix }}"
           echo "archive_name=$ARCHIVE_NAME" >> $GITHUB_OUTPUT

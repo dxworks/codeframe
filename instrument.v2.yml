@@ -1,0 +1,35 @@
+name: codeframe
+id: codeframe
+version: 0.6.3
+
+actions:
+  start:
+    commands:
+      run-codeframe:
+        id: run-codeframe
+        dir: ${instrumentPath}
+        command: >-
+          java -jar codeframe.jar "${repo}" "${instrumentPath}/results/${repoName}.jsonl"
+
+  summary:
+    md-file: results/summary.md
+    html-file: results/summary.html
+    category: Structural Relations
+    commands:
+      generate-summary:
+        id: generate-summary
+        dir: ${instrumentPath}
+        command:
+          windows: py -3 codeframe-summary.py "${instrumentPath}/results"
+          unix: python3 codeframe-summary.py "${instrumentPath}/results"
+
+  clean:
+    with:
+      locations:
+        - source: ${instrumentDir}/results
+
+  pack:
+    with:
+      locations:
+        - source: ${instrumentDir}/results
+          destination: /results

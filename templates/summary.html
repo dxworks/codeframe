@@ -1,0 +1,154 @@
+<section class="codeframe-summary">
+  <style>
+    .codeframe-summary {
+      color: #1f2328;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    .codeframe-summary h3 {
+      margin-top: 12px;
+      margin-bottom: 6px;
+    }
+
+    .codeframe-summary .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 8px 16px;
+      margin: 4px 0;
+    }
+
+    .codeframe-summary .summary-item {
+      padding: 6px 8px;
+      background: #f6f8fa;
+      border-radius: 6px;
+    }
+
+    .codeframe-summary .summary-note {
+      margin: 8px 0;
+      color: #b54708;
+      font-size: 0.95rem;
+    }
+
+    .codeframe-summary table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.95rem;
+    }
+
+    .codeframe-summary th,
+    .codeframe-summary td {
+      border: 1px solid #d0d7de;
+      padding: 6px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .codeframe-summary td.num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+
+  {{#if isMissing}}
+    <p>Summary input is missing</p>
+  {{else}}
+    <div class="summary-grid">
+      <div class="summary-item"><strong>Files analyzed</strong><br>{{metrics.filesTotalFormatted}}</div>
+      <div class="summary-item"><strong>Coverage</strong><br>{{metrics.runFilesAnalyzedFormatted}} / {{metrics.runTotalFilesFormatted}} ({{metrics.runCoveragePercent}}%)</div>
+      <div class="summary-item"><strong>Files with errors</strong><br>{{metrics.runFilesWithErrorsFormatted}}</div>
+      <div class="summary-item"><strong>Types</strong><br>{{metrics.typesTotalFormatted}}</div>
+      <div class="summary-item"><strong>Extends</strong><br>{{metrics.extendsTotalFormatted}}</div>
+      <div class="summary-item"><strong>Implements</strong><br>{{metrics.implementsTotalFormatted}}</div>
+      <div class="summary-item"><strong>Mixins</strong><br>{{metrics.mixinsTotalFormatted}}</div>
+      <div class="summary-item"><strong>Method call edges</strong><br>{{metrics.methodCallEdgesTotalFormatted}}</div>
+      <div class="summary-item"><strong>Method call total</strong><br>{{metrics.methodCallCountTotalFormatted}}</div>
+    </div>
+
+    {{#if isDataQualityPartial}}
+      <p class="summary-note">
+        Data quality issues detected (invalid lines: {{metrics.invalidLinesFormatted}}, parse failures: {{metrics.parseFailuresFormatted}}).
+      </p>
+    {{/if}}
+
+    <h3>Structural Metrics by Language</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Language</th>
+          <th>Files (%)</th>
+          <th>Types</th>
+          <th>Methods</th>
+          <th>Fields/Props</th>
+          <th>Relationship Links</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each languageRows}}
+          <tr>
+            <td>{{language}}</td>
+            <td class="num">{{filesWithShareFormatted}}</td>
+            <td class="num">{{typesFormatted}}</td>
+            <td class="num">{{methodsFormatted}}</td>
+            <td class="num">{{fieldsFormatted}}</td>
+            <td class="num">{{relationshipsFormatted}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+
+    <h3>Type Breakdown</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Kind</th>
+          <th>Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each typeKindRows}}
+          <tr>
+            <td>{{kind}}</td>
+            <td class="num">{{countFormatted}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+
+    {{#if hasSqlMetrics}}
+      <h3>SQL Structural Footprint</h3>
+      <div class="summary-grid">
+        <div class="summary-item"><strong>SQL files</strong><br>{{sqlMetrics.filesFormatted}}</div>
+        <div class="summary-item"><strong>CREATE TABLE</strong><br>{{sqlMetrics.createTablesFormatted}}</div>
+        <div class="summary-item"><strong>ALTER TABLE</strong><br>{{sqlMetrics.alterTablesFormatted}}</div>
+        <div class="summary-item"><strong>CREATE VIEW</strong><br>{{sqlMetrics.createViewsFormatted}}</div>
+        <div class="summary-item"><strong>CREATE INDEX</strong><br>{{sqlMetrics.createIndexesFormatted}}</div>
+        <div class="summary-item"><strong>CREATE PROCEDURE</strong><br>{{sqlMetrics.createProceduresFormatted}}</div>
+        <div class="summary-item"><strong>CREATE FUNCTION</strong><br>{{sqlMetrics.createFunctionsFormatted}}</div>
+        <div class="summary-item"><strong>CREATE TRIGGER</strong><br>{{sqlMetrics.createTriggersFormatted}}</div>
+        <div class="summary-item"><strong>DROP operations</strong><br>{{sqlMetrics.dropOperationsFormatted}}</div>
+      </div>
+    {{/if}}
+
+    {{#if hasCobolMetrics}}
+      <h3>COBOL Structural Footprint</h3>
+      <div class="summary-grid">
+        <div class="summary-item"><strong>COBOL files</strong><br>{{cobolMetrics.filesFormatted}}</div>
+        <div class="summary-item"><strong>Sections</strong><br>{{cobolMetrics.sectionsFormatted}}</div>
+        <div class="summary-item"><strong>Paragraphs</strong><br>{{cobolMetrics.paragraphsFormatted}}</div>
+        <div class="summary-item"><strong>Data items</strong><br>{{cobolMetrics.dataItemsFormatted}}</div>
+        <div class="summary-item"><strong>Copy statements</strong><br>{{cobolMetrics.copyStatementsFormatted}}</div>
+        <div class="summary-item"><strong>File definitions</strong><br>{{cobolMetrics.fileDefinitionsFormatted}}</div>
+      </div>
+    {{/if}}
+
+    {{#if hasMarkdownMetrics}}
+      <h3>Markdown Structural Footprint</h3>
+      <div class="summary-grid">
+        <div class="summary-item"><strong>Markdown files</strong><br>{{markdownMetrics.filesFormatted}}</div>
+        <div class="summary-item"><strong>Sections</strong><br>{{markdownMetrics.sectionsFormatted}}</div>
+        <div class="summary-item"><strong>Elements</strong><br>{{markdownMetrics.elementsFormatted}}</div>
+      </div>
+    {{/if}}
+  {{/if}}
+</section>
