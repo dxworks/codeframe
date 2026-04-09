@@ -2,6 +2,18 @@
 
 A Tree-sitter-based code parser that extracts structural information from source files across multiple programming languages.
 
+## Project Purpose
+
+CodeFrame emits deterministic, source-grounded structural facts for each file as JSONL analysis output.
+A downstream tool uses this output to build a structural stub for LLM interpretation.
+
+- The analyzer extracts deterministic, source-grounded structure (types, methods, fields, calls, document sections).
+- The output can be partial or semantically incomplete by design, as long as structural signals are preserved.
+- Downstream LLM/post-processing systems use these stubs to infer:
+  1. **Business capability** (primary goal)
+  2. Architectural and implementation patterns
+  3. Anti-patterns and risk signals
+
 ## Supported Languages
 
 - **Java** (.java)
@@ -195,7 +207,8 @@ See **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** for details on core components a
 
 ## Contributing
 
-See **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** for guidelines on adding new languages, authoring language specs, and analyzer conventions.
+See **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contributor workflow (adding languages, spec authoring process, testing conventions).
+See **[EXTRACTION_CONTRACT.md](docs/EXTRACTION_CONTRACT.md)** for canonical shared extraction rules used across analyzers.
 
 ## Documentation Map
 

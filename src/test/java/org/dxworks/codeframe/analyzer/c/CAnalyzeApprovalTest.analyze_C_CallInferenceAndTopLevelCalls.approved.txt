@@ -4,13 +4,13 @@
   "types" : [ {
     "kind" : "typedef",
     "name" : "Logger",
-    "extendsType" : "struct Logger {\n    int (*writer)(int);\n}"
+    "extendsType" : "struct Logger"
   }, {
     "kind" : "struct",
     "name" : "Logger",
     "fields" : [ {
       "name" : "writer",
-      "type" : "int (*writer)(int)"
+      "type" : "int (*)(int)"
     } ]
   } ],
   "methods" : [ {
@@ -23,6 +23,7 @@
   }, {
     "name" : "declared_only",
     "returnType" : "int",
+    "isDeclarationOnly" : true,
     "parameters" : [ {
       "name" : "value",
       "type" : "const char *"
@@ -30,6 +31,7 @@
   }, {
     "name" : "dispatch_values",
     "returnType" : "int",
+    "isDeclarationOnly" : true,
     "parameters" : [ {
       "name" : "context",
       "type" : "void *restrict"
@@ -39,7 +41,11 @@
     } ]
   }, {
     "name" : "make_dispatcher",
-    "returnType" : "int"
+    "returnType" : "int (*)(int)",
+    "isDeclarationOnly" : true,
+    "parameters" : [ {
+      "type" : "int"
+    } ]
   }, {
     "name" : "log_message",
     "returnType" : "void",
@@ -56,7 +62,7 @@
     } ]
   }, {
     "name" : "get_logger",
-    "returnType" : "Logger"
+    "returnType" : "Logger *"
   }, {
     "name" : "compute",
     "returnType" : "int",
@@ -70,14 +76,13 @@
       "parameterCount" : 1
     }, {
       "methodName" : "writer",
-      "objectName" : "get_logger",
       "callCount" : 1,
       "parameterCount" : 1
     } ]
   } ],
   "fields" : [ {
     "name" : "global_callback",
-    "type" : "int (*global_callback)(int)"
+    "type" : "int (*)(int)"
   }, {
     "name" : "global_logger",
     "type" : "Logger"

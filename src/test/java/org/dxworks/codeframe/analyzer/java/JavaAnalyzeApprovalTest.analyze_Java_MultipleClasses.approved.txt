@@ -70,7 +70,8 @@
       "name" : "NestedContract",
       "methods" : [ {
         "name" : "name",
-        "returnType" : "String"
+        "returnType" : "String",
+        "isDeclarationOnly" : true
       } ]
     }, {
       "kind" : "enum",

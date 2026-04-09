@@ -73,6 +73,7 @@ File-level `const` declarations are emitted in root `fields`.
 Type methods (class/trait/enum/interface) include:
 - `name`
 - `returnType`
+- `isDeclarationOnly` (`true` when the declaration has no body)
 - `visibility`
 - `modifiers`
 - `annotations`
@@ -90,6 +91,8 @@ Standalone functions include:
 
 `visibility` and `modifiers` are not emitted for standalone functions.
 
+`isDeclarationOnly` is omitted when `false`.
+
 Variadic parameters are represented with `...` prefix in `parameters[].name`.
 
 ### 3.4 Method Calls
@@ -106,6 +109,8 @@ Each call can include:
 - `callCount`
 - `parameterCount`
 
+Qualified-call handling follows `docs/EXTRACTION_CONTRACT.md` (§3.2); for example, `Class::method()` records `methodName: "method"`.
+
 ### 3.5 Visibility Defaults
 
 Visibility is emitted only when explicitly present in source declarations.
@@ -114,11 +119,11 @@ Implicit language defaults (for example, PHP's default method/property visibilit
 
 ---
 
-## 4. Current Limitations (V1)
+## 4. Current Limitations
 
 - No DocBlock semantic extraction.
 - No runtime/include/require resolution.
-- Global variable extraction is not part of V1 (top-level constants only).
+- Global variable extraction is not included (top-level constants only).
 
 ---
 

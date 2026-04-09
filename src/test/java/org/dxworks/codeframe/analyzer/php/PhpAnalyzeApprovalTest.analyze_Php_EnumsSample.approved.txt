@@ -108,6 +108,7 @@
     "methods" : [ {
       "name" : "describe",
       "returnType" : "string",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ]
     } ]

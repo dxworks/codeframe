@@ -2,6 +2,10 @@
   "filePath" : "src/test/resources/samples/cpp/MacroHeavyHeader.h",
   "language" : "cpp",
   "types" : [ {
+    "kind" : "typedef",
+    "name" : "MacroRecord",
+    "extendsType" : "struct MacroRecord"
+  }, {
     "kind" : "struct",
     "name" : "MacroRecord",
     "fields" : [ {
@@ -15,6 +19,7 @@
   "methods" : [ {
     "name" : "run_macro_flow",
     "returnType" : "int",
+    "isDeclarationOnly" : true,
     "parameters" : [ {
       "name" : "record",
       "type" : "MacroRecord *"
@@ -25,6 +30,7 @@
   }, {
     "name" : "bind_macro_record",
     "returnType" : "int",
+    "isDeclarationOnly" : true,
     "parameters" : [ {
       "name" : "record",
       "type" : "const MacroRecord &"
@@ -36,7 +42,7 @@
     "modifiers" : [ "extern" ]
   }, {
     "name" : "macro_handler",
-    "type" : "int (*macro_handler)(int)",
+    "type" : "int (*)(int)",
     "modifiers" : [ "extern" ]
   } ],
   "imports" : [ "#include <stddef.h>", "#include <stdint.h>" ]

@@ -26,7 +26,7 @@ Top-level fields:
 - `imports` (`using` directives)
 - `types` (classes/interfaces/enums/records)
 
-`fields`, `properties`, and `methods` are emitted under `types`; `methodCalls` are emitted under `methods` and property `accessors`. File-level statement extraction is not part of V1.
+`fields`, `properties`, and `methods` are emitted under `types`; `methodCalls` are emitted under `methods` and property `accessors`. File-level statement extraction is not included.
 
 ---
 
@@ -79,9 +79,12 @@ Properties with expression bodies (`=>`) are represented with a synthetic `get` 
 
 Method metadata:
 - `name`, `returnType`, `visibility`, `modifiers`, `annotations`
+- `isDeclarationOnly` (`true` when the declaration has no body)
 - `parameters`
 - `localVariables`
 - `methodCalls`
+
+`isDeclarationOnly` is omitted when `false`.
 
 ### 3.4 Method Calls
 
@@ -98,16 +101,18 @@ Each call can include:
 - `callCount`
 - `parameterCount` for invocation calls
 
+Qualified-call handling follows `docs/EXTRACTION_CONTRACT.md` (§3.2).
+
 Synthetic property calls (`get_*` / `set_*`) do not include `parameterCount`.
 
 ---
 
-## 4. Current Limitations (V1)
+## 4. Current Limitations
 
 - No semantic binding/type resolution beyond local syntax.
 - Top-level statements/global function programs are not a primary extraction target.
 - Extension-method receiver semantics are syntactic only.
-- `struct` declarations are not extracted in V1.
+- `struct` declarations are not extracted.
 
 ---
 

@@ -73,6 +73,7 @@
     }, {
       "name" : "getType",
       "returnType" : "string",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "abstract", "public" ]
     }, {
@@ -632,11 +633,13 @@
     "methods" : [ {
       "name" : "getId",
       "returnType" : "int",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ]
     }, {
       "name" : "getUuid",
       "returnType" : "string",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ]
     } ]
@@ -646,16 +649,19 @@
     "methods" : [ {
       "name" : "getCreatedAt",
       "returnType" : "\\DateTimeInterface",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ]
     }, {
       "name" : "getUpdatedAt",
       "returnType" : "?\\DateTimeInterface",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ]
     }, {
       "name" : "touch",
       "returnType" : "void",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ]
     } ]
@@ -665,11 +671,13 @@
     "methods" : [ {
       "name" : "serialize",
       "returnType" : "string",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ]
     }, {
       "name" : "deserialize",
       "returnType" : "self",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public", "static" ],
       "parameters" : [ {
@@ -683,6 +691,7 @@
     "methods" : [ {
       "name" : "compareTo",
       "returnType" : "int",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "parameters" : [ {
@@ -692,6 +701,7 @@
     }, {
       "name" : "equals",
       "returnType" : "bool",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "parameters" : [ {
@@ -706,6 +716,7 @@
     "methods" : [ {
       "name" : "toArray",
       "returnType" : "array",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ]
     } ]

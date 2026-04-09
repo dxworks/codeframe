@@ -259,8 +259,60 @@ public class CppAnalyzer implements LanguageAnalyzer {
         return namespaceInfo;
     }
 
+    private void addTypeIfNamed(FileAnalysis analysis, TypeInfo typeInfo) {
+        if (typeInfo != null && typeInfo.name != null) {
+            analysis.types.add(typeInfo);
+        }
+    }
+
+    private void addNamespaceIfPresent(String source, TSNode namespaceNode, FileAnalysis analysis) {
+        TypeInfo namespaceInfo = analyzeNamespace(source, namespaceNode, Map.of());
+        if (namespaceInfo != null) {
+            analysis.types.add(namespaceInfo);
+        }
+    }
+
+    private void collectTypedefsFromNode(String source, TSNode child, FileAnalysis analysis, Set<Integer> seenTypedefNodes) {
+        if ("type_definition".equals(child.getType())) {
+            addTypeIfNamed(analysis, CCppHelper.analyzeTypedef(source, child));
+            seenTypedefNodes.add(child.getStartByte());
+        }
+
+        for (TSNode typedefNode : findAllDescendants(child, "type_definition")) {
+            if (!seenTypedefNodes.add(typedefNode.getStartByte())) {
+                continue;
+            }
+            addTypeIfNamed(analysis, CCppHelper.analyzeTypedef(source, typedefNode));
+        }
+    }
+
+    private boolean collectNamespacesFromNode(String source,
+                                              TSNode child,
+                                              FileAnalysis analysis,
+                                              Set<Integer> seenNamespaceNodes) {
+        if ("namespace_definition".equals(child.getType())) {
+            addNamespaceIfPresent(source, child, analysis);
+            seenNamespaceNodes.add(child.getStartByte());
+            return true;
+        }
+
+        for (TSNode namespaceNode : findAllDescendants(child, "namespace_definition")) {
+            if (CCppHelper.isInsideNodeType(namespaceNode, "namespace_definition")) {
+                continue;
+            }
+            if (!seenNamespaceNodes.add(namespaceNode.getStartByte())) {
+                continue;
+            }
+            addNamespaceIfPresent(source, namespaceNode, analysis);
+        }
+
+        return false;
+    }
+
     private void extractTopLevelTypes(String source, TSNode rootNode, FileAnalysis analysis) {
         Set<Integer> seenTypeNodes = new HashSet<>();
+        Set<Integer> seenTypedefNodes = new HashSet<>();
+        Set<Integer> seenNamespaceNodes = new HashSet<>();
         for (int i = 0; i < rootNode.getNamedChildCount(); i++) {
             TSNode child = rootNode.getNamedChild(i);
             if (child == null || child.isNull()) {
@@ -269,38 +321,20 @@ public class CppAnalyzer implements LanguageAnalyzer {
 
             String childType = child.getType();
             if ("class_specifier".equals(childType)) {
-                TypeInfo classInfo = analyzeClass(source, child);
-                if (classInfo != null && classInfo.name != null) {
-                    analysis.types.add(classInfo);
-                }
+                addTypeIfNamed(analysis, analyzeClass(source, child));
             }
 
             if ("alias_declaration".equals(childType)) {
-                TypeInfo aliasInfo = analyzeUsingAlias(source, child);
-                if (aliasInfo != null && aliasInfo.name != null) {
-                    analysis.types.add(aliasInfo);
-                }
+                addTypeIfNamed(analysis, analyzeUsingAlias(source, child));
             }
 
-            if ("type_definition".equals(childType)) {
-                TypeInfo typedefInfo = CCppHelper.analyzeTypedef(source, child);
-                if (typedefInfo != null && typedefInfo.name != null) {
-                    analysis.types.add(typedefInfo);
-                }
-            }
+            collectTypedefsFromNode(source, child, analysis, seenTypedefNodes);
 
             if ("template_declaration".equals(childType)) {
-                TypeInfo templateType = analyzeTemplateType(source, child);
-                if (templateType != null && templateType.name != null) {
-                    analysis.types.add(templateType);
-                }
+                addTypeIfNamed(analysis, analyzeTemplateType(source, child));
             }
 
-            if ("namespace_definition".equals(childType)) {
-                TypeInfo namespaceInfo = analyzeNamespace(source, child, Map.of());
-                if (namespaceInfo != null) {
-                    analysis.types.add(namespaceInfo);
-                }
+            if (collectNamespacesFromNode(source, child, analysis, seenNamespaceNodes)) {
                 continue;
             }
 
@@ -544,14 +578,19 @@ public class CppAnalyzer implements LanguageAnalyzer {
         TSNode declarator = getChildByFieldName(functionNode, "declarator");
         method.name = extractCppMethodName(source, declarator, className);
         method.returnType = extractFunctionReturnType(source, functionNode, declarator);
+        normalizeAssignmentOperatorReturnType(source, functionNode, method);
         normalizeCtorDtorReturnType(method, className);
         CCppHelper.extractParameters(source, declarator, method, OPTIONS);
         CCppHelper.addModifiersFromSpecifiers(method.modifiers, source, functionNode, OPTIONS.functionSpecifierNodeTypes,
             OPTIONS, CCppHelper.isTypeContainerNode(functionNode));
+        addDeletedDefaultedModifiers(method, source, functionNode);
 
         TSNode body = getChildByFieldName(functionNode, "body");
         if (body == null) {
             body = findFirstChild(functionNode, "compound_statement");
+        }
+        if (body == null) {
+            method.isDeclarationOnly = true;
         }
         if (body != null) {
             CCppHelper.analyzeMethodBody(source, body, method, fileScopeTypes, OPTIONS);
@@ -572,11 +611,52 @@ public class CppAnalyzer implements LanguageAnalyzer {
         MethodInfo method = new MethodInfo();
         method.name = extractCppMethodName(source, declarator, className);
         method.returnType = extractFunctionReturnType(source, declarationNode, declarator);
+        normalizeAssignmentOperatorReturnType(source, declarationNode, method);
+        method.isDeclarationOnly = true;
         normalizeCtorDtorReturnType(method, className);
         CCppHelper.extractParameters(source, declarator, method, OPTIONS);
         CCppHelper.addModifiersFromSpecifiers(method.modifiers, source, declarationNode, OPTIONS.functionSpecifierNodeTypes,
             OPTIONS, CCppHelper.isTypeContainerNode(declarationNode));
+        addDeletedDefaultedModifiers(method, source, declarationNode);
         return method;
+    }
+
+    private void addDeletedDefaultedModifiers(MethodInfo method, String source, TSNode declarationNode) {
+        if (method == null || declarationNode == null || declarationNode.isNull()) {
+            return;
+        }
+        String declarationText = getNodeText(source, declarationNode);
+        if (declarationText == null) {
+            return;
+        }
+        if (declarationText.contains("= delete") && !method.modifiers.contains("deleted")) {
+            method.modifiers.add("deleted");
+        }
+        if (declarationText.contains("= default") && !method.modifiers.contains("defaulted")) {
+            method.modifiers.add("defaulted");
+        }
+    }
+
+    private void normalizeAssignmentOperatorReturnType(String source, TSNode declarationNode, MethodInfo method) {
+        if (method == null || declarationNode == null || declarationNode.isNull()) {
+            return;
+        }
+        if (!"operator=".equals(method.name)) {
+            return;
+        }
+        String declarationType = CCppHelper.extractDeclarationTypeText(source, declarationNode, OPTIONS);
+        if (declarationType == null || declarationType.isBlank()) {
+            return;
+        }
+
+        if (method.returnType == null || method.returnType.isBlank()) {
+            method.returnType = declarationType;
+            return;
+        }
+
+        if (method.returnType.contains("operator")) {
+            method.returnType = method.returnType.contains("&") ? declarationType + " &" : declarationType;
+        }
     }
 
     private MethodInfo analyzeFriendDeclaration(String source, TSNode friendNode, String className) {
@@ -651,6 +731,18 @@ public class CppAnalyzer implements LanguageAnalyzer {
             return getNodeText(source, operatorNode);
         }
 
+        for (TSNode operatorDescendant : findAllDescendants(declarator, "operator_name")) {
+            String operatorName = getNodeText(source, operatorDescendant);
+            if (operatorName != null && !operatorName.isBlank()) {
+                return operatorName;
+            }
+        }
+
+        String operatorFromText = extractOperatorNameFromText(source, declarator);
+        if (operatorFromText != null) {
+            return operatorFromText;
+        }
+
         TSNode destructorNode = findFirstChild(declarator, "destructor_name");
         if (destructorNode != null) {
             String dtor = getNodeText(source, destructorNode);
@@ -668,6 +760,26 @@ public class CppAnalyzer implements LanguageAnalyzer {
             return className;
         }
         return null;
+    }
+
+    private String extractOperatorNameFromText(String source, TSNode declarator) {
+        String declaratorText = getNodeText(source, declarator);
+        if (declaratorText == null) {
+            return null;
+        }
+
+        int operatorStart = declaratorText.indexOf("operator");
+        if (operatorStart < 0) {
+            return null;
+        }
+
+        int signatureEnd = declaratorText.indexOf('(', operatorStart);
+        if (signatureEnd < 0) {
+            signatureEnd = declaratorText.length();
+        }
+
+        String operatorName = declaratorText.substring(operatorStart, signatureEnd).trim();
+        return operatorName.isBlank() ? null : operatorName;
     }
 
     private void extractTopLevelMethods(String source, TSNode rootNode, FileAnalysis analysis, Map<String, String> fileScopeTypes) {
@@ -840,19 +952,19 @@ public class CppAnalyzer implements LanguageAnalyzer {
     }
 
     private String extractFunctionReturnType(String source, TSNode declarationNode, TSNode functionDeclarator) {
-        String baseType = CCppHelper.extractDeclarationTypeText(source, declarationNode, OPTIONS);
-        if (baseType == null || functionDeclarator == null || functionDeclarator.isNull()) {
-            return baseType;
+        String returnType = CCppHelper.extractFunctionReturnTypeText(source, declarationNode, functionDeclarator, OPTIONS);
+        if (returnType == null || functionDeclarator == null || functionDeclarator.isNull()) {
+            return returnType;
         }
 
         TSNode current = functionDeclarator.getParent();
         while (current != null && !current.isNull() && !isSameNode(current, declarationNode)) {
             if ("reference_declarator".equals(current.getType())) {
-                return baseType + "&";
+                return returnType + "&";
             }
             current = current.getParent();
         }
 
-        return baseType;
+        return returnType;
     }
 }

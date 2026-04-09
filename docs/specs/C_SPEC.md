@@ -40,6 +40,8 @@ C-specific type kinds:
 ### 3.1 File-scope functions
 
 - Function declarations/definitions at file scope are extracted as `methods`.
+- Declaration-only entries (no function body) are emitted with `isDeclarationOnly: true`.
+- Per `C_CPP_SPEC.md` §4.2, `isDeclarationOnly` is true-only output: definitions omit the field (no explicit `false`).
 - Method `returnType` and parameter `type` preserve C declarator syntax where present (for example `const char *`, `void *restrict`, `int (*cb)(int)`).
 
 ### 3.2 Type declarations
@@ -52,13 +54,14 @@ C-specific type kinds:
 - Typedef aliases are represented as `types` with:
   - `kind: "typedef"`
   - alias target preserved as text in `extendsType`
+- Alias target text preservation follows the shared rule in `C_CPP_SPEC.md` §4.4 (including compact targets for named inline aggregate typedefs such as `typedef struct X { ... } X;` → `extendsType: "struct X"`).
 
 ### 3.4 Function pointer types
 
 - Function pointer declarations are preserved as source-like text, not decomposed into a deep semantic model.
 - Example: `int (*cmp)(const void*, const void*)` is kept as textual type information (for example in `extendsType`), rather than split into pointer-layer/type-system objects.
 - File-scope field `type` follows the same source-like preservation principle.
-- Out of scope in V1: typedef-chain resolution, compatibility inference, and calling-convention semantics.
+- Out of scope: typedef-chain resolution, compatibility inference, and calling-convention semantics.
 
 ### 3.5 Storage-class and qualifier modifiers
 
@@ -112,7 +115,7 @@ Extracted type:
 
 ---
 
-## 4. Current Limitations (C V1)
+## 4. Current Limitations
 
 In addition to shared limitations from `C_CPP_SPEC.md`:
 

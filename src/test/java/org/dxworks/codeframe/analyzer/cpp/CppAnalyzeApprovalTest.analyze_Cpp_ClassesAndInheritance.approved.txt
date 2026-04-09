@@ -29,12 +29,18 @@
       } ]
     }, {
       "name" : "Counter",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
-      "modifiers" : [ "public" ]
+      "modifiers" : [ "public", "deleted" ],
+      "parameters" : [ {
+        "type" : "const Counter&"
+      } ]
     }, {
-      "name" : "Counter",
+      "name" : "operator=",
+      "returnType" : "Counter &",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
-      "modifiers" : [ "public" ]
+      "modifiers" : [ "public", "defaulted" ]
     }, {
       "name" : "~Counter",
       "visibility" : "public",
@@ -47,6 +53,7 @@
     }, {
       "name" : "score",
       "returnType" : "int",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public", "virtual", "const" ]
     }, {
@@ -133,7 +140,7 @@
     } ],
     "methods" : [ {
       "name" : "self",
-      "returnType" : "Counter",
+      "returnType" : "Counter *",
       "visibility" : "public",
       "modifiers" : [ "public" ]
     }, {

@@ -26,7 +26,7 @@ Top-level fields:
 - `imports` (raw `import` declarations)
 - `types` (classes/interfaces/enums/records)
 
-Java does not emit file-level `fields` or file-level `methodCalls` in V1.
+Java does not emit file-level `fields` or file-level `methodCalls`.
 
 ---
 
@@ -64,6 +64,7 @@ Extracted for classes/enums/records:
 Extracted per type:
 - `name`
 - `returnType` (`null` for constructors)
+- `isDeclarationOnly` (`true` when the declaration has no body)
 - `visibility`
 - `modifiers`
 - `annotations`
@@ -72,6 +73,8 @@ Extracted per type:
 - `methodCalls`
 
 Constructors are represented as methods with the class/record name and no return type.
+
+`isDeclarationOnly` is omitted when `false`.
 
 ### 3.5 Interface Extends Mapping
 
@@ -88,9 +91,11 @@ Method call facts:
 
 For chained invocations where receiver type is not syntactically known, `objectName`/`objectType` can be `null`.
 
+Qualified-call handling follows `docs/EXTRACTION_CONTRACT.md` (§3.2).
+
 ---
 
-## 4. Current Limitations (V1)
+## 4. Current Limitations
 
 - No semantic resolution beyond local syntactic context.
 - No file-level executable statement extraction.

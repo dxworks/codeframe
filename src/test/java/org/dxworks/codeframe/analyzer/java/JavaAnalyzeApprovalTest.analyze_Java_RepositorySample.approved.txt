@@ -7,14 +7,16 @@
     "name" : "Identifiable<ID>",
     "methods" : [ {
       "name" : "getId",
-      "returnType" : "ID"
+      "returnType" : "ID",
+      "isDeclarationOnly" : true
     } ]
   }, {
     "kind" : "interface",
     "name" : "Nameable",
     "methods" : [ {
       "name" : "getName",
-      "returnType" : "String"
+      "returnType" : "String",
+      "isDeclarationOnly" : true
     } ]
   }, {
     "kind" : "interface",
@@ -26,6 +28,7 @@
     "methods" : [ {
       "name" : "findById",
       "returnType" : "T",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "parameters" : [ {
@@ -35,6 +38,7 @@
     }, {
       "name" : "save",
       "returnType" : "void",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "parameters" : [ {

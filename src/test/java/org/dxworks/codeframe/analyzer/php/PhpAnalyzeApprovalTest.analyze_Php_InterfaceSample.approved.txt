@@ -7,6 +7,7 @@
     "annotations" : [ "#[Contract]" ],
     "methods" : [ {
       "name" : "findById",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "parameters" : [ {
@@ -15,6 +16,7 @@
     }, {
       "name" : "save",
       "returnType" : "void",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "parameters" : [ {
@@ -28,6 +30,7 @@
     "methods" : [ {
       "name" : "getName",
       "returnType" : "string",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ]
     } ]

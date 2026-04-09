@@ -4,6 +4,7 @@
   "methods" : [ {
     "name" : "tracef",
     "returnType" : "void",
+    "isDeclarationOnly" : true,
     "modifiers" : [ "extern" ],
     "parameters" : [ {
       "name" : "fmt",

@@ -20,5 +20,33 @@
       "name" : "HEADER_FAIL"
     } ]
   } ],
+  "methods" : [ {
+    "name" : "init_header",
+    "returnType" : "HeaderStatus",
+    "isDeclarationOnly" : true,
+    "parameters" : [ {
+      "name" : "point",
+      "type" : "HeaderPoint *"
+    } ]
+  }, {
+    "name" : "trace_header",
+    "returnType" : "int",
+    "isDeclarationOnly" : true,
+    "parameters" : [ {
+      "name" : "msg",
+      "type" : "const char *"
+    }, {
+      "name" : "..."
+    } ]
+  } ],
+  "fields" : [ {
+    "name" : "default_limit",
+    "type" : "int",
+    "modifiers" : [ "extern", "const" ]
+  }, {
+    "name" : "global_total",
+    "type" : "int",
+    "modifiers" : [ "extern" ]
+  } ],
   "imports" : [ "#include <stddef.h>" ]
 }

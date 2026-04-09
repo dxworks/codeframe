@@ -380,6 +380,7 @@ public class RustAnalyzer implements LanguageAnalyzer {
         }
         
         methodInfo.returnType = extractReturnType(source, sigNode);
+        methodInfo.isDeclarationOnly = true;
         
         return methodInfo;
     }

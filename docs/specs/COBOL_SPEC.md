@@ -215,7 +215,7 @@ Decision: when multiple copybooks share the same name in different directories, 
 
 ---
 
-## 5. Current Limitations (V1)
+## 5. Current Limitations
 
 - COBOL scope is limited to COBOL85.
 - Fixed-format source only (no variable/free-format mode).

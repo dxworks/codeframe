@@ -61,11 +61,14 @@ Extracted from:
 Method/function metadata:
 - `name`
 - `returnType`
+- `isDeclarationOnly` (`true` when the declaration has no body)
 - `visibility`/`modifiers` (for example `pub`, `pub(crate)`)
 - `annotations`
 - `parameters` (including `self`)
 - `localVariables`
 - `methodCalls`
+
+`isDeclarationOnly` is omitted when `false`.
 
 Type-text preservation rule:
 - `returnType` and parameter `type` values preserve Rust reference syntax when present.
@@ -99,9 +102,11 @@ Call metadata:
 - `callCount`
 - `parameterCount`
 
+Qualified-call handling follows `docs/EXTRACTION_CONTRACT.md` (§3.2); for example, `module::function()` records `methodName: "function"`.
+
 ---
 
-## 4. Current Limitations (V1)
+## 4. Current Limitations
 
 - No trait/where-clause semantic solving beyond syntactic extraction.
 - No ownership/borrow/lifetime modeling.

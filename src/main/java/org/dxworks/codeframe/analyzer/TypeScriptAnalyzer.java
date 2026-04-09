@@ -498,6 +498,7 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
                         mi.returnType = getNodeText(source, typeAnnotation).replaceFirst("^:\\s*", "");
                     }
                 }
+                mi.isDeclarationOnly = true;
                 if (mi.name != null) {
                     typeInfo.methods.add(mi);
                 }
@@ -702,6 +703,9 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         
         // Get method body
         TSNode bodyNode = findFirstChild(methodDef, "statement_block");
+        if (bodyNode == null) {
+            methodInfo.isDeclarationOnly = true;
+        }
         if (bodyNode != null) {
             analyzeMethodBody(source, bodyNode, methodInfo, className);
         }
@@ -732,6 +736,9 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         
         // Get function body
         TSNode bodyNode = findFirstChild(funcDecl, "statement_block");
+        if (bodyNode == null) {
+            methodInfo.isDeclarationOnly = true;
+        }
         if (bodyNode != null) {
             analyzeMethodBody(source, bodyNode, methodInfo, null);
         }

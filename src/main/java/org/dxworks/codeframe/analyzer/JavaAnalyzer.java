@@ -389,6 +389,9 @@ public class JavaAnalyzer implements LanguageAnalyzer {
 
         // Body
         TSNode bodyNode = findFirstChild(methodDecl, "block");
+        if (bodyNode == null) {
+            methodInfo.isDeclarationOnly = true;
+        }
         if (bodyNode != null) {
             analyzeMethodBody(source, bodyNode, methodInfo, className, fieldTypes, paramTypes);
         }
@@ -411,6 +414,9 @@ public class JavaAnalyzer implements LanguageAnalyzer {
 
         // Body
         TSNode bodyNode = findFirstChild(constructorDecl, "constructor_body");
+        if (bodyNode == null) {
+            methodInfo.isDeclarationOnly = true;
+        }
         if (bodyNode != null) {
             analyzeMethodBody(source, bodyNode, methodInfo, className, fieldTypes, paramTypes);
         }

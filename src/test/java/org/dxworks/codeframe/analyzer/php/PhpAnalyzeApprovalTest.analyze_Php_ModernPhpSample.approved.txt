@@ -690,6 +690,7 @@
     "methods" : [ {
       "name" : "count",
       "returnType" : "int",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ]
     } ]
@@ -699,6 +700,7 @@
     "methods" : [ {
       "name" : "__toString",
       "returnType" : "string",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ]
     } ]

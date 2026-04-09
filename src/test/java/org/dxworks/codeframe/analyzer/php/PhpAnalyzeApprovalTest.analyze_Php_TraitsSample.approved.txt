@@ -339,6 +339,7 @@
     "methods" : [ {
       "name" : "getId",
       "returnType" : "int",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "abstract", "public" ]
     }, {

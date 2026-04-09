@@ -54,7 +54,7 @@ public final class CCppHelper {
         TypeInfo typeInfo = new TypeInfo();
         typeInfo.kind = "typedef";
 
-        TSNode declaratorNode = getChildByFieldName(typedefNode, "declarator");
+        TSNode declaratorNode = resolveTypedefDeclaratorNode(typedefNode);
         String aliasName = extractDeclaratorName(source, declaratorNode);
         if (aliasName != null) {
             typeInfo.name = aliasName;
@@ -75,7 +75,7 @@ public final class CCppHelper {
                             .replaceFirst("^typedef\\s+", "")
                             .trim();
                         if (!targetText.isEmpty()) {
-                            typeInfo.extendsType = targetText;
+                            typeInfo.extendsType = normalizeTypedefAliasTarget(targetText);
                         }
                     }
                 }
@@ -83,6 +83,30 @@ public final class CCppHelper {
         }
 
         return typeInfo;
+    }
+
+    private static TSNode resolveTypedefDeclaratorNode(TSNode typedefNode) {
+        TSNode declaratorNode = getChildByFieldName(typedefNode, "declarator");
+        if (declaratorNode != null && !declaratorNode.isNull()) {
+            return declaratorNode;
+        }
+
+        TSNode functionDeclarator = findFirstDescendant(typedefNode, "function_declarator");
+        if (functionDeclarator != null && !functionDeclarator.isNull()) {
+            return functionDeclarator;
+        }
+
+        TSNode pointerDeclarator = findFirstDescendant(typedefNode, "pointer_declarator");
+        if (pointerDeclarator != null && !pointerDeclarator.isNull()) {
+            return pointerDeclarator;
+        }
+
+        TSNode identifier = findFirstDescendant(typedefNode, "identifier");
+        if (identifier != null && !identifier.isNull()) {
+            return identifier;
+        }
+
+        return findFirstDescendant(typedefNode, "type_identifier");
     }
 
     public static TypeInfo analyzeStructLike(String source, TSNode typeNode, String kind, CCppAnalysisOptions options) {
@@ -162,7 +186,13 @@ public final class CCppHelper {
             return baseType;
         }
 
-        return (baseType + " " + declaratorText).trim();
+        String fieldName = getNodeText(source, fieldIdentifier);
+        String normalizedDeclarator = removeNamedDeclaratorIdentifier(declaratorText, fieldName);
+        if (normalizedDeclarator == null || normalizedDeclarator.isBlank()) {
+            normalizedDeclarator = declaratorText.trim();
+        }
+
+        return normalizeWhitespace(baseType + " " + normalizedDeclarator);
     }
 
     static boolean isTypeContainerNode(TSNode node) {
@@ -248,9 +278,7 @@ public final class CCppHelper {
         for (TSNode param : findAllChildren(parameterList, "parameter_declaration")) {
             String paramName = extractFirstIdentifier(source, param);
             String paramType = extractParameterTypeText(source, param, paramName, includeAutoInDeclarationType);
-            if (paramName != null) {
-                method.parameters.add(new Parameter(paramName, paramType));
-            }
+            method.parameters.add(new Parameter(paramName == null ? "" : paramName, paramType));
         }
 
         if (hasVariadicParameter(source, parameterList)) {
@@ -382,12 +410,13 @@ public final class CCppHelper {
                 methodName = getNodeText(source, fieldId);
             }
 
-            if (deepBaseObjectLookup) {
-                objectName = extractBaseObjectIdentifier(source, functionNode);
-            } else {
-                TSNode objectNode = functionNode.getNamedChild(0);
-                if (objectNode != null && "identifier".equals(objectNode.getType())) {
-                    objectName = getNodeText(source, objectNode);
+            TSNode receiverNode = functionNode.getNamedChild(0);
+            boolean receiverIsCallResult = isCallExpressionReceiver(receiverNode);
+            if (!receiverIsCallResult) {
+                if (deepBaseObjectLookup) {
+                    objectName = extractBaseObjectIdentifier(source, functionNode);
+                } else if (receiverNode != null && "identifier".equals(receiverNode.getType())) {
+                    objectName = getNodeText(source, receiverNode);
                 }
             }
 
@@ -403,6 +432,15 @@ public final class CCppHelper {
         TSNode args = getArgumentListNode(call);
         Integer parameterCount = args == null ? 0 : args.getNamedChildCount();
         collectMethodCall(method, methodName, objectType, objectName, parameterCount);
+    }
+
+    private static boolean isCallExpressionReceiver(TSNode receiverNode) {
+        if (receiverNode == null || receiverNode.isNull()) {
+            return false;
+        }
+
+        return "call_expression".equals(receiverNode.getType())
+            || !findAllDescendants(receiverNode, "call_expression").isEmpty();
     }
 
     private static String extractBaseObjectIdentifier(String source, TSNode fieldExpressionNode) {
@@ -544,12 +582,106 @@ public final class CCppHelper {
             }
 
             if (baseType == null || baseType.isBlank()) {
-                return declaratorText.trim();
+                return removeNamedDeclaratorIdentifier(declaratorText, fieldName);
             }
-            return (baseType + " " + declaratorText).trim();
+
+            String normalizedDeclarator = removeNamedDeclaratorIdentifier(declaratorText, fieldName);
+            if (normalizedDeclarator == null || normalizedDeclarator.isBlank()) {
+                normalizedDeclarator = declaratorText.trim();
+            }
+            return normalizeWhitespace(baseType + " " + normalizedDeclarator);
         }
 
         return baseType;
+    }
+
+    private static String removeNamedDeclaratorIdentifier(String declaratorText, String declaratorName) {
+        if (declaratorText == null || declaratorText.isBlank()) {
+            return declaratorText;
+        }
+
+        String normalized = normalizeWhitespace(declaratorText);
+        if (declaratorName == null || declaratorName.isBlank()) {
+            return normalized;
+        }
+
+        int idx = findLastIdentifierOccurrence(normalized, declaratorName);
+        if (idx < 0) {
+            return normalized;
+        }
+
+        String withoutName = normalizeWhitespace(
+            normalized.substring(0, idx) + " " + normalized.substring(idx + declaratorName.length())
+        );
+        return normalizeFunctionPointerSpacing(withoutName);
+    }
+
+    public static String extractFunctionReturnTypeText(String source,
+                                                       TSNode declarationNode,
+                                                       TSNode functionDeclarator,
+                                                       CCppAnalysisOptions options) {
+        String baseType = extractDeclarationTypeText(source, declarationNode, options);
+        if (baseType == null || functionDeclarator == null || functionDeclarator.isNull()) {
+            return baseType;
+        }
+
+        String functionName = extractDeclaratorName(source, functionDeclarator);
+        String declaratorText = getNodeText(source, functionDeclarator);
+        if (functionName == null || functionName.isBlank() || declaratorText == null || declaratorText.isBlank()) {
+            return baseType;
+        }
+
+        String normalizedDeclarator = normalizeWhitespace(declaratorText);
+        int nameIndex = findLastIdentifierOccurrence(normalizedDeclarator, functionName);
+        if (nameIndex < 0) {
+            return baseType;
+        }
+
+        int suffixStart = nameIndex + functionName.length();
+        if (suffixStart < normalizedDeclarator.length() && normalizedDeclarator.charAt(suffixStart) == '(') {
+            int matching = findMatchingParenthesis(normalizedDeclarator, suffixStart);
+            if (matching >= 0) {
+                suffixStart = matching + 1;
+            }
+        }
+
+        String declaratorSuffix = normalizeWhitespace(
+            normalizedDeclarator.substring(0, nameIndex) + normalizedDeclarator.substring(suffixStart)
+        );
+
+        if (declaratorSuffix == null || declaratorSuffix.isBlank()) {
+            return baseType;
+        }
+
+        boolean hasReturnDeclaratorSyntax = declaratorSuffix.indexOf('*') >= 0
+            || declaratorSuffix.indexOf('&') >= 0
+            || declaratorSuffix.indexOf('(') >= 0
+            || declaratorSuffix.indexOf(')') >= 0;
+        if (!hasReturnDeclaratorSyntax) {
+            return baseType;
+        }
+
+        return normalizeFunctionPointerSpacing(normalizeWhitespace(baseType + " " + declaratorSuffix));
+    }
+
+    private static int findMatchingParenthesis(String text, int openIdx) {
+        if (text == null || openIdx < 0 || openIdx >= text.length() || text.charAt(openIdx) != '(') {
+            return -1;
+        }
+
+        int depth = 0;
+        for (int i = openIdx; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (c == '(') {
+                depth++;
+            } else if (c == ')') {
+                depth--;
+                if (depth == 0) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     public static String extractDeclaratorName(String source, TSNode declarator) {
@@ -764,6 +896,48 @@ public final class CCppHelper {
                 return true;
             }
             index = text.indexOf(keyword, index + 1);
+        }
+        return false;
+    }
+
+    private static String normalizeTypedefAliasTarget(String targetText) {
+        if (targetText == null || targetText.isBlank()) {
+            return targetText;
+        }
+
+        String normalized = normalizeWhitespace(targetText);
+        int bodyStart = normalized.indexOf('{');
+        if (bodyStart < 0) {
+            return normalized;
+        }
+
+        String prefix = normalizeWhitespace(normalized.substring(0, bodyStart));
+        if (prefix.isEmpty()) {
+            return normalized;
+        }
+
+        if (!startsWithAnyKeyword(prefix, "struct", "union", "class", "enum")) {
+            return normalized;
+        }
+
+        String[] tokens = prefix.split("\\s+");
+        if (tokens.length < 2) {
+            return normalized;
+        }
+
+        return prefix;
+    }
+
+    private static boolean startsWithAnyKeyword(String text, String... keywords) {
+        if (text == null || text.isBlank() || keywords == null) {
+            return false;
+        }
+
+        for (String keyword : keywords) {
+            if (keyword != null && !keyword.isBlank()
+                && (text.equals(keyword) || text.startsWith(keyword + " "))) {
+                return true;
+            }
         }
         return false;
     }

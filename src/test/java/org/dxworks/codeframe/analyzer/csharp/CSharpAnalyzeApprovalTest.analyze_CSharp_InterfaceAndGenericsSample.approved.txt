@@ -70,6 +70,7 @@
     "methods" : [ {
       "name" : "FindById",
       "returnType" : "T",
+      "isDeclarationOnly" : true,
       "parameters" : [ {
         "name" : "id",
         "type" : "ID"
@@ -77,6 +78,7 @@
     }, {
       "name" : "Save",
       "returnType" : "void",
+      "isDeclarationOnly" : true,
       "parameters" : [ {
         "name" : "entity",
         "type" : "T"
@@ -90,7 +92,8 @@
     "annotations" : [ "[Obsolete]" ],
     "methods" : [ {
       "name" : "GetName",
-      "returnType" : "string"
+      "returnType" : "string",
+      "isDeclarationOnly" : true
     } ]
   } ]
 }

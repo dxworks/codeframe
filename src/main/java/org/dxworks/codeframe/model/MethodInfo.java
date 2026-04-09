@@ -6,6 +6,7 @@ import java.util.List;
 public class MethodInfo {
     public String name;
     public String returnType;
+    public Boolean isDeclarationOnly;
     public String visibility;
     public List<String> modifiers = new ArrayList<>();
     public List<String> annotations = new ArrayList<>();

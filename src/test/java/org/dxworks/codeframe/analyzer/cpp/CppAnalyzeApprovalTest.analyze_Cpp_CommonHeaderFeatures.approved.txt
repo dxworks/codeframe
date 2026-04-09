@@ -2,6 +2,44 @@
   "filePath" : "src/test/resources/samples/cpp/CommonHeaderFeatures.h",
   "language" : "cpp",
   "types" : [ {
+    "kind" : "typedef",
+    "name" : "StatusCode",
+    "extendsType" : "enum StatusCode"
+  }, {
+    "kind" : "typedef",
+    "name" : "Point",
+    "extendsType" : "struct Point"
+  }, {
+    "kind" : "typedef",
+    "name" : "HeaderConfig",
+    "extendsType" : "struct HeaderConfig"
+  }, {
+    "kind" : "typedef",
+    "name" : "CompareFn",
+    "extendsType" : "int (*CompareFn)(const void *lhs, const void *rhs)"
+  }, {
+    "kind" : "namespace",
+    "name" : "sample",
+    "types" : [ {
+      "kind" : "class",
+      "name" : "Math",
+      "modifiers" : [ "final" ],
+      "methods" : [ {
+        "name" : "add",
+        "returnType" : "int",
+        "isDeclarationOnly" : true,
+        "visibility" : "public",
+        "modifiers" : [ "public", "static" ],
+        "parameters" : [ {
+          "name" : "a",
+          "type" : "int"
+        }, {
+          "name" : "b",
+          "type" : "int"
+        } ]
+      } ]
+    } ]
+  }, {
     "kind" : "struct",
     "name" : "Point",
     "fields" : [ {
@@ -50,6 +88,7 @@
   }, {
     "name" : "init_config",
     "returnType" : "StatusCode",
+    "isDeclarationOnly" : true,
     "parameters" : [ {
       "name" : "config",
       "type" : "HeaderConfig *"
@@ -57,6 +96,7 @@
   }, {
     "name" : "validate_name",
     "returnType" : "int",
+    "isDeclarationOnly" : true,
     "parameters" : [ {
       "name" : "name",
       "type" : "const char *"
@@ -64,6 +104,7 @@
   }, {
     "name" : "sort_points",
     "returnType" : "int",
+    "isDeclarationOnly" : true,
     "parameters" : [ {
       "name" : "items",
       "type" : "Point *"
@@ -77,6 +118,7 @@
   }, {
     "name" : "legacy_sum",
     "returnType" : "int",
+    "isDeclarationOnly" : true,
     "parameters" : [ {
       "name" : "a",
       "type" : "int"
@@ -87,6 +129,7 @@
   }, {
     "name" : "touch_point",
     "returnType" : "int",
+    "isDeclarationOnly" : true,
     "parameters" : [ {
       "name" : "point",
       "type" : "Point &"
@@ -94,6 +137,7 @@
   }, {
     "name" : "touch_point_const",
     "returnType" : "int",
+    "isDeclarationOnly" : true,
     "parameters" : [ {
       "name" : "point",
       "type" : "const Point &"
@@ -101,6 +145,7 @@
   }, {
     "name" : "consume_point",
     "returnType" : "int",
+    "isDeclarationOnly" : true,
     "parameters" : [ {
       "name" : "point",
       "type" : "Point &&"
@@ -116,7 +161,7 @@
     "modifiers" : [ "extern" ]
   }, {
     "name" : "global_callback_cpp",
-    "type" : "int (*global_callback_cpp)(int)",
+    "type" : "int (*)(int)",
     "modifiers" : [ "extern" ]
   } ],
   "imports" : [ "#include <stddef.h>", "#include <stdint.h>" ]

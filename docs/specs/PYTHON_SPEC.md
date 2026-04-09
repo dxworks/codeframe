@@ -90,7 +90,7 @@ Nested functions are not emitted as separate methods; their calls/locals are inc
 
 ---
 
-## 4. Current Limitations (V1)
+## 4. Current Limitations
 
 - No data-flow or import graph resolution.
 - Type inference is limited to simple syntax patterns.

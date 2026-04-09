@@ -33,7 +33,7 @@ Rationale:
 
 ### 2.2 Header ownership rule (`.h`)
 
-Because `.h` headers may be either C or C++, V1 uses a deterministic parser-selection policy:
+Because `.h` headers may be either C or C++, this uses a deterministic parser-selection policy:
 - `.hpp`/`.hh`/`.hxx` -> C++ (extension-based)
 - `.h` -> try C++ first
   - if C++ parse quality is clearly poor (error-heavy), fallback to C
@@ -65,6 +65,7 @@ Top-level fields:
 ### 4.1 Includes
 
 - Extract preprocessor include directives into `imports` as raw text.
+- Preprocessor directives other than `#include` (for example `#define`, `#if`, `#ifdef`, `#ifndef`, `#elif`, `#else`, `#endif`, `#pragma`) are not emitted in analysis output.
 - No include resolution or dependency graph expansion.
 
 ### 4.2 Functions/Methods
@@ -72,11 +73,19 @@ Top-level fields:
 Extract:
 - name
 - return type text (when syntactically present)
+- `isDeclarationOnly` = `true` when the extracted method comes from a declaration without a body
 - `visibility` (see language-specific specs; C has no visibility, C++ uses access specifiers)
 - `modifiers` (storage-class and qualifier keywords present on the declaration)
 - parameters (`name`, `type` when present)
 - local variables (identifier names)
 - method/function calls from body
+
+`isDeclarationOnly` is emitted only when `true`.
+For definitions (or any non-declaration-only entry), the field is omitted and not emitted as `false`.
+
+Unnamed parameters:
+- Parameters without an identifier are still emitted in `parameters` with `name: ""`.
+- `type` preserves the source-like parameter text (for example `const Counter&`).
 
 Shared modifier keywords captured for functions/methods:
 - `static`, `extern`, `inline`
@@ -119,12 +128,17 @@ For each call:
 
 Chained/indirect expressions with unknown receiver type remain unresolved (`null` object fields).
 
+Qualified-call handling follows `docs/EXTRACTION_CONTRACT.md` (§3.2).
+
 ### 4.4 Common type handling
 
 - Extract concrete type declarations supported by each analyzer (see language-specific specs).
 - `modifiers` are captured on types when syntactically present (see language-specific specs).
 - Nested types are captured when explicit in syntax.
 - Forward declarations (bodyless `struct Foo;`) are skipped — no empty type is emitted.
+- Typedef alias target text in `extendsType` is preserved in source-like form.
+  - For named inline aggregate typedefs (for example `typedef struct Logger { ... } Logger;`), `extendsType` keeps a compact target (for example `struct Logger`) rather than the full aggregate body.
+  - Function-pointer typedef targets are likewise preserved as source-like declarator text.
 
 ### 4.5 File-scope fields
 
@@ -149,7 +163,7 @@ Extracted fields:
 
 ---
 
-## 5. Shared Limitations (V1)
+## 5. Shared Limitations
 
 - No preprocessor macro expansion (`#define`, `#if`, token pasting).
 - No semantic resolution (typedef expansion, overload binding, ADL, type inference).

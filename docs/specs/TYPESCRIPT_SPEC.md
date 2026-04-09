@@ -73,9 +73,12 @@ Extracted as standalone methods:
 
 Method metadata:
 - `name`, `returnType`, `visibility`, `modifiers`, `annotations`
+- `isDeclarationOnly` (`true` when a declaration/signature has no body)
 - `parameters` (`name`, `type`)
 - `localVariables`
 - `methodCalls`
+
+`isDeclarationOnly` is omitted when `false`.
 
 ### 3.4 Fields and Calls at File Scope
 
@@ -84,10 +87,11 @@ Method metadata:
 - Top-level `methodCalls` include all `call_expression` nodes that are at file scope.
 - Calls nested inside type/function/class declarations are excluded from file-level `methodCalls`.
 - Calls inside callbacks nested under top-level statements/expressions are included.
+- Call metadata and qualified-call handling follow `docs/EXTRACTION_CONTRACT.md` (§3).
 
 ---
 
-## 4. Current Limitations (V1)
+## 4. Current Limitations
 
 - No semantic resolution from TypeScript compiler services.
 - Complex conditional/mapped type semantics are preserved as text, not modeled structurally.

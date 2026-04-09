@@ -4,7 +4,7 @@
   "types" : [ {
     "kind" : "typedef",
     "name" : "Point",
-    "extendsType" : "struct Point {\n    int x;\n    int y;\n}"
+    "extendsType" : "struct Point"
   }, {
     "kind" : "struct",
     "name" : "Point",
@@ -18,7 +18,7 @@
   }, {
     "kind" : "typedef",
     "name" : "Number",
-    "extendsType" : "union Number {\n    int i;\n    float f;\n}"
+    "extendsType" : "union Number"
   }, {
     "kind" : "union",
     "name" : "Number",

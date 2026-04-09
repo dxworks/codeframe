@@ -6,7 +6,8 @@ Use this index to find the correct source of truth quickly.
 
 - [README](../README.md): project usage, CLI behavior, configuration, and limitations.
 - [ARCHITECTURE](ARCHITECTURE.md): high-level architecture and design decisions.
-- [CONTRIBUTING](CONTRIBUTING.md): analyzer implementation conventions, extraction contract, and testing workflow.
+- [EXTRACTION CONTRACT](EXTRACTION_CONTRACT.md): canonical shared extraction rules across analyzers.
+- [CONTRIBUTING](CONTRIBUTING.md): contributor workflow, spec authoring process, and testing workflow.
 - [Java Spec](specs/JAVA_SPEC.md): Java analysis output contract and extraction rules.
 - [JavaScript Spec](specs/JAVASCRIPT_SPEC.md): JavaScript analysis output contract and extraction rules.
 - [TypeScript Spec](specs/TYPESCRIPT_SPEC.md): TypeScript analysis output contract and extraction rules.

@@ -286,6 +286,9 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
         Map<String, String> paramTypes = extractParameters(source, methodDecl, methodInfo);
         
         TSNode bodyNode = findMethodBody(methodDecl);
+        if (bodyNode == null) {
+            methodInfo.isDeclarationOnly = true;
+        }
         if (bodyNode != null) {
             analyzeMethodBody(source, bodyNode, methodInfo, className, paramTypes);
         }
@@ -301,6 +304,9 @@ public class CSharpAnalyzer implements LanguageAnalyzer {
         methodInfo.returnType = null;
         Map<String, String> paramTypes = extractParameters(source, ctorDecl, methodInfo);
         TSNode bodyNode = findMethodBody(ctorDecl);
+        if (bodyNode == null) {
+            methodInfo.isDeclarationOnly = true;
+        }
         if (bodyNode != null) {
             analyzeMethodBody(source, bodyNode, methodInfo, className, paramTypes);
         }

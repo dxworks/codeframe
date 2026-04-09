@@ -20,7 +20,7 @@ This is a **normative spec** for Markdown behavior and output shape. It is not a
 
 - Target specification: **CommonMark** with **GitHub Flavored Markdown (GFM)** extensions.
 - Extension modeled explicitly in output: Tables.
-- Strikethrough and task-list markers may appear in source but are treated as inline/list content in V1 (no dedicated element types).
+- Strikethrough and task-list markers may appear in source but are treated as inline/list content (no dedicated element types).
 
 ### 1.2 File extensions in scope
 
@@ -122,7 +122,7 @@ Each section contains an ordered list of block elements preserving document flow
 - Each `"list_item"` includes its own `children` preserving block-level content order (for example: paragraph, nested list, code block).
 - Inline elements (relative links) are nested under the paragraph/list item that contains them, not emitted as top-level section elements.
 - List item paragraphs are nested under `"list_item"`, not emitted as sibling top-level section elements.
-- Task-list items are represented as regular list structures (`"bullet_list"`/`"ordered_list"` and `"list_item"`); checkbox state is not extracted in V1.
+- Task-list items are represented as regular list structures (`"bullet_list"`/`"ordered_list"` and `"list_item"`); checkbox state is not extracted.
 
 #### 3.4.5 Block Quotes
 
@@ -223,7 +223,7 @@ In this contract, optional fields (for example `properties`, `children`) may be 
 
 ---
 
-## 4. Current Limitations (V1)
+## 4. Current Limitations
 
 - Inline formatting (bold, italic, code spans) is not captured, except relative links (nested under paragraphs/list items).
 - Table cell/row/column structure is not analyzed (size only).

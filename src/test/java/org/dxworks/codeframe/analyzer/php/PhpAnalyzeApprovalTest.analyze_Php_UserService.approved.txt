@@ -191,6 +191,7 @@
     "methods" : [ {
       "name" : "find",
       "returnType" : "?object",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "abstract", "public" ],
       "parameters" : [ {
@@ -200,6 +201,7 @@
     }, {
       "name" : "getTableName",
       "returnType" : "string",
+      "isDeclarationOnly" : true,
       "visibility" : "protected",
       "modifiers" : [ "abstract", "protected" ]
     } ]
@@ -209,6 +211,7 @@
     "methods" : [ {
       "name" : "get",
       "returnType" : "mixed",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "parameters" : [ {
@@ -218,6 +221,7 @@
     }, {
       "name" : "set",
       "returnType" : "bool",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "parameters" : [ {
@@ -233,6 +237,7 @@
     }, {
       "name" : "delete",
       "returnType" : "bool",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "parameters" : [ {

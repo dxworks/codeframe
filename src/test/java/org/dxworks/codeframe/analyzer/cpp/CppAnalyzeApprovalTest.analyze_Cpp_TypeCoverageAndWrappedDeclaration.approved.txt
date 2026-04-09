@@ -34,7 +34,7 @@
   }, {
     "kind" : "typedef",
     "name" : "OldPoint",
-    "extendsType" : "struct OldPoint {\n    int x;\n    int y;\n}"
+    "extendsType" : "struct OldPoint"
   }, {
     "kind" : "struct",
     "name" : "OldPoint",
@@ -64,7 +64,8 @@
   } ],
   "methods" : [ {
     "name" : "declared_ref",
-    "returnType" : "int&"
+    "returnType" : "int&",
+    "isDeclarationOnly" : true
   }, {
     "name" : "declared_auto",
     "returnType" : "auto"

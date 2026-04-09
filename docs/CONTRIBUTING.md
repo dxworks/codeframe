@@ -16,111 +16,18 @@ Follow these conventions to ensure consistency across all analyzers.
 
 ### Spec Authoring Rule
 
-- Language specs in `docs/specs/*_SPEC.md` are normative and must be self-sufficient.
-- Document the final extraction contract directly in the spec; avoid temporary option labels or decision-history wording.
+- Language specs in `docs/specs/*_SPEC.md` are normative for language-specific behavior.
+- Shared cross-language extraction rules should live in canonical docs (for example `docs/EXTRACTION_CONTRACT.md`) and be referenced from specs to avoid duplication.
+- Document the final extraction contract in normative docs; avoid temporary option labels or decision-history wording.
 - When analyzer behavior changes, update the relevant spec and approval baselines in the same change.
 
-### Extraction Contract (All Parsers)
+### Extraction Contract (Canonical)
 
-- Extract facts only. Do not infer capabilities or intent.
-- Keep output deterministic.
-- Do not write files as side effects.
-- On parse errors, return partial results when possible.
-- Keep analyzers simple and fast; enrichment belongs to post-processing tools.
+Analyzer extraction behavior is defined in:
 
-### Using TreeSitterHelper
+- `docs/EXTRACTION_CONTRACT.md`
 
-`TreeSitterHelper` provides shared utilities that all analyzers should use:
-
-| Method | Purpose |
-|--------|---------|
-| `extractName(source, node, childType)` | Extract name from a child node by type |
-| `collectMethodCall(...)` | Add method call with deduplication |
-| `identifyNestedNodes(...)` | Identify nested class/type declarations |
-| `renderObjectName(...)` | Build object name for chained expressions |
-| `isValidIdentifier(name)` | Validate identifier syntax |
-| `METHOD_CALL_COMPARATOR` | Sort method calls consistently |
-| `findFirstChild`, `findAllDescendants` | Node traversal helpers |
-
-Use these helpers to maintain consistency and reduce duplication across analyzers.
-
-### Method Call Extraction
-
-**Chained Method Calls:**
-- For chained calls where the receiver is the result of another method call (e.g., `obj.method1().method2()`), set both `objectName` and `objectType` to `null`
-- The type cannot be determined without semantic analysis
-- Example for `db.query().debug().printTo(output())`:
-
-| Call | `objectName` | `objectType` |
-|------|--------------|--------------|
-| `query` | `"db"` | `"DatabaseConnection"` |
-| `debug` | `null` | `null` (chained) |
-| `printTo` | `null` | `null` (chained) |
-| `output` | `null` | `null` (standalone) |
-
-**Property Access vs Method Calls:**
-- **C#**: Record property accesses as `get_PropertyName` or `set_PropertyName` method calls
-- **Ruby**: Only record calls with arguments or special suffixes (`?`, `!`); skip simple property accessors
-- **Java**: Record explicit getter/setter method calls; field access is not a method call
-
-**Object Type Resolution:**
-- Resolve `objectType` from local variables, parameters, or fields when possible
-- Use `null` when the type cannot be determined from syntax alone
-
-### Nested Functions
-
-Nested functions (functions defined inside other functions) are **NOT** extracted as separate top-level methods. Instead:
-
-- The nested function's **method calls** are captured in the parent function's `methodCalls`
-- The nested function's **local variables** are captured in the parent function's `localVariables`
-- This is achieved by using `findAllDescendants` when analyzing method bodies, which traverses into nested scopes
-
-**Rationale:**
-- Prevents duplicate function names in output (e.g., multiple `wrapper` functions from different decorators)
-- Maintains correct semantic grouping - nested functions are implementation details of their parent
-- Consistent behavior across Python, JavaScript, and TypeScript
-
-**Example:**
-```python
-def outer():
-    def inner():       # NOT extracted as separate method
-        helper()       # Captured in outer.methodCalls
-    inner()            # Captured in outer.methodCalls
-```
-
-### File-Level Fields and Method Calls
-
-All analyzers should extract file/module-level elements into the `FileAnalysis` object:
-
-**`fields`** - Module-level constants and variables:
-- **Python**: Top-level assignments with type annotations (e.g., `MAX_RETRIES: int = 3`)
-- **JavaScript/TypeScript**: `const`, `let`, `var` declarations at module level
-- **Ruby**: Module-level constants (e.g., `MAX_SIZE = 100`)
-- **PHP**: Top-level `const` declarations (global variable extraction is out of scope)
-- **Java/C#**: Static fields are captured at the class level (not file level)
-
-**`methodCalls`** - Top-level function calls outside any class/function:
-- Use `findAllDescendants` to capture ALL calls within top-level expression statements
-- This includes calls inside callbacks (e.g., `describe()` containing `test()` and `expect()`)
-- Calls inside named functions/methods are captured in that method's `methodCalls`, not at file level
-
-**Example (Python):**
-```python
-MAX_RETRIES: int = 3          # → fields: [{name: "MAX_RETRIES", type: "int"}]
-logger = logging.getLogger()  # → fields: [{name: "logger"}], methodCalls: [{methodName: "getLogger"}]
-```
-
-**Example (JavaScript):**
-```javascript
-const API_VERSION = "1.0";    // → fields: [{name: "API_VERSION", type: "String"}]
-console.log("Starting...");   // → methodCalls: [{methodName: "log", objectName: "console"}]
-```
-
-### Field/Variable Visibility
-
-- **Ruby**: Instance variables (`@var`) are private by default
-- **Java/C#/TypeScript/PHP/Rust**: Emit visibility only when explicitly present in source
-- **Python**: Leading underscore (`_var`) indicates protected by convention; double underscore (`__var`) indicates private
+Use this as the single source of truth for shared extraction rules (method calls, nested functions, file-level extraction, helper conventions, visibility conventions).
 
 ### Test Coverage
 

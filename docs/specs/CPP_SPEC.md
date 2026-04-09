@@ -65,7 +65,11 @@ Extracted type:
 ### 3.2 Free functions
 
 - Extract free functions at namespace/file scope as `methods`.
+- Declaration-only entries (no function body) are emitted with `isDeclarationOnly: true`.
+- Per `C_CPP_SPEC.md` §4.2, `isDeclarationOnly` is true-only output: definitions omit the field (no explicit `false`).
+- In C++, declaration-only includes plain prototypes, pure-virtual declarations (`= 0`), deleted declarations (`= delete`), and defaulted declarations (`= default`).
 - Preserve `returnType` and parameter `type` text in source-like form when syntactically clear (for example `const char *`, `HeaderConfig *`, `Widget &`, `int (*cb)(int)`).
+- Unnamed parameters are extracted per `C_CPP_SPEC.md` §4.2 (`name: ""` with preserved `type`).
 
 ### 3.3 Constructors and destructors
 
@@ -74,6 +78,7 @@ Extracted type:
 ### 3.4 Operator overloads
 
 - Operator overloads are represented as methods with textual names (for example `operator+`).
+- Assignment overloads are represented as textual operator names as well (for example `operator=`).
 
 ### 3.5 Templates
 
@@ -135,10 +140,12 @@ The following C++ keywords are captured as `modifiers[]` when syntactically pres
 - `const` (trailing member-function qualifier)
 - `noexcept`
 - `friend` for friend function declarations extracted as methods
+- `deleted` for declarations that use `= delete`
+- `defaulted` for declarations that use `= default`
 
 Note: `pure` (for pure-virtual declarations like `= 0`) is currently not extracted.
 Tree-sitter C++ does not consistently expose a stable `pure_virtual_clause` node shape for all declarations we analyze,
-so this analyzer intentionally does not emit a `pure` modifier in V1.
+so this analyzer intentionally does not emit a `pure` modifier.
 
 Example — given:
 
@@ -207,7 +214,7 @@ Extracted:
 - `enum class` declarations are extracted as types with `kind: "enum class"`.
 - The name is the unqualified enum name.
 - Enums with explicit underlying type (for example `enum Priority : int`) are extracted as normal enum/enum class types.
-- Underlying enum base type is not captured separately in V1.
+- Underlying enum base type is not captured separately.
 
 Example — given:
 
@@ -226,6 +233,7 @@ Extracted type:
 - `using` type aliases are extracted as types with `kind: "typedef"` and alias target in `extendsType`.
 - Consistent with C typedef representation.
 - Old-style C++ `typedef` declarations are also extracted as `kind: "typedef"`, with alias target preserved in `extendsType`.
+- Alias target text preservation follows the shared rule in `C_CPP_SPEC.md` §4.4 (including compact targets for named inline aggregate typedefs such as `typedef struct X { ... } X;` → `extendsType: "struct X"`).
 
 Example — given:
 
@@ -252,7 +260,10 @@ Extracted type:
 ### 3.14 Default/deleted functions
 
 - `= default` and `= delete` suffixed functions are extracted as normal methods.
-- The `= default`/`= delete` suffix is not captured as a modifier or separate field.
+- `= default`/`= delete` are captured via method modifiers:
+  - `= default` -> `"defaulted"`
+  - `= delete` -> `"deleted"`
+- No additional dedicated field is emitted for these suffixes.
 
 ### 3.15 Multiple inheritance
 
@@ -267,13 +278,14 @@ Extracted type:
 
 ---
 
-## 4. Current Limitations (C++ V1)
+## 4. Current Limitations
 
 In addition to shared limitations from `C_CPP_SPEC.md`:
 
 - No overload resolution.
 - No namespace semantic binding (qualified lookup, ADL) — extraction is structural only (§3.9).
-- Pure virtual marker extraction (`= 0` → `pure`) is not supported in V1 due to Tree-sitter C++ AST shape inconsistency.
+- Qualified-call handling follows `docs/EXTRACTION_CONTRACT.md` (§3.2); for example, `util::f()` records `methodName: "f"`.
+- Pure virtual marker extraction (`= 0` → `pure`) is not supported due to Tree-sitter C++ AST shape inconsistency.
 - No C++20 module semantic analysis.
 - Lambda expressions are not standalone entities (§3.12).
 - No `auto` type deduction (§3.13).

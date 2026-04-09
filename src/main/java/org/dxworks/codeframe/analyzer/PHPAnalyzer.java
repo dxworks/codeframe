@@ -513,6 +513,7 @@ public class PHPAnalyzer implements LanguageAnalyzer {
             MethodInfo mi = new MethodInfo();
             mi.name = extractName(source, m);
             mi.returnType = extractReturnType(source, findTypeNode(m));
+            mi.isDeclarationOnly = true;
             extractModifiersAndVisibility(source, m, mi);
             
             TSNode fp = findFirstChild(m, "formal_parameters");
@@ -772,6 +773,9 @@ public class PHPAnalyzer implements LanguageAnalyzer {
         
         // Get body
         TSNode bodyNode = findFirstChild(node, "compound_statement");
+        if (bodyNode == null) {
+            methodInfo.isDeclarationOnly = true;
+        }
         if (bodyNode != null) {
             analyzeMethodBody(source, bodyNode, methodInfo);
         }

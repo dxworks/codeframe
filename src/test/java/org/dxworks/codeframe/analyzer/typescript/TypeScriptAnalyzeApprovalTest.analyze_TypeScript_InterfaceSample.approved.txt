@@ -8,6 +8,7 @@
     "methods" : [ {
       "name" : "findById",
       "returnType" : "T",
+      "isDeclarationOnly" : true,
       "parameters" : [ {
         "name" : "id",
         "type" : "ID"
@@ -15,6 +16,7 @@
     }, {
       "name" : "save",
       "returnType" : "void",
+      "isDeclarationOnly" : true,
       "parameters" : [ {
         "name" : "entity",
         "type" : "T"
@@ -26,7 +28,8 @@
     "modifiers" : [ "export" ],
     "methods" : [ {
       "name" : "getName",
-      "returnType" : "string"
+      "returnType" : "string",
+      "isDeclarationOnly" : true
     } ]
   } ]
 }

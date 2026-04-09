@@ -79,11 +79,13 @@ Each call includes:
 - optional `objectType` (syntactic only)
 - `callCount`
 
+Qualified-call handling follows `docs/EXTRACTION_CONTRACT.md` (§3.2).
+
 Top-level extraction includes nested callback calls inside top-level expressions.
 
 ---
 
-## 4. Current Limitations (V1)
+## 4. Current Limitations
 
 - No CommonJS dependency extraction (`require`) as imports.
 - No semantic inference for dynamic dispatch/module aliasing.

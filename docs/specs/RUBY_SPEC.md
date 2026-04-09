@@ -87,6 +87,8 @@ Calls are extracted from `call` and `method_call` nodes (at file-level and metho
 - `callCount`
 - `parameterCount`
 
+Qualified-call handling follows `docs/EXTRACTION_CONTRACT.md` (§3.2).
+
 At file level, bare `require`/`require_relative` are captured in `imports` and excluded from file-level `methodCalls`.
 
 Receiver-qualified calls (for example `Bundler.require(...)`) are not treated as imports.
@@ -103,7 +105,7 @@ Ruby alias declarations are captured in `type.annotations`:
 
 ---
 
-## 4. Current Limitations (V1)
+## 4. Current Limitations
 
 - No runtime metaprogramming evaluation (`define_method`, dynamic constants, etc.).
 - No module load-path resolution for `require`.
