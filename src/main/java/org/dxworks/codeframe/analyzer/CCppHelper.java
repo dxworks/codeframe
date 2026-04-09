@@ -124,30 +124,32 @@ public final class CCppHelper {
         if (aliasName != null) {
             typeInfo.name = aliasName;
 
-            String typedefText = getNodeText(source, typedefNode);
-            if (typedefText != null) {
-                String normalized = typedefText.trim();
-                if (normalized.endsWith(";")) {
-                    normalized = normalized.substring(0, normalized.length() - 1);
-                }
-
-                if (isFunctionPointerDeclarator(declaratorNode)) {
-                    typeInfo.extendsType = normalized.replaceFirst("^typedef\\s+", "").trim();
-                } else {
-                    int aliasPos = normalized.lastIndexOf(aliasName);
-                    if (aliasPos > 0) {
-                        String targetText = normalized.substring(0, aliasPos)
-                            .replaceFirst("^typedef\\s+", "")
-                            .trim();
-                        if (!targetText.isEmpty()) {
-                            typeInfo.extendsType = normalizeTypedefAliasTarget(targetText);
-                        }
+            if (isFunctionPointerDeclarator(declaratorNode)) {
+                typeInfo.extendsType = extractFunctionPointerTypedefTarget(source, typedefNode);
+            } else {
+                TSNode typeNode = getChildByFieldName(typedefNode, "type");
+                if (typeNode != null) {
+                    String typeText = getNodeText(source, typeNode);
+                    if (typeText != null && !typeText.isBlank()) {
+                        typeInfo.extendsType = normalizeTypedefAliasTarget(typeText);
                     }
                 }
             }
         }
 
         return typeInfo;
+    }
+
+    private static String extractFunctionPointerTypedefTarget(String source, TSNode typedefNode) {
+        String typedefText = getNodeText(source, typedefNode);
+        if (typedefText == null) {
+            return null;
+        }
+        String normalized = typedefText.trim();
+        if (normalized.endsWith(";")) {
+            normalized = normalized.substring(0, normalized.length() - 1);
+        }
+        return normalized.replaceFirst("^typedef\\s+", "").trim();
     }
 
     private static TSNode resolveTypedefDeclaratorNode(TSNode typedefNode) {
@@ -191,8 +193,7 @@ public final class CCppHelper {
 
     public static TypeInfo analyzeEnum(String source, TSNode enumNode, CCppAnalysisOptions options) {
         TypeInfo typeInfo = new TypeInfo();
-        String enumText = getNodeText(source, enumNode);
-        typeInfo.kind = enumText != null && containsKeyword(enumText, "class") ? "enum class" : "enum";
+        typeInfo.kind = hasAnonymousChild(enumNode, "class") ? "enum class" : "enum";
         typeInfo.name = extractTypeName(source, enumNode);
 
         TSNode enumeratorList = findFirstChild(enumNode, "enumerator_list");

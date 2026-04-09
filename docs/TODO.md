@@ -19,10 +19,6 @@ Shared backlog for documentation, analyzer rules, and follow-up design decisions
 - [ ] Implement analyzer/model changes only after spec updates are approved
 - [ ] Refresh affected approval outputs after behavior changes
 
-## Future candidates
-
-- [ ] Periodically audit docs links so extraction-rule references point to `docs/EXTRACTION_CONTRACT.md` and workflow/testing references point to `docs/CONTRIBUTING.md`.
-
 ## Notes
 
 - If only docs change, no approval-test refresh is required.

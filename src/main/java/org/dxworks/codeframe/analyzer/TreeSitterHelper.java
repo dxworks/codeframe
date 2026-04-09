@@ -80,6 +80,17 @@ public class TreeSitterHelper {
         }
         return null;
     }
+
+    public static boolean hasAnonymousChild(TSNode parent, String nodeType) {
+        if (parent == null || parent.isNull()) return false;
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            TSNode child = parent.getChild(i);
+            if (child != null && !child.isNull() && !child.isNamed() && nodeType.equals(child.getType())) {
+                return true;
+            }
+        }
+        return false;
+    }
     
     public static List<TSNode> findAllChildren(TSNode parent, String nodeType) {
         List<TSNode> result = new ArrayList<>();

@@ -326,7 +326,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
 
             String memberType = member.getType();
             if ("access_specifier".equals(memberType)) {
-                currentVisibility = extractAccessSpecifierVisibility(source, member);
+                currentVisibility = extractAccessSpecifierVisibility(member);
                 continue;
             }
 
@@ -362,17 +362,14 @@ public class CppAnalyzer implements LanguageAnalyzer {
         return typeInfo;
     }
 
-    private String extractAccessSpecifierVisibility(String source, TSNode accessSpecifierNode) {
+    private String extractAccessSpecifierVisibility(TSNode accessSpecifierNode) {
         if (accessSpecifierNode == null || accessSpecifierNode.isNull()) {
             return null;
         }
-        String raw = getNodeText(source, accessSpecifierNode);
-        if (raw == null) {
-            return null;
-        }
-        String value = raw.replace(":", "").trim();
-        if ("public".equals(value) || "private".equals(value) || "protected".equals(value)) {
-            return value;
+        for (String keyword : new String[]{"public", "private", "protected"}) {
+            if (hasAnonymousChild(accessSpecifierNode, keyword)) {
+                return keyword;
+            }
         }
         return null;
     }
@@ -775,34 +772,23 @@ public class CppAnalyzer implements LanguageAnalyzer {
         if (aliasNode == null || aliasNode.isNull()) {
             return null;
         }
-        String aliasText = getNodeText(source, aliasNode);
-        if (aliasText == null || aliasText.isBlank()) {
+
+        TSNode nameNode = getChildByFieldName(aliasNode, "name");
+        TSNode typeNode = getChildByFieldName(aliasNode, "type");
+        if (nameNode == null || typeNode == null) {
             return null;
         }
 
-        String normalized = aliasText.trim();
-        if (!normalized.startsWith("using ")) {
-            return null;
-        }
-
-        int eq = normalized.indexOf('=');
-        if (eq < 0) {
-            return null;
-        }
-
-        String left = normalized.substring("using ".length(), eq).trim();
-        String right = normalized.substring(eq + 1).trim();
-        if (right.endsWith(";")) {
-            right = right.substring(0, right.length() - 1).trim();
-        }
-        if (left.isEmpty() || right.isEmpty()) {
+        String name = getNodeText(source, nameNode);
+        String type = getNodeText(source, typeNode);
+        if (name == null || name.isBlank() || type == null || type.isBlank()) {
             return null;
         }
 
         TypeInfo aliasInfo = new TypeInfo();
         aliasInfo.kind = "typedef";
-        aliasInfo.name = left;
-        aliasInfo.extendsType = right;
+        aliasInfo.name = name;
+        aliasInfo.extendsType = type;
         return aliasInfo;
     }
 
