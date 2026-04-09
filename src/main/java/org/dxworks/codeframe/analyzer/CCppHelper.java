@@ -14,11 +14,76 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
 
 public final class CCppHelper {
     private CCppHelper() {
+    }
+
+    public static void applyVisibility(List<String> modifiers, String visibility, Consumer<String> visibilitySetter) {
+        if (modifiers == null || visibility == null || visibility.isBlank()) {
+            return;
+        }
+        visibilitySetter.accept(visibility);
+        if (!modifiers.contains(visibility)) {
+            modifiers.add(0, visibility);
+        }
+    }
+
+    public static void addModifierIfAbsent(List<String> modifiers, String modifier) {
+        if (modifiers == null || modifier == null) {
+            return;
+        }
+        if (!modifiers.contains(modifier)) {
+            modifiers.add(modifier);
+        }
+    }
+
+    public static void addTypeIfNamed(List<TypeInfo> target, TypeInfo typeInfo) {
+        if (typeInfo != null && typeInfo.name != null) {
+            target.add(typeInfo);
+        }
+    }
+
+    public static void addFieldsFromDeclaration(String source, TSNode declarationNode,
+            List<FieldInfo> fields, Map<String, String> fileScopeTypes, CCppAnalysisOptions options) {
+        if (containsNonFieldFunctionDeclaration(declarationNode, options)) {
+            return;
+        }
+        String typeText = extractDeclarationTypeText(source, declarationNode, options);
+        for (String name : extractDeclaredVariableNames(source, declarationNode)) {
+            if (name == null || name.isBlank()) {
+                continue;
+            }
+            String fieldType = resolveFileScopeFieldType(source, declarationNode, name, typeText);
+            FieldInfo field = new FieldInfo();
+            field.name = name;
+            field.type = fieldType;
+            addModifiersFromSpecifiers(field.modifiers, source, declarationNode,
+                options.fieldSpecifierNodeTypes, options, false);
+            fields.add(field);
+            if (fieldType != null) {
+                fileScopeTypes.put(name, fieldType);
+            }
+        }
+    }
+
+    public static void collectSeenTypes(TSNode scopeNode, Set<Integer> seen,
+            List<TypeInfo> target, String nodeType,
+            Predicate<TSNode> filter, Function<TSNode, TypeInfo> analyzer) {
+        for (TSNode node : findAllDescendants(scopeNode, nodeType)) {
+            if (filter != null && !filter.test(node)) {
+                continue;
+            }
+            if (!markSeen(seen, node)) {
+                continue;
+            }
+            addTypeIfNamed(target, analyzer.apply(node));
+        }
     }
 
     public static void extractIncludes(String source, TSNode rootNode, FileAnalysis analysis) {
@@ -262,10 +327,6 @@ public final class CCppHelper {
     }
 
     public static void extractParameters(String source, TSNode declarator, MethodInfo method, CCppAnalysisOptions options) {
-        extractParameters(source, declarator, method, options.includeAutoInDeclarationType);
-    }
-
-    public static void extractParameters(String source, TSNode declarator, MethodInfo method, boolean includeAutoInDeclarationType) {
         if (declarator == null || declarator.isNull()) {
             return;
         }
@@ -277,7 +338,7 @@ public final class CCppHelper {
 
         for (TSNode param : findAllChildren(parameterList, "parameter_declaration")) {
             String paramName = extractFirstIdentifier(source, param);
-            String paramType = extractParameterTypeText(source, param, paramName, includeAutoInDeclarationType);
+            String paramType = extractParameterTypeText(source, param, paramName, options);
             method.parameters.add(new Parameter(paramName == null ? "" : paramName, paramType));
         }
 
@@ -286,14 +347,14 @@ public final class CCppHelper {
         }
     }
 
-    public static String extractParameterTypeText(String source, TSNode parameterNode, String parameterName, boolean includeAutoInDeclarationType) {
+    public static String extractParameterTypeText(String source, TSNode parameterNode, String parameterName, CCppAnalysisOptions options) {
         if (parameterNode == null || parameterNode.isNull()) {
             return null;
         }
 
         String fullText = getNodeText(source, parameterNode);
         if (fullText == null || fullText.isBlank()) {
-            return extractDeclarationTypeText(source, parameterNode, includeAutoInDeclarationType);
+            return extractDeclarationTypeText(source, parameterNode, options);
         }
 
         String normalized = normalizeWhitespace(fullText);
@@ -303,7 +364,7 @@ public final class CCppHelper {
 
         int idx = findLastIdentifierOccurrence(normalized, parameterName);
         if (idx < 0) {
-            return extractDeclarationTypeText(source, parameterNode, includeAutoInDeclarationType);
+            return extractDeclarationTypeText(source, parameterNode, options);
         }
 
         String typeText = normalizeWhitespace(
@@ -312,7 +373,7 @@ public final class CCppHelper {
         typeText = normalizeFunctionPointerSpacing(typeText);
 
         if (typeText == null || typeText.isBlank()) {
-            return extractDeclarationTypeText(source, parameterNode, includeAutoInDeclarationType);
+            return extractDeclarationTypeText(source, parameterNode, options);
         }
         return typeText;
     }
@@ -330,17 +391,6 @@ public final class CCppHelper {
                                          MethodInfo method,
                                          Map<String, String> fileScopeTypes,
                                          CCppAnalysisOptions options) {
-        analyzeMethodBody(source, body, method, fileScopeTypes,
-            options.allowQualifiedIdentifierCalls, options.deepBaseObjectLookup, options.includeAutoInDeclarationType);
-    }
-
-    public static void analyzeMethodBody(String source,
-                                         TSNode body,
-                                         MethodInfo method,
-                                         Map<String, String> fileScopeTypes,
-                                         boolean allowQualifiedIdentifierCalls,
-                                         boolean deepBaseObjectLookup,
-                                         boolean includeAutoInDeclarationType) {
         Map<String, String> localTypes = new HashMap<>();
         if (fileScopeTypes != null) {
             localTypes.putAll(fileScopeTypes);
@@ -353,7 +403,7 @@ public final class CCppHelper {
         }
 
         for (TSNode declaration : findAllDescendants(body, "declaration")) {
-            String typeText = extractDeclarationTypeText(source, declaration, includeAutoInDeclarationType);
+            String typeText = extractDeclarationTypeText(source, declaration, options);
             for (String name : extractDeclaredVariableNames(source, declaration)) {
                 if (name != null && !name.isBlank()) {
                     method.localVariables.add(name);
@@ -365,7 +415,7 @@ public final class CCppHelper {
         }
 
         for (TSNode call : findAllDescendants(body, "call_expression")) {
-            extractMethodCall(source, call, method, localTypes, allowQualifiedIdentifierCalls, deepBaseObjectLookup);
+            extractMethodCall(source, call, method, localTypes, options);
         }
 
         method.methodCalls.sort(METHOD_CALL_COMPARATOR);
@@ -376,16 +426,6 @@ public final class CCppHelper {
                                          MethodInfo method,
                                          Map<String, String> localTypes,
                                          CCppAnalysisOptions options) {
-        extractMethodCall(source, call, method, localTypes,
-            options.allowQualifiedIdentifierCalls, options.deepBaseObjectLookup);
-    }
-
-    public static void extractMethodCall(String source,
-                                         TSNode call,
-                                         MethodInfo method,
-                                         Map<String, String> localTypes,
-                                         boolean allowQualifiedIdentifierCalls,
-                                         boolean deepBaseObjectLookup) {
         TSNode functionNode = call.getNamedChild(0);
         if (functionNode == null || functionNode.isNull()) {
             return;
@@ -393,7 +433,7 @@ public final class CCppHelper {
 
         String functionNodeType = functionNode.getType();
         boolean isMemberLike = "field_expression".equals(functionNodeType)
-            || (allowQualifiedIdentifierCalls && "qualified_identifier".equals(functionNodeType));
+            || (options.allowQualifiedIdentifierCalls && "qualified_identifier".equals(functionNodeType));
 
         String methodName = null;
         String objectName = null;
@@ -413,7 +453,7 @@ public final class CCppHelper {
             TSNode receiverNode = functionNode.getNamedChild(0);
             boolean receiverIsCallResult = isCallExpressionReceiver(receiverNode);
             if (!receiverIsCallResult) {
-                if (deepBaseObjectLookup) {
+                if (options.deepBaseObjectLookup) {
                     objectName = extractBaseObjectIdentifier(source, functionNode);
                 } else if (receiverNode != null && "identifier".equals(receiverNode.getType())) {
                     objectName = getNodeText(source, receiverNode);
@@ -492,13 +532,9 @@ public final class CCppHelper {
     }
 
     public static boolean containsNonFieldFunctionDeclaration(TSNode declarationNode, CCppAnalysisOptions options) {
-        return containsNonFieldFunctionDeclaration(declarationNode, options.allowFunctionReturningFunctionPointer);
-    }
-
-    public static boolean containsNonFieldFunctionDeclaration(TSNode declarationNode, boolean allowFunctionReturningFunctionPointer) {
         List<TSNode> functionDeclarators = findAllDescendants(declarationNode, "function_declarator");
         for (TSNode functionDeclarator : functionDeclarators) {
-            if (isTopLevelFunctionDeclaration(functionDeclarator, allowFunctionReturningFunctionPointer)) {
+            if (isTopLevelFunctionDeclaration(functionDeclarator, options)) {
                 return true;
             }
         }
@@ -506,10 +542,6 @@ public final class CCppHelper {
     }
 
     public static boolean isTopLevelFunctionDeclaration(TSNode functionDeclarator, CCppAnalysisOptions options) {
-        return isTopLevelFunctionDeclaration(functionDeclarator, options.allowFunctionReturningFunctionPointer);
-    }
-
-    public static boolean isTopLevelFunctionDeclaration(TSNode functionDeclarator, boolean allowFunctionReturningFunctionPointer) {
         if (functionDeclarator == null || functionDeclarator.isNull()) {
             return false;
         }
@@ -529,7 +561,7 @@ public final class CCppHelper {
             }
             if ("parenthesized_declarator".equals(nestedDeclarator.getType())
                 && !findAllDescendants(nestedDeclarator, "pointer_declarator").isEmpty()
-                && (!allowFunctionReturningFunctionPointer
+                && (!options.allowFunctionReturningFunctionPointer
                 || !isFunctionReturningFunctionPointerDeclaration(nestedDeclarator))) {
                 return false;
             }
@@ -750,22 +782,12 @@ public final class CCppHelper {
                                                    List<String> specifierNodeTypes,
                                                    CCppAnalysisOptions options,
                                                    boolean collectingTypeModifiers) {
-        addModifiersFromSpecifiers(target, source, node, specifierNodeTypes,
-            options.includeAnonymousSpecifiers, collectingTypeModifiers);
-    }
-
-    public static void addModifiersFromSpecifiers(List<String> target,
-                                                   String source,
-                                                   TSNode node,
-                                                   List<String> specifierNodeTypes,
-                                                   boolean includeAnonymous,
-                                                   boolean collectingTypeModifiers) {
         if (target == null || node == null || node.isNull() || specifierNodeTypes == null || specifierNodeTypes.isEmpty()) {
             return;
         }
 
         for (String specifierNodeType : specifierNodeTypes) {
-            List<TSNode> specifiers = includeAnonymous
+            List<TSNode> specifiers = options.includeAnonymousSpecifiers
                 ? findAllDescendantsIncludingAnonymous(node, specifierNodeType)
                 : findAllDescendants(node, specifierNodeType);
             for (TSNode specifierNode : specifiers) {
@@ -823,10 +845,6 @@ public final class CCppHelper {
     }
 
     public static String extractDeclarationTypeText(String source, TSNode node, CCppAnalysisOptions options) {
-        return extractDeclarationTypeText(source, node, options.includeAutoInDeclarationType);
-    }
-
-    public static String extractDeclarationTypeText(String source, TSNode node, boolean includeAuto) {
         if (node == null || node.isNull()) {
             return null;
         }
@@ -846,7 +864,7 @@ public final class CCppHelper {
             return getNodeText(source, typeIdentifier);
         }
 
-        if (includeAuto) {
+        if (options.includeAutoInDeclarationType) {
             TSNode autoType = findFirstChild(node, "auto");
             if (autoType != null) {
                 return getNodeText(source, autoType);

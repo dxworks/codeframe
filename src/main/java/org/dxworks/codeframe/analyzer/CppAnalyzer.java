@@ -37,45 +37,14 @@ public class CppAnalyzer implements LanguageAnalyzer {
     }
 
     private void extractNestedTypesFromFieldDeclaration(String source, TSNode fieldDeclaration, TypeInfo typeInfo, Set<Integer> seenNestedTypeNodes) {
-        for (TSNode classNode : findAllDescendants(fieldDeclaration, "class_specifier")) {
-            if (!CCppHelper.markSeen(seenNestedTypeNodes, classNode)) {
-                continue;
-            }
-            TypeInfo nested = analyzeClass(source, classNode);
-            if (nested != null && nested.name != null) {
-                typeInfo.types.add(nested);
-            }
-        }
-
-        for (TSNode structNode : findAllDescendants(fieldDeclaration, "struct_specifier")) {
-            if (!CCppHelper.markSeen(seenNestedTypeNodes, structNode)) {
-                continue;
-            }
-            TypeInfo nested = CCppHelper.analyzeStructLike(source, structNode, "struct", OPTIONS);
-            if (nested != null && nested.name != null) {
-                typeInfo.types.add(nested);
-            }
-        }
-
-        for (TSNode unionNode : findAllDescendants(fieldDeclaration, "union_specifier")) {
-            if (!CCppHelper.markSeen(seenNestedTypeNodes, unionNode)) {
-                continue;
-            }
-            TypeInfo nested = CCppHelper.analyzeStructLike(source, unionNode, "union", OPTIONS);
-            if (nested != null && nested.name != null) {
-                typeInfo.types.add(nested);
-            }
-        }
-
-        for (TSNode enumNode : findAllDescendants(fieldDeclaration, "enum_specifier")) {
-            if (!CCppHelper.markSeen(seenNestedTypeNodes, enumNode)) {
-                continue;
-            }
-            TypeInfo nested = CCppHelper.analyzeEnum(source, enumNode, OPTIONS);
-            if (nested != null && nested.name != null) {
-                typeInfo.types.add(nested);
-            }
-        }
+        CCppHelper.collectSeenTypes(fieldDeclaration, seenNestedTypeNodes, typeInfo.types,
+            "class_specifier", null, n -> analyzeClass(source, n));
+        CCppHelper.collectSeenTypes(fieldDeclaration, seenNestedTypeNodes, typeInfo.types,
+            "struct_specifier", null, n -> CCppHelper.analyzeStructLike(source, n, "struct", OPTIONS));
+        CCppHelper.collectSeenTypes(fieldDeclaration, seenNestedTypeNodes, typeInfo.types,
+            "union_specifier", null, n -> CCppHelper.analyzeStructLike(source, n, "union", OPTIONS));
+        CCppHelper.collectSeenTypes(fieldDeclaration, seenNestedTypeNodes, typeInfo.types,
+            "enum_specifier", null, n -> CCppHelper.analyzeEnum(source, n, OPTIONS));
     }
 
     private void extractNamespaceMethods(String source, TSNode namespaceNode, TypeInfo namespaceInfo, Map<String, String> fileScopeTypes) {
@@ -134,20 +103,14 @@ public class CppAnalyzer implements LanguageAnalyzer {
     }
 
     private void applyTemplateModifier(MethodInfo method) {
-        if (method == null) {
-            return;
-        }
-        if (!method.modifiers.contains("template")) {
-            method.modifiers.add("template");
+        if (method != null) {
+            CCppHelper.addModifierIfAbsent(method.modifiers, "template");
         }
     }
 
     private void applyTemplateModifier(TypeInfo typeInfo) {
-        if (typeInfo == null) {
-            return;
-        }
-        if (!typeInfo.modifiers.contains("template")) {
-            typeInfo.modifiers.add("template");
+        if (typeInfo != null) {
+            CCppHelper.addModifierIfAbsent(typeInfo.modifiers, "template");
         }
     }
 
@@ -166,57 +129,15 @@ public class CppAnalyzer implements LanguageAnalyzer {
     }
 
     private void extractNamespaceTypes(String source, TSNode namespaceNode, TypeInfo namespaceInfo, Set<Integer> seenTypeNodes) {
-        for (TSNode typedefNode : findAllDescendants(namespaceNode, "type_definition")) {
-            if (isInsideNestedNamespace(typedefNode, namespaceNode)) {
-                continue;
-            }
-            if (!CCppHelper.markSeen(seenTypeNodes, typedefNode)) {
-                continue;
-            }
-            TypeInfo typedefInfo = CCppHelper.analyzeTypedef(source, typedefNode);
-            if (typedefInfo != null && typedefInfo.name != null) {
-                namespaceInfo.types.add(typedefInfo);
-            }
-        }
-
-        for (TSNode aliasNode : findAllDescendants(namespaceNode, "alias_declaration")) {
-            if (isInsideNestedNamespace(aliasNode, namespaceNode)) {
-                continue;
-            }
-            if (!CCppHelper.markSeen(seenTypeNodes, aliasNode)) {
-                continue;
-            }
-            TypeInfo aliasInfo = analyzeUsingAlias(source, aliasNode);
-            if (aliasInfo != null && aliasInfo.name != null) {
-                namespaceInfo.types.add(aliasInfo);
-            }
-        }
-
-        for (TSNode classNode : findAllDescendants(namespaceNode, "class_specifier")) {
-            if (isInsideNestedNamespace(classNode, namespaceNode)) {
-                continue;
-            }
-            if (!CCppHelper.markSeen(seenTypeNodes, classNode)) {
-                continue;
-            }
-            TypeInfo classInfo = analyzeClass(source, classNode);
-            if (classInfo != null && classInfo.name != null) {
-                namespaceInfo.types.add(classInfo);
-            }
-        }
-
-        for (TSNode templateNode : findAllDescendants(namespaceNode, "template_declaration")) {
-            if (isInsideNestedNamespace(templateNode, namespaceNode)) {
-                continue;
-            }
-            if (!CCppHelper.markSeen(seenTypeNodes, templateNode)) {
-                continue;
-            }
-            TypeInfo templateType = analyzeTemplateType(source, templateNode);
-            if (templateType != null && templateType.name != null) {
-                namespaceInfo.types.add(templateType);
-            }
-        }
+        java.util.function.Predicate<TSNode> notInNestedNs = n -> !isInsideNestedNamespace(n, namespaceNode);
+        CCppHelper.collectSeenTypes(namespaceNode, seenTypeNodes, namespaceInfo.types,
+            "type_definition", notInNestedNs, n -> CCppHelper.analyzeTypedef(source, n));
+        CCppHelper.collectSeenTypes(namespaceNode, seenTypeNodes, namespaceInfo.types,
+            "alias_declaration", notInNestedNs, n -> analyzeUsingAlias(source, n));
+        CCppHelper.collectSeenTypes(namespaceNode, seenTypeNodes, namespaceInfo.types,
+            "class_specifier", notInNestedNs, n -> analyzeClass(source, n));
+        CCppHelper.collectSeenTypes(namespaceNode, seenTypeNodes, namespaceInfo.types,
+            "template_declaration", notInNestedNs, n -> analyzeTemplateType(source, n));
     }
 
     private String extractNamespaceName(String source, TSNode namespaceNode) {
@@ -338,32 +259,12 @@ public class CppAnalyzer implements LanguageAnalyzer {
                 continue;
             }
 
-            for (TSNode structNode : findAllDescendants(child, "struct_specifier")) {
-                if (CCppHelper.markSeen(seenTypeNodes, structNode)) {
-                    TypeInfo info = CCppHelper.analyzeStructLike(source, structNode, "struct", OPTIONS);
-                    if (info != null && info.name != null) {
-                        analysis.types.add(info);
-                    }
-                }
-            }
-
-            for (TSNode unionNode : findAllDescendants(child, "union_specifier")) {
-                if (CCppHelper.markSeen(seenTypeNodes, unionNode)) {
-                    TypeInfo info = CCppHelper.analyzeStructLike(source, unionNode, "union", OPTIONS);
-                    if (info != null && info.name != null) {
-                        analysis.types.add(info);
-                    }
-                }
-            }
-
-            for (TSNode enumNode : findAllDescendants(child, "enum_specifier")) {
-                if (CCppHelper.markSeen(seenTypeNodes, enumNode)) {
-                    TypeInfo info = CCppHelper.analyzeEnum(source, enumNode, OPTIONS);
-                    if (info != null && info.name != null) {
-                        analysis.types.add(info);
-                    }
-                }
-            }
+            CCppHelper.collectSeenTypes(child, seenTypeNodes, analysis.types,
+                "struct_specifier", null, n -> CCppHelper.analyzeStructLike(source, n, "struct", OPTIONS));
+            CCppHelper.collectSeenTypes(child, seenTypeNodes, analysis.types,
+                "union_specifier", null, n -> CCppHelper.analyzeStructLike(source, n, "union", OPTIONS));
+            CCppHelper.collectSeenTypes(child, seenTypeNodes, analysis.types,
+                "enum_specifier", null, n -> CCppHelper.analyzeEnum(source, n, OPTIONS));
         }
     }
 
@@ -454,10 +355,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
             }
 
             if ("class_specifier".equals(memberType)) {
-                TypeInfo nested = analyzeClass(source, member);
-                if (nested != null && nested.name != null) {
-                    typeInfo.types.add(nested);
-                }
+                CCppHelper.addTypeIfNamed(typeInfo.types, analyzeClass(source, member));
             }
         }
 
@@ -480,22 +378,14 @@ public class CppAnalyzer implements LanguageAnalyzer {
     }
 
     private void applyVisibility(FieldInfo field, String visibility) {
-        if (field == null || visibility == null || visibility.isBlank()) {
-            return;
-        }
-        field.visibility = visibility;
-        if (!field.modifiers.contains(visibility)) {
-            field.modifiers.add(0, visibility);
+        if (field != null) {
+            CCppHelper.applyVisibility(field.modifiers, visibility, v -> field.visibility = v);
         }
     }
 
     private void applyVisibility(MethodInfo method, String visibility) {
-        if (method == null || visibility == null || visibility.isBlank()) {
-            return;
-        }
-        method.visibility = visibility;
-        if (!method.modifiers.contains(visibility)) {
-            method.modifiers.add(0, visibility);
+        if (method != null) {
+            CCppHelper.applyVisibility(method.modifiers, visibility, v -> method.visibility = v);
         }
     }
 
@@ -629,11 +519,11 @@ public class CppAnalyzer implements LanguageAnalyzer {
         if (declarationText == null) {
             return;
         }
-        if (declarationText.contains("= delete") && !method.modifiers.contains("deleted")) {
-            method.modifiers.add("deleted");
+        if (declarationText.contains("= delete")) {
+            CCppHelper.addModifierIfAbsent(method.modifiers, "deleted");
         }
-        if (declarationText.contains("= default") && !method.modifiers.contains("defaulted")) {
-            method.modifiers.add("defaulted");
+        if (declarationText.contains("= default")) {
+            CCppHelper.addModifierIfAbsent(method.modifiers, "defaulted");
         }
     }
 
@@ -688,8 +578,8 @@ public class CppAnalyzer implements LanguageAnalyzer {
             }
         }
 
-        if (method != null && !method.modifiers.contains("friend")) {
-            method.modifiers.add("friend");
+        if (method != null) {
+            CCppHelper.addModifierIfAbsent(method.modifiers, "friend");
         }
         return method;
     }
@@ -878,28 +768,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
     }
 
     private void addTopLevelFieldsFromDeclaration(String source, TSNode declarationNode, FileAnalysis analysis, Map<String, String> fileScopeTypes) {
-        if (CCppHelper.containsNonFieldFunctionDeclaration(declarationNode, OPTIONS)) {
-            return;
-        }
-
-        String typeText = CCppHelper.extractDeclarationTypeText(source, declarationNode, OPTIONS);
-        for (String name : CCppHelper.extractDeclaredVariableNames(source, declarationNode)) {
-            if (name == null || name.isBlank()) {
-                continue;
-            }
-
-            String fieldType = CCppHelper.resolveFileScopeFieldType(source, declarationNode, name, typeText);
-
-            FieldInfo field = new FieldInfo();
-            field.name = name;
-            field.type = fieldType;
-            CCppHelper.addModifiersFromSpecifiers(field.modifiers, source, declarationNode, OPTIONS.fieldSpecifierNodeTypes,
-                OPTIONS, CCppHelper.isTypeContainerNode(declarationNode));
-            analysis.fields.add(field);
-            if (fieldType != null) {
-                fileScopeTypes.put(name, fieldType);
-            }
-        }
+        CCppHelper.addFieldsFromDeclaration(source, declarationNode, analysis.fields, fileScopeTypes, OPTIONS);
     }
 
     private TypeInfo analyzeUsingAlias(String source, TSNode aliasNode) {
