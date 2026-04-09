@@ -23,6 +23,17 @@
       border-radius: 6px;
     }
 
+    .codeframe-summary .type-breakdown-grid {
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 6px 10px;
+    }
+
+    .codeframe-summary .type-breakdown-grid .summary-item {
+      padding: 4px 6px;
+      font-size: 0.9rem;
+      line-height: 1.2;
+    }
+
     .codeframe-summary .summary-note {
       margin: 8px 0;
       color: #b54708;
@@ -98,22 +109,15 @@
     </table>
 
     <h3>Type Breakdown</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Kind</th>
-          <th>Count</th>
-        </tr>
-      </thead>
-      <tbody>
+    {{#if typeKindRows}}
+      <div class="summary-grid type-breakdown-grid">
         {{#each typeKindRows}}
-          <tr>
-            <td>{{kind}}</td>
-            <td class="num">{{countFormatted}}</td>
-          </tr>
+          <div class="summary-item"><strong>{{kind}}</strong><br>{{countFormatted}}</div>
         {{/each}}
-      </tbody>
-    </table>
+      </div>
+    {{else}}
+      <p>No type breakdown data available.</p>
+    {{/if}}
 
     {{#if hasSqlMetrics}}
       <h3>SQL Structural Footprint</h3>
