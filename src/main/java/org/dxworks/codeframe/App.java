@@ -259,12 +259,8 @@ public class App {
     }
 
     public static Analysis analyzeFile(Path filePath, Language language, CodeframeConfig config) throws IOException {
-        String sourceCode = Files.readString(filePath, StandardCharsets.UTF_8);
+        String sourceCode = SourceCodeReader.read(filePath);
         String lowerName = filePath.getFileName().toString().toLowerCase();
-
-        if (sourceCode.startsWith("\uFEFF")) {
-            sourceCode = sourceCode.substring(1);
-        }
 
         LanguageAnalyzer analyzer = ANALYZERS.get(language);
         if (analyzer == null) {
