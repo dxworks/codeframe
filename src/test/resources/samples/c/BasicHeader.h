@@ -13,6 +13,8 @@ typedef struct HeaderPoint {
     int y;
 } HeaderPoint;
 
+typedef unsigned int HeaderFlags;
+
 extern const int default_limit;
 extern int global_total;
 

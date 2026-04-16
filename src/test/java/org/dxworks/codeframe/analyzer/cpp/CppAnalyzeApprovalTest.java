@@ -50,6 +50,11 @@ public class CppAnalyzeApprovalTest {
         verify("MacroHeavyHeader.h", Language.CPP);
     }
 
+    @Test
+    void analyze_Cpp_HeaderGuardedClassDeclarations() throws IOException {
+        verify("HeaderGuardedClassDeclarations.h", Language.CPP);
+    }
+
     private static void verify(String fileName, Language language) throws IOException {
         App.initAnalyzersForTestsFromPaths(List.of());
         Path filePath = Paths.get(SAMPLES_BASE_PATH + fileName);

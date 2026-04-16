@@ -193,20 +193,6 @@ public class CppAnalyzer implements LanguageAnalyzer {
         }
     }
 
-    private void collectTypedefsFromNode(String source, TSNode child, FileAnalysis analysis, Set<Integer> seenTypedefNodes) {
-        if ("type_definition".equals(child.getType())) {
-            addTypeIfNamed(analysis, CCppHelper.analyzeTypedef(source, child));
-            seenTypedefNodes.add(child.getStartByte());
-        }
-
-        for (TSNode typedefNode : findAllDescendants(child, "type_definition")) {
-            if (!seenTypedefNodes.add(typedefNode.getStartByte())) {
-                continue;
-            }
-            addTypeIfNamed(analysis, CCppHelper.analyzeTypedef(source, typedefNode));
-        }
-    }
-
     private boolean collectNamespacesFromNode(String source,
                                               TSNode child,
                                               FileAnalysis analysis,
@@ -233,6 +219,7 @@ public class CppAnalyzer implements LanguageAnalyzer {
     private void extractTopLevelTypes(String source, TSNode rootNode, FileAnalysis analysis) {
         Set<Integer> seenTypeNodes = new HashSet<>();
         Set<Integer> seenTypedefNodes = new HashSet<>();
+        Set<Integer> seenAliasNodes = new HashSet<>();
         Set<Integer> seenNamespaceNodes = new HashSet<>();
         for (int i = 0; i < rootNode.getNamedChildCount(); i++) {
             TSNode child = rootNode.getNamedChild(i);
@@ -240,32 +227,48 @@ public class CppAnalyzer implements LanguageAnalyzer {
                 continue;
             }
 
-            String childType = child.getType();
-            if ("class_specifier".equals(childType)) {
-                addTypeIfNamed(analysis, analyzeClass(source, child));
-            }
-
-            if ("alias_declaration".equals(childType)) {
-                addTypeIfNamed(analysis, analyzeUsingAlias(source, child));
-            }
-
-            collectTypedefsFromNode(source, child, analysis, seenTypedefNodes);
-
-            if ("template_declaration".equals(childType)) {
-                addTypeIfNamed(analysis, analyzeTemplateType(source, child));
-            }
-
             if (collectNamespacesFromNode(source, child, analysis, seenNamespaceNodes)) {
                 continue;
             }
 
+            java.util.function.Predicate<TSNode> isTopLevelInChildScope = n -> isTopLevelTypeCandidate(n, child);
+            CCppHelper.collectSeenTypes(child, seenTypedefNodes, analysis.types,
+                "type_definition", isTopLevelInChildScope, n -> CCppHelper.analyzeTypedef(source, n));
+            CCppHelper.collectSeenTypes(child, seenAliasNodes, analysis.types,
+                "alias_declaration", isTopLevelInChildScope, n -> analyzeUsingAlias(source, n));
             CCppHelper.collectSeenTypes(child, seenTypeNodes, analysis.types,
-                "struct_specifier", null, n -> CCppHelper.analyzeStructLike(source, n, "struct", OPTIONS));
+                "class_specifier", isTopLevelInChildScope, n -> analyzeClass(source, n));
             CCppHelper.collectSeenTypes(child, seenTypeNodes, analysis.types,
-                "union_specifier", null, n -> CCppHelper.analyzeStructLike(source, n, "union", OPTIONS));
+                "template_declaration", isTopLevelInChildScope, n -> analyzeTemplateType(source, n));
+
             CCppHelper.collectSeenTypes(child, seenTypeNodes, analysis.types,
-                "enum_specifier", null, n -> CCppHelper.analyzeEnum(source, n, OPTIONS));
+                "struct_specifier", isTopLevelInChildScope, n -> CCppHelper.analyzeStructLike(source, n, "struct", OPTIONS));
+            CCppHelper.collectSeenTypes(child, seenTypeNodes, analysis.types,
+                "union_specifier", isTopLevelInChildScope, n -> CCppHelper.analyzeStructLike(source, n, "union", OPTIONS));
+            CCppHelper.collectSeenTypes(child, seenTypeNodes, analysis.types,
+                "enum_specifier", isTopLevelInChildScope, n -> CCppHelper.analyzeEnum(source, n, OPTIONS));
         }
+    }
+
+    private boolean isTopLevelTypeCandidate(TSNode node, TSNode childScopeNode) {
+        if (isSameNode(node, childScopeNode)) {
+            return true;
+        }
+        TSNode current = node == null ? null : node.getParent();
+        while (current != null && !current.isNull()) {
+            String currentType = current.getType();
+            if (CCppHelper.isTypeContainerNode(current)
+                || "template_declaration".equals(currentType)
+                || "namespace_definition".equals(currentType)
+                || "function_definition".equals(currentType)) {
+                return false;
+            }
+            if (isSameNode(current, childScopeNode)) {
+                return true;
+            }
+            current = current.getParent();
+        }
+        return true;
     }
 
     private TypeInfo analyzeTemplateType(String source, TSNode templateNode) {

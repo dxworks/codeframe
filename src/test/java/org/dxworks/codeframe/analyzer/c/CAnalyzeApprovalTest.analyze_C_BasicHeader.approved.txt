@@ -2,6 +2,18 @@
   "filePath" : "src/test/resources/samples/c/BasicHeader.h",
   "language" : "c",
   "types" : [ {
+    "kind" : "typedef",
+    "name" : "HeaderStatus",
+    "extendsType" : "enum HeaderStatus"
+  }, {
+    "kind" : "typedef",
+    "name" : "HeaderPoint",
+    "extendsType" : "struct HeaderPoint"
+  }, {
+    "kind" : "typedef",
+    "name" : "HeaderFlags",
+    "extendsType" : "unsigned int"
+  }, {
     "kind" : "struct",
     "name" : "HeaderPoint",
     "fields" : [ {

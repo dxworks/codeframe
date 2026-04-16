@@ -2,22 +2,6 @@
   "filePath" : "src/test/resources/samples/cpp/CommonHeaderFeatures.h",
   "language" : "cpp",
   "types" : [ {
-    "kind" : "typedef",
-    "name" : "StatusCode",
-    "extendsType" : "enum StatusCode"
-  }, {
-    "kind" : "typedef",
-    "name" : "Point",
-    "extendsType" : "struct Point"
-  }, {
-    "kind" : "typedef",
-    "name" : "HeaderConfig",
-    "extendsType" : "struct HeaderConfig"
-  }, {
-    "kind" : "typedef",
-    "name" : "CompareFn",
-    "extendsType" : "int (*CompareFn)(const void *lhs, const void *rhs)"
-  }, {
     "kind" : "namespace",
     "name" : "sample",
     "types" : [ {
@@ -39,6 +23,22 @@
         } ]
       } ]
     } ]
+  }, {
+    "kind" : "typedef",
+    "name" : "StatusCode",
+    "extendsType" : "enum StatusCode"
+  }, {
+    "kind" : "typedef",
+    "name" : "Point",
+    "extendsType" : "struct Point"
+  }, {
+    "kind" : "typedef",
+    "name" : "HeaderConfig",
+    "extendsType" : "struct HeaderConfig"
+  }, {
+    "kind" : "typedef",
+    "name" : "CompareFn",
+    "extendsType" : "int (*CompareFn)(const void *lhs, const void *rhs)"
   }, {
     "kind" : "struct",
     "name" : "Point",

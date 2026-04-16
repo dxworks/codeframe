@@ -36,24 +36,43 @@ public class CAnalyzer implements LanguageAnalyzer {
 
     private void extractTopLevelTypes(String source, TSNode rootNode, FileAnalysis analysis) {
         Set<Integer> seenTypeNodes = new HashSet<>();
+        Set<Integer> seenTypedefNodes = new HashSet<>();
         for (int i = 0; i < rootNode.getNamedChildCount(); i++) {
             TSNode child = rootNode.getNamedChild(i);
             if (child == null || child.isNull()) {
                 continue;
             }
 
-            String childType = child.getType();
-            if ("type_definition".equals(childType)) {
-                CCppHelper.addTypeIfNamed(analysis.types, CCppHelper.analyzeTypedef(source, child));
-            }
+            java.util.function.Predicate<TSNode> isTopLevelInChildScope = n -> isTopLevelTypeCandidate(n, child);
+            CCppHelper.collectSeenTypes(child, seenTypedefNodes, analysis.types,
+                "type_definition", isTopLevelInChildScope, n -> CCppHelper.analyzeTypedef(source, n));
 
             CCppHelper.collectSeenTypes(child, seenTypeNodes, analysis.types,
-                "struct_specifier", null, n -> CCppHelper.analyzeStructLike(source, n, "struct", OPTIONS));
+                "struct_specifier", isTopLevelInChildScope, n -> CCppHelper.analyzeStructLike(source, n, "struct", OPTIONS));
             CCppHelper.collectSeenTypes(child, seenTypeNodes, analysis.types,
-                "union_specifier", null, n -> CCppHelper.analyzeStructLike(source, n, "union", OPTIONS));
+                "union_specifier", isTopLevelInChildScope, n -> CCppHelper.analyzeStructLike(source, n, "union", OPTIONS));
             CCppHelper.collectSeenTypes(child, seenTypeNodes, analysis.types,
-                "enum_specifier", null, n -> CCppHelper.analyzeEnum(source, n, OPTIONS));
+                "enum_specifier", isTopLevelInChildScope, n -> CCppHelper.analyzeEnum(source, n, OPTIONS));
         }
+    }
+
+    private boolean isTopLevelTypeCandidate(TSNode node, TSNode childScopeNode) {
+        if (isSameNode(node, childScopeNode)) {
+            return true;
+        }
+        TSNode current = node == null ? null : node.getParent();
+        while (current != null && !current.isNull()) {
+            String currentType = current.getType();
+            if (CCppHelper.isTypeContainerNode(current)
+                || "function_definition".equals(currentType)) {
+                return false;
+            }
+            if (isSameNode(current, childScopeNode)) {
+                return true;
+            }
+            current = current.getParent();
+        }
+        return true;
     }
 
     private void extractMethodsFromScope(String source, TSNode scopeNode, FileAnalysis analysis, Map<String, String> fileScopeTypes) {
