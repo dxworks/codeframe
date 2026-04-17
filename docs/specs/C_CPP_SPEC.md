@@ -135,7 +135,8 @@ Qualified-call handling follows `docs/EXTRACTION_CONTRACT.md` (§3.2).
 - Extract concrete type declarations supported by each analyzer (see language-specific specs).
 - `modifiers` are captured on types when syntactically present (see language-specific specs).
 - Nested types are captured when explicit in syntax.
-- Forward declarations (bodyless `struct Foo;`) are skipped — no empty type is emitted.
+- Forward declarations (bodyless declarations such as `struct Foo;` or `class Foo;`) are skipped — no empty type is emitted.
+- C++ template forward declarations without a type body (for example `template<typename T> class Foo;`) are likewise skipped.
 - Typedef alias target text in `extendsType` is preserved in source-like form.
   - For named inline aggregate typedefs (for example `typedef struct Logger { ... } Logger;`), `extendsType` keeps a compact target (for example `struct Logger`) rather than the full aggregate body.
   - Function-pointer typedef targets are likewise preserved as source-like declarator text.

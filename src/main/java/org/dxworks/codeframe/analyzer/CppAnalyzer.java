@@ -290,6 +290,10 @@ public class CppAnalyzer implements LanguageAnalyzer {
             return null;
         }
 
+        if (typeInfo == null) {
+            return null;
+        }
+
         TSNode parameters = findFirstChild(templateNode, "template_parameter_list");
         if (parameters != null && typeInfo.name != null) {
             typeInfo.name = typeInfo.name + getNodeText(source, parameters);

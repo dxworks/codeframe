@@ -56,6 +56,7 @@ int touch_point_const(const Point &point);
 int consume_point(Point &&point);
 
 namespace sample {
+template<typename T> class ForwardDecl;
 class Math final {
 public:
     static int add(int a, int b);
