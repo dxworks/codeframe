@@ -316,6 +316,14 @@ public final class CCppHelper {
             return declarator;
         }
 
+        TSNode pointerDeclarator = findFirstChild(declarationNode, "pointer_declarator");
+        if (pointerDeclarator != null) {
+            TSNode nestedDeclarator = findFirstDescendant(pointerDeclarator, "function_declarator");
+            if (nestedDeclarator != null) {
+                return nestedDeclarator;
+            }
+        }
+
         TSNode referenceDeclarator = findFirstChild(declarationNode, "reference_declarator");
         if (referenceDeclarator != null) {
             TSNode nestedDeclarator = findFirstDescendant(referenceDeclarator, "function_declarator");
@@ -547,12 +555,12 @@ public final class CCppHelper {
             return false;
         }
 
-        TSNode ancestor = functionDeclarator.getParent();
-        while (ancestor != null && !ancestor.isNull()) {
-            if ("pointer_declarator".equals(ancestor.getType())) {
+        TSNode currentAncestor = functionDeclarator.getParent();
+        while (currentAncestor != null && !currentAncestor.isNull()) {
+            if ("function_declarator".equals(currentAncestor.getType())) {
                 return false;
             }
-            ancestor = ancestor.getParent();
+            currentAncestor = currentAncestor.getParent();
         }
 
         TSNode nestedDeclarator = getChildByFieldName(functionDeclarator, "declarator");
