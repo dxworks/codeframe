@@ -1,0 +1,25 @@
+{
+  "filePath" : "src/test/resources/samples/xml/fragment.xml",
+  "language" : "xml",
+  "roots" : [ {
+    "name" : "entry",
+    "lines" : 3,
+    "attributes" : [ "id" ],
+    "children" : [ {
+      "name" : "message",
+      "lines" : 1
+    } ]
+  }, {
+    "name" : "entry",
+    "lines" : 3,
+    "attributes" : [ "id" ],
+    "children" : [ {
+      "name" : "message",
+      "lines" : 1
+    } ]
+  }, {
+    "name" : "entry",
+    "lines" : 1,
+    "attributes" : [ "id" ]
+  } ]
+}

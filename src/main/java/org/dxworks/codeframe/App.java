@@ -271,7 +271,7 @@ public class App {
 
         Analysis analysis;
 
-        if (language == Language.SQL || language == Language.COBOL || language == Language.MARKDOWN) {
+        if (language == Language.SQL || language == Language.COBOL || language == Language.MARKDOWN || language == Language.XML) {
             analysis = analyzer.analyze(filePath.toString(), sourceCode, null);
         } else if (language == Language.CPP && lowerName.endsWith(".h")) {
             analysis = analyzeHeaderWithCppFallback(filePath, sourceCode);

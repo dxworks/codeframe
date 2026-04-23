@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- SOAP request -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:m="http://example.com/stock">
+  <soap:Body>
+    <m:GetPrice currency="USD">
+      <m:StockName>IBM</m:StockName>
+    </m:GetPrice>
+  </soap:Body>
+</soap:Envelope>

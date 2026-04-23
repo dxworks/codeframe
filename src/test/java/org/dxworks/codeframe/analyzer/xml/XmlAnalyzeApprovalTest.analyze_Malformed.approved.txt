@@ -1,0 +1,4 @@
+{
+  "filePath" : "src/test/resources/samples/xml/malformed.xml",
+  "language" : "xml"
+}

@@ -1,0 +1,18 @@
+{
+  "filePath" : "src/test/resources/samples/xml/comments_pis_cdata.xml",
+  "language" : "xml",
+  "roots" : [ {
+    "name" : "config",
+    "lines" : 8,
+    "children" : [ {
+      "name" : "name",
+      "lines" : 1
+    }, {
+      "name" : "script",
+      "lines" : 3
+    }, {
+      "name" : "empty",
+      "lines" : 1
+    } ]
+  } ]
+}

@@ -32,6 +32,7 @@ Normalize language input to lowercase and strip spaces/hyphens/underscores when 
 | `rust`, `rs` | `docs/specs/RUST_SPEC.md` |
 | `sql`, `tsql`, `t-sql` | `docs/specs/SQL_SPEC.md` |
 | `markdown`, `md` | `docs/specs/MARKDOWN_SPEC.md` |
+| `xml` | `docs/specs/XML_SPEC.md` |
 
 If any mapped spec file does not exist, return `FAIL`.
 
@@ -48,6 +49,17 @@ If multiple mappings could apply for the same provided language input, return `F
 5. Report compliant items, violations, and ambiguities.
 6. For each violation, cite the exact spec file and section heading.
 7. If possible, suggest the minimal fix to output generation logic.
+
+## Thoroughness (mandatory)
+
+Check the output in **both directions**, not just one:
+
+- **Sample → output (missing items).** Walk the input sample end-to-end and confirm every construct the spec says should be extracted actually appears in the output. Flag anything present in the sample but missing from the output.
+- **Output → sample (extra / duplicated items).** Walk the output end-to-end and confirm every entry traces back to a concrete construct in the sample. Flag items that are not supported by the sample, items with incorrect parent/container placement, and items that appear more than once when the spec requires them to be recorded once.
+- **Counts and ordering.** Verify the number of occurrences and the source order match the sample (e.g., siblings, parameters, attributes, children lists).
+- **Optional/omitted fields.** Verify that fields the spec says are omitted when empty are actually absent (not serialized as empty arrays/objects), and that required fields are present.
+
+Do not stop at the first violation; enumerate all of them.
 
 ## Output format
 

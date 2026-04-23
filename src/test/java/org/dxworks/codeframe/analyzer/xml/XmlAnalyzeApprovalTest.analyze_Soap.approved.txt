@@ -1,0 +1,25 @@
+{
+  "filePath" : "src/test/resources/samples/xml/soap.xml",
+  "language" : "xml",
+  "roots" : [ {
+    "name" : "soap:Envelope",
+    "lines" : 7,
+    "namespaces" : {
+      "m" : "http://example.com/stock",
+      "soap" : "http://schemas.xmlsoap.org/soap/envelope/"
+    },
+    "children" : [ {
+      "name" : "soap:Body",
+      "lines" : 5,
+      "children" : [ {
+        "name" : "m:GetPrice",
+        "lines" : 3,
+        "attributes" : [ "currency" ],
+        "children" : [ {
+          "name" : "m:StockName",
+          "lines" : 1
+        } ]
+      } ]
+    } ]
+  } ]
+}

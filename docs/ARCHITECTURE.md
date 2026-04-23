@@ -26,6 +26,7 @@ Each language has a dedicated analyzer:
 | SQL | `SQLAnalyzer` | JSqlParser + ANTLR |
 | COBOL | `COBOLAnalyzer` | ANTLR |
 | Markdown | `MarkdownAnalyzer` | commonmark-java + GFM Tables + YAML Front Matter extension |
+| XML | `XmlAnalyzer` | Java StAX (`javax.xml.stream`) |
 
 ## Design Decisions
 
@@ -61,6 +62,12 @@ Markdown is document-structure analysis, not programming-language AST analysis.
 - **Targeted extensions**: GFM tables extension is enabled for table detection; YAML front matter extension is enabled and front matter blocks are intentionally ignored in output.
 
 See [MARKDOWN_SPEC.md](specs/MARKDOWN_SPEC.md) for exact Markdown output shape and scope.
+
+### Why StAX for XML?
+
+Built-in JDK pull parser: no new dependency, streaming, namespace-aware, exposes line numbers via `Location`, and external entities/DTDs are disabled for security. Multi-root XML fragments are parsed inside a synthetic wrapper so each top-level element becomes an entry in `roots`.
+
+See [XML_SPEC.md](specs/XML_SPEC.md) for exact XML output shape and scope.
 
 ### Why JSONL output?
 

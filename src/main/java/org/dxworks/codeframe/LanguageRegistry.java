@@ -5,6 +5,7 @@ import org.dxworks.codeframe.analyzer.cobol.COBOLAnalyzer;
 import org.dxworks.codeframe.analyzer.cobol.CobolCopybookRepository;
 import org.dxworks.codeframe.analyzer.markdown.MarkdownAnalyzer;
 import org.dxworks.codeframe.analyzer.sql.SQLAnalyzer;
+import org.dxworks.codeframe.analyzer.xml.XmlAnalyzer;
 
 import java.nio.file.Path;
 import java.util.*;
@@ -67,6 +68,7 @@ public class LanguageRegistry {
             case RUBY -> new RubyAnalyzer();
             case RUST -> new RustAnalyzer();
             case MARKDOWN -> new MarkdownAnalyzer();
+            case XML -> new XmlAnalyzer();
         };
     }
 }

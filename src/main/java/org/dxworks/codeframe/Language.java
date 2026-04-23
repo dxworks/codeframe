@@ -13,7 +13,8 @@ public enum Language {
     COBOL("cobol", ".cbl", ".cob", ".cobol"),
     RUBY("ruby", ".rb"),
     RUST("rust", ".rs"),
-    MARKDOWN("markdown", ".md", ".markdown", ".mkd", ".mkdn", ".mdwn", ".mdown");
+    MARKDOWN("markdown", ".md", ".markdown", ".mkd", ".mkdn", ".mdwn", ".mdown"),
+    XML("xml", ".xml");
 
     private final String name;
     private final String[] extensions;

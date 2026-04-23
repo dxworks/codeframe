@@ -1,0 +1,26 @@
+{
+  "filePath" : "src/test/resources/samples/xml/default_namespace.xml",
+  "language" : "xml",
+  "roots" : [ {
+    "name" : "feed",
+    "lines" : 7,
+    "attributes" : [ "xml:lang" ],
+    "namespaces" : {
+      "" : "http://www.w3.org/2005/Atom"
+    },
+    "children" : [ {
+      "name" : "title",
+      "lines" : 1
+    }, {
+      "name" : "entry",
+      "lines" : 4,
+      "children" : [ {
+        "name" : "id",
+        "lines" : 1
+      }, {
+        "name" : "title",
+        "lines" : 1
+      } ]
+    } ]
+  } ]
+}
