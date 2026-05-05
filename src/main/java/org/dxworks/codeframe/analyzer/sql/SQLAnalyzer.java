@@ -16,8 +16,6 @@ import org.dxworks.codeframe.analyzer.LanguageAnalyzer;
 import org.dxworks.codeframe.model.Analysis;
 import org.dxworks.codeframe.model.sql.*;
 
-import org.treesitter.TSNode;
-
 public class SQLAnalyzer implements LanguageAnalyzer {
 
     private final RoutineBodyAnalyzer noopAnalyzer = new NoopRoutineBodyAnalyzer();
@@ -29,7 +27,7 @@ public class SQLAnalyzer implements LanguageAnalyzer {
     private final TriggerRegexExtractor triggerExtractor = new TriggerRegexExtractor(sqlRoutineAnalyzer);
 
     @Override
-    public Analysis analyze(String filePath, String sourceCode, TSNode rootNode) {
+    public Analysis analyze(String filePath, String sourceCode) {
         SQLFileAnalysis out = new SQLFileAnalysis();
         out.filePath = filePath;
         out.language = "sql";

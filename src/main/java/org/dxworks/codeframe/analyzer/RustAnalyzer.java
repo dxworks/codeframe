@@ -2,6 +2,7 @@ package org.dxworks.codeframe.analyzer;
 
 import org.dxworks.codeframe.model.*;
 import org.treesitter.TSNode;
+import org.treesitter.TreeSitterRust;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,10 +11,14 @@ import java.util.Set;
 
 import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
 
-public class RustAnalyzer implements LanguageAnalyzer {
+public class RustAnalyzer extends TreeSitterAnalyzer {
+    public RustAnalyzer() {
+        super(new TreeSitterRust());
+    }
+
     
     @Override
-    public FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
+    protected FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
         FileAnalysis analysis = new FileAnalysis();
         analysis.filePath = filePath;
         analysis.language = "rust";

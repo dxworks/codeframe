@@ -2,6 +2,7 @@ package org.dxworks.codeframe.analyzer;
 
 import org.dxworks.codeframe.model.*;
 import org.treesitter.TSNode;
+import org.treesitter.TreeSitterPhp;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,10 +14,14 @@ import java.util.function.Consumer;
 
 import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
 
-public class PHPAnalyzer implements LanguageAnalyzer {
+public class PHPAnalyzer extends TreeSitterAnalyzer {
+    public PHPAnalyzer() {
+        super(new TreeSitterPhp());
+    }
+
     
     @Override
-    public FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
+    protected FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
         FileAnalysis analysis = new FileAnalysis();
         analysis.filePath = filePath;
         analysis.language = "php";

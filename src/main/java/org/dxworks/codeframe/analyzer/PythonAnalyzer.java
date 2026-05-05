@@ -2,6 +2,7 @@ package org.dxworks.codeframe.analyzer;
 
 import org.dxworks.codeframe.model.*;
 import org.treesitter.TSNode;
+import org.treesitter.TreeSitterPython;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +19,11 @@ import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
  * Uses Python naming conventions for visibility (underscore prefix = protected, double underscore = private).
  */
 
-public class PythonAnalyzer implements LanguageAnalyzer {
+public class PythonAnalyzer extends TreeSitterAnalyzer {
+    public PythonAnalyzer() {
+        super(new TreeSitterPython());
+    }
+
     
     /**
      * Determines visibility based on Python naming conventions.
@@ -35,7 +40,7 @@ public class PythonAnalyzer implements LanguageAnalyzer {
     }
     
     @Override
-    public FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
+    protected FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
         FileAnalysis analysis = new FileAnalysis();
         analysis.filePath = filePath;
         analysis.language = "python";

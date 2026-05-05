@@ -9,7 +9,6 @@ import org.dxworks.codeframe.model.sql.CreateTableOperation;
 import org.dxworks.codeframe.model.sql.SQLFileAnalysis;
 import org.dxworks.utils.ignorer.Ignorer;
 import org.dxworks.utils.ignorer.IgnorerBuilder;
-import org.treesitter.*;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -25,31 +24,11 @@ public class App {
     private static final ObjectMapper MAPPER = new ObjectMapper()
             .setDefaultPropertyInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY);
 
-    private static final Map<Language, TSLanguage> TREE_SITTER_LANGUAGES = new HashMap<>();
-
     /**
      * Built per run (in main) because COBOL needs run-scoped copybook dependencies.
      * Also initialized in tests via initAnalyzersForTests(...).
      */
     private static volatile Map<Language, LanguageAnalyzer> ANALYZERS = Map.of();
-
-    static {
-        // Initialize Tree-sitter languages (stable, can remain static)
-        try {
-            TREE_SITTER_LANGUAGES.put(Language.JAVA, new TreeSitterJava());
-            TREE_SITTER_LANGUAGES.put(Language.JAVASCRIPT, (TSLanguage) Class.forName("org.treesitter.TreeSitterJavascript").getDeclaredConstructor().newInstance());
-            TREE_SITTER_LANGUAGES.put(Language.TYPESCRIPT, (TSLanguage) Class.forName("org.treesitter.TreeSitterTypescript").getDeclaredConstructor().newInstance());
-            TREE_SITTER_LANGUAGES.put(Language.PYTHON, (TSLanguage) Class.forName("org.treesitter.TreeSitterPython").getDeclaredConstructor().newInstance());
-            TREE_SITTER_LANGUAGES.put(Language.CSHARP, (TSLanguage) Class.forName("org.treesitter.TreeSitterCSharp").getDeclaredConstructor().newInstance());
-            TREE_SITTER_LANGUAGES.put(Language.C, (TSLanguage) Class.forName("org.treesitter.TreeSitterC").getDeclaredConstructor().newInstance());
-            TREE_SITTER_LANGUAGES.put(Language.CPP, (TSLanguage) Class.forName("org.treesitter.TreeSitterCpp").getDeclaredConstructor().newInstance());
-            TREE_SITTER_LANGUAGES.put(Language.PHP, (TSLanguage) Class.forName("org.treesitter.TreeSitterPhp").getDeclaredConstructor().newInstance());
-            TREE_SITTER_LANGUAGES.put(Language.RUBY, (TSLanguage) Class.forName("org.treesitter.TreeSitterRuby").getDeclaredConstructor().newInstance());
-            TREE_SITTER_LANGUAGES.put(Language.RUST, (TSLanguage) Class.forName("org.treesitter.TreeSitterRust").getDeclaredConstructor().newInstance());
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to initialize Tree-sitter languages", e);
-        }
-    }
 
     private static Map<Language, LanguageAnalyzer> buildAnalyzers(CobolCopybookRepository cobolCopybooks, CodeframeConfig config) {
         return LanguageRegistry.buildAnalyzers(cobolCopybooks, config);
@@ -259,9 +238,6 @@ public class App {
     }
 
     public static Analysis analyzeFile(Path filePath, Language language, CodeframeConfig config) throws IOException {
-        String sourceCode = SourceCodeReader.read(filePath);
-        String lowerName = filePath.getFileName().toString().toLowerCase();
-
         LanguageAnalyzer analyzer = ANALYZERS.get(language);
         if (analyzer == null) {
             throw new IllegalStateException(
@@ -269,74 +245,10 @@ public class App {
             );
         }
 
-        Analysis analysis;
-
-        if (language == Language.SQL || language == Language.COBOL || language == Language.MARKDOWN || language == Language.XML) {
-            analysis = analyzer.analyze(filePath.toString(), sourceCode, null);
-        } else if (language == Language.CPP && lowerName.endsWith(".h")) {
-            analysis = analyzeHeaderWithCppFallback(filePath, sourceCode);
-        } else {
-            analysis = analyzeWithTreeSitterLanguage(filePath, sourceCode, language);
-        }
-
+        String sourceCode = SourceCodeReader.read(filePath);
+        Analysis analysis = analyzer.analyze(filePath.toString(), sourceCode);
         filterSqlColumnsIfNeeded(analysis, config);
         return analysis;
-    }
-
-    private static Analysis analyzeHeaderWithCppFallback(Path filePath, String sourceCode) {
-        Analysis cppAnalysis = analyzeWithTreeSitterLanguage(filePath, sourceCode, Language.CPP);
-        Analysis cAnalysis = analyzeWithTreeSitterLanguage(filePath, sourceCode, Language.C);
-
-        int cppScore = parseQualityScore(sourceCode, Language.CPP);
-        int cScore = parseQualityScore(sourceCode, Language.C);
-        return cppScore <= cScore ? cppAnalysis : cAnalysis;
-    }
-
-    private static int parseQualityScore(String sourceCode, Language language) {
-        TSLanguage tsLanguage = TREE_SITTER_LANGUAGES.get(language);
-        if (tsLanguage == null) {
-            return Integer.MAX_VALUE;
-        }
-
-        TSParser parser = new TSParser();
-        parser.setLanguage(tsLanguage);
-        TSTree tree = parser.parseString(null, sourceCode);
-        TSNode rootNode = tree.getRootNode();
-        return countErrorNodes(rootNode);
-    }
-
-    private static int countErrorNodes(TSNode node) {
-        if (node == null || node.isNull()) {
-            return 0;
-        }
-
-        int errors = ("ERROR".equals(node.getType()) || "MISSING".equals(node.getType())) ? 1 : 0;
-        for (int i = 0; i < node.getChildCount(); i++) {
-            errors += countErrorNodes(node.getChild(i));
-        }
-        return errors;
-    }
-
-    private static Analysis analyzeWithTreeSitterLanguage(Path filePath, String sourceCode, Language language) {
-        LanguageAnalyzer analyzer = ANALYZERS.get(language);
-        if (analyzer == null) {
-            throw new IllegalStateException(
-                    "Analyzers not initialized or no analyzer available for: " + language
-            );
-        }
-
-        TSLanguage tsLanguage = TREE_SITTER_LANGUAGES.get(language);
-        if (tsLanguage == null) {
-            throw new IllegalArgumentException("No Tree-sitter language available for: " + language);
-        }
-
-        TSParser parser = new TSParser();
-        parser.setLanguage(tsLanguage);
-
-        TSTree tree = parser.parseString(null, sourceCode);
-        TSNode rootNode = tree.getRootNode();
-
-        return analyzer.analyze(filePath.toString(), sourceCode, rootNode);
     }
 
     private static void filterSqlColumnsIfNeeded(Analysis analysis, CodeframeConfig config) {

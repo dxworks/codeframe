@@ -2,6 +2,7 @@ package org.dxworks.codeframe.analyzer;
 
 import org.dxworks.codeframe.model.*;
 import org.treesitter.TSNode;
+import org.treesitter.TreeSitterTypescript;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,13 +12,17 @@ import java.util.Set;
 
 import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
 
-public class TypeScriptAnalyzer implements LanguageAnalyzer {
+public class TypeScriptAnalyzer extends TreeSitterAnalyzer {
+    public TypeScriptAnalyzer() {
+        super(new TreeSitterTypescript());
+    }
+
     
     // Literal types for renderObjectName
     private static final String[] TS_LITERAL_TYPES = {"array", "object", "string", "number"};
     
     @Override
-    public FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
+    protected FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
         FileAnalysis analysis = new FileAnalysis();
         analysis.filePath = filePath;
         analysis.language = "typescript";

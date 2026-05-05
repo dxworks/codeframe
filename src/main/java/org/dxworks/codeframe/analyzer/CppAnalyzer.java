@@ -1,10 +1,14 @@
 package org.dxworks.codeframe.analyzer;
 
+import org.dxworks.codeframe.model.Analysis;
 import org.dxworks.codeframe.model.FieldInfo;
 import org.dxworks.codeframe.model.FileAnalysis;
 import org.dxworks.codeframe.model.MethodInfo;
 import org.dxworks.codeframe.model.TypeInfo;
 import org.treesitter.TSNode;
+import org.treesitter.TreeSitterCpp;
+
+import java.util.Locale;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,11 +18,38 @@ import java.util.Set;
 
 import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
 
-public class CppAnalyzer implements LanguageAnalyzer {
+public class CppAnalyzer extends TreeSitterAnalyzer {
     private static final CCppAnalysisOptions OPTIONS = CCppAnalysisOptions.CPP;
+    private final CAnalyzer cFallback = new CAnalyzer();
+
+    public CppAnalyzer() {
+        super(new TreeSitterCpp());
+    }
 
     @Override
-    public FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
+    public Analysis analyze(String filePath, String sourceCode) {
+        if (isHeaderFile(filePath)) {
+            return analyzeHeaderWithCFallback(filePath, sourceCode);
+        }
+        return super.analyze(filePath, sourceCode);
+    }
+
+    private static boolean isHeaderFile(String filePath) {
+        return filePath != null && filePath.toLowerCase(Locale.ROOT).endsWith(".h");
+    }
+
+    private Analysis analyzeHeaderWithCFallback(String filePath, String sourceCode) {
+        TSNode cppRoot = parse(sourceCode);
+        TSNode cRoot = cFallback.parse(sourceCode);
+        int cppErrors = countErrorNodes(cppRoot);
+        int cErrors = countErrorNodes(cRoot);
+        return cppErrors <= cErrors
+                ? analyze(filePath, sourceCode, cppRoot)
+                : cFallback.analyze(filePath, sourceCode, cRoot);
+    }
+
+    @Override
+    protected FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
         FileAnalysis analysis = new FileAnalysis();
         analysis.filePath = filePath;
         analysis.language = "cpp";

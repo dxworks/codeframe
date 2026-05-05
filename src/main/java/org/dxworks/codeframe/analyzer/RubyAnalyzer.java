@@ -2,6 +2,7 @@ package org.dxworks.codeframe.analyzer;
 
 import org.dxworks.codeframe.model.*;
 import org.treesitter.TSNode;
+import org.treesitter.TreeSitterRuby;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,10 +13,14 @@ import java.util.Set;
 
 import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
 
-public class RubyAnalyzer implements LanguageAnalyzer {
+public class RubyAnalyzer extends TreeSitterAnalyzer {
+    public RubyAnalyzer() {
+        super(new TreeSitterRuby());
+    }
+
     
     @Override
-    public FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
+    protected FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
         FileAnalysis analysis = new FileAnalysis();
         analysis.filePath = filePath;
         analysis.language = "ruby";

@@ -2,6 +2,7 @@ package org.dxworks.codeframe.analyzer;
 
 import org.dxworks.codeframe.model.*;
 import org.treesitter.TSNode;
+import org.treesitter.TreeSitterJavascript;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +13,11 @@ import java.util.Set;
 
 import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
 
-public class JavaScriptAnalyzer implements LanguageAnalyzer {
+public class JavaScriptAnalyzer extends TreeSitterAnalyzer {
+    public JavaScriptAnalyzer() {
+        super(new TreeSitterJavascript());
+    }
+
     // Node type constants
     private static final String NT_FORMAL_PARAMETER = "formal_parameter";
     private static final String NT_REQUIRED_PARAMETER = "required_parameter";
@@ -31,7 +36,7 @@ public class JavaScriptAnalyzer implements LanguageAnalyzer {
     private static final String NT_NUMBER = "number";
     
     @Override
-    public FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
+    protected FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
         FileAnalysis analysis = new FileAnalysis();
         analysis.filePath = filePath;
         analysis.language = "javascript";

@@ -3,6 +3,7 @@ package org.dxworks.codeframe.analyzer;
 import org.dxworks.codeframe.model.FileAnalysis;
 import org.dxworks.codeframe.model.MethodInfo;
 import org.treesitter.TSNode;
+import org.treesitter.TreeSitterC;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,11 +13,15 @@ import java.util.Set;
 
 import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
 
-public class CAnalyzer implements LanguageAnalyzer {
+public class CAnalyzer extends TreeSitterAnalyzer {
     private static final CCppAnalysisOptions OPTIONS = CCppAnalysisOptions.C;
 
+    public CAnalyzer() {
+        super(new TreeSitterC());
+    }
+
     @Override
-    public FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
+    protected FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
         FileAnalysis analysis = new FileAnalysis();
         analysis.filePath = filePath;
         analysis.language = "c";

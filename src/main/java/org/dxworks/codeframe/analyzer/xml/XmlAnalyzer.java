@@ -4,7 +4,6 @@ import org.dxworks.codeframe.analyzer.LanguageAnalyzer;
 import org.dxworks.codeframe.model.Analysis;
 import org.dxworks.codeframe.model.xml.XmlElement;
 import org.dxworks.codeframe.model.xml.XmlFileAnalysis;
-import org.treesitter.TSNode;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -49,7 +48,7 @@ public class XmlAnalyzer implements LanguageAnalyzer {
     }
 
     @Override
-    public Analysis analyze(String filePath, String sourceCode, TSNode rootNode) {
+    public Analysis analyze(String filePath, String sourceCode) {
         XmlFileAnalysis analysis = new XmlFileAnalysis();
         analysis.filePath = filePath;
 

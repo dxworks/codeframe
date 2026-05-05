@@ -2,6 +2,7 @@ package org.dxworks.codeframe.analyzer;
 
 import org.dxworks.codeframe.model.*;
 import org.treesitter.TSNode;
+import org.treesitter.TreeSitterJava;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -12,7 +13,11 @@ import java.util.Set;
 
 import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
 
-public class JavaAnalyzer implements LanguageAnalyzer {
+public class JavaAnalyzer extends TreeSitterAnalyzer {
+    public JavaAnalyzer() {
+        super(new TreeSitterJava());
+    }
+
     // Node type constants
     private static final String NT_TYPE = "type";
     private static final String NT_TYPE_IDENTIFIER = "type_identifier";
@@ -25,7 +30,7 @@ public class JavaAnalyzer implements LanguageAnalyzer {
     private static final String NT_ARRAY_TYPE = "array_type";
     
     @Override
-    public FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
+    protected FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
         FileAnalysis analysis = new FileAnalysis();
         analysis.filePath = filePath;
         analysis.language = "java";
