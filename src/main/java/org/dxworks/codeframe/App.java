@@ -1,12 +1,8 @@
 package org.dxworks.codeframe;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.dxworks.codeframe.analyzer.LanguageAnalyzer;
 import org.dxworks.codeframe.analyzer.cobol.CobolCopybookRepository;
 import org.dxworks.codeframe.model.Analysis;
-import org.dxworks.codeframe.model.sql.AlterTableOperation;
-import org.dxworks.codeframe.model.sql.CreateTableOperation;
-import org.dxworks.codeframe.model.sql.SQLFileAnalysis;
 import org.dxworks.utils.ignorer.Ignorer;
 import org.dxworks.utils.ignorer.IgnorerBuilder;
 
@@ -23,24 +19,6 @@ import java.util.stream.Stream;
 public class App {
     private static final ObjectMapper MAPPER = new ObjectMapper()
             .setDefaultPropertyInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY);
-
-    /**
-     * Built per run (in main) because COBOL needs run-scoped copybook dependencies.
-     * Also initialized in tests via initAnalyzersForTests(...).
-     */
-    private static volatile Map<Language, LanguageAnalyzer> ANALYZERS = Map.of();
-
-    private static Map<Language, LanguageAnalyzer> buildAnalyzers(CobolCopybookRepository cobolCopybooks, CodeframeConfig config) {
-        return LanguageRegistry.buildAnalyzers(cobolCopybooks, config);
-    }
-
-    /**
-     * Convenience overload for tests: pass copybook paths.
-     */
-    public static void initAnalyzersForTestsFromPaths(List<Path> copybookPaths) {
-        CodeframeConfig config = CodeframeConfig.load();
-        ANALYZERS = buildAnalyzers(new CobolCopybookRepository(copybookPaths.stream().map(Path::toFile).toList()), config);
-    }
 
     public static void main(String[] args) throws Exception {
         if (args.length < 2) {
@@ -76,17 +54,17 @@ public class App {
         // 2) Split: analyzable targets (anything with a Language) vs copybooks (Option A)
         List<Path> files =
                 scopedFiles.stream()
-                        .filter(p -> LanguageRegistry.detectLanguage(p).isPresent())
+                        .filter(p -> Language.detectFor(p).isPresent())
                         .toList();
 
         // Determine whether we have any COBOL "program" files in scope.
         // If none, do not treat .cpy files as copybooks (they might belong to other ecosystems).
         boolean hasCobolPrograms =
                 files.stream()
-                        .anyMatch(p -> LanguageRegistry.detectLanguage(p).orElse(null) == Language.COBOL);
+                        .anyMatch(p -> Language.detectFor(p).orElse(null) == Language.COBOL);
 
         List<Path> copyFilesForRun = hasCobolPrograms
-                ? scopedFiles.stream().filter(LanguageRegistry::isCobolCopybook).toList()
+                ? scopedFiles.stream().filter(CobolCopybookRepository::isCopybook).toList()
                 : List.of();
 
         // 3) Build run-scoped copybook repository (only if COBOL programs exist)
@@ -94,10 +72,10 @@ public class App {
                 copyFilesForRun.stream().map(Path::toFile).toList()
         );
 
-        // 4) Register analyzers for this run (COBOL gets the repository)
-        ANALYZERS = buildAnalyzers(cobolCopybooks, config);
-        
-        System.out.println("Enabled analyzers: " + String.join(", ", ANALYZERS.keySet().stream()
+        // 4) Build per-run file analyzer (COBOL gets the copybook repository)
+        FileAnalyzer fileAnalyzer = new FileAnalyzer(config, cobolCopybooks);
+
+        System.out.println("Enabled analyzers: " + String.join(", ", fileAnalyzer.enabledAnalyzers().keySet().stream()
                 .map(lang -> lang.getName().toLowerCase())
                 .sorted()
                 .toList()));
@@ -122,7 +100,7 @@ public class App {
             writer.newLine();
 
             files.parallelStream().forEach(file -> {
-                Optional<Language> langOpt = LanguageRegistry.detectLanguage(file);
+                Optional<Language> langOpt = Language.detectFor(file);
                 if (langOpt.isEmpty()) {
                     return;
                 }
@@ -136,7 +114,7 @@ public class App {
                 }
 
                 try {
-                    Analysis analysis = analyzeFile(file, language, config);
+                    Analysis analysis = fileAnalyzer.analyze(file, language);
 
                     synchronized (writer) {
                         writer.write(MAPPER.writeValueAsString(analysis));
@@ -199,19 +177,23 @@ public class App {
             try (Stream<Path> stream = Files.walk(input)) {
                 stream.filter(Files::isRegularFile)
                         .filter(p -> ignorer.accepts(p.toAbsolutePath().toString()))
-                        .filter(LanguageRegistry::isRelevantSourceOrDependency)
+                        .filter(App::isRelevantSourceOrDependency)
                         .filter(p -> withinMaxLines(p, maxFileLines))
                         .forEach(files::add);
             }
         } else if (Files.isRegularFile(input)) {
             if (ignorer.accepts(input.toAbsolutePath().toString())
-                    && LanguageRegistry.isRelevantSourceOrDependency(input)
+                    && isRelevantSourceOrDependency(input)
                     && withinMaxLines(input, maxFileLines)) {
                 files.add(input);
             }
         }
 
         return files;
+    }
+
+    private static boolean isRelevantSourceOrDependency(Path p) {
+        return Language.detectFor(p).isPresent() || CobolCopybookRepository.isCopybook(p);
     }
 
     private static boolean withinMaxLines(Path path, int maxFileLines) {
@@ -232,40 +214,4 @@ public class App {
         }
     }
 
-    public static Analysis analyzeFile(Path filePath, Language language) throws IOException {
-        CodeframeConfig config = CodeframeConfig.load();
-        return analyzeFile(filePath, language, config);
-    }
-
-    public static Analysis analyzeFile(Path filePath, Language language, CodeframeConfig config) throws IOException {
-        LanguageAnalyzer analyzer = ANALYZERS.get(language);
-        if (analyzer == null) {
-            throw new IllegalStateException(
-                    "Analyzers not initialized or no analyzer available for: " + language
-            );
-        }
-
-        String sourceCode = SourceCodeReader.read(filePath);
-        Analysis analysis = analyzer.analyze(filePath.toString(), sourceCode);
-        filterSqlColumnsIfNeeded(analysis, config);
-        return analysis;
-    }
-
-    private static void filterSqlColumnsIfNeeded(Analysis analysis, CodeframeConfig config) {
-        if (!(analysis instanceof SQLFileAnalysis)) {
-            return;
-        }
-        if (!config.isHideSqlTableColumns()) {
-            return;
-        }
-
-        SQLFileAnalysis sqlAnalysis = (SQLFileAnalysis) analysis;
-
-        for (CreateTableOperation op : sqlAnalysis.createTables) {
-            op.columns.clear();
-        }
-        for (AlterTableOperation op : sqlAnalysis.alterTables) {
-            op.addedColumns.clear();
-        }
-    }
 }

@@ -1,6 +1,7 @@
 package org.dxworks.codeframe.analyzer.cobol;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -12,6 +13,11 @@ import java.util.stream.Collectors;
  * - Provides the deduplicated list of copybook files for the preprocessor.
  */
 public final class CobolCopybookRepository {
+
+    public static boolean isCopybook(Path filePath) {
+        String fileName = filePath.getFileName().toString().toLowerCase(Locale.ROOT);
+        return fileName.endsWith(".cpy");
+    }
 
     private final Map<String, File> byNormalizedName;
 

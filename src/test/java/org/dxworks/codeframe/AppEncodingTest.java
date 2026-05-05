@@ -7,12 +7,13 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class AppEncodingTest {
+
+    private static final FileAnalyzer ANALYZER = TestUtils.defaultFileAnalyzer();
 
     @Test
     void analyzeFile_shouldHandleWindows1252EncodedFile() throws IOException {
@@ -21,9 +22,7 @@ class AppEncodingTest {
             String sourceCode = "// cp1252 marker: ©\nclass EncodingProbe { public: int value; };";
             Files.writeString(tempFile, sourceCode, Charset.forName("windows-1252"));
 
-            App.initAnalyzersForTestsFromPaths(List.of());
-
-            Analysis analysis = assertDoesNotThrow(() -> App.analyzeFile(tempFile, Language.CPP));
+            Analysis analysis = assertDoesNotThrow(() -> ANALYZER.analyze(tempFile, Language.CPP));
             assertNotNull(analysis);
         } finally {
             Files.deleteIfExists(tempFile);

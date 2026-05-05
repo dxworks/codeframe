@@ -1,10 +1,11 @@
 package org.dxworks.codeframe.analyzer.sql;
 
 import org.approvaltests.Approvals;
-import org.dxworks.codeframe.App;
+import org.dxworks.codeframe.FileAnalyzer;
 import org.dxworks.codeframe.Language;
 import org.dxworks.codeframe.TestUtils;
 import org.dxworks.codeframe.CodeframeConfig;
+import org.dxworks.codeframe.analyzer.cobol.CobolCopybookRepository;
 import org.dxworks.codeframe.model.Analysis;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 public class SQLAnalyzeApprovalTest {
     private static final String SAMPLES_BASE_PATH = "src/test/resources/samples/sql/";
+    private static final FileAnalyzer ANALYZER = TestUtils.defaultFileAnalyzer();
     @Test
     void analyze_SQL_Sample() throws Exception {
         verify("sample.sql", Language.SQL);
@@ -122,18 +124,16 @@ public class SQLAnalyzeApprovalTest {
     @Test
     void analyze_SQL_Sample_hideColumns() throws Exception {
         CodeframeConfig config = CodeframeConfig.with(20000, true);
-        Analysis analysis = App.analyzeFile(
+        FileAnalyzer hideColumnsAnalyzer = new FileAnalyzer(config, new CobolCopybookRepository(List.of()));
+        Analysis analysis = hideColumnsAnalyzer.analyze(
                 Paths.get(SAMPLES_BASE_PATH + "sample.sql"),
-                Language.SQL,
-                config);
+                Language.SQL);
         Approvals.verify(TestUtils.APPROVAL_MAPPER.writeValueAsString(analysis));
     }
 
     private static void verify(String fileName, Language language) throws Exception {
-        // Initialize analyzers for tests
-        App.initAnalyzersForTestsFromPaths(List.of());
         Path filePath = Paths.get(SAMPLES_BASE_PATH + fileName);
-        Analysis analysis = App.analyzeFile(filePath, language);
+        Analysis analysis = ANALYZER.analyze(filePath, language);
         Approvals.verify(TestUtils.APPROVAL_MAPPER.writeValueAsString(analysis));
     }
 }

@@ -1,5 +1,9 @@
 package org.dxworks.codeframe;
 
+import java.nio.file.Path;
+import java.util.Locale;
+import java.util.Optional;
+
 public enum Language {
     JAVA("java", ".java"),
     JAVASCRIPT("javascript", ".js", ".jsx"),
@@ -39,5 +43,15 @@ public enum Language {
             }
         }
         return false;
+    }
+
+    public static Optional<Language> detectFor(Path filePath) {
+        String fileName = filePath.getFileName().toString().toLowerCase(Locale.ROOT);
+        for (Language lang : values()) {
+            if (lang.matchesFileName(fileName)) {
+                return Optional.of(lang);
+            }
+        }
+        return Optional.empty();
     }
 }

@@ -77,8 +77,8 @@ public class CodeframeConfig {
 
     private static Map<String, Boolean> getDefaultAnalyzerConfig() {
         Map<String, Boolean> defaultConfig = new HashMap<>();
-        for (String language : LanguageRegistry.allLanguageNames()) {
-            defaultConfig.put(language, true);
+        for (Language language : Language.values()) {
+            defaultConfig.put(language.getName(), true);
         }
         return defaultConfig;
     }
