@@ -12,12 +12,14 @@ import net.sf.jsqlparser.statement.create.view.AlterView;
 import net.sf.jsqlparser.statement.alter.Alter;
 import net.sf.jsqlparser.statement.drop.Drop;
 import net.sf.jsqlparser.statement.execute.Execute;
+import org.dxworks.codeframe.CodeframeConfig;
 import org.dxworks.codeframe.analyzer.LanguageAnalyzer;
 import org.dxworks.codeframe.model.Analysis;
 import org.dxworks.codeframe.model.sql.*;
 
 public class SQLAnalyzer implements LanguageAnalyzer {
 
+    private final CodeframeConfig config;
     private final RoutineBodyAnalyzer noopAnalyzer = new NoopRoutineBodyAnalyzer();
     private final RoutineBodyAnalyzer tsqlAnalyzer = AntlrRoutineBodyAnalyzer.forTSql();
     private final RoutineBodyAnalyzer sqlRoutineAnalyzer = new SqlRoutineBodyAnalyzer();
@@ -26,8 +28,20 @@ public class SQLAnalyzer implements LanguageAnalyzer {
     private final DdlStatementHandler ddlHandler = new DdlStatementHandler();
     private final TriggerRegexExtractor triggerExtractor = new TriggerRegexExtractor(sqlRoutineAnalyzer);
 
+    public SQLAnalyzer(CodeframeConfig config) {
+        this.config = config;
+    }
+
     @Override
     public Analysis analyze(String filePath, String sourceCode) {
+        SQLFileAnalysis out = (SQLFileAnalysis) analyzeInternal(filePath, sourceCode);
+        if (config.isHideSqlTableColumns()) {
+            hideTableColumns(out);
+        }
+        return out;
+    }
+
+    private Analysis analyzeInternal(String filePath, String sourceCode) {
         SQLFileAnalysis out = new SQLFileAnalysis();
         out.filePath = filePath;
         out.language = "sql";
@@ -108,6 +122,15 @@ public class SQLAnalyzer implements LanguageAnalyzer {
 
         // Function calls: traverse expressions
         ExpressionAnalyzer.collectFunctions(st, out.topLevelCalls.functions);
+    }
+
+    private static void hideTableColumns(SQLFileAnalysis out) {
+        for (CreateTableOperation op : out.createTables) {
+            op.columns.clear();
+        }
+        for (AlterTableOperation op : out.alterTables) {
+            op.addedColumns.clear();
+        }
     }
 
     // ---------- Helpers ----------

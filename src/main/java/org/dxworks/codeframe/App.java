@@ -1,24 +1,18 @@
 package org.dxworks.codeframe;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.dxworks.codeframe.analyzer.cobol.CobolCopybookRepository;
 import org.dxworks.codeframe.model.Analysis;
 import org.dxworks.utils.ignorer.Ignorer;
 import org.dxworks.utils.ignorer.IgnorerBuilder;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
-import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 public class App {
-    private static final ObjectMapper MAPPER = new ObjectMapper()
-            .setDefaultPropertyInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY);
 
     public static void main(String[] args) throws Exception {
         if (args.length < 2) {
@@ -36,9 +30,6 @@ public class App {
         }
 
         Path jsonlOutput = Paths.get(args[1]);
-        if (jsonlOutput.getParent() != null) {
-            Files.createDirectories(jsonlOutput.getParent());
-        }
 
         System.out.println("Starting code analysis...");
         System.out.println("Input: " + input.toAbsolutePath());
@@ -85,19 +76,12 @@ public class App {
             System.out.println("Found " + copyFilesForRun.size() + " COBOL copybooks in scope");
         }
 
-        Instant startTime = Instant.now();
         AtomicInteger successCount = new AtomicInteger(0);
         AtomicInteger errorCount = new AtomicInteger(0);
         AtomicInteger progressCounter = new AtomicInteger(0);
 
-        try (BufferedWriter writer = Files.newBufferedWriter(jsonlOutput, StandardCharsets.UTF_8)) {
-            Map<String, Object> runInfo = new HashMap<>();
-            runInfo.put("kind", "run");
-            runInfo.put("started_at", startTime.toString());
-            runInfo.put("input_path", input.toString());
-            runInfo.put("total_files", files.size());
-            writer.write(MAPPER.writeValueAsString(runInfo));
-            writer.newLine();
+        try (JsonlSink sink = new JsonlSink(jsonlOutput)) {
+            sink.writeRun(input, files.size());
 
             files.parallelStream().forEach(file -> {
                 Optional<Language> langOpt = Language.detectFor(file);
@@ -115,31 +99,10 @@ public class App {
 
                 try {
                     Analysis analysis = fileAnalyzer.analyze(file, language);
-
-                    synchronized (writer) {
-                        writer.write(MAPPER.writeValueAsString(analysis));
-                        writer.newLine();
-                        writer.flush();
-                    }
-
+                    sink.writeAnalysis(analysis);
                     successCount.incrementAndGet();
                 } catch (Exception e) {
-                    Map<String, String> error = new HashMap<>();
-                    error.put("kind", "error");
-                    error.put("file", file.toString());
-                    error.put("language", language.getName());
-                    error.put("error", e.getMessage());
-
-                    try {
-                        synchronized (writer) {
-                            writer.write(MAPPER.writeValueAsString(error));
-                            writer.newLine();
-                            writer.flush();
-                        }
-                    } catch (IOException ioException) {
-                        System.err.println("Failed to write error for " + file + ": " + ioException.getMessage());
-                    }
-
+                    sink.writeError(file, language.getName(), e.getMessage());
                     errorCount.incrementAndGet();
                     synchronized (System.err) {
                         System.err.println("  Error analyzing " + file.getFileName() + ": " + e.getMessage());
@@ -147,16 +110,7 @@ public class App {
                 }
             });
 
-            Instant endTime = Instant.now();
-            Map<String, Object> doneInfo = new HashMap<>();
-            doneInfo.put("kind", "done");
-            doneInfo.put("ended_at", endTime.toString());
-            doneInfo.put("files_analyzed", successCount.get());
-            doneInfo.put("files_with_errors", errorCount.get());
-            doneInfo.put("duration_seconds",
-                    java.time.Duration.between(startTime, endTime).getSeconds());
-            writer.write(MAPPER.writeValueAsString(doneInfo));
-            writer.newLine();
+            sink.writeDone(successCount.get(), errorCount.get());
         }
 
         System.out.println("\n" + "=".repeat(60));
