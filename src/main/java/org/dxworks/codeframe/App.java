@@ -124,26 +124,43 @@ public class App {
     }
 
     private static List<Path> collectSourceFiles(Path input, int maxFileLines) throws IOException {
-        List<Path> files = new ArrayList<>();
         Ignorer ignorer = new IgnorerBuilder(Paths.get(".ignore")).compile();
 
-        if (Files.isDirectory(input)) {
-            try (Stream<Path> stream = Files.walk(input)) {
-                stream.filter(Files::isRegularFile)
-                        .filter(p -> ignorer.accepts(p.toAbsolutePath().toString()))
-                        .filter(App::isRelevantSourceOrDependency)
-                        .filter(p -> withinMaxLines(p, maxFileLines))
-                        .forEach(files::add);
-            }
-        } else if (Files.isRegularFile(input)) {
+        if (Files.isRegularFile(input)) {
             if (ignorer.accepts(input.toAbsolutePath().toString())
                     && isRelevantSourceOrDependency(input)
                     && withinMaxLines(input, maxFileLines)) {
-                files.add(input);
+                return List.of(input);
             }
+            return List.of();
         }
 
-        return files;
+        if (!Files.isDirectory(input)) {
+            return List.of();
+        }
+
+        List<Path> candidates;
+        try (Stream<Path> stream = Files.walk(input)) {
+            candidates = stream.filter(Files::isRegularFile)
+                    .filter(p -> ignorer.accepts(p.toAbsolutePath().toString()))
+                    .filter(App::isRelevantSourceOrDependency)
+                    .toList();
+        }
+
+        int total = candidates.size();
+        System.out.println("Discovered " + total + " candidate files; checking line counts...");
+
+        AtomicInteger checked = new AtomicInteger(0);
+        return candidates.parallelStream()
+                .filter(p -> {
+                    boolean ok = withinMaxLines(p, maxFileLines);
+                    int n = checked.incrementAndGet();
+                    if (n % 5000 == 0 || n == total) {
+                        System.out.println("  Checked " + n + "/" + total + " files");
+                    }
+                    return ok;
+                })
+                .toList();
     }
 
     private static boolean isRelevantSourceOrDependency(Path p) {
@@ -151,6 +168,12 @@ public class App {
     }
 
     private static boolean withinMaxLines(Path path, int maxFileLines) {
+        try {
+            if (Files.size(path) <= maxFileLines) {
+                return true;
+            }
+        } catch (IOException ignored) {
+        }
         try (InputStream in = Files.newInputStream(path)) {
             int count = 0;
             byte[] buffer = new byte[8192];
