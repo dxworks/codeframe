@@ -104,6 +104,16 @@ All analyzers should extract file/module-level elements into `FileAnalysis` when
 
 ---
 
+## 7. Enum Constants
+
+For all languages that support enums:
+
+- Enum constants (labels/cases/variants) are extracted as `fields` on the enum type.
+- `field.type` is set to the enum's own name where the language associates a type with enum constants (e.g. Java, C#, TypeScript). For languages where enum constants are untyped (e.g. C/C++), `type` is omitted (`null`).
+- Assigned values (e.g. `RED = 1`, `ACTIVE = 'active'`) are **not** extracted. Only the label name is captured.
+
+---
+
 ## 6. Field/Variable Visibility
 
 - Ruby: instance variables (`@var`) are private by default.

@@ -49,6 +49,15 @@
     "kind" : "enum",
     "name" : "Status",
     "fields" : [ {
+      "name" : "PENDING",
+      "type" : "Status"
+    }, {
+      "name" : "ACTIVE",
+      "type" : "Status"
+    }, {
+      "name" : "CLOSED",
+      "type" : "Status"
+    }, {
       "name" : "code",
       "type" : "String",
       "visibility" : "private",

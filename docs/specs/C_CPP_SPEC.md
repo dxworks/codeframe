@@ -141,6 +141,10 @@ Qualified-call handling follows `docs/EXTRACTION_CONTRACT.md` (§3.2).
   - For named inline aggregate typedefs (for example `typedef struct Logger { ... } Logger;`), `extendsType` keeps a compact target (for example `struct Logger`) rather than the full aggregate body.
   - Function-pointer typedef targets are likewise preserved as source-like declarator text.
 
+### 4.6 Enum constants
+
+Enumerator names are extracted as fields per the extraction contract. Deviation: `field.type` is `null` — C/C++ enum constants carry no type.
+
 ### 4.5 File-scope fields
 
 Extract:

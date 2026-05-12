@@ -341,6 +341,17 @@ public class JavaAnalyzer extends TreeSitterAnalyzer {
         if (enumBody != null) {
             Map<String, String> fieldTypes = new HashMap<>();
 
+            // Enum constants (labels) — extracted before regular fields
+            for (TSNode constant : findAllChildren(enumBody, "enum_constant")) {
+                TSNode nameNode = findFirstChild(constant, "identifier");
+                if (nameNode != null) {
+                    FieldInfo fi = new FieldInfo();
+                    fi.name = getNodeText(source, nameNode);
+                    fi.type = typeInfo.name;
+                    typeInfo.fields.add(fi);
+                }
+            }
+
             // Fields declared in enum body
             collectOwnedFieldsFromBodyInto(source, enumBody, typeInfo.fields, fieldTypes);
 

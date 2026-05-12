@@ -64,8 +64,6 @@ Properties:
   - optional `visibility`, `modifiers`, `annotations`
   - optional `localVariables` and `methodCalls`
 
-Enum members are modeled as `fields` with `type` equal to the enum name.
-
 Record primary-constructor parameters are modeled as `fields`.
 
 ### 3.3 Methods and Constructors

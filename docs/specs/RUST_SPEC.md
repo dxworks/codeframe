@@ -74,6 +74,10 @@ Type-text preservation rule:
 - `returnType` and parameter `type` values preserve Rust reference syntax when present.
 - Examples: `&User`, `&Point`, `&mut T`.
 
+### 3.2.1 Enum variants
+
+Rust enum variants are not extracted. Rust enums are algebraic types whose variants may carry arbitrary data; they do not map cleanly to the simple label model in the extraction contract. Only the enum type name is captured.
+
 ### 3.3 Fields
 
 Extracted field sources:

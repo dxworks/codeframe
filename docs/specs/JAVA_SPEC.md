@@ -59,6 +59,8 @@ Extracted for classes/enums/records:
 - `modifiers`
 - `annotations`
 
+For enums, regular `field_declaration` members inside the body are also extracted as normal fields (in addition to enum constants per the extraction contract).
+
 ### 3.3 Methods and Constructors
 
 Extracted per type:

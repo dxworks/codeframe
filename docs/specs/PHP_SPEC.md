@@ -54,9 +54,9 @@ Type metadata:
 - `methods`
 - `types` (nested classes, when present)
 
-Enum behavior:
+Enum behavior follows the extraction contract with deviations:
 - enum cases are emitted as `fields` with `modifiers: ["case"]`
-- backed enum type is stored in `extendsType`
+- backed enum type (`: string` / `: int`) is stored in `extendsType`; assigned case values are not extracted
 
 ### 3.2 Fields
 
