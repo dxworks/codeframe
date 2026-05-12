@@ -75,7 +75,14 @@
       } ]
     }, {
       "kind" : "enum",
-      "name" : "NestedState"
+      "name" : "NestedState",
+      "fields" : [ {
+        "name" : "READY",
+        "type" : "NestedState"
+      }, {
+        "name" : "RUNNING",
+        "type" : "NestedState"
+      } ]
     }, {
       "kind" : "record",
       "name" : "NestedValue",
