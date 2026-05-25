@@ -222,7 +222,7 @@ YAML file analysis extracts document structure for all YAML files:
 - YAML document roots and line spans
 - Mapping, sequence, scalar, and alias nodes
 
-For **OpenAPI YAML** documents, additional structural API-surface scalars are retained (for example operation identifiers, tags, and schema type names). Generic YAML scalar values are otherwise omitted.
+For **OpenAPI and AsyncAPI YAML** documents, additional structural API-surface scalars are retained (for example operation identifiers, tags, and schema type names). Generic YAML scalar values are otherwise omitted.
 
 For complete documentation on YAML support, see **[YAML_SPEC.md](docs/specs/YAML_SPEC.md)**.
 
