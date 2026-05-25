@@ -1,0 +1,61 @@
+{
+  "filePath" : "src/test/resources/samples/yaml/asyncapi_root_only_detection.yaml",
+  "language" : "yaml",
+  "documents" : [ {
+    "lines" : 4,
+    "root" : {
+      "kind" : "mapping",
+      "lines" : 4,
+      "entries" : [ {
+        "key" : "service",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 3,
+          "entries" : [ {
+            "key" : "metadata",
+            "value" : {
+              "kind" : "mapping",
+              "lines" : 2,
+              "entries" : [ {
+                "key" : "asyncapi",
+                "value" : {
+                  "kind" : "scalar",
+                  "lines" : 1
+                }
+              } ]
+            }
+          } ]
+        }
+      } ]
+    }
+  }, {
+    "lines" : 4,
+    "dialect" : "asyncapi",
+    "root" : {
+      "kind" : "mapping",
+      "lines" : 4,
+      "entries" : [ {
+        "key" : "asyncapi",
+        "value" : {
+          "kind" : "scalar",
+          "lines" : 1,
+          "value" : "2.6.0"
+        }
+      }, {
+        "key" : "info",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 2,
+          "entries" : [ {
+            "key" : "title",
+            "value" : {
+              "kind" : "scalar",
+              "lines" : 1,
+              "value" : "Root AsyncAPI"
+            }
+          } ]
+        }
+      } ]
+    }
+  } ]
+}

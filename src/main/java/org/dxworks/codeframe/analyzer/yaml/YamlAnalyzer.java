@@ -26,6 +26,7 @@ public class YamlAnalyzer implements LanguageAnalyzer {
 
     private static final String MERGE_KEY = "<<";
     private static final String DIALECT_OPENAPI = "openapi";
+    private static final String DIALECT_ASYNCAPI = "asyncapi";
 
     private final Yaml yaml;
 
@@ -60,7 +61,7 @@ public class YamlAnalyzer implements LanguageAnalyzer {
                     doc.dialect = dialect;
                 }
 
-                doc.root = convertNode(docNode, new NodePath(), dialect != null, new IdentityHashMap<>());
+                doc.root = convertNode(docNode, new NodePath(), dialect, new IdentityHashMap<>());
                 analysis.documents.add(doc);
             }
 
@@ -80,6 +81,9 @@ public class YamlAnalyzer implements LanguageAnalyzer {
                 if ("openapi".equals(key) || "swagger".equals(key)) {
                     return DIALECT_OPENAPI;
                 }
+                if (DIALECT_ASYNCAPI.equals(key)) {
+                    return DIALECT_ASYNCAPI;
+                }
             }
         }
         return null;
@@ -88,7 +92,7 @@ public class YamlAnalyzer implements LanguageAnalyzer {
     private YamlNode convertNode(
             Node node,
             NodePath path,
-            boolean isOpenApi,
+            String dialect,
             Map<Node, Boolean> emittedAnchoredNodes) {
         if (node == null) {
             return null;
@@ -103,13 +107,13 @@ public class YamlAnalyzer implements LanguageAnalyzer {
             emittedAnchoredNodes.put(node, Boolean.TRUE);
         }
         if (node instanceof MappingNode mappingNode) {
-            return convertMappingNode(mappingNode, path, isOpenApi, emittedAnchoredNodes);
+            return convertMappingNode(mappingNode, path, dialect, emittedAnchoredNodes);
         }
         if (node instanceof SequenceNode sequenceNode) {
-            return convertSequenceNode(sequenceNode, path, isOpenApi, emittedAnchoredNodes);
+            return convertSequenceNode(sequenceNode, path, dialect, emittedAnchoredNodes);
         }
         if (node instanceof ScalarNode scalarNode) {
-            return convertScalarNode(scalarNode, path, isOpenApi);
+            return convertScalarNode(scalarNode, path, dialect);
         }
         return null;
     }
@@ -127,7 +131,7 @@ public class YamlAnalyzer implements LanguageAnalyzer {
     private YamlNode convertMappingNode(
             MappingNode mappingNode,
             NodePath path,
-            boolean isOpenApi,
+            String dialect,
             Map<Node, Boolean> emittedAnchoredNodes) {
         YamlNode node = new YamlNode();
         node.kind = "mapping";
@@ -146,7 +150,7 @@ public class YamlAnalyzer implements LanguageAnalyzer {
             String key = keyScalar.getValue();
 
             if (MERGE_KEY.equals(key)) {
-                YamlNode mergeValueNode = convertNode(valueNode, path.append(key), isOpenApi, emittedAnchoredNodes);
+                YamlNode mergeValueNode = convertNode(valueNode, path.append(key), dialect, emittedAnchoredNodes);
                 if (mergeValueNode != null) {
                     mergeValueNode.merge = Boolean.TRUE;
                     YamlMappingEntry entry = new YamlMappingEntry();
@@ -158,7 +162,7 @@ public class YamlAnalyzer implements LanguageAnalyzer {
             }
 
             NodePath childPath = path.append(key);
-            YamlNode valueYamlNode = convertNode(valueNode, childPath, isOpenApi, emittedAnchoredNodes);
+            YamlNode valueYamlNode = convertNode(valueNode, childPath, dialect, emittedAnchoredNodes);
             if (valueYamlNode != null) {
                 YamlMappingEntry entry = new YamlMappingEntry();
                 entry.key = key;
@@ -176,7 +180,7 @@ public class YamlAnalyzer implements LanguageAnalyzer {
     private YamlNode convertSequenceNode(
             SequenceNode sequenceNode,
             NodePath path,
-            boolean isOpenApi,
+            String dialect,
             Map<Node, Boolean> emittedAnchoredNodes) {
         YamlNode node = new YamlNode();
         node.kind = "sequence";
@@ -185,7 +189,7 @@ public class YamlAnalyzer implements LanguageAnalyzer {
 
         List<YamlNode> items = new ArrayList<>();
         for (Node itemNode : sequenceNode.getValue()) {
-            YamlNode item = convertNode(itemNode, path.arrayItem(), isOpenApi, emittedAnchoredNodes);
+            YamlNode item = convertNode(itemNode, path.arrayItem(), dialect, emittedAnchoredNodes);
             if (item != null) {
                 items.add(item);
             }
@@ -197,13 +201,13 @@ public class YamlAnalyzer implements LanguageAnalyzer {
         return node;
     }
 
-    private YamlNode convertScalarNode(ScalarNode scalarNode, NodePath path, boolean isOpenApi) {
+    private YamlNode convertScalarNode(ScalarNode scalarNode, NodePath path, String dialect) {
         YamlNode node = new YamlNode();
         node.kind = "scalar";
         node.lines = lineSpan(scalarNode);
         setAnchor(node, scalarNode);
 
-        if (isOpenApi && isAllowedOpenApiScalar(path, scalarNode.getValue())) {
+        if (isAllowedDialectScalar(path, scalarNode.getValue(), dialect)) {
             String raw = scalarNode.getValue();
             if (raw != null && !raw.isEmpty()) {
                 node.value = raw;
@@ -217,8 +221,14 @@ public class YamlAnalyzer implements LanguageAnalyzer {
     // OpenAPI scalar value retention
     // -------------------------------------------------------------------------
 
-    private boolean isAllowedOpenApiScalar(NodePath path, String scalarValue) {
-        return OpenApiScalarPolicy.isAllowed(path, scalarValue);
+    private boolean isAllowedDialectScalar(NodePath path, String scalarValue, String dialect) {
+        if (DIALECT_OPENAPI.equals(dialect)) {
+            return OpenApiScalarPolicy.isAllowed(path, scalarValue);
+        }
+        if (DIALECT_ASYNCAPI.equals(dialect)) {
+            return AsyncApiScalarPolicy.isAllowed(path, scalarValue);
+        }
+        return false;
     }
 
     // -------------------------------------------------------------------------

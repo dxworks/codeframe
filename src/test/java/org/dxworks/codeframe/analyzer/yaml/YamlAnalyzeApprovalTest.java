@@ -43,6 +43,16 @@ public class YamlAnalyzeApprovalTest {
     }
 
     @Test
+    void analyze_AsyncApiRootOnlyDetection() throws IOException {
+        verify("asyncapi_root_only_detection.yaml");
+    }
+
+    @Test
+    void analyze_AsyncApiContractShape() throws IOException {
+        verify("asyncapi_contract_shape.yaml");
+    }
+
+    @Test
     void analyze_RootOnlyDetection() throws IOException {
         verify("root_only_detection.yaml");
     }

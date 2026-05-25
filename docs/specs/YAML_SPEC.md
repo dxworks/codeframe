@@ -7,6 +7,7 @@ This document defines YAML analysis behavior for CodeFrame.
 It describes:
 - YAML structural facts extracted,
 - OpenAPI YAML detection and scalar value retention,
+- AsyncAPI YAML detection and scalar value retention,
 - output shape,
 - current limitations.
 
@@ -44,14 +45,14 @@ YamlFileAnalysis {
 
 YamlDocument {
     lines: int
-    dialect: String?        // omitted for generic YAML; "openapi" for OpenAPI documents
+    dialect: String?        // omitted for generic YAML; "openapi" | "asyncapi" for detected API-spec dialects
     root: YamlNode?
 }
 
 YamlNode {
     kind: "mapping" | "sequence" | "scalar" | "alias"
     lines: int
-    value: String?          // omitted by default; present only for allowed OpenAPI structural scalars
+    value: String?          // omitted by default; present only for allowed OpenAPI/AsyncAPI structural scalars
     anchor: String?
     alias: String?
     merge: boolean?
@@ -175,12 +176,73 @@ OpenAPI enum labels may be emitted, consistent with the global enum extraction r
 
 ---
 
-## 5. Current Limitations
+## 5. AsyncAPI YAML Rules
+
+### 5.1 Detection
+
+AsyncAPI is a YAML document dialect detected by the YAML analyzer.
+
+AsyncAPI support is special handling within YAML analysis, not a separate CodeFrame language.
+
+Detection supports AsyncAPI documents with a top-level `asyncapi` declaration.
+
+Detection is performed only against each YAML document's root mapping. Nested `asyncapi` keys do not mark a document as AsyncAPI.
+
+Dialect detection is per document, not per file. A multi-document YAML stream may contain generic YAML, OpenAPI documents, and AsyncAPI documents.
+
+### 5.2 AsyncAPI output model
+
+AsyncAPI documents use the same generic YAML node tree as other YAML documents.
+
+The document sets `dialect: "asyncapi"` and retains selected scalar values that are structural API-surface identifiers.
+
+The analyzer does not build a separate named AsyncAPI object model and does not emit a second analysis object or second document for the same source document.
+
+AsyncAPI trees are not pruned. All mapping keys remain visible with line spans, including prose-heavy keys such as `description`, `summary`, `example`, and `examples`. Values for those fields are omitted unless explicitly allowed by this spec.
+
+### 5.3 Scalar value retention
+
+AsyncAPI scalar value retention is context-based. A scalar value is emitted only when its path is a known AsyncAPI structural position allowed by this spec. Matching by key name alone is not sufficient.
+
+Allowed AsyncAPI scalar values include:
+- top-level `asyncapi` version values
+- `info.title`
+- operation `operationId` values in AsyncAPI 2.x channel operations (`publish` / `subscribe`)
+- operation `operationId` values in AsyncAPI 3.x top-level operations
+- AsyncAPI 3.x operation `action` values (`send` / `receive`)
+- schema `type`, `format`, and local `$ref`
+- required property names
+- enum labels
+- security scheme `type`
+
+Values are not emitted for:
+- descriptions
+- summaries
+- examples / example
+- defaults
+- validation constraints such as `minLength`, `pattern`, and `minimum`
+- raw server URLs
+- credentials and auth token-like values
+- external `$ref` values
+- vendor extension (`x-*`) scalar values
+
+Raw server URLs are not emitted because they may expose internal environments or deployment topology.
+
+Local `$ref` values (starting with `#`) may be emitted in allowed structural contexts. External `$ref` values are not emitted.
+
+Vendor extension keys (`x-*`) are retained as mapping keys with line spans. Vendor extension scalar values are never emitted by default.
+
+AsyncAPI enum labels may be emitted, consistent with the global enum extraction rule. Assigned values, examples, and defaults are not emitted.
+
+---
+
+## 6. Current Limitations
 
 - Generic YAML scalar values are not emitted.
 - OpenAPI scalar values are emitted only for allowed structural positions.
-- OpenAPI trees keep skipped keys and line spans, but omit skipped values.
+- AsyncAPI scalar values are emitted only for allowed structural positions.
+- OpenAPI and AsyncAPI trees keep skipped keys and line spans, but omit skipped values.
 - Explicit empty YAML documents are skipped.
 - Alias and merge values are not expanded.
 - Scalar style metadata, scalar tags, and inferred scalar types are not emitted.
-- Raw server URLs, external docs URLs, OAuth URLs, OpenID Connect URLs, and external `operationRef` URLs are not emitted.
+- Raw server URLs, external docs URLs, OAuth URLs, OpenID Connect URLs, external `operationRef` URLs, and external `$ref` URLs are not emitted.

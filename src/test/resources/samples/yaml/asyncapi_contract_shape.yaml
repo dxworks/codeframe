@@ -1,0 +1,85 @@
+asyncapi: "3.0.0"
+info:
+  title: Event API
+  description: should be omitted
+servers:
+  production:
+    host: broker.example.com
+    protocol: amqp
+    url: amqps://broker.example.com
+channels:
+  user/signedup:
+    publish:
+      operationId: publishSignedUp
+      summary: publish summary omitted
+      description: publish description omitted
+      message:
+        payload:
+          type: object
+          required:
+            - userId
+            - status
+          properties:
+            userId:
+              type: string
+            status:
+              type: string
+              enum:
+                - active
+                - inactive
+            profile:
+              $ref: "#/components/schemas/Profile"
+            remote:
+              $ref: "https://example.com/schemas/RemoteProfile.yaml"
+            amount:
+              type: number
+              format: float
+            x-sensitive:
+              token: secret-token
+    subscribe:
+      operationId: receiveSignedUp
+      x-meta:
+        internal: should-not-emit
+    parameters:
+      fake:
+        operationId: notAnOperation
+operations:
+  sendSignedUp:
+    action: send
+    operationId: opSendSignedUp
+    summary: should be omitted
+  receiveSignedUp:
+    action: receive
+    operationId: opReceiveSignedUp
+  invalidDirection:
+    action: publish
+    operationId: opInvalidDirection
+components:
+  schemas:
+    Profile:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          enum:
+            - admin
+            - user
+        refLocal:
+          $ref: "#/components/schemas/Role"
+        refExternal:
+          $ref: "https://example.com/Role.yaml"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: should be omitted
+security:
+  - bearerAuth: []
+x-internal:
+  sample: should-not-emit
