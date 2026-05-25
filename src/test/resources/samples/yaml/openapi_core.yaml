@@ -1,0 +1,46 @@
+﻿openapi: "3.0.3"
+info:
+  title: Pets API
+  description: internal docs
+externalDocs:
+  url: https://docs.internal.local/pets
+paths:
+  /pets:
+    get:
+      summary: list pets
+      operationId: listPets
+      tags:
+        - pets
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            example: 10
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Pet'
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+
+components:
+  schemas:
+    Pet:
+      type: object
+      properties:
+        id:
+          type: string

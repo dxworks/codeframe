@@ -22,6 +22,8 @@ Use this index to find the correct source of truth quickly.
 - [Ruby Spec](specs/RUBY_SPEC.md): Ruby analysis output contract and extraction rules.
 - [Rust Spec](specs/RUST_SPEC.md): Rust analysis output contract and extraction rules.
 - [Markdown Spec](specs/MARKDOWN_SPEC.md): Markdown analysis output contract and extraction rules.
+- [XML Spec](specs/XML_SPEC.md): XML analysis output contract and extraction rules.
+- [YAML Spec](specs/YAML_SPEC.md): YAML analysis output contract, OpenAPI detection, and scalar retention rules.
 
 ## Informational Docs
 

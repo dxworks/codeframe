@@ -18,7 +18,8 @@ public enum Language {
     RUBY("ruby", ".rb"),
     RUST("rust", ".rs"),
     MARKDOWN("markdown", ".md", ".markdown", ".mkd", ".mkdn", ".mdwn", ".mdown"),
-    XML("xml", ".xml");
+    XML("xml", ".xml"),
+    YAML("yaml", ".yaml", ".yml");
 
     private final String name;
     private final String[] extensions;

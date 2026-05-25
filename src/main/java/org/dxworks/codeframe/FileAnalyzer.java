@@ -6,6 +6,7 @@ import org.dxworks.codeframe.analyzer.cobol.CobolCopybookRepository;
 import org.dxworks.codeframe.analyzer.markdown.MarkdownAnalyzer;
 import org.dxworks.codeframe.analyzer.sql.SQLAnalyzer;
 import org.dxworks.codeframe.analyzer.xml.XmlAnalyzer;
+import org.dxworks.codeframe.analyzer.yaml.YamlAnalyzer;
 import org.dxworks.codeframe.model.Analysis;
 
 import java.io.IOException;
@@ -64,6 +65,7 @@ public final class FileAnalyzer {
             case RUST -> new RustAnalyzer();
             case MARKDOWN -> new MarkdownAnalyzer();
             case XML -> new XmlAnalyzer();
+            case YAML -> new YamlAnalyzer();
         };
     }
 

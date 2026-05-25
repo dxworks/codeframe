@@ -30,6 +30,7 @@ Normalize language input to lowercase and strip spaces/hyphens/underscores when 
 | `php` | `docs/specs/PHP_SPEC.md` |
 | `ruby`, `rb` | `docs/specs/RUBY_SPEC.md` |
 | `rust`, `rs` | `docs/specs/RUST_SPEC.md` |
+| `yaml`, `yml` | `docs/specs/YAML_SPEC.md` |
 | `sql`, `tsql`, `t-sql` | `docs/specs/SQL_SPEC.md` |
 | `markdown`, `md` | `docs/specs/MARKDOWN_SPEC.md` |
 | `xml` | `docs/specs/XML_SPEC.md` |

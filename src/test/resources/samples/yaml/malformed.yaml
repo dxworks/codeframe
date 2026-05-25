@@ -1,0 +1,6 @@
+root:
+  valid: true
+  broken:
+    - one
+    - two
+   misaligned: bad

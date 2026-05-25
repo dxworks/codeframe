@@ -1,0 +1,247 @@
+{
+  "filePath" : "src/test/resources/samples/yaml/openapi_contract_shape.yaml",
+  "language" : "yaml",
+  "documents" : [ {
+    "lines" : 36,
+    "dialect" : "openapi",
+    "root" : {
+      "kind" : "mapping",
+      "lines" : 36,
+      "entries" : [ {
+        "key" : "swagger",
+        "value" : {
+          "kind" : "scalar",
+          "lines" : 1,
+          "value" : "2.0"
+        }
+      }, {
+        "key" : "host",
+        "value" : {
+          "kind" : "scalar",
+          "lines" : 1
+        }
+      }, {
+        "key" : "basePath",
+        "value" : {
+          "kind" : "scalar",
+          "lines" : 1
+        }
+      }, {
+        "key" : "paths",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 14,
+          "entries" : [ {
+            "key" : "/pets/{id}",
+            "value" : {
+              "kind" : "mapping",
+              "lines" : 13,
+              "entries" : [ {
+                "key" : "get",
+                "value" : {
+                  "kind" : "mapping",
+                  "lines" : 12,
+                  "entries" : [ {
+                    "key" : "operationId",
+                    "value" : {
+                      "kind" : "scalar",
+                      "lines" : 1,
+                      "value" : "getPet"
+                    }
+                  }, {
+                    "key" : "parameters",
+                    "value" : {
+                      "kind" : "sequence",
+                      "lines" : 6,
+                      "items" : [ {
+                        "kind" : "mapping",
+                        "lines" : 6,
+                        "entries" : [ {
+                          "key" : "name",
+                          "value" : {
+                            "kind" : "scalar",
+                            "lines" : 1,
+                            "value" : "id"
+                          }
+                        }, {
+                          "key" : "in",
+                          "value" : {
+                            "kind" : "scalar",
+                            "lines" : 1,
+                            "value" : "path"
+                          }
+                        }, {
+                          "key" : "required",
+                          "value" : {
+                            "kind" : "scalar",
+                            "lines" : 1,
+                            "value" : "true"
+                          }
+                        }, {
+                          "key" : "schema",
+                          "value" : {
+                            "kind" : "mapping",
+                            "lines" : 2,
+                            "entries" : [ {
+                              "key" : "type",
+                              "value" : {
+                                "kind" : "scalar",
+                                "lines" : 1,
+                                "value" : "string"
+                              }
+                            } ]
+                          }
+                        } ]
+                      } ]
+                    }
+                  }, {
+                    "key" : "responses",
+                    "value" : {
+                      "kind" : "mapping",
+                      "lines" : 4,
+                      "entries" : [ {
+                        "key" : "200",
+                        "value" : {
+                          "kind" : "mapping",
+                          "lines" : 3,
+                          "entries" : [ {
+                            "key" : "schema",
+                            "value" : {
+                              "kind" : "mapping",
+                              "lines" : 2,
+                              "entries" : [ {
+                                "key" : "$ref",
+                                "value" : {
+                                  "kind" : "scalar",
+                                  "lines" : 1,
+                                  "value" : "#/definitions/Pet"
+                                }
+                              } ]
+                            }
+                          } ]
+                        }
+                      } ]
+                    }
+                  } ]
+                }
+              } ]
+            }
+          } ]
+        }
+      }, {
+        "key" : "definitions",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 18,
+          "entries" : [ {
+            "key" : "Pet",
+            "value" : {
+              "kind" : "mapping",
+              "lines" : 17,
+              "entries" : [ {
+                "key" : "type",
+                "value" : {
+                  "kind" : "scalar",
+                  "lines" : 1,
+                  "value" : "object"
+                }
+              }, {
+                "key" : "required",
+                "value" : {
+                  "kind" : "sequence",
+                  "lines" : 3,
+                  "items" : [ {
+                    "kind" : "scalar",
+                    "lines" : 1,
+                    "value" : "id"
+                  }, {
+                    "kind" : "scalar",
+                    "lines" : 1,
+                    "value" : "type"
+                  } ]
+                }
+              }, {
+                "key" : "properties",
+                "value" : {
+                  "kind" : "mapping",
+                  "lines" : 12,
+                  "entries" : [ {
+                    "key" : "id",
+                    "value" : {
+                      "kind" : "mapping",
+                      "lines" : 2,
+                      "entries" : [ {
+                        "key" : "type",
+                        "value" : {
+                          "kind" : "scalar",
+                          "lines" : 1,
+                          "value" : "string"
+                        }
+                      } ]
+                    }
+                  }, {
+                    "key" : "type",
+                    "value" : {
+                      "kind" : "mapping",
+                      "lines" : 5,
+                      "entries" : [ {
+                        "key" : "type",
+                        "value" : {
+                          "kind" : "scalar",
+                          "lines" : 1,
+                          "value" : "string"
+                        }
+                      }, {
+                        "key" : "enum",
+                        "value" : {
+                          "kind" : "sequence",
+                          "lines" : 3,
+                          "items" : [ {
+                            "kind" : "scalar",
+                            "lines" : 1,
+                            "value" : "dog"
+                          }, {
+                            "kind" : "scalar",
+                            "lines" : 1,
+                            "value" : "cat"
+                          } ]
+                        }
+                      } ]
+                    }
+                  }, {
+                    "key" : "age",
+                    "value" : {
+                      "kind" : "mapping",
+                      "lines" : 4,
+                      "entries" : [ {
+                        "key" : "type",
+                        "value" : {
+                          "kind" : "scalar",
+                          "lines" : 1,
+                          "value" : "integer"
+                        }
+                      }, {
+                        "key" : "format",
+                        "value" : {
+                          "kind" : "scalar",
+                          "lines" : 1,
+                          "value" : "int32"
+                        }
+                      }, {
+                        "key" : "minimum",
+                        "value" : {
+                          "kind" : "scalar",
+                          "lines" : 1
+                        }
+                      } ]
+                    }
+                  } ]
+                }
+              } ]
+            }
+          } ]
+        }
+      } ]
+    }
+  } ]
+}

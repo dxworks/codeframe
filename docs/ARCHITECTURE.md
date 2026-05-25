@@ -27,6 +27,7 @@ Each language has a dedicated analyzer:
 | COBOL | `COBOLAnalyzer` | ANTLR |
 | Markdown | `MarkdownAnalyzer` | commonmark-java + GFM Tables + YAML Front Matter extension |
 | XML | `XmlAnalyzer` | Java StAX (`javax.xml.stream`) |
+| YAML | `YamlAnalyzer` | SnakeYAML |
 
 ## Design Decisions
 

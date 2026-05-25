@@ -1,0 +1,51 @@
+{
+  "filePath" : "src/test/resources/samples/yaml/root_only_detection.yaml",
+  "language" : "yaml",
+  "documents" : [ {
+    "lines" : 7,
+    "root" : {
+      "kind" : "mapping",
+      "lines" : 7,
+      "entries" : [ {
+        "key" : "config",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 3,
+          "entries" : [ {
+            "key" : "openapi",
+            "value" : {
+              "kind" : "scalar",
+              "lines" : 1
+            }
+          }, {
+            "key" : "swagger",
+            "value" : {
+              "kind" : "scalar",
+              "lines" : 1
+            }
+          } ]
+        }
+      }, {
+        "key" : "meta",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 3,
+          "entries" : [ {
+            "key" : "info",
+            "value" : {
+              "kind" : "mapping",
+              "lines" : 2,
+              "entries" : [ {
+                "key" : "title",
+                "value" : {
+                  "kind" : "scalar",
+                  "lines" : 1
+                }
+              } ]
+            }
+          } ]
+        }
+      } ]
+    }
+  } ]
+}

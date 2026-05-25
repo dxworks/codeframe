@@ -17,3 +17,4 @@ analyzers:
   rust: true
   markdown: true
   xml: true
+  yaml: true

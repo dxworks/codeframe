@@ -1,0 +1,115 @@
+{
+  "filePath" : "src/test/resources/samples/yaml/stream_reuse.yaml",
+  "language" : "yaml",
+  "documents" : [ {
+    "lines" : 8,
+    "root" : {
+      "kind" : "mapping",
+      "lines" : 8,
+      "entries" : [ {
+        "key" : "base",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 4,
+          "anchor" : "base",
+          "entries" : [ {
+            "key" : "retries",
+            "value" : {
+              "kind" : "scalar",
+              "lines" : 1
+            }
+          }, {
+            "key" : "timeout",
+            "value" : {
+              "kind" : "scalar",
+              "lines" : 1
+            }
+          } ]
+        }
+      }, {
+        "key" : "profile",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 3,
+          "entries" : [ {
+            "key" : "<<",
+            "value" : {
+              "kind" : "alias",
+              "lines" : 1,
+              "alias" : "base",
+              "merge" : true
+            }
+          }, {
+            "key" : "timeout",
+            "value" : {
+              "kind" : "scalar",
+              "lines" : 1
+            }
+          } ]
+        }
+      }, {
+        "key" : "aliasRef",
+        "value" : {
+          "kind" : "alias",
+          "lines" : 1,
+          "alias" : "base"
+        }
+      } ]
+    }
+  }, {
+    "lines" : 4,
+    "root" : {
+      "kind" : "mapping",
+      "lines" : 4,
+      "entries" : [ {
+        "key" : "kind",
+        "value" : {
+          "kind" : "scalar",
+          "lines" : 1
+        }
+      }, {
+        "key" : "metadata",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 2,
+          "entries" : [ {
+            "key" : "name",
+            "value" : {
+              "kind" : "scalar",
+              "lines" : 1
+            }
+          } ]
+        }
+      } ]
+    }
+  }, {
+    "lines" : 4,
+    "dialect" : "openapi",
+    "root" : {
+      "kind" : "mapping",
+      "lines" : 4,
+      "entries" : [ {
+        "key" : "openapi",
+        "value" : {
+          "kind" : "scalar",
+          "lines" : 1,
+          "value" : "3.0.0"
+        }
+      }, {
+        "key" : "info",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 2,
+          "entries" : [ {
+            "key" : "title",
+            "value" : {
+              "kind" : "scalar",
+              "lines" : 1,
+              "value" : "Stream API"
+            }
+          } ]
+        }
+      } ]
+    }
+  } ]
+}

@@ -1,0 +1,17 @@
+﻿---
+base: &base
+  retries: 3
+  timeout: 30
+profile:
+  <<: *base
+  timeout: 60
+aliasRef: *base
+---
+kind: ConfigMap
+metadata:
+  name: cfg
+---
+openapi: "3.0.0"
+info:
+  title: Stream API
+---

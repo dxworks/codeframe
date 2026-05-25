@@ -1,0 +1,324 @@
+{
+  "filePath" : "src/test/resources/samples/yaml/openapi_core.yaml",
+  "language" : "yaml",
+  "documents" : [ {
+    "lines" : 47,
+    "dialect" : "openapi",
+    "root" : {
+      "kind" : "mapping",
+      "lines" : 47,
+      "entries" : [ {
+        "key" : "openapi",
+        "value" : {
+          "kind" : "scalar",
+          "lines" : 1,
+          "value" : "3.0.3"
+        }
+      }, {
+        "key" : "info",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 3,
+          "entries" : [ {
+            "key" : "title",
+            "value" : {
+              "kind" : "scalar",
+              "lines" : 1,
+              "value" : "Pets API"
+            }
+          }, {
+            "key" : "description",
+            "value" : {
+              "kind" : "scalar",
+              "lines" : 1
+            }
+          } ]
+        }
+      }, {
+        "key" : "externalDocs",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 2,
+          "entries" : [ {
+            "key" : "url",
+            "value" : {
+              "kind" : "scalar",
+              "lines" : 1
+            }
+          } ]
+        }
+      }, {
+        "key" : "paths",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 33,
+          "entries" : [ {
+            "key" : "/pets",
+            "value" : {
+              "kind" : "mapping",
+              "lines" : 32,
+              "entries" : [ {
+                "key" : "get",
+                "value" : {
+                  "kind" : "mapping",
+                  "lines" : 31,
+                  "entries" : [ {
+                    "key" : "summary",
+                    "value" : {
+                      "kind" : "scalar",
+                      "lines" : 1
+                    }
+                  }, {
+                    "key" : "operationId",
+                    "value" : {
+                      "kind" : "scalar",
+                      "lines" : 1,
+                      "value" : "listPets"
+                    }
+                  }, {
+                    "key" : "tags",
+                    "value" : {
+                      "kind" : "sequence",
+                      "lines" : 2,
+                      "items" : [ {
+                        "kind" : "scalar",
+                        "lines" : 1,
+                        "value" : "pets"
+                      } ]
+                    }
+                  }, {
+                    "key" : "parameters",
+                    "value" : {
+                      "kind" : "sequence",
+                      "lines" : 8,
+                      "items" : [ {
+                        "kind" : "mapping",
+                        "lines" : 8,
+                        "entries" : [ {
+                          "key" : "name",
+                          "value" : {
+                            "kind" : "scalar",
+                            "lines" : 1,
+                            "value" : "limit"
+                          }
+                        }, {
+                          "key" : "in",
+                          "value" : {
+                            "kind" : "scalar",
+                            "lines" : 1,
+                            "value" : "query"
+                          }
+                        }, {
+                          "key" : "required",
+                          "value" : {
+                            "kind" : "scalar",
+                            "lines" : 1,
+                            "value" : "false"
+                          }
+                        }, {
+                          "key" : "schema",
+                          "value" : {
+                            "kind" : "mapping",
+                            "lines" : 4,
+                            "entries" : [ {
+                              "key" : "type",
+                              "value" : {
+                                "kind" : "scalar",
+                                "lines" : 1,
+                                "value" : "integer"
+                              }
+                            }, {
+                              "key" : "format",
+                              "value" : {
+                                "kind" : "scalar",
+                                "lines" : 1,
+                                "value" : "int32"
+                              }
+                            }, {
+                              "key" : "example",
+                              "value" : {
+                                "kind" : "scalar",
+                                "lines" : 1
+                              }
+                            } ]
+                          }
+                        } ]
+                      } ]
+                    }
+                  }, {
+                    "key" : "requestBody",
+                    "value" : {
+                      "kind" : "mapping",
+                      "lines" : 8,
+                      "entries" : [ {
+                        "key" : "required",
+                        "value" : {
+                          "kind" : "scalar",
+                          "lines" : 1,
+                          "value" : "true"
+                        }
+                      }, {
+                        "key" : "content",
+                        "value" : {
+                          "kind" : "mapping",
+                          "lines" : 6,
+                          "entries" : [ {
+                            "key" : "application/json",
+                            "value" : {
+                              "kind" : "mapping",
+                              "lines" : 5,
+                              "entries" : [ {
+                                "key" : "schema",
+                                "value" : {
+                                  "kind" : "mapping",
+                                  "lines" : 4,
+                                  "entries" : [ {
+                                    "key" : "type",
+                                    "value" : {
+                                      "kind" : "scalar",
+                                      "lines" : 1,
+                                      "value" : "array"
+                                    }
+                                  }, {
+                                    "key" : "items",
+                                    "value" : {
+                                      "kind" : "mapping",
+                                      "lines" : 2,
+                                      "entries" : [ {
+                                        "key" : "$ref",
+                                        "value" : {
+                                          "kind" : "scalar",
+                                          "lines" : 1,
+                                          "value" : "#/components/schemas/Pet"
+                                        }
+                                      } ]
+                                    }
+                                  } ]
+                                }
+                              } ]
+                            }
+                          } ]
+                        }
+                      } ]
+                    }
+                  }, {
+                    "key" : "responses",
+                    "value" : {
+                      "kind" : "mapping",
+                      "lines" : 10,
+                      "entries" : [ {
+                        "key" : "200",
+                        "value" : {
+                          "kind" : "mapping",
+                          "lines" : 9,
+                          "entries" : [ {
+                            "key" : "description",
+                            "value" : {
+                              "kind" : "scalar",
+                              "lines" : 1
+                            }
+                          }, {
+                            "key" : "content",
+                            "value" : {
+                              "kind" : "mapping",
+                              "lines" : 7,
+                              "entries" : [ {
+                                "key" : "application/json",
+                                "value" : {
+                                  "kind" : "mapping",
+                                  "lines" : 6,
+                                  "entries" : [ {
+                                    "key" : "schema",
+                                    "value" : {
+                                      "kind" : "mapping",
+                                      "lines" : 5,
+                                      "entries" : [ {
+                                        "key" : "type",
+                                        "value" : {
+                                          "kind" : "scalar",
+                                          "lines" : 1,
+                                          "value" : "array"
+                                        }
+                                      }, {
+                                        "key" : "items",
+                                        "value" : {
+                                          "kind" : "mapping",
+                                          "lines" : 3,
+                                          "entries" : [ {
+                                            "key" : "$ref",
+                                            "value" : {
+                                              "kind" : "scalar",
+                                              "lines" : 1,
+                                              "value" : "#/components/schemas/Pet"
+                                            }
+                                          } ]
+                                        }
+                                      } ]
+                                    }
+                                  } ]
+                                }
+                              } ]
+                            }
+                          } ]
+                        }
+                      } ]
+                    }
+                  } ]
+                }
+              } ]
+            }
+          } ]
+        }
+      }, {
+        "key" : "components",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 7,
+          "entries" : [ {
+            "key" : "schemas",
+            "value" : {
+              "kind" : "mapping",
+              "lines" : 6,
+              "entries" : [ {
+                "key" : "Pet",
+                "value" : {
+                  "kind" : "mapping",
+                  "lines" : 5,
+                  "entries" : [ {
+                    "key" : "type",
+                    "value" : {
+                      "kind" : "scalar",
+                      "lines" : 1,
+                      "value" : "object"
+                    }
+                  }, {
+                    "key" : "properties",
+                    "value" : {
+                      "kind" : "mapping",
+                      "lines" : 3,
+                      "entries" : [ {
+                        "key" : "id",
+                        "value" : {
+                          "kind" : "mapping",
+                          "lines" : 2,
+                          "entries" : [ {
+                            "key" : "type",
+                            "value" : {
+                              "kind" : "scalar",
+                              "lines" : 1,
+                              "value" : "string"
+                            }
+                          } ]
+                        }
+                      } ]
+                    }
+                  } ]
+                }
+              } ]
+            }
+          } ]
+        }
+      } ]
+    }
+  } ]
+}

@@ -29,6 +29,8 @@ A downstream tool uses this output to build a structural stub for LLM interpreta
 - **SQL** (.sql)
 - **COBOL** (.cbl, .cob, .cpy)
 - **Markdown** (.md, .markdown, .mkd, .mkdn, .mdwn, .mdown)
+- **XML** (.xml)
+- **YAML** (.yaml, .yml)
 
 ## Features
 
@@ -141,7 +143,7 @@ CodeFrame supports optional configuration via a `codeframe-config.yml` file in t
 
 You can selectively enable/disable analyzers using the `analyzers` map. All analyzers are enabled by default.
 
-**Available analyzer keys:** `java`, `javascript`, `typescript`, `python`, `csharp`, `c`, `cpp`, `php`, `sql`, `cobol`, `ruby`, `rust`, `markdown`
+**Available analyzer keys:** `java`, `javascript`, `typescript`, `python`, `csharp`, `c`, `cpp`, `php`, `sql`, `cobol`, `ruby`, `rust`, `markdown`, `xml`, `yaml`
 
 **Example configuration:**
 ```yaml
@@ -173,6 +175,8 @@ Each line has a `kind` field:
 - [SQL sample](src/test/java/org/dxworks/codeframe/analyzer/sql/SQLAnalyzeApprovalTest.analyze_SQL_Sample.approved.txt)
 - [COBOL sample](src/test/java/org/dxworks/codeframe/analyzer/cobol/COBOLAnalyzeApprovalTest.analyze_COBOL_BasicProgram.approved.txt)
 - [Markdown sample](src/test/java/org/dxworks/codeframe/analyzer/markdown/MarkdownAnalyzeApprovalTest.analyze_Basic.approved.txt)
+- [XML sample](src/test/java/org/dxworks/codeframe/analyzer/xml/XmlAnalyzeApprovalTest.analyze_Simple.approved.txt)
+- [YAML sample](src/test/java/org/dxworks/codeframe/analyzer/yaml/YamlAnalyzeApprovalTest.analyze_Generic.approved.txt)
 
 ### SQL Analysis
 
@@ -200,6 +204,27 @@ Markdown file analysis extracts document structure including:
 - Line spans for extracted elements
 
 For complete documentation on Markdown support, see **[MARKDOWN_SPEC.md](docs/specs/MARKDOWN_SPEC.md)**.
+
+### XML Analysis
+
+XML file analysis extracts document structure including:
+- Element hierarchy
+- Attribute names
+- Namespace declarations
+- Line spans for extracted elements
+
+For complete documentation on XML support, see **[XML_SPEC.md](docs/specs/XML_SPEC.md)**.
+
+### YAML Analysis
+
+YAML file analysis extracts document structure for all YAML files:
+
+- YAML document roots and line spans
+- Mapping, sequence, scalar, and alias nodes
+
+For **OpenAPI YAML** documents, additional structural API-surface scalars are retained (for example operation identifiers, tags, and schema type names). Generic YAML scalar values are otherwise omitted.
+
+For complete documentation on YAML support, see **[YAML_SPEC.md](docs/specs/YAML_SPEC.md)**.
 
 ## Architecture
 

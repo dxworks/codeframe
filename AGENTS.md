@@ -28,3 +28,17 @@ This file is the primary guide for AI contributors working in this repository.
 - Analyzer extraction conventions: `docs/EXTRACTION_CONTRACT.md`
 - Language architecture: `docs/ARCHITECTURE.md`
 - Language output contracts: `docs/specs/*_SPEC.md`
+
+## Agent skills
+
+### Issue tracker
+
+Issues and PRDs live as markdown files under `.scratch/`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The canonical triage roles map directly to the repo's label strings. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context repo: root `CONTEXT.md` plus `docs/adr/` for decisions. See `docs/agents/domain.md`.
