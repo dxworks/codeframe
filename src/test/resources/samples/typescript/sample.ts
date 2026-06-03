@@ -22,6 +22,10 @@ export const formatMessage = (name: string, age: number): string => {
     return `Hello ${name}, you are ${age} years old`;
 };
 
+export function isDigits(value: string): boolean {
+    return /^\d+$/.test(value);
+}
+
 // Class with methods and fields
 export class UserService {
     private logger: Logger;

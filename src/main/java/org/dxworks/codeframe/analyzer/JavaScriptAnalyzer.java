@@ -34,6 +34,7 @@ public class JavaScriptAnalyzer extends TreeSitterAnalyzer {
     private static final String NT_ARRAY = "array";
     private static final String NT_STRING = "string";
     private static final String NT_NUMBER = "number";
+    private static final String NT_REGEX = "regex";
     
     @Override
     protected FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
@@ -502,7 +503,7 @@ public class JavaScriptAnalyzer extends TreeSitterAnalyzer {
             }
             TSNode objNode = functionNode.getNamedChild(0);
             if (objNode != null && !objNode.isNull()) {
-                objectName = renderObjectName(source, objNode, JS_LITERAL_TYPES);
+                objectName = renderJavaScriptObjectName(source, objNode);
             }
         } else if (NT_IDENTIFIER.equals(functionNode.getType())) {
             methodName = getNodeText(source, functionNode);
@@ -901,7 +902,7 @@ public class JavaScriptAnalyzer extends TreeSitterAnalyzer {
 
                 TSNode objectExpr = functionNode.getNamedChild(0);
                 if (objectExpr != null) {
-                    objectName = renderObjectName(source, objectExpr, JS_LITERAL_TYPES);
+                    objectName = renderJavaScriptObjectName(source, objectExpr);
                     if (NT_IDENTIFIER.equals(objectExpr.getType())) {
                         objectType = localTypes.get(objectName);
                     }
@@ -951,6 +952,16 @@ public class JavaScriptAnalyzer extends TreeSitterAnalyzer {
 
     // Literal types for renderObjectName
     private static final String[] JS_LITERAL_TYPES = {NT_ARRAY, NT_OBJECT, NT_STRING, NT_NUMBER};
+
+    private String renderJavaScriptObjectName(String source, TSNode objectExpr) {
+        if (objectExpr == null || objectExpr.isNull()) return null;
+        if ("call_expression".equals(objectExpr.getType()) || "new_expression".equals(objectExpr.getType())) {
+            return null;
+        }
+        if (NT_REGEX.equals(objectExpr.getType())) return "RegExp";
+        String rendered = renderObjectName(source, objectExpr, JS_LITERAL_TYPES);
+        return rendered != null && rendered.contains("null.") ? null : rendered;
+    }
 
     
     private List<FieldInfo> collectFieldsFromBody(String source, TSNode classBody) {

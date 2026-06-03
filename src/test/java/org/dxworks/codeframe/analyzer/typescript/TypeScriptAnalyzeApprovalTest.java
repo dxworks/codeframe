@@ -50,6 +50,11 @@ public class TypeScriptAnalyzeApprovalTest {
         verify("ClassFeatures.ts", Language.TYPESCRIPT);
     }
 
+    @Test
+    void analyze_TypeScript_ChainedCalls() throws IOException {
+        verify("ChainedCalls.ts", Language.TYPESCRIPT);
+    }
+
     private static void verify(String fileName, Language language) throws IOException {
         Path filePath = Paths.get(SAMPLES_BASE_PATH + fileName);
         FileAnalysis analysis = (FileAnalysis) ANALYZER.analyze(filePath, language);

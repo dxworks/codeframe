@@ -185,6 +185,10 @@ function parseLine(line) {
     return { raw: line };
 }
 
+export function isDigits(value) {
+    return /^\d+$/.test(value);
+}
+
 // 5. Class expressions
 export const Point = class {
     constructor(x, y) {

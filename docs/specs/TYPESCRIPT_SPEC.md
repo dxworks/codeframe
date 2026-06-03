@@ -88,6 +88,8 @@ Method metadata:
 - Calls nested inside type/function/class declarations are excluded from file-level `methodCalls`.
 - Calls inside callbacks nested under top-level statements/expressions are included.
 - Call metadata and qualified-call handling follow `docs/EXTRACTION_CONTRACT.md` (§3).
+- Chained calls whose receiver is another call or a newly constructed anonymous value emit `objectName: null` and `objectType: null`.
+- Regex literal receivers are normalized to `objectName: "RegExp"` to avoid exposing pattern text.
 
 ---
 

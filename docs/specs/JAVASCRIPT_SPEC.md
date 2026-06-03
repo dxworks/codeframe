@@ -81,6 +81,14 @@ Each call includes:
 
 Qualified-call handling follows `docs/EXTRACTION_CONTRACT.md` (§3.2).
 
+Chained calls whose receiver is another call or a newly constructed anonymous value emit
+`objectName: null` and `objectType: null`. For example:
+
+- `resource.fetch().then(parse)` records `fetch` with `objectName: "resource"` and `then` with no `objectName`.
+- `new Promise(resolve => resolve()).catch(handle)` records `catch` with no `objectName`.
+
+Regex literal receivers are normalized to `objectName: "RegExp"` to avoid exposing pattern text.
+
 Top-level extraction includes nested callback calls inside top-level expressions.
 
 ---

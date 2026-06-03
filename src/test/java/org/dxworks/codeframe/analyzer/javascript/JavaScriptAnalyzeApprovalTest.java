@@ -65,6 +65,11 @@ public class JavaScriptAnalyzeApprovalTest {
         verify("example.test.js", Language.JAVASCRIPT);
     }
 
+    @Test
+    void analyze_JavaScript_ChainedCalls() throws IOException {
+        verify("ChainedCalls.js", Language.JAVASCRIPT);
+    }
+
     private static void verify(String fileName, Language language) throws IOException {
         Path filePath = Paths.get(SAMPLES_BASE_PATH + fileName);
         FileAnalysis analysis = (FileAnalysis) ANALYZER.analyze(filePath, language);

@@ -1,0 +1,41 @@
+{
+  "filePath" : "src/test/resources/samples/javascript/ChainedCalls.js",
+  "language" : "javascript",
+  "methods" : [ {
+    "name" : "run",
+    "parameters" : [ {
+      "name" : "resource"
+    } ],
+    "methodCalls" : [ {
+      "methodName" : "catch",
+      "callCount" : 1
+    }, {
+      "methodName" : "fetch",
+      "objectName" : "resource",
+      "callCount" : 1
+    }, {
+      "methodName" : "finally",
+      "callCount" : 1
+    }, {
+      "methodName" : "resolve",
+      "callCount" : 1
+    }, {
+      "methodName" : "then",
+      "callCount" : 1
+    } ]
+  } ],
+  "methodCalls" : [ {
+    "methodName" : "catch",
+    "callCount" : 2
+  }, {
+    "methodName" : "fetch",
+    "objectName" : "resource",
+    "callCount" : 1
+  }, {
+    "methodName" : "resolve",
+    "callCount" : 1
+  }, {
+    "methodName" : "then",
+    "callCount" : 1
+  } ]
+}

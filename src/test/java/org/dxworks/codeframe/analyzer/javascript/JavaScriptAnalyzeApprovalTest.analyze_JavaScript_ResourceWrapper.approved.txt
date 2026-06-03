@@ -67,7 +67,6 @@
         "callCount" : 1
       }, {
         "methodName" : "catch",
-        "objectName" : "axios.get().then()",
         "callCount" : 1
       }, {
         "methodName" : "get",
@@ -99,7 +98,6 @@
         "callCount" : 1
       }, {
         "methodName" : "then",
-        "objectName" : "axios.get()",
         "callCount" : 1
       } ]
     }, {
@@ -114,7 +112,6 @@
         "callCount" : 1
       }, {
         "methodName" : "catch",
-        "objectName" : "axios.get().then()",
         "callCount" : 1
       }, {
         "methodName" : "get",
@@ -146,7 +143,6 @@
         "callCount" : 1
       }, {
         "methodName" : "then",
-        "objectName" : "axios.get()",
         "callCount" : 1
       } ]
     }, {
@@ -158,7 +154,6 @@
         "callCount" : 1
       }, {
         "methodName" : "catch",
-        "objectName" : "axios.get().then()",
         "callCount" : 1
       }, {
         "methodName" : "get",
@@ -178,7 +173,6 @@
         "callCount" : 1
       }, {
         "methodName" : "then",
-        "objectName" : "axios.get()",
         "callCount" : 1
       } ]
     }, {

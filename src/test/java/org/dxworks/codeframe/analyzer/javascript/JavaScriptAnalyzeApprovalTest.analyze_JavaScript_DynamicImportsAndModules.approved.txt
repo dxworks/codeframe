@@ -258,7 +258,6 @@
         "callCount" : 1
       }, {
         "methodName" : "map",
-        "objectName" : "modulePaths.filter()",
         "callCount" : 1
       }, {
         "methodName" : "warn",
