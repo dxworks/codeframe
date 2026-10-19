@@ -2,6 +2,18 @@
 
 A Tree-sitter-based code parser that extracts structural information from source files across multiple programming languages.
 
+## Project Purpose
+
+CodeFrame emits deterministic, source-grounded structural facts for each file as JSONL analysis output.
+A downstream tool uses this output to build a structural stub for LLM interpretation.
+
+- The analyzer extracts deterministic, source-grounded structure (types, methods, fields, calls, document sections).
+- The output can be partial or semantically incomplete by design, as long as structural signals are preserved.
+- Downstream LLM/post-processing systems use these stubs to infer:
+  1. **Business capability** (primary goal)
+  2. Architectural and implementation patterns
+  3. Anti-patterns and risk signals
+
 ## Supported Languages
 
 - **Java** (.java)
@@ -9,12 +21,16 @@ A Tree-sitter-based code parser that extracts structural information from source
 - **TypeScript** (.ts)
 - **Python** (.py)
 - **C#** (.cs)
+- **C** (.c)
+- **C++** (.cpp, .cc, .cxx, .h, .hpp, .hh, .hxx)
 - **PHP** (.php)
 - **Ruby** (.rb)
 - **Rust** (.rs)
 - **SQL** (.sql)
 - **COBOL** (.cbl, .cob, .cpy)
 - **Markdown** (.md, .markdown, .mkd, .mkdn, .mdwn, .mdown)
+- **XML** (.xml)
+- **YAML** (.yaml, .yml)
 
 ## Features
 
@@ -138,14 +154,13 @@ CodeFrame supports optional configuration via a `codeframe-config.yml` file in t
 |--------|------|---------|-------------|
 | `maxFileLines` | integer | 20000 | Maximum number of lines a file can have. Files exceeding this limit are skipped during analysis. |
 | `hideSqlTableColumns` | boolean | false | When true, SQL analysis output omits table column definitions for CREATE/ALTER TABLE operations. |
-
 | `analyzers` | map | all enabled | Enable/disable specific language analyzers. See Analyzer Configuration below. |
 
 **Analyzer Configuration:**
 
 You can selectively enable/disable analyzers using the `analyzers` map. All analyzers are enabled by default.
 
-**Available analyzer keys:** `java`, `javascript`, `typescript`, `python`, `csharp`, `php`, `sql`, `cobol`, `ruby`, `rust`, `markdown`
+**Available analyzer keys:** `java`, `javascript`, `typescript`, `python`, `csharp`, `c`, `cpp`, `php`, `sql`, `cobol`, `ruby`, `rust`, `markdown`, `xml`, `yaml`
 
 **Example configuration:**
 ```yaml
@@ -177,6 +192,8 @@ Each line has a `kind` field:
 - [SQL sample](src/test/java/org/dxworks/codeframe/analyzer/sql/SQLAnalyzeApprovalTest.analyze_SQL_Sample.approved.txt)
 - [COBOL sample](src/test/java/org/dxworks/codeframe/analyzer/cobol/COBOLAnalyzeApprovalTest.analyze_COBOL_BasicProgram.approved.txt)
 - [Markdown sample](src/test/java/org/dxworks/codeframe/analyzer/markdown/MarkdownAnalyzeApprovalTest.analyze_Basic.approved.txt)
+- [XML sample](src/test/java/org/dxworks/codeframe/analyzer/xml/XmlAnalyzeApprovalTest.analyze_Simple.approved.txt)
+- [YAML sample](src/test/java/org/dxworks/codeframe/analyzer/yaml/YamlAnalyzeApprovalTest.analyze_Generic.approved.txt)
 
 ### SQL Analysis
 
@@ -205,13 +222,39 @@ Markdown file analysis extracts document structure including:
 
 For complete documentation on Markdown support, see **[MARKDOWN_SPEC.md](docs/specs/MARKDOWN_SPEC.md)**.
 
+### XML Analysis
+
+XML file analysis extracts document structure including:
+- Element hierarchy
+- Attribute names
+- Namespace declarations
+- Line spans for extracted elements
+
+For complete documentation on XML support, see **[XML_SPEC.md](docs/specs/XML_SPEC.md)**.
+
+### YAML Analysis
+
+YAML file analysis extracts document structure for all YAML files:
+
+- YAML document roots and line spans
+- Mapping, sequence, scalar, and alias nodes
+
+For **OpenAPI and AsyncAPI YAML** documents, additional structural API-surface scalars are retained (for example operation identifiers, tags, and schema type names). Generic YAML scalar values are otherwise omitted.
+
+For complete documentation on YAML support, see **[YAML_SPEC.md](docs/specs/YAML_SPEC.md)**.
+
 ## Architecture
 
 See **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** for details on core components and design decisions.
 
 ## Contributing
 
-See **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** for guidelines on adding new languages and analyzer conventions.
+See **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contributor workflow (adding languages, spec authoring process, testing conventions).
+See **[EXTRACTION_CONTRACT.md](docs/EXTRACTION_CONTRACT.md)** for canonical shared extraction rules used across analyzers.
+
+## Documentation Map
+
+See **[docs/INDEX.md](docs/INDEX.md)** for the documentation source-of-truth map.
 
 ## Requirements
 

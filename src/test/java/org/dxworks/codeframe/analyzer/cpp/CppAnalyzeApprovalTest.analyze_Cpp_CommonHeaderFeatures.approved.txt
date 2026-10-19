@@ -1,0 +1,168 @@
+{
+  "filePath" : "src/test/resources/samples/cpp/CommonHeaderFeatures.h",
+  "language" : "cpp",
+  "types" : [ {
+    "kind" : "namespace",
+    "name" : "sample",
+    "types" : [ {
+      "kind" : "class",
+      "name" : "Math",
+      "modifiers" : [ "final" ],
+      "methods" : [ {
+        "name" : "add",
+        "returnType" : "int",
+        "isDeclarationOnly" : true,
+        "visibility" : "public",
+        "modifiers" : [ "public", "static" ],
+        "parameters" : [ {
+          "name" : "a",
+          "type" : "int"
+        }, {
+          "name" : "b",
+          "type" : "int"
+        } ]
+      } ]
+    } ]
+  }, {
+    "kind" : "typedef",
+    "name" : "StatusCode",
+    "extendsType" : "enum StatusCode"
+  }, {
+    "kind" : "typedef",
+    "name" : "Point",
+    "extendsType" : "struct Point"
+  }, {
+    "kind" : "typedef",
+    "name" : "HeaderConfig",
+    "extendsType" : "struct HeaderConfig"
+  }, {
+    "kind" : "typedef",
+    "name" : "CompareFn",
+    "extendsType" : "int (*CompareFn)(const void *lhs, const void *rhs)"
+  }, {
+    "kind" : "struct",
+    "name" : "Point",
+    "fields" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    } ]
+  }, {
+    "kind" : "struct",
+    "name" : "HeaderConfig",
+    "fields" : [ {
+      "name" : "buffer_size",
+      "type" : "size_t"
+    }, {
+      "name" : "flags",
+      "type" : "uint32_t"
+    }, {
+      "name" : "origin",
+      "type" : "Point"
+    } ]
+  }, {
+    "kind" : "enum",
+    "name" : "StatusCode",
+    "fields" : [ {
+      "name" : "STATUS_OK"
+    }, {
+      "name" : "STATUS_ERROR"
+    } ]
+  } ],
+  "methods" : [ {
+    "name" : "clamp_int",
+    "returnType" : "int",
+    "modifiers" : [ "static", "inline" ],
+    "parameters" : [ {
+      "name" : "value",
+      "type" : "int"
+    }, {
+      "name" : "min_value",
+      "type" : "int"
+    }, {
+      "name" : "max_value",
+      "type" : "int"
+    } ]
+  }, {
+    "name" : "init_config",
+    "returnType" : "StatusCode",
+    "isDeclarationOnly" : true,
+    "parameters" : [ {
+      "name" : "config",
+      "type" : "HeaderConfig *"
+    } ]
+  }, {
+    "name" : "validate_name",
+    "returnType" : "int",
+    "isDeclarationOnly" : true,
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "const char *"
+    } ]
+  }, {
+    "name" : "sort_points",
+    "returnType" : "int",
+    "isDeclarationOnly" : true,
+    "parameters" : [ {
+      "name" : "items",
+      "type" : "Point *"
+    }, {
+      "name" : "count",
+      "type" : "size_t"
+    }, {
+      "name" : "compare",
+      "type" : "CompareFn"
+    } ]
+  }, {
+    "name" : "legacy_sum",
+    "returnType" : "int",
+    "isDeclarationOnly" : true,
+    "parameters" : [ {
+      "name" : "a",
+      "type" : "int"
+    }, {
+      "name" : "b",
+      "type" : "int"
+    } ]
+  }, {
+    "name" : "touch_point",
+    "returnType" : "int",
+    "isDeclarationOnly" : true,
+    "parameters" : [ {
+      "name" : "point",
+      "type" : "Point &"
+    } ]
+  }, {
+    "name" : "touch_point_const",
+    "returnType" : "int",
+    "isDeclarationOnly" : true,
+    "parameters" : [ {
+      "name" : "point",
+      "type" : "const Point &"
+    } ]
+  }, {
+    "name" : "consume_point",
+    "returnType" : "int",
+    "isDeclarationOnly" : true,
+    "parameters" : [ {
+      "name" : "point",
+      "type" : "Point &&"
+    } ]
+  } ],
+  "fields" : [ {
+    "name" : "DEFAULT_CONFIG",
+    "type" : "HeaderConfig",
+    "modifiers" : [ "extern", "const" ]
+  }, {
+    "name" : "global_counter",
+    "type" : "int",
+    "modifiers" : [ "extern" ]
+  }, {
+    "name" : "global_callback_cpp",
+    "type" : "int (*)(int)",
+    "modifiers" : [ "extern" ]
+  } ],
+  "imports" : [ "#include <stddef.h>", "#include <stdint.h>" ]
+}

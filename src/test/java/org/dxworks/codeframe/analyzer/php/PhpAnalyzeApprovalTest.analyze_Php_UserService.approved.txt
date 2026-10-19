@@ -4,7 +4,6 @@
   "types" : [ {
     "kind" : "class",
     "name" : "UserService",
-    "visibility" : "public",
     "fields" : [ {
       "name" : "repository",
       "type" : "UserRepository",
@@ -182,7 +181,6 @@
   }, {
     "kind" : "class",
     "name" : "BaseRepository",
-    "visibility" : "public",
     "modifiers" : [ "abstract" ],
     "fields" : [ {
       "name" : "connection",
@@ -193,6 +191,7 @@
     "methods" : [ {
       "name" : "find",
       "returnType" : "?object",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "abstract", "public" ],
       "parameters" : [ {
@@ -202,18 +201,19 @@
     }, {
       "name" : "getTableName",
       "returnType" : "string",
+      "isDeclarationOnly" : true,
       "visibility" : "protected",
       "modifiers" : [ "abstract", "protected" ]
     } ]
   }, {
     "kind" : "interface",
     "name" : "CacheInterface",
-    "visibility" : "public",
     "methods" : [ {
       "name" : "get",
       "returnType" : "mixed",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
-      "modifiers" : [ "abstract" ],
+      "modifiers" : [ "public" ],
       "parameters" : [ {
         "name" : "key",
         "type" : "string"
@@ -221,8 +221,9 @@
     }, {
       "name" : "set",
       "returnType" : "bool",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
-      "modifiers" : [ "abstract" ],
+      "modifiers" : [ "public" ],
       "parameters" : [ {
         "name" : "key",
         "type" : "string"
@@ -236,8 +237,9 @@
     }, {
       "name" : "delete",
       "returnType" : "bool",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
-      "modifiers" : [ "abstract" ],
+      "modifiers" : [ "public" ],
       "parameters" : [ {
         "name" : "key",
         "type" : "string"

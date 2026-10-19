@@ -1,0 +1,59 @@
+﻿openapi: "3.0.1"
+security:
+  - bearerAuth: []
+servers:
+  - url: https://api.internal.local
+    variables:
+      region:
+        default: eu
+        enum:
+          - eu
+          - us
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    oauth2Auth:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth/authorize
+          tokenUrl: https://auth/token
+          scopes:
+            read:pets: read pets
+    openIdAuth:
+      type: openIdConnect
+      openIdConnectUrl: https://auth/.well-known/openid-configuration
+paths:
+  /events:
+    security:
+      - apiKeyAuth: []
+    post:
+      security:
+        - oauth2Auth:
+            - read:pets
+      operationId: createEvent
+      callbacks:
+        onEvent:
+          '{$request.body#/callbackUrl}':
+            post:
+              operationId: onEventDelivered
+      responses:
+        "202":
+          description: accepted
+      links:
+        next:
+          operationId: listEvents
+          operationRef: '#/paths/~1events/get'
+          parameters:
+            eventId: '$response.body#/id'
+          requestBody: '$request.body#/payload'
+        remoteNext:
+          operationRef: 'https://remote.example/paths/~1events/get'
+x-company:
+  secretValue: do-not-leak

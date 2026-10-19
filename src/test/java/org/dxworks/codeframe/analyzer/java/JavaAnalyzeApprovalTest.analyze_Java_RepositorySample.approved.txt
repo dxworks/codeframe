@@ -4,13 +4,31 @@
   "packageName" : "samples.java",
   "types" : [ {
     "kind" : "interface",
+    "name" : "Identifiable<ID>",
+    "methods" : [ {
+      "name" : "getId",
+      "returnType" : "ID",
+      "isDeclarationOnly" : true
+    } ]
+  }, {
+    "kind" : "interface",
+    "name" : "Nameable",
+    "methods" : [ {
+      "name" : "getName",
+      "returnType" : "String",
+      "isDeclarationOnly" : true
+    } ]
+  }, {
+    "kind" : "interface",
     "name" : "Repository<T, ID>",
     "visibility" : "public",
     "modifiers" : [ "public" ],
     "annotations" : [ "@Deprecated" ],
+    "implementsInterfaces" : [ "Identifiable", "Nameable" ],
     "methods" : [ {
       "name" : "findById",
       "returnType" : "T",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "parameters" : [ {
@@ -20,6 +38,7 @@
     }, {
       "name" : "save",
       "returnType" : "void",
+      "isDeclarationOnly" : true,
       "visibility" : "public",
       "modifiers" : [ "public" ],
       "parameters" : [ {

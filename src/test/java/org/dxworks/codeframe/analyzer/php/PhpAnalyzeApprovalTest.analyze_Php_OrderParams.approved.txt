@@ -4,7 +4,6 @@
   "types" : [ {
     "kind" : "class",
     "name" : "Svc",
-    "visibility" : "public",
     "methods" : [ {
       "name" : "__construct",
       "visibility" : "public",

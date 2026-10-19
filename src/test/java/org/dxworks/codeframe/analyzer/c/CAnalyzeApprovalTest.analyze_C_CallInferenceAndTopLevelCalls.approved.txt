@@ -1,0 +1,98 @@
+{
+  "filePath" : "src/test/resources/samples/c/CallInferenceAndTopLevelCalls.c",
+  "language" : "c",
+  "types" : [ {
+    "kind" : "typedef",
+    "name" : "Logger",
+    "extendsType" : "struct Logger"
+  }, {
+    "kind" : "struct",
+    "name" : "Logger",
+    "fields" : [ {
+      "name" : "writer",
+      "type" : "int (*)(int)"
+    } ]
+  } ],
+  "methods" : [ {
+    "name" : "write_impl",
+    "returnType" : "int",
+    "parameters" : [ {
+      "name" : "value",
+      "type" : "int"
+    } ]
+  }, {
+    "name" : "declared_only",
+    "returnType" : "int",
+    "isDeclarationOnly" : true,
+    "parameters" : [ {
+      "name" : "value",
+      "type" : "const char *"
+    } ]
+  }, {
+    "name" : "dispatch_values",
+    "returnType" : "int",
+    "isDeclarationOnly" : true,
+    "parameters" : [ {
+      "name" : "context",
+      "type" : "void *restrict"
+    }, {
+      "name" : "cb",
+      "type" : "int (*)(int)"
+    } ]
+  }, {
+    "name" : "make_dispatcher",
+    "returnType" : "int (*)(int)",
+    "isDeclarationOnly" : true,
+    "parameters" : [ {
+      "type" : "int"
+    } ]
+  }, {
+    "name" : "log_message",
+    "returnType" : "void",
+    "parameters" : [ {
+      "name" : "logger",
+      "type" : "Logger"
+    } ],
+    "methodCalls" : [ {
+      "methodName" : "writer",
+      "objectType" : "Logger",
+      "objectName" : "logger",
+      "callCount" : 1,
+      "parameterCount" : 1
+    } ]
+  }, {
+    "name" : "get_logger",
+    "returnType" : "Logger *"
+  }, {
+    "name" : "compute",
+    "returnType" : "int",
+    "methodCalls" : [ {
+      "methodName" : "get_logger",
+      "callCount" : 1,
+      "parameterCount" : 0
+    }, {
+      "methodName" : "log_message",
+      "callCount" : 1,
+      "parameterCount" : 1
+    }, {
+      "methodName" : "writer",
+      "callCount" : 1,
+      "parameterCount" : 1
+    } ]
+  } ],
+  "fields" : [ {
+    "name" : "global_callback",
+    "type" : "int (*)(int)"
+  }, {
+    "name" : "global_logger",
+    "type" : "Logger"
+  }, {
+    "name" : "init_value",
+    "type" : "int"
+  } ],
+  "methodCalls" : [ {
+    "methodName" : "compute",
+    "callCount" : 1,
+    "parameterCount" : 0
+  } ]
+}

@@ -123,6 +123,7 @@
     "methods" : [ {
       "name" : "onComplete",
       "returnType" : "void",
+      "isDeclarationOnly" : true,
       "parameters" : [ {
         "name" : "result",
         "type" : "String"

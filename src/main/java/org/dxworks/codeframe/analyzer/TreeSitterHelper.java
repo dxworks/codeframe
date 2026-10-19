@@ -64,15 +64,11 @@ public class TreeSitterHelper {
         return text.replace("\r\n", "\n").replace("\r", "\n");
     }
     
-    /**
-     * Collapse all whitespace (including newlines and tabs) to single spaces and trim.
-     * Useful for normalizing annotations/attributes and other inline metadata.
-     */
     public static String normalizeInline(String s) {
         if (s == null) return null;
         return s.replaceAll("\\s+", " ").trim();
     }
-    
+
     public static TSNode findFirstChild(TSNode parent, String nodeType) {
         if (parent == null || parent.isNull()) return null;
         int count = parent.getNamedChildCount();
@@ -83,6 +79,17 @@ public class TreeSitterHelper {
             }
         }
         return null;
+    }
+
+    public static boolean hasAnonymousChild(TSNode parent, String nodeType) {
+        if (parent == null || parent.isNull()) return false;
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            TSNode child = parent.getChild(i);
+            if (child != null && !child.isNull() && !child.isNamed() && nodeType.equals(child.getType())) {
+                return true;
+            }
+        }
+        return false;
     }
     
     public static List<TSNode> findAllChildren(TSNode parent, String nodeType) {
@@ -160,6 +167,22 @@ public class TreeSitterHelper {
             } catch (Exception ignored) { }
         }
         return null;
+    }
+
+    /**
+     * Structural TSNode equality helper.
+     *
+     * Tree-sitter Java wrappers may represent the same underlying syntax node
+     * with different object identities across traversals, so reference equality
+     * is not reliable for boundary checks.
+     */
+    public static boolean isSameNode(TSNode first, TSNode second) {
+        if (first == null || second == null || first.isNull() || second.isNull()) {
+            return false;
+        }
+        return first.getStartByte() == second.getStartByte()
+            && first.getEndByte() == second.getEndByte()
+            && first.getType().equals(second.getType());
     }
 
     public static boolean isTypeOneOf(String type, String... types) {

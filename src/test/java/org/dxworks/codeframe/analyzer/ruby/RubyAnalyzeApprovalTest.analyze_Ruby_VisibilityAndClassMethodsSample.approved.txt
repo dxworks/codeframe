@@ -121,5 +121,69 @@
       "name" : "instance_method",
       "visibility" : "public"
     } ]
+  }, {
+    "kind" : "module",
+    "name" : "AuditTrail",
+    "visibility" : "public",
+    "methods" : [ {
+      "name" : "public_entry",
+      "visibility" : "public",
+      "methodCalls" : [ {
+        "methodName" : "emit",
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    }, {
+      "name" : "private_entry",
+      "visibility" : "private",
+      "methodCalls" : [ {
+        "methodName" : "emit",
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    }, {
+      "name" : "inline_private",
+      "visibility" : "private",
+      "methodCalls" : [ {
+        "methodName" : "emit",
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    }, {
+      "name" : "protected_entry",
+      "visibility" : "protected",
+      "methodCalls" : [ {
+        "methodName" : "emit",
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    }, {
+      "name" : "inline_protected",
+      "visibility" : "protected",
+      "methodCalls" : [ {
+        "methodName" : "emit",
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    }, {
+      "name" : "public_again",
+      "visibility" : "public",
+      "methodCalls" : [ {
+        "methodName" : "emit",
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    }, {
+      "name" : "emit",
+      "visibility" : "public",
+      "parameters" : [ {
+        "name" : "message"
+      } ],
+      "methodCalls" : [ {
+        "methodName" : "puts",
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
+    } ]
   } ]
 }

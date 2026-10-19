@@ -1,0 +1,192 @@
+{
+  "filePath" : "src/test/resources/samples/cpp/ClassesAndInheritance.cpp",
+  "language" : "cpp",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "Counter",
+    "fields" : [ {
+      "name" : "cache",
+      "type" : "int",
+      "visibility" : "private",
+      "modifiers" : [ "private", "mutable" ]
+    }, {
+      "name" : "count",
+      "type" : "int",
+      "visibility" : "private",
+      "modifiers" : [ "private" ]
+    } ],
+    "methods" : [ {
+      "name" : "Counter",
+      "visibility" : "public",
+      "modifiers" : [ "public" ]
+    }, {
+      "name" : "Counter",
+      "visibility" : "public",
+      "modifiers" : [ "public", "explicit" ],
+      "parameters" : [ {
+        "name" : "start",
+        "type" : "int"
+      } ]
+    }, {
+      "name" : "Counter",
+      "isDeclarationOnly" : true,
+      "visibility" : "public",
+      "modifiers" : [ "public", "deleted" ],
+      "parameters" : [ {
+        "type" : "const Counter&"
+      } ]
+    }, {
+      "name" : "operator=",
+      "returnType" : "Counter &",
+      "isDeclarationOnly" : true,
+      "visibility" : "public",
+      "modifiers" : [ "public", "defaulted" ]
+    }, {
+      "name" : "~Counter",
+      "visibility" : "public",
+      "modifiers" : [ "public" ]
+    }, {
+      "name" : "value",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public", "virtual", "const" ]
+    }, {
+      "name" : "score",
+      "returnType" : "int",
+      "isDeclarationOnly" : true,
+      "visibility" : "public",
+      "modifiers" : [ "public", "virtual", "const" ]
+    }, {
+      "name" : "inspect",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public", "friend" ],
+      "parameters" : [ {
+        "name" : "c",
+        "type" : "const Counter&"
+      } ]
+    }, {
+      "name" : "base",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public", "noexcept", "constexpr", "const" ]
+    }, {
+      "name" : "meta",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static", "consteval" ]
+    } ]
+  }, {
+    "kind" : "class",
+    "name" : "AdvancedCounter",
+    "modifiers" : [ "final" ],
+    "extendsType" : ": public Counter",
+    "methods" : [ {
+      "name" : "AdvancedCounter",
+      "visibility" : "public",
+      "modifiers" : [ "public", "explicit" ],
+      "parameters" : [ {
+        "name" : "start",
+        "type" : "int"
+      } ]
+    }, {
+      "name" : "value",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public", "const", "override" ]
+    }, {
+      "name" : "score",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public", "const", "override" ],
+      "methodCalls" : [ {
+        "methodName" : "value",
+        "callCount" : 1,
+        "parameterCount" : 0
+      } ]
+    }, {
+      "name" : "operator+",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "other",
+        "type" : "int"
+      } ],
+      "methodCalls" : [ {
+        "methodName" : "value",
+        "callCount" : 1,
+        "parameterCount" : 0
+      } ]
+    } ]
+  }, {
+    "kind" : "class",
+    "name" : "Printable",
+    "methods" : [ {
+      "name" : "label",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public" ]
+    } ]
+  }, {
+    "kind" : "class",
+    "name" : "Widget",
+    "extendsType" : ": public Counter, public Printable",
+    "fields" : [ {
+      "name" : "instances",
+      "type" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ]
+    } ],
+    "methods" : [ {
+      "name" : "self",
+      "returnType" : "Counter *",
+      "visibility" : "public",
+      "modifiers" : [ "public" ]
+    }, {
+      "name" : "score",
+      "returnType" : "int",
+      "visibility" : "public",
+      "modifiers" : [ "public", "const", "override" ]
+    } ]
+  } ],
+  "methods" : [ {
+    "name" : "helper",
+    "returnType" : "int",
+    "modifiers" : [ "static", "inline" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "int"
+    } ]
+  }, {
+    "name" : "main",
+    "returnType" : "int",
+    "localVariables" : [ "w", "ac" ],
+    "methodCalls" : [ {
+      "methodName" : "helper",
+      "callCount" : 1,
+      "parameterCount" : 1
+    }, {
+      "methodName" : "inspect",
+      "callCount" : 1,
+      "parameterCount" : 1
+    }, {
+      "methodName" : "score",
+      "objectType" : "AdvancedCounter",
+      "objectName" : "ac",
+      "callCount" : 1,
+      "parameterCount" : 0
+    }, {
+      "methodName" : "self",
+      "objectType" : "Widget",
+      "objectName" : "w",
+      "callCount" : 1,
+      "parameterCount" : 0
+    }, {
+      "methodName" : "value",
+      "callCount" : 1,
+      "parameterCount" : 0
+    } ]
+  } ],
+  "imports" : [ "#include <string>" ]
+}

@@ -95,3 +95,42 @@ class Calculator
     "Instance method"
   end
 end
+
+module AuditTrail
+  def public_entry
+    emit("public")
+  end
+
+  private
+
+  def private_entry
+    emit("private")
+  end
+
+  private def inline_private
+    emit("inline private")
+  end
+
+  protected
+
+  def protected_entry
+    emit("protected")
+  end
+
+  protected def inline_protected
+    emit("inline protected")
+  end
+
+  public
+
+  def public_again
+    emit("public again")
+  end
+
+  private :private_entry
+  protected :protected_entry
+
+  def emit(message)
+    puts(message)
+  end
+end

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <title>Example Feed</title>
+  <entry>
+    <id>urn:example:1</id>
+    <title>First</title>
+  </entry>
+</feed>

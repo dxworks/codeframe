@@ -43,27 +43,21 @@
     "callCount" : 11
   }, {
     "methodName" : "toBe",
-    "objectName" : "expect()",
     "callCount" : 4
   }, {
     "methodName" : "toBeDefined",
-    "objectName" : "expect()",
     "callCount" : 1
   }, {
     "methodName" : "toBeGreaterThan",
-    "objectName" : "expect()",
     "callCount" : 1
   }, {
     "methodName" : "toBeUndefined",
-    "objectName" : "expect()",
     "callCount" : 1
   }, {
     "methodName" : "toContain",
-    "objectName" : "expect()",
     "callCount" : 2
   }, {
     "methodName" : "toEqual",
-    "objectName" : "expect()",
     "callCount" : 1
   }, {
     "methodName" : "toThrow",

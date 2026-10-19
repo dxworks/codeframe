@@ -22,6 +22,18 @@ public class MultipleClasses {
             System.out.println("InnerHelper assisting Demo instance");
         }
     }
+
+    interface NestedContract {
+        String name();
+    }
+
+    enum NestedState {
+        READY,
+        RUNNING
+    }
+
+    record NestedValue(int amount) {
+    }
 }
 
 // Another top-level class (package-private, not public)

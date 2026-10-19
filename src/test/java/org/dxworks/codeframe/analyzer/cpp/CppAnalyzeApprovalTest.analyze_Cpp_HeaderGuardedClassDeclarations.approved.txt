@@ -1,0 +1,69 @@
+{
+  "filePath" : "src/test/resources/samples/cpp/HeaderGuardedClassDeclarations.h",
+  "language" : "cpp",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "GuardedScheduler",
+    "fields" : [ {
+      "name" : "instance",
+      "type" : "GuardedScheduler",
+      "visibility" : "private",
+      "modifiers" : [ "private", "static" ]
+    }, {
+      "name" : "targetStep",
+      "type" : "long",
+      "visibility" : "private",
+      "modifiers" : [ "private" ]
+    }, {
+      "name" : "previousTick",
+      "type" : "long",
+      "visibility" : "private",
+      "modifiers" : [ "private" ]
+    } ],
+    "methods" : [ {
+      "name" : "Acquire",
+      "returnType" : "GuardedScheduler",
+      "isDeclarationOnly" : true,
+      "visibility" : "public",
+      "modifiers" : [ "public", "static" ]
+    }, {
+      "name" : "GuardedScheduler",
+      "isDeclarationOnly" : true,
+      "visibility" : "public",
+      "modifiers" : [ "public" ]
+    }, {
+      "name" : "Start",
+      "returnType" : "void",
+      "isDeclarationOnly" : true,
+      "visibility" : "public",
+      "modifiers" : [ "public", "virtual" ]
+    }, {
+      "name" : "GetStepSeconds",
+      "returnType" : "float",
+      "isDeclarationOnly" : true,
+      "visibility" : "public",
+      "modifiers" : [ "public", "virtual" ]
+    }, {
+      "name" : "SetTargetStep",
+      "returnType" : "void",
+      "isDeclarationOnly" : true,
+      "visibility" : "public",
+      "modifiers" : [ "public", "virtual" ],
+      "parameters" : [ {
+        "name" : "targetStep",
+        "type" : "long"
+      } ]
+    }, {
+      "name" : "SleepFor",
+      "returnType" : "clock_t",
+      "isDeclarationOnly" : true,
+      "visibility" : "public",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "ticks",
+        "type" : "clock_t"
+      } ]
+    } ]
+  } ],
+  "imports" : [ "#include <windows.h>", "#include <ctime>" ]
+}

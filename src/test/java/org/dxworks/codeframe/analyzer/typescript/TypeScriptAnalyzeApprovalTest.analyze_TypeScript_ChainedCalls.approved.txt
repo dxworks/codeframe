@@ -1,0 +1,48 @@
+{
+  "filePath" : "src/test/resources/samples/typescript/ChainedCalls.ts",
+  "language" : "typescript",
+  "types" : [ {
+    "kind" : "type",
+    "name" : "Resource",
+    "extendsType" : "{\n    fetch(): Promise<string>;\n}"
+  } ],
+  "methods" : [ {
+    "name" : "run",
+    "returnType" : "Promise<void>",
+    "parameters" : [ {
+      "name" : "resource",
+      "type" : "Resource"
+    } ],
+    "methodCalls" : [ {
+      "methodName" : "catch",
+      "callCount" : 1
+    }, {
+      "methodName" : "fetch",
+      "objectName" : "resource",
+      "callCount" : 1
+    }, {
+      "methodName" : "finally",
+      "callCount" : 1
+    }, {
+      "methodName" : "resolve",
+      "callCount" : 1
+    }, {
+      "methodName" : "then",
+      "callCount" : 1
+    } ]
+  } ],
+  "methodCalls" : [ {
+    "methodName" : "catch",
+    "callCount" : 2
+  }, {
+    "methodName" : "fetch",
+    "objectName" : "resource",
+    "callCount" : 1
+  }, {
+    "methodName" : "resolve",
+    "callCount" : 1
+  }, {
+    "methodName" : "then",
+    "callCount" : 1
+  } ]
+}

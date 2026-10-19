@@ -1,0 +1,6 @@
+app:
+  name: codeframe
+  replicas: 3
+  features:
+    - parse
+    - extract

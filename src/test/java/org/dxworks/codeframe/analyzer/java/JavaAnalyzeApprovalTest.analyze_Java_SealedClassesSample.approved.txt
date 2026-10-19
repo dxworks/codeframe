@@ -137,7 +137,8 @@
     "modifiers" : [ "public", "sealed" ],
     "methods" : [ {
       "name" : "area",
-      "returnType" : "double"
+      "returnType" : "double",
+      "isDeclarationOnly" : true
     } ]
   } ]
 }

@@ -2,6 +2,7 @@ package org.dxworks.codeframe.analyzer;
 
 import org.dxworks.codeframe.model.*;
 import org.treesitter.TSNode;
+import org.treesitter.TreeSitterTypescript;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,13 +12,18 @@ import java.util.Set;
 
 import static org.dxworks.codeframe.analyzer.TreeSitterHelper.*;
 
-public class TypeScriptAnalyzer implements LanguageAnalyzer {
+public class TypeScriptAnalyzer extends TreeSitterAnalyzer {
+    public TypeScriptAnalyzer() {
+        super(new TreeSitterTypescript());
+    }
+
     
     // Literal types for renderObjectName
     private static final String[] TS_LITERAL_TYPES = {"array", "object", "string", "number"};
+    private static final String NT_REGEX = "regex";
     
     @Override
-    public FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
+    protected FileAnalysis analyze(String filePath, String sourceCode, TSNode rootNode) {
         FileAnalysis analysis = new FileAnalysis();
         analysis.filePath = filePath;
         analysis.language = "typescript";
@@ -295,22 +301,52 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
      * This includes calls inside callbacks passed to top-level calls (e.g., test(), expect() inside describe()).
      */
     private void extractFileLevelMethodCalls(String source, TSNode rootNode, FileAnalysis analysis) {
-        int childCount = rootNode.getNamedChildCount();
-        for (int i = 0; i < childCount; i++) {
-            TSNode child = rootNode.getNamedChild(i);
-            if (child == null || child.isNull()) continue;
-            
-            String nodeType = child.getType();
-            
-            // Look for expression_statement - extract ALL calls within it (including nested callbacks)
-            if ("expression_statement".equals(nodeType)) {
-                List<TSNode> allCalls = findAllDescendants(child, "call_expression");
-                for (TSNode callExpr : allCalls) {
-                    extractCallIntoList(source, callExpr, analysis.methodCalls);
-                }
+        List<TSNode> allCalls = findAllDescendants(rootNode, "call_expression");
+        for (TSNode callExpr : allCalls) {
+            if (!isInsideTypeOrFunctionDeclaration(callExpr, rootNode)) {
+                extractCallIntoList(source, callExpr, analysis.methodCalls);
             }
         }
         analysis.methodCalls.sort(METHOD_CALL_COMPARATOR);
+    }
+
+    private boolean isInsideTypeOrFunctionDeclaration(TSNode node, TSNode rootNode) {
+        TSNode current = node;
+        while (current != null && !current.isNull() && !isSameNode(current, rootNode)) {
+            String type = current.getType();
+            if ("class_declaration".equals(type) || "abstract_class_declaration".equals(type)
+                    || "interface_declaration".equals(type) || "enum_declaration".equals(type)
+                    || "type_alias_declaration".equals(type)
+                    || "function_declaration".equals(type) || "method_definition".equals(type)) {
+                return true;
+            }
+            if (isFunctionValuedDeclarator(current)) {
+                return true;
+            }
+            current = current.getParent();
+        }
+        return false;
+    }
+
+    private boolean isFunctionValuedDeclarator(TSNode node) {
+        String type = node.getType();
+        if (!"arrow_function".equals(type) && !"function".equals(type)
+                && !"function_expression".equals(type) && !"generator_function".equals(type)) {
+            return false;
+        }
+
+        TSNode parent = node.getParent();
+        if (parent == null || parent.isNull() || !"variable_declarator".equals(parent.getType())) {
+            return false;
+        }
+
+        for (int i = 0; i < parent.getNamedChildCount(); i++) {
+            TSNode child = parent.getNamedChild(i);
+            if (isSameNode(node, child)) {
+                return true;
+            }
+        }
+        return false;
     }
     
     /**
@@ -330,7 +366,7 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
             }
             TSNode objNode = functionNode.getNamedChild(0);
             if (objNode != null && !objNode.isNull()) {
-                objectName = renderObjectName(source, objNode, TS_LITERAL_TYPES);
+                objectName = renderTypeScriptObjectName(source, objNode);
             }
         } else if ("identifier".equals(functionNode.getType())) {
             methodName = getNodeText(source, functionNode);
@@ -490,6 +526,7 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
                         mi.returnType = getNodeText(source, typeAnnotation).replaceFirst("^:\\s*", "");
                     }
                 }
+                mi.isDeclarationOnly = true;
                 if (mi.name != null) {
                     typeInfo.methods.add(mi);
                 }
@@ -694,6 +731,9 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         
         // Get method body
         TSNode bodyNode = findFirstChild(methodDef, "statement_block");
+        if (bodyNode == null) {
+            methodInfo.isDeclarationOnly = true;
+        }
         if (bodyNode != null) {
             analyzeMethodBody(source, bodyNode, methodInfo, className);
         }
@@ -724,6 +764,9 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         
         // Get function body
         TSNode bodyNode = findFirstChild(funcDecl, "statement_block");
+        if (bodyNode == null) {
+            methodInfo.isDeclarationOnly = true;
+        }
         if (bodyNode != null) {
             analyzeMethodBody(source, bodyNode, methodInfo, null);
         }
@@ -962,7 +1005,7 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
                     
                     TSNode objectExpr = functionNode.getNamedChild(0);
                     if (objectExpr != null) {
-                        objectName = renderObjectName(source, objectExpr, TS_LITERAL_TYPES);
+                        objectName = renderTypeScriptObjectName(source, objectExpr);
                         
                         // Look up type from local variables (use base identifier for lookup)
                         if ("identifier".equals(objectExpr.getType())) {
@@ -993,6 +1036,16 @@ public class TypeScriptAnalyzer implements LanguageAnalyzer {
         
         // Sort method calls alphabetically
         methodInfo.methodCalls.sort(METHOD_CALL_COMPARATOR);
+    }
+
+    private String renderTypeScriptObjectName(String source, TSNode objectExpr) {
+        if (objectExpr == null || objectExpr.isNull()) return null;
+        if ("call_expression".equals(objectExpr.getType()) || "new_expression".equals(objectExpr.getType())) {
+            return null;
+        }
+        if (NT_REGEX.equals(objectExpr.getType())) return "RegExp";
+        String rendered = renderObjectName(source, objectExpr, TS_LITERAL_TYPES);
+        return rendered != null && rendered.contains("null.") ? null : rendered;
     }
     
     private List<FieldInfo> collectFieldsFromBody(String source, TSNode classBody) {

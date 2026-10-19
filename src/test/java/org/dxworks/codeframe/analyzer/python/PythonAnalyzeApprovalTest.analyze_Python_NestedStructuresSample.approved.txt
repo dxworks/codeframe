@@ -126,7 +126,7 @@
       "name" : "builder",
       "returnType" : "\"Node.Builder\"",
       "visibility" : "public",
-      "modifiers" : [ "static" ],
+      "modifiers" : [ "staticmethod" ],
       "annotations" : [ "@staticmethod" ],
       "methodCalls" : [ {
         "methodName" : "Builder",

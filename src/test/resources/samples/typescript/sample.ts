@@ -9,6 +9,7 @@ export const DEFAULT_TIMEOUT: number = 5000;
 
 // Module-level setup calls
 console.log('Initializing module...');
+if (MAX_RETRIES > 0) initializeRetries();
 
 // Standalone function
 export function calculateTotal(items: number[]): number {
@@ -20,6 +21,10 @@ export function calculateTotal(items: number[]): number {
 export const formatMessage = (name: string, age: number): string => {
     return `Hello ${name}, you are ${age} years old`;
 };
+
+export function isDigits(value: string): boolean {
+    return /^\d+$/.test(value);
+}
 
 // Class with methods and fields
 export class UserService {

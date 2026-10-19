@@ -1,0 +1,35 @@
+swagger: "2.0"
+host: api.swagger.local
+basePath: /v1
+paths:
+  /pets/{id}:
+    get:
+      operationId: getPet
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          schema:
+            $ref: "#/definitions/Pet"
+definitions:
+  Pet:
+    type: object
+    required:
+      - id
+      - type
+    properties:
+      id:
+        type: string
+      type:
+        type: string
+        enum:
+          - dog
+          - cat
+      age:
+        type: integer
+        format: int32
+        minimum: 0

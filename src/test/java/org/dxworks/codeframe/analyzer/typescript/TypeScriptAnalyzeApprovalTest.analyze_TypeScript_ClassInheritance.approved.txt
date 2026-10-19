@@ -125,7 +125,8 @@
     "modifiers" : [ "export" ],
     "methods" : [ {
       "name" : "serialize",
-      "returnType" : "string"
+      "returnType" : "string",
+      "isDeclarationOnly" : true
     } ]
   }, {
     "kind" : "interface",
@@ -133,7 +134,8 @@
     "modifiers" : [ "export" ],
     "methods" : [ {
       "name" : "getId",
-      "returnType" : "string"
+      "returnType" : "string",
+      "isDeclarationOnly" : true
     } ]
   } ]
 }

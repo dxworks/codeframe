@@ -21,7 +21,8 @@
     "name" : "Rectangle",
     "fields" : [ {
       "name" : "top_left",
-      "type" : "Point"
+      "type" : "Point",
+      "annotations" : [ "#[allow(dead_code)]" ]
     }, {
       "name" : "bottom_right",
       "type" : "Point"
@@ -75,6 +76,7 @@
   }, {
     "kind" : "impl",
     "name" : "Point",
+    "annotations" : [ "#[allow(dead_code)]" ],
     "implementsInterfaces" : [ "Default" ],
     "methods" : [ {
       "name" : "default",
@@ -96,13 +98,19 @@
     }, {
       "name" : "area",
       "returnType" : "f64",
+      "annotations" : [ "#[inline]" ],
       "parameters" : [ {
         "name" : "self"
       } ],
-      "localVariables" : [ "width", "height" ],
+      "localVariables" : [ "width", "height", "_cache" ],
       "methodCalls" : [ {
         "methodName" : "abs",
         "callCount" : 2,
+        "parameterCount" : 0
+      }, {
+        "methodName" : "new",
+        "objectType" : "std::collections::HashMap",
+        "callCount" : 1,
         "parameterCount" : 0
       } ]
     }, {

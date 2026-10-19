@@ -196,6 +196,20 @@
       "name" : "VALIDATOR",
       "visibility" : "public",
       "modifiers" : [ "const" ]
+    } ],
+    "methods" : [ {
+      "name" : "format",
+      "visibility" : "public",
+      "modifiers" : [ "static" ],
+      "parameters" : [ {
+        "name" : "text"
+      } ],
+      "methodCalls" : [ {
+        "methodName" : "call",
+        "objectType" : "FORMATTER",
+        "callCount" : 1,
+        "parameterCount" : 1
+      } ]
     } ]
   } ]
 }

@@ -46,7 +46,6 @@
       } ],
       "methodCalls" : [ {
         "methodName" : "find",
-        "objectName" : "OrderStatus.values()",
         "callCount" : 1
       }, {
         "methodName" : "values",

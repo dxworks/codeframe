@@ -81,6 +81,13 @@
       "name" : "circumference",
       "modifiers" : [ "get" ]
     } ]
+  }, {
+    "kind" : "class",
+    "name" : "DefaultWidget",
+    "modifiers" : [ "export", "default" ],
+    "methods" : [ {
+      "name" : "ping"
+    } ]
   } ],
   "methods" : [ {
     "name" : "getUserCity",
@@ -172,20 +179,7 @@
       "callCount" : 1
     }, {
       "methodName" : "replace",
-      "objectName" : "String()",
-      "callCount" : 1
-    }, {
-      "methodName" : "replace",
-      "objectName" : "String().replace()",
-      "callCount" : 1
-    }, {
-      "methodName" : "replace",
-      "objectName" : "String().replace().replace()",
-      "callCount" : 1
-    }, {
-      "methodName" : "replace",
-      "objectName" : "String().replace().replace().replace()",
-      "callCount" : 1
+      "callCount" : 4
     } ]
   }, {
     "name" : "sql",
@@ -213,7 +207,6 @@
       "callCount" : 1
     }, {
       "methodName" : "trim",
-      "objectName" : "strings.reduce()",
       "callCount" : 1
     } ]
   }, {
@@ -343,6 +336,17 @@
       "name" : "line"
     } ]
   }, {
+    "name" : "isDigits",
+    "modifiers" : [ "export" ],
+    "parameters" : [ {
+      "name" : "value"
+    } ],
+    "methodCalls" : [ {
+      "methodName" : "test",
+      "objectName" : "RegExp",
+      "callCount" : 1
+    } ]
+  }, {
     "name" : "createPerson",
     "modifiers" : [ "export" ],
     "parameters" : [ {
@@ -382,7 +386,6 @@
       "callCount" : 2
     }, {
       "methodName" : "toUpperCase",
-      "objectName" : "propertyName.charAt()",
       "callCount" : 2
     } ]
   }, {
@@ -403,5 +406,9 @@
     "name" : "mathUtils",
     "type" : "Object",
     "modifiers" : [ "const", "export" ]
+  }, {
+    "name" : "fs",
+    "type" : "requireResult",
+    "modifiers" : [ "const" ]
   } ]
 }

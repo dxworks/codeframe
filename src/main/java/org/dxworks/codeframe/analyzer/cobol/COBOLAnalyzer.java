@@ -19,7 +19,6 @@ import org.dxworks.codeframe.model.cobol.COBOLFileOperation;
 import org.dxworks.codeframe.model.cobol.COBOLParagraph;
 import org.dxworks.codeframe.model.cobol.COBOLPerformCall;
 import org.dxworks.codeframe.model.cobol.COBOLSection;
-import org.treesitter.TSNode;
 
 import java.util.ArrayList;
 import java.util.ArrayDeque;
@@ -39,7 +38,7 @@ public class COBOLAnalyzer implements LanguageAnalyzer {
     }
 
     @Override
-    public Analysis analyze(String filePath, String sourceCode, TSNode rootNode) {
+    public Analysis analyze(String filePath, String sourceCode) {
         COBOLFileAnalysis analysis = new COBOLFileAnalysis();
         analysis.filePath = filePath;
 

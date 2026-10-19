@@ -1,0 +1,64 @@
+{
+  "filePath" : "src/test/resources/samples/c/BasicHeader.h",
+  "language" : "c",
+  "types" : [ {
+    "kind" : "typedef",
+    "name" : "HeaderStatus",
+    "extendsType" : "enum HeaderStatus"
+  }, {
+    "kind" : "typedef",
+    "name" : "HeaderPoint",
+    "extendsType" : "struct HeaderPoint"
+  }, {
+    "kind" : "typedef",
+    "name" : "HeaderFlags",
+    "extendsType" : "unsigned int"
+  }, {
+    "kind" : "struct",
+    "name" : "HeaderPoint",
+    "fields" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    } ]
+  }, {
+    "kind" : "enum",
+    "name" : "HeaderStatus",
+    "fields" : [ {
+      "name" : "HEADER_OK"
+    }, {
+      "name" : "HEADER_FAIL"
+    } ]
+  } ],
+  "methods" : [ {
+    "name" : "init_header",
+    "returnType" : "HeaderStatus",
+    "isDeclarationOnly" : true,
+    "parameters" : [ {
+      "name" : "point",
+      "type" : "HeaderPoint *"
+    } ]
+  }, {
+    "name" : "trace_header",
+    "returnType" : "int",
+    "isDeclarationOnly" : true,
+    "parameters" : [ {
+      "name" : "msg",
+      "type" : "const char *"
+    }, {
+      "name" : "..."
+    } ]
+  } ],
+  "fields" : [ {
+    "name" : "default_limit",
+    "type" : "int",
+    "modifiers" : [ "extern", "const" ]
+  }, {
+    "name" : "global_total",
+    "type" : "int",
+    "modifiers" : [ "extern" ]
+  } ],
+  "imports" : [ "#include <stddef.h>" ]
+}

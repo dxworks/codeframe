@@ -8,9 +8,13 @@ analyzers:
   typescript: true
   python: true
   csharp: true
+  c: true
+  cpp: true
   php: true
   sql: true
   cobol: true
   ruby: true
   rust: true
   markdown: true
+  xml: true
+  yaml: true

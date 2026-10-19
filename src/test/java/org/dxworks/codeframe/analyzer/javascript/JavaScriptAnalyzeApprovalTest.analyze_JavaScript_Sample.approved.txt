@@ -67,7 +67,6 @@
       "callCount" : 1
     }, {
       "methodName" : "toBeGreaterThan",
-      "objectName" : "expect()",
       "callCount" : 1
     } ]
   }, {

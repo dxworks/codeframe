@@ -1,18 +1,20 @@
 package org.dxworks.codeframe.analyzer.cobol;
 
 import org.approvaltests.Approvals;
-import org.dxworks.codeframe.App;
+import org.dxworks.codeframe.CodeframeConfig;
+import org.dxworks.codeframe.FileAnalyzer;
 import org.dxworks.codeframe.Language;
 import org.dxworks.codeframe.model.Analysis;
 import org.dxworks.codeframe.TestUtils;
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Path;
+import java.io.File;
 import java.nio.file.Paths;
 import java.util.List;
 
 public class COBOLAnalyzeApprovalTest {
     private static final String SAMPLES_BASE_PATH = "src/test/resources/samples/cobol/";
+    private static final FileAnalyzer ANALYZER = TestUtils.defaultFileAnalyzer();
 
     @Test
     void analyze_COBOL_BasicProgram() throws Exception {
@@ -36,26 +38,21 @@ public class COBOLAnalyzeApprovalTest {
 
     @Test
     void analyze_COBOL_CopybookExpansion() throws Exception {
-        // Initialize analyzers with copybooks using the new convenience method
-        List<Path> copybookPaths = List.of(
-            Paths.get(SAMPLES_BASE_PATH + "SIMPLE.cpy"),
-            Paths.get(SAMPLES_BASE_PATH + "PROCEDURES.cpy")
+        List<File> copybookFiles = List.of(
+            Paths.get(SAMPLES_BASE_PATH + "SIMPLE.cpy").toFile(),
+            Paths.get(SAMPLES_BASE_PATH + "PROCEDURES.cpy").toFile()
         );
-        App.initAnalyzersForTestsFromPaths(copybookPaths);
-        
-        // Now use the standard verify method since analyzers are initialized
-        verify("copybook-test.cbl");
-    }
-
-    private static void verify(String filePath) throws Exception {
-        Analysis analysis = App.analyzeFile(Paths.get(SAMPLES_BASE_PATH + filePath), Language.COBOL);
+        FileAnalyzer copybookAnalyzer = new FileAnalyzer(
+                CodeframeConfig.load(),
+                new CobolCopybookRepository(copybookFiles));
+        Analysis analysis = copybookAnalyzer.analyze(
+                Paths.get(SAMPLES_BASE_PATH + "copybook-test.cbl"),
+                Language.COBOL);
         Approvals.verify(TestUtils.APPROVAL_MAPPER.writeValueAsString(analysis));
     }
 
     private static void verifyWithEmptyCopybooks(String filePath) throws Exception {
-        // Initialize analyzers for COBOL tests (no copybooks needed for basic tests)
-        App.initAnalyzersForTestsFromPaths(List.of());
-        Analysis analysis = App.analyzeFile(Paths.get(SAMPLES_BASE_PATH + filePath), Language.COBOL);
+        Analysis analysis = ANALYZER.analyze(Paths.get(SAMPLES_BASE_PATH + filePath), Language.COBOL);
         Approvals.verify(TestUtils.APPROVAL_MAPPER.writeValueAsString(analysis));
     }
 }

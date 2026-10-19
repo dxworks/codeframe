@@ -103,7 +103,19 @@
       "callCount" : 1
     }, {
       "methodName" : "toBeGreaterThan",
-      "objectName" : "expect()",
+      "callCount" : 1
+    } ]
+  }, {
+    "name" : "isDigits",
+    "returnType" : "boolean",
+    "modifiers" : [ "export" ],
+    "parameters" : [ {
+      "name" : "value",
+      "type" : "string"
+    } ],
+    "methodCalls" : [ {
+      "methodName" : "test",
+      "objectName" : "RegExp",
       "callCount" : 1
     } ]
   }, {
@@ -135,6 +147,9 @@
     "modifiers" : [ "const", "export" ]
   } ],
   "methodCalls" : [ {
+    "methodName" : "initializeRetries",
+    "callCount" : 1
+  }, {
     "methodName" : "log",
     "objectName" : "console",
     "callCount" : 1

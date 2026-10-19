@@ -4,7 +4,6 @@
   "types" : [ {
     "kind" : "class",
     "name" : "ApplicationException",
-    "visibility" : "public",
     "fields" : [ {
       "name" : "errorCode",
       "type" : "string",
@@ -77,7 +76,6 @@
   }, {
     "kind" : "class",
     "name" : "ValidationException",
-    "visibility" : "public",
     "extendsType" : "ApplicationException",
     "fields" : [ {
       "name" : "errors",
@@ -134,7 +132,6 @@
   }, {
     "kind" : "class",
     "name" : "NotFoundException",
-    "visibility" : "public",
     "extendsType" : "ApplicationException",
     "fields" : [ {
       "name" : "resourceType",
@@ -179,7 +176,6 @@
   }, {
     "kind" : "class",
     "name" : "DatabaseException",
-    "visibility" : "public",
     "extendsType" : "ApplicationException",
     "fields" : [ {
       "name" : "query",
@@ -216,7 +212,6 @@
   }, {
     "kind" : "class",
     "name" : "AuthenticationException",
-    "visibility" : "public",
     "extendsType" : "ApplicationException",
     "methods" : [ {
       "name" : "__construct",
@@ -236,7 +231,6 @@
   }, {
     "kind" : "class",
     "name" : "AuthorizationException",
-    "visibility" : "public",
     "extendsType" : "ApplicationException",
     "fields" : [ {
       "name" : "requiredPermission",
@@ -268,7 +262,6 @@
   }, {
     "kind" : "class",
     "name" : "UserService",
-    "visibility" : "public",
     "fields" : [ {
       "name" : "users",
       "type" : "array",
@@ -358,7 +351,6 @@
   }, {
     "kind" : "class",
     "name" : "DatabaseConnection",
-    "visibility" : "public",
     "fields" : [ {
       "name" : "connected",
       "type" : "bool",
@@ -418,7 +410,6 @@
   }, {
     "kind" : "class",
     "name" : "ExceptionHandler",
-    "visibility" : "public",
     "fields" : [ {
       "name" : "handlers",
       "type" : "array",
@@ -485,7 +476,6 @@
   }, {
     "kind" : "class",
     "name" : "RetryableOperation",
-    "visibility" : "public",
     "fields" : [ {
       "name" : "maxAttempts",
       "type" : "int",
@@ -527,7 +517,6 @@
   }, {
     "kind" : "class",
     "name" : "OrderProcessor",
-    "visibility" : "public",
     "fields" : [ {
       "name" : "userService",
       "type" : "UserService",

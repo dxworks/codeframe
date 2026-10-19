@@ -1,0 +1,28 @@
+{
+  "filePath" : "src/test/resources/samples/xml/simple.xml",
+  "language" : "xml",
+  "roots" : [ {
+    "name" : "catalog",
+    "lines" : 9,
+    "children" : [ {
+      "name" : "book",
+      "lines" : 4,
+      "attributes" : [ "id" ],
+      "children" : [ {
+        "name" : "title",
+        "lines" : 1
+      }, {
+        "name" : "author",
+        "lines" : 1
+      } ]
+    }, {
+      "name" : "book",
+      "lines" : 3,
+      "attributes" : [ "id", "lang" ],
+      "children" : [ {
+        "name" : "title",
+        "lines" : 1
+      } ]
+    } ]
+  } ]
+}

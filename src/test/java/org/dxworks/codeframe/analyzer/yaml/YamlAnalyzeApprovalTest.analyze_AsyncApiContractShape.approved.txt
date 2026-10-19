@@ -1,0 +1,573 @@
+{
+  "filePath" : "src/test/resources/samples/yaml/asyncapi_contract_shape.yaml",
+  "language" : "yaml",
+  "documents" : [ {
+    "lines" : 86,
+    "dialect" : "asyncapi",
+    "root" : {
+      "kind" : "mapping",
+      "lines" : 86,
+      "entries" : [ {
+        "key" : "asyncapi",
+        "value" : {
+          "kind" : "scalar",
+          "lines" : 1,
+          "value" : "3.0.0"
+        }
+      }, {
+        "key" : "info",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 3,
+          "entries" : [ {
+            "key" : "title",
+            "value" : {
+              "kind" : "scalar",
+              "lines" : 1,
+              "value" : "Event API"
+            }
+          }, {
+            "key" : "description",
+            "value" : {
+              "kind" : "scalar",
+              "lines" : 1
+            }
+          } ]
+        }
+      }, {
+        "key" : "servers",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 5,
+          "entries" : [ {
+            "key" : "production",
+            "value" : {
+              "kind" : "mapping",
+              "lines" : 4,
+              "entries" : [ {
+                "key" : "host",
+                "value" : {
+                  "kind" : "scalar",
+                  "lines" : 1
+                }
+              }, {
+                "key" : "protocol",
+                "value" : {
+                  "kind" : "scalar",
+                  "lines" : 1
+                }
+              }, {
+                "key" : "url",
+                "value" : {
+                  "kind" : "scalar",
+                  "lines" : 1
+                }
+              } ]
+            }
+          } ]
+        }
+      }, {
+        "key" : "channels",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 36,
+          "entries" : [ {
+            "key" : "user/signedup",
+            "value" : {
+              "kind" : "mapping",
+              "lines" : 35,
+              "entries" : [ {
+                "key" : "publish",
+                "value" : {
+                  "kind" : "mapping",
+                  "lines" : 27,
+                  "entries" : [ {
+                    "key" : "operationId",
+                    "value" : {
+                      "kind" : "scalar",
+                      "lines" : 1,
+                      "value" : "publishSignedUp"
+                    }
+                  }, {
+                    "key" : "summary",
+                    "value" : {
+                      "kind" : "scalar",
+                      "lines" : 1
+                    }
+                  }, {
+                    "key" : "description",
+                    "value" : {
+                      "kind" : "scalar",
+                      "lines" : 1
+                    }
+                  }, {
+                    "key" : "message",
+                    "value" : {
+                      "kind" : "mapping",
+                      "lines" : 23,
+                      "entries" : [ {
+                        "key" : "payload",
+                        "value" : {
+                          "kind" : "mapping",
+                          "lines" : 22,
+                          "entries" : [ {
+                            "key" : "type",
+                            "value" : {
+                              "kind" : "scalar",
+                              "lines" : 1,
+                              "value" : "object"
+                            }
+                          }, {
+                            "key" : "required",
+                            "value" : {
+                              "kind" : "sequence",
+                              "lines" : 3,
+                              "items" : [ {
+                                "kind" : "scalar",
+                                "lines" : 1,
+                                "value" : "userId"
+                              }, {
+                                "kind" : "scalar",
+                                "lines" : 1,
+                                "value" : "status"
+                              } ]
+                            }
+                          }, {
+                            "key" : "properties",
+                            "value" : {
+                              "kind" : "mapping",
+                              "lines" : 17,
+                              "entries" : [ {
+                                "key" : "userId",
+                                "value" : {
+                                  "kind" : "mapping",
+                                  "lines" : 2,
+                                  "entries" : [ {
+                                    "key" : "type",
+                                    "value" : {
+                                      "kind" : "scalar",
+                                      "lines" : 1,
+                                      "value" : "string"
+                                    }
+                                  } ]
+                                }
+                              }, {
+                                "key" : "status",
+                                "value" : {
+                                  "kind" : "mapping",
+                                  "lines" : 5,
+                                  "entries" : [ {
+                                    "key" : "type",
+                                    "value" : {
+                                      "kind" : "scalar",
+                                      "lines" : 1,
+                                      "value" : "string"
+                                    }
+                                  }, {
+                                    "key" : "enum",
+                                    "value" : {
+                                      "kind" : "sequence",
+                                      "lines" : 3,
+                                      "items" : [ {
+                                        "kind" : "scalar",
+                                        "lines" : 1,
+                                        "value" : "active"
+                                      }, {
+                                        "kind" : "scalar",
+                                        "lines" : 1,
+                                        "value" : "inactive"
+                                      } ]
+                                    }
+                                  } ]
+                                }
+                              }, {
+                                "key" : "profile",
+                                "value" : {
+                                  "kind" : "mapping",
+                                  "lines" : 2,
+                                  "entries" : [ {
+                                    "key" : "$ref",
+                                    "value" : {
+                                      "kind" : "scalar",
+                                      "lines" : 1,
+                                      "value" : "#/components/schemas/Profile"
+                                    }
+                                  } ]
+                                }
+                              }, {
+                                "key" : "remote",
+                                "value" : {
+                                  "kind" : "mapping",
+                                  "lines" : 2,
+                                  "entries" : [ {
+                                    "key" : "$ref",
+                                    "value" : {
+                                      "kind" : "scalar",
+                                      "lines" : 1
+                                    }
+                                  } ]
+                                }
+                              }, {
+                                "key" : "amount",
+                                "value" : {
+                                  "kind" : "mapping",
+                                  "lines" : 3,
+                                  "entries" : [ {
+                                    "key" : "type",
+                                    "value" : {
+                                      "kind" : "scalar",
+                                      "lines" : 1,
+                                      "value" : "number"
+                                    }
+                                  }, {
+                                    "key" : "format",
+                                    "value" : {
+                                      "kind" : "scalar",
+                                      "lines" : 1,
+                                      "value" : "float"
+                                    }
+                                  } ]
+                                }
+                              }, {
+                                "key" : "x-sensitive",
+                                "value" : {
+                                  "kind" : "mapping",
+                                  "lines" : 2,
+                                  "entries" : [ {
+                                    "key" : "token",
+                                    "value" : {
+                                      "kind" : "scalar",
+                                      "lines" : 1
+                                    }
+                                  } ]
+                                }
+                              } ]
+                            }
+                          } ]
+                        }
+                      } ]
+                    }
+                  } ]
+                }
+              }, {
+                "key" : "subscribe",
+                "value" : {
+                  "kind" : "mapping",
+                  "lines" : 4,
+                  "entries" : [ {
+                    "key" : "operationId",
+                    "value" : {
+                      "kind" : "scalar",
+                      "lines" : 1,
+                      "value" : "receiveSignedUp"
+                    }
+                  }, {
+                    "key" : "x-meta",
+                    "value" : {
+                      "kind" : "mapping",
+                      "lines" : 2,
+                      "entries" : [ {
+                        "key" : "internal",
+                        "value" : {
+                          "kind" : "scalar",
+                          "lines" : 1
+                        }
+                      } ]
+                    }
+                  } ]
+                }
+              }, {
+                "key" : "parameters",
+                "value" : {
+                  "kind" : "mapping",
+                  "lines" : 3,
+                  "entries" : [ {
+                    "key" : "fake",
+                    "value" : {
+                      "kind" : "mapping",
+                      "lines" : 2,
+                      "entries" : [ {
+                        "key" : "operationId",
+                        "value" : {
+                          "kind" : "scalar",
+                          "lines" : 1
+                        }
+                      } ]
+                    }
+                  } ]
+                }
+              } ]
+            }
+          } ]
+        }
+      }, {
+        "key" : "operations",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 11,
+          "entries" : [ {
+            "key" : "sendSignedUp",
+            "value" : {
+              "kind" : "mapping",
+              "lines" : 4,
+              "entries" : [ {
+                "key" : "action",
+                "value" : {
+                  "kind" : "scalar",
+                  "lines" : 1,
+                  "value" : "send"
+                }
+              }, {
+                "key" : "operationId",
+                "value" : {
+                  "kind" : "scalar",
+                  "lines" : 1,
+                  "value" : "opSendSignedUp"
+                }
+              }, {
+                "key" : "summary",
+                "value" : {
+                  "kind" : "scalar",
+                  "lines" : 1
+                }
+              } ]
+            }
+          }, {
+            "key" : "receiveSignedUp",
+            "value" : {
+              "kind" : "mapping",
+              "lines" : 3,
+              "entries" : [ {
+                "key" : "action",
+                "value" : {
+                  "kind" : "scalar",
+                  "lines" : 1,
+                  "value" : "receive"
+                }
+              }, {
+                "key" : "operationId",
+                "value" : {
+                  "kind" : "scalar",
+                  "lines" : 1,
+                  "value" : "opReceiveSignedUp"
+                }
+              } ]
+            }
+          }, {
+            "key" : "invalidDirection",
+            "value" : {
+              "kind" : "mapping",
+              "lines" : 3,
+              "entries" : [ {
+                "key" : "action",
+                "value" : {
+                  "kind" : "scalar",
+                  "lines" : 1
+                }
+              }, {
+                "key" : "operationId",
+                "value" : {
+                  "kind" : "scalar",
+                  "lines" : 1,
+                  "value" : "opInvalidDirection"
+                }
+              } ]
+            }
+          } ]
+        }
+      }, {
+        "key" : "components",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 25,
+          "entries" : [ {
+            "key" : "schemas",
+            "value" : {
+              "kind" : "mapping",
+              "lines" : 18,
+              "entries" : [ {
+                "key" : "Profile",
+                "value" : {
+                  "kind" : "mapping",
+                  "lines" : 17,
+                  "entries" : [ {
+                    "key" : "type",
+                    "value" : {
+                      "kind" : "scalar",
+                      "lines" : 1,
+                      "value" : "object"
+                    }
+                  }, {
+                    "key" : "required",
+                    "value" : {
+                      "kind" : "sequence",
+                      "lines" : 2,
+                      "items" : [ {
+                        "kind" : "scalar",
+                        "lines" : 1,
+                        "value" : "email"
+                      } ]
+                    }
+                  }, {
+                    "key" : "properties",
+                    "value" : {
+                      "kind" : "mapping",
+                      "lines" : 13,
+                      "entries" : [ {
+                        "key" : "email",
+                        "value" : {
+                          "kind" : "mapping",
+                          "lines" : 3,
+                          "entries" : [ {
+                            "key" : "type",
+                            "value" : {
+                              "kind" : "scalar",
+                              "lines" : 1,
+                              "value" : "string"
+                            }
+                          }, {
+                            "key" : "format",
+                            "value" : {
+                              "kind" : "scalar",
+                              "lines" : 1,
+                              "value" : "email"
+                            }
+                          } ]
+                        }
+                      }, {
+                        "key" : "role",
+                        "value" : {
+                          "kind" : "mapping",
+                          "lines" : 5,
+                          "entries" : [ {
+                            "key" : "type",
+                            "value" : {
+                              "kind" : "scalar",
+                              "lines" : 1,
+                              "value" : "string"
+                            }
+                          }, {
+                            "key" : "enum",
+                            "value" : {
+                              "kind" : "sequence",
+                              "lines" : 3,
+                              "items" : [ {
+                                "kind" : "scalar",
+                                "lines" : 1,
+                                "value" : "admin"
+                              }, {
+                                "kind" : "scalar",
+                                "lines" : 1,
+                                "value" : "user"
+                              } ]
+                            }
+                          } ]
+                        }
+                      }, {
+                        "key" : "refLocal",
+                        "value" : {
+                          "kind" : "mapping",
+                          "lines" : 2,
+                          "entries" : [ {
+                            "key" : "$ref",
+                            "value" : {
+                              "kind" : "scalar",
+                              "lines" : 1,
+                              "value" : "#/components/schemas/Role"
+                            }
+                          } ]
+                        }
+                      }, {
+                        "key" : "refExternal",
+                        "value" : {
+                          "kind" : "mapping",
+                          "lines" : 2,
+                          "entries" : [ {
+                            "key" : "$ref",
+                            "value" : {
+                              "kind" : "scalar",
+                              "lines" : 1
+                            }
+                          } ]
+                        }
+                      } ]
+                    }
+                  } ]
+                }
+              } ]
+            }
+          }, {
+            "key" : "securitySchemes",
+            "value" : {
+              "kind" : "mapping",
+              "lines" : 6,
+              "entries" : [ {
+                "key" : "bearerAuth",
+                "value" : {
+                  "kind" : "mapping",
+                  "lines" : 5,
+                  "entries" : [ {
+                    "key" : "type",
+                    "value" : {
+                      "kind" : "scalar",
+                      "lines" : 1,
+                      "value" : "http"
+                    }
+                  }, {
+                    "key" : "scheme",
+                    "value" : {
+                      "kind" : "scalar",
+                      "lines" : 1
+                    }
+                  }, {
+                    "key" : "bearerFormat",
+                    "value" : {
+                      "kind" : "scalar",
+                      "lines" : 1
+                    }
+                  }, {
+                    "key" : "description",
+                    "value" : {
+                      "kind" : "scalar",
+                      "lines" : 1
+                    }
+                  } ]
+                }
+              } ]
+            }
+          } ]
+        }
+      }, {
+        "key" : "security",
+        "value" : {
+          "kind" : "sequence",
+          "lines" : 2,
+          "items" : [ {
+            "kind" : "mapping",
+            "lines" : 2,
+            "entries" : [ {
+              "key" : "bearerAuth",
+              "value" : {
+                "kind" : "sequence",
+                "lines" : 1
+              }
+            } ]
+          } ]
+        }
+      }, {
+        "key" : "x-internal",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 2,
+          "entries" : [ {
+            "key" : "sample",
+            "value" : {
+              "kind" : "scalar",
+              "lines" : 1
+            }
+          } ]
+        }
+      } ]
+    }
+  } ]
+}

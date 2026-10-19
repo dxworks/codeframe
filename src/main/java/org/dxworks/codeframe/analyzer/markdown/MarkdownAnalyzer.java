@@ -28,7 +28,6 @@ import org.dxworks.codeframe.model.Analysis;
 import org.dxworks.codeframe.model.markdown.MarkdownFileAnalysis;
 import org.dxworks.codeframe.model.markdown.MarkdownSection;
 import org.dxworks.codeframe.model.markdown.MarkdownElement;
-import org.treesitter.TSNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +50,7 @@ public class MarkdownAnalyzer implements LanguageAnalyzer {
     }
     
     @Override
-    public Analysis analyze(String filePath, String sourceCode, TSNode rootNode) {
+    public Analysis analyze(String filePath, String sourceCode) {
         MarkdownFileAnalysis analysis = new MarkdownFileAnalysis();
         analysis.filePath = filePath;
         // language is already set to "markdown" in the model

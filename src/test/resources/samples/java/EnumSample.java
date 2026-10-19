@@ -45,4 +45,13 @@ enum Status {
     public boolean isActive() {
         return this == ACTIVE;
     }
+
+    // Regression fixture: members below must not leak into Status fields/methods.
+    static class NestedStats {
+        private int hits;
+
+        int increment() {
+            return ++hits;
+        }
+    }
 }

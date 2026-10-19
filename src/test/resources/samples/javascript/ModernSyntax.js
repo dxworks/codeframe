@@ -185,6 +185,10 @@ function parseLine(line) {
     return { raw: line };
 }
 
+export function isDigits(value) {
+    return /^\d+$/.test(value);
+}
+
 // 5. Class expressions
 export const Point = class {
     constructor(x, y) {
@@ -377,3 +381,15 @@ export function initializeDefaults(options) {
     
     return result;
 }
+
+// 8. Class expression exported as default through identifier
+const DefaultWidget = class DefaultWidgetImpl {
+    ping() {
+        return 'pong';
+    }
+};
+
+export default DefaultWidget;
+
+// 9. CommonJS require should not be extracted as imports
+const fs = require('fs');

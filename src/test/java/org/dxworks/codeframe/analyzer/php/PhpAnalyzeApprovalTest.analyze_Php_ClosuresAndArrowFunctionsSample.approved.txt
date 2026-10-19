@@ -4,7 +4,6 @@
   "types" : [ {
     "kind" : "class",
     "name" : "Calculator",
-    "visibility" : "public",
     "fields" : [ {
       "name" : "operations",
       "type" : "array",
@@ -91,7 +90,6 @@
   }, {
     "kind" : "class",
     "name" : "Collection",
-    "visibility" : "public",
     "fields" : [ {
       "name" : "items",
       "type" : "array",
@@ -209,7 +207,6 @@
   }, {
     "kind" : "class",
     "name" : "EventEmitter",
-    "visibility" : "public",
     "fields" : [ {
       "name" : "listeners",
       "type" : "array",
@@ -308,7 +305,6 @@
   }, {
     "kind" : "class",
     "name" : "FunctionUtils",
-    "visibility" : "public",
     "methods" : [ {
       "name" : "compose",
       "returnType" : "callable",

@@ -1,0 +1,87 @@
+{
+  "filePath" : "src/test/resources/samples/cpp/TypeCoverageAndWrappedDeclaration.cpp",
+  "language" : "cpp",
+  "types" : [ {
+    "kind" : "class",
+    "name" : "Outer",
+    "types" : [ {
+      "kind" : "class",
+      "name" : "Inner",
+      "fields" : [ {
+        "name" : "v",
+        "type" : "int",
+        "visibility" : "public",
+        "modifiers" : [ "public" ]
+      } ]
+    } ]
+  }, {
+    "kind" : "struct",
+    "name" : "Plain",
+    "fields" : [ {
+      "name" : "x",
+      "type" : "int"
+    } ]
+  }, {
+    "kind" : "union",
+    "name" : "Number",
+    "fields" : [ {
+      "name" : "i",
+      "type" : "int"
+    }, {
+      "name" : "f",
+      "type" : "float"
+    } ]
+  }, {
+    "kind" : "typedef",
+    "name" : "OldPoint",
+    "extendsType" : "struct OldPoint"
+  }, {
+    "kind" : "struct",
+    "name" : "OldPoint",
+    "fields" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    } ]
+  }, {
+    "kind" : "enum class",
+    "name" : "Color",
+    "fields" : [ {
+      "name" : "RED"
+    }, {
+      "name" : "BLUE"
+    } ]
+  }, {
+    "kind" : "enum",
+    "name" : "Priority",
+    "fields" : [ {
+      "name" : "LOW"
+    }, {
+      "name" : "HIGH"
+    } ]
+  } ],
+  "methods" : [ {
+    "name" : "declared_ref",
+    "returnType" : "int&",
+    "isDeclarationOnly" : true
+  }, {
+    "name" : "declared_auto",
+    "returnType" : "auto"
+  }, {
+    "name" : "run_type_coverage",
+    "returnType" : "int",
+    "localVariables" : [ "in", "n", "local_auto" ],
+    "methodCalls" : [ {
+      "methodName" : "declared_auto",
+      "callCount" : 1,
+      "parameterCount" : 0
+    }, {
+      "methodName" : "declared_ref",
+      "callCount" : 1,
+      "parameterCount" : 0
+    } ]
+  } ],
+  "imports" : [ "#include <cstddef>" ]
+}

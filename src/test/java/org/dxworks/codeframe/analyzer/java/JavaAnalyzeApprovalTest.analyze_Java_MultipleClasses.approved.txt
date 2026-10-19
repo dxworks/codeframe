@@ -65,6 +65,32 @@
           "parameterCount" : 1
         } ]
       } ]
+    }, {
+      "kind" : "interface",
+      "name" : "NestedContract",
+      "methods" : [ {
+        "name" : "name",
+        "returnType" : "String",
+        "isDeclarationOnly" : true
+      } ]
+    }, {
+      "kind" : "enum",
+      "name" : "NestedState",
+      "fields" : [ {
+        "name" : "READY",
+        "type" : "NestedState"
+      }, {
+        "name" : "RUNNING",
+        "type" : "NestedState"
+      } ]
+    }, {
+      "kind" : "record",
+      "name" : "NestedValue",
+      "fields" : [ {
+        "name" : "amount",
+        "type" : "int",
+        "modifiers" : [ "final" ]
+      } ]
     } ]
   }, {
     "kind" : "class",

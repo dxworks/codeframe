@@ -1,0 +1,44 @@
+{
+  "filePath" : "src/test/resources/samples/yaml/generic.yaml",
+  "language" : "yaml",
+  "documents" : [ {
+    "lines" : 7,
+    "root" : {
+      "kind" : "mapping",
+      "lines" : 7,
+      "entries" : [ {
+        "key" : "app",
+        "value" : {
+          "kind" : "mapping",
+          "lines" : 6,
+          "entries" : [ {
+            "key" : "name",
+            "value" : {
+              "kind" : "scalar",
+              "lines" : 1
+            }
+          }, {
+            "key" : "replicas",
+            "value" : {
+              "kind" : "scalar",
+              "lines" : 1
+            }
+          }, {
+            "key" : "features",
+            "value" : {
+              "kind" : "sequence",
+              "lines" : 3,
+              "items" : [ {
+                "kind" : "scalar",
+                "lines" : 1
+              }, {
+                "kind" : "scalar",
+                "lines" : 1
+              } ]
+            }
+          } ]
+        }
+      } ]
+    }
+  } ]
+}
