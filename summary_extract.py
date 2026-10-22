@@ -191,7 +191,6 @@ def _parse_jsonl_file(file_path: Path) -> dict[str, Any]:
 
             if record_kind == 'done':
                 run_files_analyzed += _to_int(record.get('files_analyzed'))
-                run_files_with_errors += _to_int(record.get('files_with_errors'))
                 run_duration_seconds += _to_int(record.get('duration_seconds'))
                 continue
 
