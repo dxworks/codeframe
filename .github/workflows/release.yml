@@ -51,6 +51,12 @@ jobs:
           cp "$JAR_PATH" codeframe/codeframe.jar
           cp instrument.yml codeframe/instrument.yml
           cp instrument.v2.yml codeframe/instrument.v2.yml
+          # The tool's version, from the release tag, in both manifests (V1 and V2)
+          VERSION="${{ steps.tag.outputs.semver }}"
+          for f in codeframe/instrument.yml codeframe/instrument.v2.yml; do
+            awk -v v="$VERSION" '!/^version:/ {print} /^name:/ {print "version: " v}' "$f" > "$f.tmp"
+            mv "$f.tmp" "$f"
+          done
           cp .ignore codeframe/.ignore
           cp codeframe-config.yml codeframe/codeframe-config.yml
           cp codeframe-summary.py codeframe/codeframe-summary.py
