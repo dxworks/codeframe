@@ -22,7 +22,7 @@ repositories {
 
 dependencies {
     // Core binding (bundles natives for Win/Linux/macOS)
-    implementation 'io.github.bonede:tree-sitter:0.26.3'
+    implementation 'io.github.bonede:tree-sitter:0.26.3.1'
   
     // Language grammars
     implementation 'io.github.bonede:tree-sitter-java:0.23.4'
@@ -36,8 +36,8 @@ dependencies {
     implementation 'io.github.bonede:tree-sitter-c:0.24.1'
     implementation 'io.github.bonede:tree-sitter-cpp:0.23.4'
 
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.21.0'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.21.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.21.7'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.21.7'
     implementation 'com.github.jsqlparser:jsqlparser:5.3'
     implementation 'org.commonmark:commonmark:0.27.1'
     implementation 'org.commonmark:commonmark-ext-gfm-tables:0.27.1'
