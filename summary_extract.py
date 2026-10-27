@@ -38,6 +38,7 @@ def extract_codeframe_summary(results_directory: str | Path) -> dict[str, Any]:
     run_files_analyzed = 0
     run_files_with_errors = 0
     run_duration_seconds = 0
+    runs_completed = 0
 
     invalid_lines = 0
     parse_failures = 0
@@ -81,6 +82,7 @@ def extract_codeframe_summary(results_directory: str | Path) -> dict[str, Any]:
         run_files_analyzed += file_parsed['runFilesAnalyzed']
         run_files_with_errors += file_parsed['runFilesWithErrors']
         run_duration_seconds += file_parsed['runDurationSeconds']
+        runs_completed += file_parsed['runsCompleted']
 
         invalid_lines += file_parsed['invalidLines']
         parse_failures += file_parsed['parseFailures']
@@ -94,7 +96,7 @@ def extract_codeframe_summary(results_directory: str | Path) -> dict[str, Any]:
     has_data_quality_issues = (
         parse_failures > 0
         or invalid_lines > 0
-        or files_total == 0
+        or (files_total == 0 and runs_completed == 0)
         or run_files_with_errors > 0
         or _is_coverage_incomplete(run_expected_total, run_files_analyzed)
     )
@@ -102,6 +104,7 @@ def extract_codeframe_summary(results_directory: str | Path) -> dict[str, Any]:
     status = _resolve_status(
         jsonl_count=len(jsonl_files),
         files_total=files_total,
+        runs_completed=runs_completed,
         has_data_quality_issues=has_data_quality_issues,
     )
 
@@ -137,6 +140,7 @@ def _parse_jsonl_file(file_path: Path) -> dict[str, Any]:
     run_files_analyzed = 0
     run_files_with_errors = 0
     run_duration_seconds = 0
+    runs_completed = 0
 
     invalid_lines = 0
     parse_failures = 0
@@ -192,6 +196,7 @@ def _parse_jsonl_file(file_path: Path) -> dict[str, Any]:
             if record_kind == 'done':
                 run_files_analyzed += _to_int(record.get('files_analyzed'))
                 run_duration_seconds += _to_int(record.get('duration_seconds'))
+                runs_completed += 1
                 continue
 
             if record_kind == 'error':
@@ -288,6 +293,7 @@ def _parse_jsonl_file(file_path: Path) -> dict[str, Any]:
         'runFilesAnalyzed': run_files_analyzed,
         'runFilesWithErrors': run_files_with_errors,
         'runDurationSeconds': run_duration_seconds,
+        'runsCompleted': runs_completed,
         'invalidLines': invalid_lines,
         'parseFailures': parse_failures,
         'sqlMetrics': sql_metrics,
@@ -633,8 +639,8 @@ def _build_type_kind_rows(type_kinds: dict[str, int]) -> list[dict[str, Any]]:
     return rows
 
 
-def _resolve_status(jsonl_count: int, files_total: int, has_data_quality_issues: bool) -> str:
-    if jsonl_count == 0 or files_total == 0:
+def _resolve_status(jsonl_count: int, files_total: int, runs_completed: int, has_data_quality_issues: bool) -> str:
+    if jsonl_count == 0 or (files_total == 0 and runs_completed == 0):
         return 'failed'
     if has_data_quality_issues:
         return 'partial'
