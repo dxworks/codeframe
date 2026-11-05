@@ -5,3 +5,11 @@
 **.Designer.vb**
 **.min.js**
 **.min.ts**
+**/bin/Debug/**
+**/bin/Release/**
+**/bin/x64/Debug**
+**/bin/x64/Release/**
+**/obj/Debug/**
+**/obj/Release/**
+**/obj/x64/Debug/**
+**/obj/x64/Release/**
