@@ -22,7 +22,7 @@ repositories {
 
 dependencies {
     // Core binding (bundles natives for Win/Linux/macOS)
-    implementation 'io.github.bonede:tree-sitter:0.26.3'
+    implementation 'io.github.bonede:tree-sitter:0.26.3.1'
   
     // Language grammars
     implementation 'io.github.bonede:tree-sitter-java:0.23.4'
