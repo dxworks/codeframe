@@ -16,6 +16,19 @@ final class SqlParsing {
     }
 
     static Statements parseStatements(String sql, Consumer<CCJSqlParser> config) throws JSQLParserException {
+        if (sql == null || sql.isEmpty()) {
+            return new Statements();
+        }
+        Statements statements = parseWithOwnExecutor(sql, config);
+        // JSqlParser returns null instead of throwing when it skips the complex retry (nesting > 10)
+        if (statements == null) {
+            throw new JSQLParserException("Statements could not be parsed");
+        }
+        return statements;
+    }
+
+    private static Statements parseWithOwnExecutor(String sql, Consumer<CCJSqlParser> config)
+            throws JSQLParserException {
         ExecutorService executor = Executors.newSingleThreadExecutor(r -> {
             Thread t = new Thread(r, "codeframe-jsqlparser");
             t.setDaemon(true);

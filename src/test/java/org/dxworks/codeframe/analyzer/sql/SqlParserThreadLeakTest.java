@@ -18,12 +18,21 @@ class SqlParserThreadLeakTest {
             """;
 
     @Test
-    void failedParseLeavesNoNonDaemonThread() {
-        Set<Thread> before = liveNonDaemonThreads();
-
+    void failedFileParseLeavesNoNonDaemonThread() {
         SQLAnalyzer analyzer = new SQLAnalyzer(CodeframeConfig.load());
+        assertNoLeakedThreads(() -> analyzer.analyze("user.sql", UNPARSEABLE_SQL));
+    }
+
+    @Test
+    void failedRoutineBodyParseLeavesNoNonDaemonThread() {
+        SqlRoutineBodyAnalyzer analyzer = new SqlRoutineBodyAnalyzer();
+        assertNoLeakedThreads(() -> analyzer.analyze(UNPARSEABLE_SQL, "mysql"));
+    }
+
+    private static void assertNoLeakedThreads(Runnable failingParse) {
+        Set<Thread> before = liveNonDaemonThreads();
         for (int i = 0; i < 5; i++) {
-            analyzer.analyze("user.sql", UNPARSEABLE_SQL);
+            failingParse.run();
         }
 
         Set<Thread> leaked = liveNonDaemonThreads();
