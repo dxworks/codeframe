@@ -18,6 +18,18 @@ class SqlParsingTest {
             SELECT ((((((((((((v)))))))))))) FROM t;
             """;
 
+    // T-SQL that JSqlParser rejects, nested deeply enough to skip the complex retry
+    private static final String DEEPLY_NESTED_TSQL_PROCEDURE = """
+            CREATE PROCEDURE dbo.DeepCalc
+                @x INT
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+                SELECT ((((((((((((@x)))))))))))) AS v;
+            END
+            GO
+            """;
+
     @Test
     void emptyInputGivesNoStatements() throws Exception {
         assertTrue(SqlParsing.parseStatements("", null).isEmpty());
@@ -39,8 +51,17 @@ class SqlParsingTest {
     }
 
     @Test
-    void analyzerHandlesEmptyFile() {
+    void analyzerHandlesGoOnlyFile() {
         SQLAnalyzer analyzer = new SQLAnalyzer(CodeframeConfig.load());
-        assertDoesNotThrow(() -> analyzer.analyze("empty.sql", ""));
+        assertDoesNotThrow(() -> analyzer.analyze("empty.sql", "GO\nGO\n"));
+    }
+
+    @Test
+    void deeplyNestedTsqlProcedureIsExtractedByFallback() {
+        SQLAnalyzer analyzer = new SQLAnalyzer(CodeframeConfig.load());
+        SQLFileAnalysis out = (SQLFileAnalysis) assertDoesNotThrow(
+                () -> analyzer.analyze("deep_proc.sql", DEEPLY_NESTED_TSQL_PROCEDURE));
+        assertEquals(1, out.createProcedures.size());
+        assertTrue(out.createProcedures.get(0).procedureName.contains("DeepCalc"));
     }
 }

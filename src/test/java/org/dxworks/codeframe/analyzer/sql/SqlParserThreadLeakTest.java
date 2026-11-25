@@ -38,6 +38,23 @@ class SqlParserThreadLeakTest {
         Set<Thread> leaked = liveNonDaemonThreads();
         leaked.removeAll(before);
         assertEquals(Set.of(), leaked.stream().map(Thread::getName).collect(Collectors.toSet()));
+
+        // Parser threads are daemons, so also check that each executor was shut down
+        assertEquals(0, liveParserThreadsAfterShutdown());
+    }
+
+    private static long liveParserThreadsAfterShutdown() {
+        Set<Thread> parserThreads = Thread.getAllStackTraces().keySet().stream()
+                .filter(t -> t.getName().equals("codeframe-jsqlparser"))
+                .collect(Collectors.toSet());
+        for (Thread t : parserThreads) {
+            try {
+                t.join(2000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        return parserThreads.stream().filter(Thread::isAlive).count();
     }
 
     private static Set<Thread> liveNonDaemonThreads() {

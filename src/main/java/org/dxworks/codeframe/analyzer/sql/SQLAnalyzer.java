@@ -58,7 +58,6 @@ public class SQLAnalyzer implements LanguageAnalyzer {
 
         Statements statements;
         try {
-            // Keep the config minimal to match older JSQLParser APIs
             statements = SqlParsing.parseStatements(
                 preprocessed,
                 p -> p.withAllowComplexParsing(true)
