@@ -1,6 +1,5 @@
 package org.dxworks.codeframe.analyzer.sql;
 
-import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.Statements;
 import net.sf.jsqlparser.statement.execute.Execute;
@@ -28,7 +27,7 @@ public class SqlRoutineBodyAnalyzer implements RoutineBodyAnalyzer {
         }
 
         try {
-            Statements statements = CCJSqlParserUtil.parseStatements(pre);
+            Statements statements = SqlParsing.parseStatements(pre, null);
 
             for (Statement st : statements.getStatements()) {
                 if (st == null) continue;

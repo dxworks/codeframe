@@ -1,6 +1,5 @@
 package org.dxworks.codeframe.analyzer.sql;
 
-import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.Statements;
 import net.sf.jsqlparser.statement.create.index.CreateIndex;
@@ -59,8 +58,7 @@ public class SQLAnalyzer implements LanguageAnalyzer {
 
         Statements statements;
         try {
-            // Keep the config minimal to match older JSQLParser APIs
-            statements = CCJSqlParserUtil.parseStatements(
+            statements = SqlParsing.parseStatements(
                 preprocessed,
                 p -> p.withAllowComplexParsing(true)
                       .withSquareBracketQuotation(true)
